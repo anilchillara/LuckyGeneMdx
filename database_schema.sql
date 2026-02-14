@@ -94,7 +94,7 @@ CREATE TABLE admins (
 
 -- Insert default admin (password: Admin@123 - CHANGE THIS IMMEDIATELY)
 INSERT INTO admins (username, password_hash, email, role) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@luckygenemxd.com', 'super_admin');
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@luckygenemdx.com', 'super_admin');
 
 -- Testimonials Table
 CREATE TABLE testimonials (

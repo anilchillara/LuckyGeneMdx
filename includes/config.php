@@ -5,20 +5,20 @@
  */
 
 // Prevent direct access
-if (!defined('LUCKYGENEMXD')) {
+if (!defined('luckygenemdx')) {
     die('Direct access not permitted');
 }
 
 // Environment Configuration
 define('ENVIRONMENT', 'development'); // Change to 'production' when live
-define('SITE_URL', 'https://luckygenemxd.com');
+define('SITE_URL', 'https://luckygenemdx.com');
 define('SITE_NAME', 'LuckyGeneMdx');
 
 // Database Configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'luckygenemxd_db');
-define('DB_USER', 'your_db_user');
-define('DB_PASS', 'luckygenemxd');
+define('DB_NAME', 'luckygenemdx_db');
+define('DB_USER', 'luckygenemdx');
+define('DB_PASS', 'luckygenemdx');
 define('DB_CHARSET', 'utf8mb4');
 
 // Security Settings
@@ -39,9 +39,9 @@ define('ENCRYPTION_KEY', 'your_32_character_encryption_key_here_changeme!'); // 
 // Email Configuration
 define('SMTP_HOST', 'smtp.example.com');
 define('SMTP_PORT', 587);
-define('SMTP_USER', 'noreply@luckygenemxd.com');
-define('SMTP_PASS', 'luckygenemxd');
-define('EMAIL_FROM', 'support@luckygenemxd.com');
+define('SMTP_USER', 'noreply@luckygenemdx.com');
+define('SMTP_PASS', 'luckygenemdx');
+define('EMAIL_FROM', 'support@luckygenemdx.com');
 define('EMAIL_FROM_NAME', 'LuckyGeneMdx Support');
 
 // Application Settings

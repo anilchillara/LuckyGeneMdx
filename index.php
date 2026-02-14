@@ -1,5 +1,5 @@
 <?php
-define('LUCKYGENEMXD', true);
+define('luckygenemdx', true);
 require_once 'includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -380,7 +380,7 @@ setSecurityHeaders();
                 <div class="col col-4">
                     <h4 style="color: var(--color-white);">Contact</h4>
                     <p style="font-size: 0.9rem; opacity: 0.8;">
-                        Email: support@luckygenemxd.com<br>
+                        Email: support@luckygenemdx.com<br>
                         Phone: 1-800-GENE-TEST
                     </p>
                 </div>
