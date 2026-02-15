@@ -80,17 +80,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/" class="navbar-logo">🧬 LuckyGeneMdx</a>
-            <ul class="navbar-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="about-genetic-screening.php">About Screening</a></li>
-                <li><a href="how-it-works.php">How It Works</a></li>
-                <li><a href="track-order.php">Track Order</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php include 'includes/header.php'; ?>
     
     <main style="padding-top: 100px; min-height: 100vh; background: var(--color-light-gray);">
         <div class="container" style="max-width: 1000px; padding-top: 2rem; padding-bottom: 4rem;">

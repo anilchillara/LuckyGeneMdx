@@ -77,45 +77,10 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                     </div>
                     
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem;">
-                            <h3 style="text-align: center; margin-bottom: 2rem;">Inheritance Pattern</h3>
-                            <svg viewBox="0 0 400 350" style="width: 100%; max-width: 400px; margin: 0 auto;">
-                                <!-- Parent 1 (Carrier) -->
-                                <circle cx="100" cy="50" r="35" fill="#00B3A4" opacity="0.2" stroke="#00B3A4" stroke-width="2"/>
-                                <text x="100" y="50" text-anchor="middle" fill="#0A1F44" font-size="16" font-weight="600">N | m</text>
-                                <text x="100" y="95" text-anchor="middle" fill="#0A1F44" font-size="14">Carrier Parent</text>
-                                
-                                <!-- Parent 2 (Carrier) -->
-                                <circle cx="300" cy="50" r="35" fill="#00B3A4" opacity="0.2" stroke="#00B3A4" stroke-width="2"/>
-                                <text x="300" y="50" text-anchor="middle" fill="#0A1F44" font-size="16" font-weight="600">N | m</text>
-                                <text x="300" y="95" text-anchor="middle" fill="#0A1F44" font-size="14">Carrier Parent</text>
-                                
-                                <!-- Connecting lines -->
-                                <line x1="100" y1="85" x2="100" y2="150" stroke="#0A1F44" stroke-width="2" opacity="0.3"/>
-                                <line x1="300" y1="85" x2="300" y2="150" stroke="#0A1F44" stroke-width="2" opacity="0.3"/>
-                                <line x1="100" y1="150" x2="300" y2="150" stroke="#0A1F44" stroke-width="2" opacity="0.3"/>
-                                
-                                <!-- Child 1: Unaffected (25%) -->
-                                <circle cx="60" cy="220" r="35" fill="#4CAF50" opacity="0.2" stroke="#4CAF50" stroke-width="2"/>
-                                <text x="60" y="215" text-anchor="middle" fill="#0A1F44" font-size="16" font-weight="600">N | N</text>
-                                <text x="60" y="235" text-anchor="middle" fill="#4CAF50" font-size="14" font-weight="600">25%</text>
-                                <text x="60" y="265" text-anchor="middle" fill="#0A1F44" font-size="12">Unaffected</text>
-                                
-                                <!-- Child 2 & 3: Carriers (50%) -->
-                                <circle cx="160" cy="220" r="35" fill="#00B3A4" opacity="0.2" stroke="#00B3A4" stroke-width="2"/>
-                                <text x="160" y="215" text-anchor="middle" fill="#0A1F44" font-size="16" font-weight="600">N | m</text>
-                                <text x="160" y="235" text-anchor="middle" fill="#00B3A4" font-size="14" font-weight="600">50%</text>
-                                <text x="160" y="265" text-anchor="middle" fill="#0A1F44" font-size="12">Carrier</text>
-                                
-                                <!-- Child 4: Affected (25%) -->
-                                <circle cx="260" cy="220" r="35" fill="#FF6B6B" opacity="0.2" stroke="#FF6B6B" stroke-width="2"/>
-                                <text x="260" y="215" text-anchor="middle" fill="#0A1F44" font-size="16" font-weight="600">m | m</text>
-                                <text x="260" y="235" text-anchor="middle" fill="#FF6B6B" font-size="14" font-weight="600">25%</text>
-                                <text x="260" y="265" text-anchor="middle" fill="#0A1F44" font-size="12">Affected</text>
-                                
-                                <!-- Legend -->
-                                <text x="200" y="310" text-anchor="middle" fill="#0A1F44" font-size="12">N = Normal gene | m = Mutated gene</text>
-                            </svg>
+                        <div class="glass-card" style="padding: 1.5rem; text-align: center;">
+                            <img src="assets/images/CarrierStatus.png" alt="Inheritance Pattern" style="width: 100%; border-radius: 8px;">
+                            <!-- Legend -->
+                            <text x="200" y="310" text-anchor="middle" fill="#0A1F44" font-size="12">Inheritance Pattern</text>
                         </div>
                     </div>
                 </div>

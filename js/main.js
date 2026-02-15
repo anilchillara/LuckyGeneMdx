@@ -421,70 +421,98 @@
     // ============================================
     window.generateDNAHelix = function(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
-        
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 200 400');
-        svg.setAttribute('class', 'dna-helix');
+        svg.setAttribute('viewBox', '0 0 200 600');
+        svg.setAttribute('class', 'dna-svg');
         
-        // Generate helix strands
-        for (let i = 0; i < 20; i++) {
-            const y = i * 20;
-            const x1 = Math.sin(i * 0.5) * 50 + 100;
-            const x2 = Math.sin(i * 0.5 + Math.PI) * 50 + 100;
-            
-            // Left strand ball
-            const circle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            circle1.setAttribute('cx', x1);
-            circle1.setAttribute('cy', y);
-            circle1.setAttribute('r', '8');
-            circle1.setAttribute('fill', '#00B3A4');
-            circle1.setAttribute('filter', 'url(#glow)');
-            svg.appendChild(circle1);
-            
-            // Right strand ball
-            const circle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            circle2.setAttribute('cx', x2);
-            circle2.setAttribute('cy', y);
-            circle2.setAttribute('r', '8');
-            circle2.setAttribute('fill', '#6C63FF');
-            circle2.setAttribute('filter', 'url(#glow)');
-            svg.appendChild(circle2);
-            
-            // Connecting line
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', x1);
-            line.setAttribute('y1', y);
-            line.setAttribute('x2', x2);
-            line.setAttribute('y2', y);
-            line.setAttribute('stroke', '#ffffff');
-            line.setAttribute('stroke-width', '2');
-            line.setAttribute('opacity', '0.5');
-            svg.appendChild(line);
-        }
-        
-        // Add glow filter
+        const config = {
+            totalNodes: 35,        // Dense nodes create the "one strand" effect
+            baseSpeed: 0.015,
+            amplitude: 55,         // Width of the twist
+            verticalSpacing: 16,   // Tight vertical gap for cohesion
+            teal: '#00B3A4',
+            purple: '#6C63FF'
+        };
+    
         const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-        const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
-        filter.setAttribute('id', 'glow');
-        const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
-        feGaussianBlur.setAttribute('stdDeviation', '3');
-        feGaussianBlur.setAttribute('result', 'coloredBlur');
-        filter.appendChild(feGaussianBlur);
-        
-        const feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
-        const feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
-        feMergeNode1.setAttribute('in', 'coloredBlur');
-        const feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
-        feMergeNode2.setAttribute('in', 'SourceGraphic');
-        feMerge.appendChild(feMergeNode1);
-        feMerge.appendChild(feMergeNode2);
-        filter.appendChild(feMerge);
-        
-        defs.appendChild(filter);
+        defs.innerHTML = `
+            <filter id="glossGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+            
+            <radialGradient id="sphereTeal" cx="30%" cy="30%" r="50%">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+                <stop offset="40%" stop-color="${config.teal}" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#0A1F44" stop-opacity="1"/>
+            </radialGradient>
+    
+            <linearGradient id="rungGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0A1F44" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="${config.purple}" stop-opacity="0.2"/>
+            </linearGradient>
+        `;
         svg.appendChild(defs);
-        
+    
+        const nodes = Array.from({ length: config.totalNodes }, (_, i) => {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            const rung = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            const dot1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            const dot2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            
+            rung.setAttribute('stroke', 'url(#rungGrad)');
+            rung.setAttribute('stroke-width', '1');
+    
+            [dot1, dot2].forEach((dot, idx) => {
+                // Apply glossy gradient
+                dot.setAttribute('fill', 'url(#sphereTeal)');
+                dot.setAttribute('filter', 'url(#glossGlow)');
+                // Add a subtle purple stroke to one side for medical richness
+                if(idx === 1) dot.setAttribute('stroke', config.purple);
+                dot.setAttribute('stroke-width', '0.5');
+                g.appendChild(dot);
+            });
+            
+            g.insertBefore(rung, g.firstChild);
+            svg.appendChild(g);
+            
+            // This specific offset (0.18) forces the single unified spiral
+            return { g, rung, dot1, dot2, offset: i * 0.18 };
+        });
+    
         container.appendChild(svg);
+    
+        let tick = 0;
+        function animate() {
+            tick += config.baseSpeed;
+            nodes.forEach((n, i) => {
+                const y = 30 + (i * config.verticalSpacing);
+                const angle = tick + n.offset;
+                
+                const x1 = 100 + Math.sin(angle) * config.amplitude;
+                const x2 = 100 + Math.sin(angle + Math.PI) * config.amplitude;
+                const z = Math.cos(angle); 
+                
+                // 3D Depth Scaling
+                const r1 = 4.5 + (z * 2.5);
+                const r2 = 4.5 + (-z * 2.5);
+    
+                n.rung.setAttribute('x1', x1);
+                n.rung.setAttribute('y1', y);
+                n.rung.setAttribute('x2', x2);
+                n.rung.setAttribute('y2', y);
+                n.rung.setAttribute('opacity', Math.max(0.1, Math.abs(z) * 0.4));
+                
+                n.dot1.setAttribute('cx', x1); n.dot1.setAttribute('cy', y); n.dot1.setAttribute('r', r1);
+                n.dot2.setAttribute('cx', x2); n.dot2.setAttribute('cy', y); n.dot2.setAttribute('r', r2);
+    
+                // Z-Ordering logic to keep it as one solid object
+                if (z > 0) n.g.appendChild(n.dot1); 
+                else n.g.appendChild(n.dot2);
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
     };
 
     // ============================================

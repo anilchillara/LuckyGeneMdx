@@ -192,13 +192,14 @@ p {
 
 .btn-primary:hover {
     background: var(--color-soft-purple);
+    color: #FFFFFF; /* This forces the text to white */
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .btn-primary:active {
     transform: translateY(0);
-}
+} 
 
 .btn-outline {
     background: transparent;
@@ -759,3 +760,75 @@ p {
     outline: 2px solid var(--color-medical-teal);
     outline-offset: 2px;
 }
+
+
+/* POSITION OF DNA HELIX IN HERO SECTION */
+/* #dna-container {
+    display: flex;
+    justify-content: flex;
+    align-items: center;
+    width: 40%;
+    height: 500px;
+    padding-right: 50px; /* Extra padding to give it room to drift * /
+    pointer-events: none;
+    overflow: visible; /* Changed to visible so it doesn't clip while drifting */
+    
+    /* Apply the floating animation * /
+    animation: floatAround 8s ease-in-out infinite;
+}
+
+@keyframes floatAround {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(-15px, 10px) rotate(1deg);
+    }
+    50% {
+        transform: translate(-5px, -20px) rotate(-1deg);
+    }
+    75% {
+        transform: translate(10px, 5px) rotate(0.5deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+} */
+
+#dna-container {
+    display: flex;
+    justify-content: flex-end; 
+    width: 100%;
+    height: 100vh;
+    padding-right: 100px;
+    /* Smooth organic floating effect */
+    animation: floatStructure 12s ease-in-out infinite;
+    will-change: transform;
+}
+
+@keyframes floatStructure {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-15px, 10px) rotate(1deg); }
+    50% { transform: translate(-5px, -20px) rotate(-1deg); }
+    75% { transform: translate(10px, 5px) rotate(0.5deg); }
+}
+
+.dna-svg { width: 90px; height: auto; }
+/* 
+#dna-container {
+    position: fixed; /* Allows it to move anywhere on screen * /
+    top: 0;
+    left: 0;
+    width: fit-content;
+    height: fit-content;
+    pointer-events: none; /* Prevents it from blocking clicks on buttons/links * /
+    z-index: 9999;
+    will-change: transform; /* Optimizes performance for smooth motion * /
+}
+
+.dna-svg { 
+    width: 90px; 
+    height: auto; 
+    /* We'll keep a tiny bit of CSS tilt for organic feel * /
+    transition: transform 0.5s ease-out; 
+} */

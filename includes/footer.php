@@ -12,7 +12,7 @@
                 <ul style="list-style: none; padding: 0;">
                     <li style="margin-bottom: 0.5rem;"><a href="about-genetic-screening.php" style="color: var(--color-white); opacity: 0.8;">About Screening</a></li>
                     <li style="margin-bottom: 0.5rem;"><a href="how-it-works.php" style="color: var(--color-white); opacity: 0.8;">How It Works</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="resources" style="color: var(--color-white); opacity: 0.8;">Resources</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="resources.php" style="color: var(--color-white); opacity: 0.8;">Resources</a></li>
                     <li style="margin-bottom: 0.5rem;"><a href="track-order.php" style="color: var(--color-white); opacity: 0.8;">Track Order</a></li>
                     <li style="margin-bottom: 0.5rem;"><a href="patient-portal/" style="color: var(--color-white); opacity: 0.8;">Patient Portal</a></li>
                 </ul>

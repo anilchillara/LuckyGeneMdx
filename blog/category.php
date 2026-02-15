@@ -53,22 +53,7 @@ try {
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <a href="../index.php" class="logo">
-                <span class="dna-icon">🧬</span>
-                <span>LuckyGeneMdx</span>
-            </a>
-            <ul class="nav-menu">
-                <li><a href="../index.php">Home</a></li>
-                <li><a href="../about-genetic-screening.php">About Screening</a></li>
-                <li><a href="../how-it-works.php">How It Works</a></li>
-                <li><a href="../resources/">Resources</a></li>
-                <li><a href="index.php" class="active">Blog</a></li>
-                <li><a href="../request-kit.php" class="btn-primary">Request Kit</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php include 'includes/header.php'; ?>
 
     <!-- Category Hero -->
     <section class="page-hero">

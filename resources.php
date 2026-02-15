@@ -157,7 +157,7 @@ $resources = [
         <section class="section" style="background: var(--gradient-primary); color: var(--color-white); text-align: center;">
             <div class="container">
                 <h2 style="color: var(--color-white); margin-bottom: 1.5rem;">Knowledge is Power</h2>
-                <a href="request-kit.php" class="btn btn-large" style="background: var(--color-white); color: var(--color-primary-deep-blue);">
+                <a href="request-kit.php" class="btn btn-large glow-button" style="background: var(--color-white); color: var(--color-primary-deep-blue);">
                     Request Your Kit Now - $99
                 </a>
             </div>

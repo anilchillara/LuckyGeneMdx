@@ -1,5 +1,5 @@
 <?php
-define('LUCKYGENEMXD', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';

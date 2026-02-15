@@ -109,20 +109,7 @@ $allStatuses = $stmt->fetchAll();
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/" class="navbar-logo">🧬 LuckyGeneMdx</a>
-            <button class="navbar-toggle">☰</button>
-            <ul class="navbar-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="about-genetic-screening.php">About Screening</a></li>
-                <li><a href="how-it-works.php">How It Works</a></li>
-                <li><a href="resources">Resources</a></li>
-                <li><a href="track-order.php">Track Order</a></li>
-                <li><a href="request-kit.php" class="btn btn-primary">Request Kit</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php include 'includes/header.php'; ?>
     
     <main style="padding-top: 100px; min-height: 100vh; background: var(--color-light-gray);">
         <div class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
