@@ -1,8 +1,27 @@
 <?php
+define('luckygenemdx', true);
+
 /**
- * LuckyGeneMDx Configuration File
- * Updated to use Environment Variables
+ * .env Loader for Hostinger
  */
+function loadEnv($path) {
+    if (!file_exists($path)) return false;
+
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue; // Skip comments
+        list($name, $value) = explode('=', $line, 2);
+        $name = trim($name);
+        $value = trim(trim($value), '"\''); // Remove quotes
+        
+        putenv(sprintf('%s=%s', $name, $value));
+        $_ENV[$name] = $value;
+    }
+    return true;
+}
+
+// Load the .env file from the directory above 'includes'
+loadEnv(__DIR__ . '/../.env');
 
 // Prevent direct access
 if (!defined('luckygenemdx')) {

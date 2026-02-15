@@ -1,6 +1,7 @@
 <?php
 define('luckygenemdx', true);
 require_once 'includes/config.php';
+require_once 'includes/Database.php'; // Required for dynamic testimonials
 session_start();
 setSecurityHeaders();
 ?>
@@ -13,29 +14,21 @@ setSecurityHeaders();
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title>LuckyGeneMDx - Comprehensive Genetic Carrier Screening | $99</title>
     
-    <!-- Preload critical assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="css/main.css">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
 </head>
 <body>
-    <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- Navigation -->
     <?php include 'includes/header.php'; ?>
     
-    <!-- Main Content -->
     <main id="main-content">
-        <!-- Hero Section -->
         <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-background">
                 <div class="particles" aria-hidden="true"></div>
@@ -75,7 +68,6 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <!-- Awareness Section -->
         <section class="section" aria-labelledby="awareness-heading">
             <div class="container">
                 <div class="row">
@@ -108,8 +100,8 @@ setSecurityHeaders();
                             <h4 style="text-align: center; margin-bottom: 2rem;">
                                 Recessive Inheritance Pattern
                             </h4>
+                            
                             <svg viewBox="0 0 400 300" style="width: 100%; max-width: 400px; margin: 0 auto;">
-                                <!-- Parent 1 (Carrier) -->
                                 <circle cx="100" cy="50" r="30" fill="#00B3A4" opacity="0.3"/>
                                 <text x="100" y="55" text-anchor="middle" fill="#0A1F44" font-size="14" font-weight="600">
                                     Parent 1
@@ -118,7 +110,6 @@ setSecurityHeaders();
                                     Carrier
                                 </text>
                                 
-                                <!-- Parent 2 (Carrier) -->
                                 <circle cx="300" cy="50" r="30" fill="#00B3A4" opacity="0.3"/>
                                 <text x="300" y="55" text-anchor="middle" fill="#0A1F44" font-size="14" font-weight="600">
                                     Parent 2
@@ -127,13 +118,11 @@ setSecurityHeaders();
                                     Carrier
                                 </text>
                                 
-                                <!-- Lines to children -->
                                 <line x1="100" y1="80" x2="75" y2="200" stroke="#0A1F44" stroke-width="2"/>
                                 <line x1="100" y1="80" x2="150" y2="200" stroke="#0A1F44" stroke-width="2"/>
                                 <line x1="300" y1="80" x2="250" y2="200" stroke="#0A1F44" stroke-width="2"/>
                                 <line x1="300" y1="80" x2="325" y2="200" stroke="#0A1F44" stroke-width="2"/>
                                 
-                                <!-- Child outcomes -->
                                 <circle cx="75" cy="230" r="25" fill="#28a745"/>
                                 <text x="75" y="235" text-anchor="middle" fill="white" font-size="11" font-weight="600">
                                     25%
@@ -175,7 +164,6 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <!-- Scientific Credibility Section -->
         <section class="section" style="background: var(--gradient-hero); color: var(--color-white); text-align: center;">
             <div class="container">
                 <h2 style="color: var(--color-white);">Aligned with Medical Genetics Standards</h2>
@@ -212,7 +200,6 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <!-- Generational Timeline Section -->
         <section class="section timeline" aria-labelledby="timeline-heading">
             <div class="container">
                 <h2 id="timeline-heading" class="text-center mb-5">
@@ -265,7 +252,6 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <!-- Testimonials Section -->
         <section class="section" style="background: var(--color-light-gray);" aria-labelledby="testimonials-heading">
             <div class="container">
                 <h2 id="testimonials-heading" class="text-center mb-5">
@@ -274,47 +260,39 @@ setSecurityHeaders();
                 
                 <div class="testimonials-carousel" style="max-width: 800px; margin: 0 auto; position: relative;">
                     <?php
-                    $testimonials = [
-                        [
-                            'name' => 'Sarah M.',
-                            'age' => 29,
-                            'location' => 'Boston, MA',
-                            'quote' => 'Getting screened before starting our family gave us peace of mind. The process was simple and the results were clear and easy to understand.'
-                        ],
-                        [
-                            'name' => 'Michael & Jennifer T.',
-                            'age' => 32,
-                            'location' => 'Austin, TX',
-                            'quote' => 'We discovered we were both carriers for the same condition. Thanks to early knowledge, we were able to work with our doctor on family planning options.'
-                        ],
-                        [
-                            'name' => 'Dr. Lisa Chen',
-                            'age' => 35,
-                            'location' => 'San Francisco, CA',
-                            'quote' => 'As a physician myself, I appreciate the scientific rigor and ACMG-aligned approach. This is how carrier screening should be done.'
-                        ],
-                        [
-                            'name' => 'Robert K.',
-                            'age' => 28,
-                            'location' => 'Seattle, WA',
-                            'quote' => 'The $99 price point made this accessible when other genetic tests were too expensive. Results came back in exactly 3 weeks as promised.'
-                        ]
-                    ];
-                    
-                    foreach ($testimonials as $testimonial):
+                    try {
+                        $db = Database::getInstance()->getConnection();
+                        
+                        // Select active testimonials based on display_order
+                        $stmt = $db->prepare("SELECT name, age, location, quote FROM testimonials WHERE is_active = 1 ORDER BY display_order ASC, created_at DESC");
+                        $stmt->execute();
+                        $testimonials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        if (!empty($testimonials)):
+                            foreach ($testimonials as $testimonial):
                     ?>
-                    <div class="testimonial-item glass-card" style="text-align: center; padding: 3rem;">
-                        <p style="font-size: 1.25rem; font-style: italic; margin-bottom: 2rem; line-height: 1.8;">
-                            "<?php echo htmlspecialchars($testimonial['quote']); ?>"
-                        </p>
-                        <p style="font-weight: 600; color: var(--color-medical-teal); margin-bottom: 0.5rem;">
-                            <?php echo htmlspecialchars($testimonial['name']); ?>, <?php echo $testimonial['age']; ?>
-                        </p>
-                        <p style="font-size: 0.9rem; color: var(--color-dark-gray);">
-                            <?php echo htmlspecialchars($testimonial['location']); ?>
-                        </p>
-                    </div>
-                    <?php endforeach; ?>
+                                <div class="testimonial-item glass-card" style="text-align: center; padding: 3rem;">
+                                    <p style="font-size: 1.25rem; font-style: italic; margin-bottom: 2rem; line-height: 1.8;">
+                                        "<?php echo htmlspecialchars($testimonial['quote']); ?>"
+                                    </p>
+                                    <p style="font-weight: 600; color: var(--color-medical-teal); margin-bottom: 0.5rem;">
+                                        <?php echo htmlspecialchars($testimonial['name']); ?><?php echo !empty($testimonial['age']) ? ', ' . (int)$testimonial['age'] : ''; ?>
+                                    </p>
+                                    <?php if (!empty($testimonial['location'])): ?>
+                                        <p style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                                            <?php echo htmlspecialchars($testimonial['location']); ?>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+                    <?php 
+                            endforeach;
+                        else:
+                            echo '<p class="text-center">Start your journey toward genetic awareness today.</p>';
+                        endif;
+                    } catch (Exception $e) {
+                        error_log("Database error in index.php: " . $e->getMessage());
+                    }
+                    ?>
                     
                     <button class="carousel-prev" style="position: absolute; left: -50px; top: 50%; transform: translateY(-50%); background: var(--color-white); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: var(--shadow-md);" aria-label="Previous testimonial">‹</button>
                     <button class="carousel-next" style="position: absolute; right: -50px; top: 50%; transform: translateY(-50%); background: var(--color-white); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: var(--shadow-md);" aria-label="Next testimonial">›</button>
@@ -322,9 +300,6 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <!-- Final CTA Section -->
-        
-
         <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
                 <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 900px; margin: 0 auto;">
@@ -368,7 +343,6 @@ setSecurityHeaders();
         </section>
     </main>
     
-    <!-- Footer -->
     <?php include 'includes/footer.php'; ?>
     
     <script src="js/main.js"></script>

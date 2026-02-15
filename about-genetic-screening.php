@@ -87,6 +87,41 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
             </div>
         </section>
 
+        <!-- Carrier status is a fundamental concept in genetics, and understanding it is crucial for anyone considering family planning. By identifying carrier status, individuals can gain insights into their genetic risks and make informed decisions about their reproductive health. In the next sections, we will explore why carrier screening is important, what conditions are commonly screened for, and who should consider getting screened. -->
+        <section class="section">
+            <div class="container">
+                <div class="row" style="align-items: center;">
+                    <div class="col col-2">
+                        <div style="display: inline-block; background: var(--color-medical-teal); color: white; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-bottom: 1rem;">GENETIC BLUEPRINT</div>
+                        <h2>Hidden in our Genetic Code</h2>
+                        <p>Carrier status refers to individuals who carry one mutated gene for a recessive condition. While typically asymptomatic, if both parents are carriers, there is a 25% probability of passing it to their children.</p>
+                        
+                        <div class="row" style="margin-top: 2rem;">
+                            <div class="col col-2">
+                                <div class="glass-card" style="padding: 1.5rem; border-top: 4px solid var(--color-medical-teal);">
+                                    <h3 style="color: var(--color-medical-teal); margin-bottom: 0;">25%</h3>
+                                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Inheritance risk if both parents are carriers.</p>
+                                </div>
+                            </div>
+                            <div class="col col-2">
+                                <div class="glass-card" style="padding: 1.5rem; border-top: 4px solid var(--color-primary-deep-blue);">
+                                    <h3 style="color: var(--color-primary-deep-blue); margin-bottom: 0;">1 in 4</h3>
+                                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Probability of a child being affected.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col col-2">
+                        <div class="glass-card" style="padding: 1.5rem; text-align: center;">
+                            <img src="assets/images/autoRes.png" alt="Inheritance Pattern" style="width: 100%; border-radius: 8px;">
+                            <p style="font-size: 0.75rem; margin-top: 1rem; font-style: italic; color: var(--color-dark-gray);">Visualizing the autosomal recessive probability distribution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Why Screen -->
         <section class="section" style="background: var(--color-light-gray);">
             <div class="container">

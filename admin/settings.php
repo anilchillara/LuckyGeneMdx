@@ -186,27 +186,8 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
 </head>
 <body>
     <div class="admin-wrapper">
-        <aside class="admin-sidebar">
-            <div class="admin-sidebar-header">
-                <h2>🧬 LuckyGeneMDx</h2>
-                <div class="admin-sidebar-user">
-                    <?php echo htmlspecialchars($adminName); ?><br>
-                    <small><?php echo ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'admin')); ?></small>
-                </div>
-            </div>
-            
-            <nav class="admin-nav">
-                <a href="index.php" class="admin-nav-item">📊 Dashboard</a>
-                <a href="orders.php" class="admin-nav-item">📦 Orders</a>
-                <a href="upload-results.php" class="admin-nav-item">📄 Upload Results</a>
-                <a href="users.php" class="admin-nav-item">👥 Users</a>
-                <a href="testimonials.php" class="admin-nav-item">💬 Testimonials</a>
-                <a href="blog.php" class="admin-nav-item">📰 Blog</a>
-                <a href="resources.php" class="admin-nav-item">📖 Resources</a>
-                <a href="settings.php" class="admin-nav-item active">⚙️ Settings</a>
-                <a href="logout.php" class="admin-nav-item" style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">🚪 Logout</a>
-            </nav>
-        </aside>
+        <!-- Sidebar -->
+        <?php include 'sidenav.php'; ?>
 
         <main class="admin-main">
             <div class="admin-header">
