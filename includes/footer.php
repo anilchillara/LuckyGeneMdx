@@ -19,11 +19,11 @@ if (!defined('luckygenemdx')) exit;
             #00B3A4, /* Medical Teal - Dominant */
             #0A1F44, /* Deep Blue */
             #00B3A4, /* Medical Teal - Middle */
-            #6C63FF, /* Soft Purple */
+            /* #6C63FF, Soft Purple */
             #00B3A4  /* Medical Teal - End */
         );
         background-size: 400% 400%;
-        animation: footerFlow 12s ease infinite;
+        animation: footerFlow 30s ease infinite;
         color: #FFFFFF;
         padding: 5rem 0 2rem;
         font-family: 'Inter', sans-serif;

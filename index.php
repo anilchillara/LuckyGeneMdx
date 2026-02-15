@@ -323,20 +323,47 @@ setSecurityHeaders();
         </section>
         
         <!-- Final CTA Section -->
-        <section class="section" style="background: var(--gradient-primary); color: var(--color-white); text-align: center;">
+        
+
+        <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
-                <h2 style="color: var(--color-white); margin-bottom: 1.5rem;">
-                    Invest $99 Today for a Healthier Tomorrow
-                </h2>
-                <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95;">
-                    Take the first step toward informed family planning with comprehensive genetic carrier screening.
-                </p>
-                <a href="request-kit.php" class="btn btn-large" style="background: var(--color-white); color: var(--color-primary-deep-blue); margin-bottom: 1.5rem;">
-                    Get Your Screening Kit
-                </a>
-                <p style="font-size: 0.9rem; opacity: 0.8;">
-                    Secure checkout • Private results • Expert support
-                </p>
+                <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 900px; margin: 0 auto;">
+                    
+                    <div style="display: inline-block; background: rgba(0, 179, 164, 0.1); color: var(--color-medical-teal); padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1.5px;">
+                        Limited Time Pricing
+                    </div>
+
+                    <h2 style="color: var(--color-primary-deep-blue); margin-bottom: 1rem; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+                        Invest $99 Today for a Healthier Tomorrow
+                    </h2>
+                    
+                    <p style="font-size: 1.2rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                        Take the first step toward informed family planning with comprehensive genetic carrier screening. Clear insights, delivered privately.
+                    </p>
+
+                    <div style="margin-bottom: 2.5rem;">
+                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
+                        <span style="font-size: 1.8rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.5; margin-left: 12px;">$249</span>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse " >
+                            Get Your Screening Kit
+                        </a>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; gap: 2rem; opacity: 0.9; flex-wrap: wrap;">
+                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Secure checkout
+                        </span>
+                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Private results
+                        </span>
+                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Expert support
+                        </span>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

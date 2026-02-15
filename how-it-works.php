@@ -117,12 +117,47 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
             </div>
         </section>
 
-        <section class="section" style="background: var(--gradient-primary); color: var(--color-white); text-align: center;">
+        <!-- CTA Section -->
+
+        <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
-                <h2 style="color: var(--color-white); margin-bottom: 1.5rem;">Ready to Start Your Journey?</h2>
-                <a href="request-kit.php" class="btn btn-large" style="background: var(--color-white); color: var(--color-primary-deep-blue);">
-                    Request Your Kit Now - $99
-                </a>
+                <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 800px; margin: 0 auto;">
+                    
+                    <div style="display: inline-block; background: rgba(0, 179, 164, 0.1); color: var(--color-medical-teal); padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1.5px;">
+                        Begin Your Path to Clarity
+                    </div>
+
+                    <h2 style="color: var(--color-primary-deep-blue); margin-bottom: 1.5rem; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+                        Ready to Start Your Journey?
+                    </h2>
+                    
+                    <p style="font-size: 1.2rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                        Join thousands of families who have chosen proactive screening. Order your clinical-grade kit today.
+                    </p>
+
+                    <div style="margin-bottom: 2.5rem;">
+                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
+                        <span style="font-size: 1.8rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.5; margin-left: 12px;">$249</span>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
+                            Request Your Kit Now - $99
+                        </a>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; gap: 2rem; opacity: 0.9; flex-wrap: wrap; border-top: 1px solid var(--color-medium-gray); padding-top: 2rem;">
+                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Results in 3 Weeks
+                        </span>
+                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> 100% Secure & Private
+                        </span>
+                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Physician Support
+                        </span>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

@@ -205,59 +205,56 @@ try {
     <?php endif; ?>
 
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
         <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Learn Your Carrier Status?</h2>
-                <p>Take proactive steps toward informed family planning with comprehensive genetic screening.</p>
-                <div class="cta-buttons">
-                    <a href="../request-kit.php" class="btn-primary btn-lg">Request Screening Kit - $99</a>
-                    <a href="../how-it-works.php" class="btn-secondary btn-lg">See How It Works</a>
+            <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 900px; margin: 0 auto;">
+                
+                <div style="display: inline-block; background: rgba(0, 179, 164, 0.1); color: var(--color-medical-teal); padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1.5px;">
+                    Secure Your Genetic Insights
+                </div>
+
+                <h2 style="color: var(--color-primary-deep-blue); margin-bottom: 1rem; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+                    Ready to Learn Your Carrier Status?
+                </h2>
+                
+                <p style="font-size: 1.2rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    Take proactive steps toward informed family planning with comprehensive genetic screening. Simple testing, profound clarity.
+                </p>
+
+                <div style="margin-bottom: 2.5rem;">
+                    <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
+                    <span style="font-size: 1.8rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.5; margin-left: 12px;">$249</span>
+                </div>
+
+                <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <a href="request-kit.php" class="btn btn-large" style="background: var(--color-medical-teal); color: var(--color-white); padding: 1.25rem 3rem; border-radius: 100px; font-size: 1.1rem; text-decoration: none; font-weight: 700; display: inline-block; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0, 179, 164, 0.2);">
+                        Request Screening Kit - $99
+                    </a>
+                    <a href="how-it-works.php" class="btn btn-outline btn-large" style="border: 2px solid var(--color-primary-deep-blue); color: var(--color-primary-deep-blue); padding: 1.25rem 3rem; border-radius: 100px; font-size: 1.1rem; text-decoration: none; font-weight: 700; display: inline-block;">
+                        See How It Works
+                    </a>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 2rem; opacity: 0.9; flex-wrap: wrap; border-top: 1px solid var(--color-medium-gray); padding-top: 2rem;">
+                    <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                        <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> At-Home Swab
+                    </span>
+                    <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                        <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Physician Reviewed
+                    </span>
+                    <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
+                        <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> 100% Confidential
+                    </span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>LuckyGeneMDx</h4>
-                    <p>Empowering families with genetic awareness for a healthier future.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="../about-genetic-screening.php">About Screening</a></li>
-                        <li><a href="../how-it-works.php">How It Works</a></li>
-                        <li><a href="../request-kit.php">Request Kit</a></li>
-                        <li><a href="../track-order.php">Track Order</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="index.php">Knowledge Hub</a></li>
-                        <li><a href="../blog/">Blog</a></li>
-                        <li><a href="../privacy-policy.php">Privacy Policy</a></li>
-                        <li><a href="../terms-of-service.php">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <p>Email: support@luckygenemmdx.com</p>
-                    <p>Phone: 1-800-LUCKYGENE</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> LuckyGeneMDx. All rights reserved.</p>
-                <p class="disclaimer">Carrier screening is not diagnostic. Consult with healthcare professionals for medical advice.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="../js/main.js"></script>
+    <?php include 'includes/footer.php'; ?>
+    
+    <script src="js/main.js"></script>
+    
     <script>
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {

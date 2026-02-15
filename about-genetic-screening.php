@@ -14,7 +14,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo htmlspecialchars($page_description); ?>">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMDx</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMdx</title>
     
     <!-- Preload critical assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,7 +235,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                         individuals considering pregnancy or currently pregnant.
                     </p>
                     <p style="font-size: 0.9rem; margin: 0; opacity: 0.8;">
-                        <em>LuckyGeneMDx follows these professional guidelines but is not directly affiliated with these organizations.</em>
+                        <em>LuckyGeneMdx follows these professional guidelines but is not directly affiliated with these organizations.</em>
                     </p>
                 </div>
             </div>
@@ -282,7 +282,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
 
                 <div class="glass-card" style="background: rgba(255, 152, 0, 0.1); border-left: 4px solid #FF9800; padding: 2rem; margin-top: 3rem;">
                     <p style="margin: 0; font-size: 0.95rem;">
-                        <strong>Important Note:</strong> LuckyGeneMDx provides genetic carrier screening services 
+                        <strong>Important Note:</strong> LuckyGeneMdx provides genetic carrier screening services 
                         aligned with professional standards. We are not affiliated with, endorsed by, or officially 
                         connected to ACMG, ACOG, CDC, or other medical organizations mentioned. Carrier screening 
                         is not a diagnostic test and should not replace consultation with qualified healthcare providers.
@@ -292,24 +292,46 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         </section>
 
         <!-- CTA Section -->
-        <section class="section" style="background: var(--gradient-primary); color: var(--color-white); text-align: center;">
+        
+        <section class="section conversion-block" style="background: var(--color-light-gray); padding: 6rem 0;">
             <div class="container">
-                <h2 style="color: var(--color-white); margin-bottom: 1.5rem;">
-                    Ready to Learn About Your Carrier Status?
-                </h2>
-                <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95;">
-                    Take the first step toward informed family planning with comprehensive genetic carrier screening.
-                </p>
-                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="request-kit.php" class="btn btn-large" style="background: var(--color-white); color: var(--color-primary-deep-blue);">
-                        Request Your Kit - $99
-                    </a>
-                    <a href="how-it-works.php" class="btn btn-outline btn-large" style="border-color: var(--color-white); color: var(--color-white);">
-                        See How It Works
-                    </a>
+                <div class="cta-card" style="background: var(--color-white); border-radius: 20px; box-shadow: 0 20px 40px rgba(10, 31, 68, 0.1); padding: 4rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 1000px; margin: 0 auto;">
+                    
+                    <div style="display: inline-block; background: rgba(0, 179, 164, 0.1); color: var(--color-medical-teal); padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Limited Time Offer
+                    </div>
+
+                    <h2 style="color: var(--color-primary-deep-blue); margin-bottom: 1.5rem; font-size: 2.5rem; font-weight: 700;">
+                        Secure Your Family's Future
+                    </h2>
+                    
+                    <p style="font-size: 1.15rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                        Join thousands of proactive families. Get clinical-grade insights delivered privately to your door in just 14-21 days.
+                    </p>
+
+                    <div style="margin-bottom: 3rem;">
+                        <span style="font-size: 4rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
+                        <span style="font-size: 1.5rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.6; margin-left: 10px;">$249</span>
+                    </div>
+
+                    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
+                            Order Your Screening Kit
+                        </a>
+                        <a href="how-it-works.php" class="btn btn-outline btn-large" style="border: 2px solid var(--color-primary-deep-blue); color: var(--color-primary-deep-blue); padding: 1.2rem 3rem; border-radius: 12px; font-size: 1.1rem; text-decoration: none; font-weight: 600; display: inline-block;">
+                            See How It Works
+                        </a>
+                    </div>
+
+                    <div style="margin-top: 3rem; display: flex; justify-content: center; gap: 2.5rem; opacity: 0.8; border-top: 1px solid var(--color-medium-gray); padding-top: 2rem; flex-wrap: wrap;">
+                        <span style="font-size: 0.9rem; color: var(--color-primary-deep-blue); font-weight: 500;">✓ HIPAA Compliant</span>
+                        <span style="font-size: 0.9rem; color: var(--color-primary-deep-blue); font-weight: 500;">✓ CLIA Certified Lab</span>
+                        <span style="font-size: 0.9rem; color: var(--color-primary-deep-blue); font-weight: 500;">✓ Free 2-Day Shipping</span>
+                    </div>
                 </div>
             </div>
         </section>
+
     </main>
     
     <?php include 'includes/footer.php'; ?>

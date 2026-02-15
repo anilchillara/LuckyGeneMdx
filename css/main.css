@@ -20,7 +20,9 @@
     --color-black: #212529;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 50%, var(--color-soft-purple) 100%);
+    --gradient-primary: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 75%, var(--color-soft-purple) 100%);
+    /* --gradient-primary: linear-gradient(135deg, var(--color-soft-purple) 0%, var(--color-medical-teal) 50%, var(--color-primary-deep-blue) 100%); */
+    /* --gradient-hero: linear-gradient(135deg, rgba(10, 31, 68, 0.95) 0%, rgba(0, 179, 164, 0.85) 90%, rgba(12, 38, 123, 0.85) 100%); */
     --gradient-hero: linear-gradient(135deg, rgba(10, 31, 68, 0.95) 0%, rgba(0, 179, 164, 0.85) 100%);
     --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
     
