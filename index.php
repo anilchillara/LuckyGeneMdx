@@ -9,9 +9,9 @@ setSecurityHeaders();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGeneMdx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
+    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGeneMDx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title>LuckyGeneMdx - Comprehensive Genetic Carrier Screening | $99</title>
+    <title>LuckyGeneMDx - Comprehensive Genetic Carrier Screening | $99</title>
     
     <!-- Preload critical assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -206,7 +206,7 @@ setSecurityHeaders();
                 </div>
                 
                 <p style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.8;">
-                    <em>Disclaimer: LuckyGeneMdx is not affiliated with ACMG or CDC. 
+                    <em>Disclaimer: LuckyGeneMDx is not affiliated with ACMG or CDC. 
                     Our testing aligns with standards established by these organizations.</em>
                 </p>
             </div>
@@ -342,58 +342,13 @@ setSecurityHeaders();
     </main>
     
     <!-- Footer -->
-    <footer style="background: var(--color-primary-deep-blue); color: var(--color-white); padding: 3rem 0 1rem;">
-        <div class="container">
-            <div class="row">
-                <div class="col col-4">
-                    <h4 style="color: var(--color-white);">LuckyGeneMdx</h4>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">
-                        Empowering families through genetic awareness and informed decision-making.
-                    </p>
-                </div>
-                <div class="col col-4">
-                    <h4 style="color: var(--color-white);">Quick Links</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 0.5rem;"><a href="about-genetic-screening.php" style="color: var(--color-white); opacity: 0.8;">About Screening</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="how-it-works.php" style="color: var(--color-white); opacity: 0.8;">How It Works</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="resources.php" style="color: var(--color-white); opacity: 0.8;">Resources</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="track-order.php" style="color: var(--color-white); opacity: 0.8;">Track Order</a></li>
-                    </ul>
-                </div>
-                <div class="col col-4">
-                    <h4 style="color: var(--color-white);">Contact</h4>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">
-                        Email: support@luckygenemdx.com<br>
-                        Phone: 1-800-GENE-TEST
-                    </p>
-                </div>
-            </div>
-            
-            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;">
-            
-            <div style="text-align: center; font-size: 0.85rem; opacity: 0.7;">
-                <p style="margin-bottom: 1rem;">
-                    <strong>Important Disclaimers:</strong> Screening results are not diagnostic. 
-                    This test does not replace genetic counseling or physician consultation. 
-                    Not affiliated with ACMG or CDC, aligned with their standards.
-                </p>
-                <p>
-                    <a href="privacy-policy.php" style="color: var(--color-white); margin: 0 1rem;">Privacy Policy</a>
-                    <a href="terms-of-service.php" style="color: var(--color-white); margin: 0 1rem;">Terms of Service</a>
-                </p>
-                <p style="margin-top: 1rem;">
-                    © <?php echo date('Y'); ?> LuckyGeneMdx. All rights reserved.
-                </p>
-            </div>
-        </div>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
     
-    <!-- Scripts -->
     <script src="js/main.js"></script>
     <script>
         // Generate DNA helix on page load
         document.addEventListener('DOMContentLoaded', function() {
-            LuckyGeneMdx.generateDNAHelix('dna-container');
+            LuckyGeneMDx.generateDNAHelix('dna-container');
         });
     </script>
 </body>

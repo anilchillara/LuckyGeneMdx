@@ -1,4 +1,4 @@
--- LuckyGeneMdx Test Data Cleanup Script
+-- LuckyGeneMDx Test Data Cleanup Script
 -- Version 1.0
 -- This script removes all test data while preserving the database schema and default admin account
 

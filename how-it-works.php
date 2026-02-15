@@ -13,7 +13,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo htmlspecialchars($page_description); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMdx</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMDx</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
@@ -128,6 +128,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
     </main>
 
     <?php include 'includes/footer.php'; ?>
+    
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 ✅ Test Data Generated!
-I've created a comprehensive test data SQL file for your LuckyGeneMdx database with realistic, production-ready test data.
+I've created a comprehensive test data SQL file for your LuckyGeneMDx database with realistic, production-ready test data.
 📊 What's Included:
 20 Test Users
 

@@ -1,4 +1,4 @@
-# 🧬 LuckyGeneMdx - macOS Setup Guide
+# 🧬 LuckyGeneMDx - macOS Setup Guide
 
 
 ### 1. Start Development Server
@@ -624,7 +624,7 @@ touch logs/php-errors.log
 
 ## 🎯 Ready to Code!
 
-Your Mac is now set up for LuckyGeneMdx development. You can:
+Your Mac is now set up for LuckyGeneMDx development. You can:
 
 ✅ Start/stop the dev server easily  
 ✅ Edit code in your favorite editor  

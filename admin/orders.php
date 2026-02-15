@@ -98,7 +98,7 @@ $adminName = $_SESSION['admin_username'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Management - LuckyGeneMdx Admin</title>
+    <title>Order Management - LuckyGeneMDx Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
@@ -228,7 +228,7 @@ $adminName = $_SESSION['admin_username'];
         <!-- Sidebar -->
         <aside class="admin-sidebar">
             <div class="admin-sidebar-header">
-                <h2>🧬 LuckyGeneMdx</h2>
+                <h2>🧬 LuckyGeneMDx</h2>
                 <div class="admin-sidebar-user">
                     <?php echo htmlspecialchars($adminName); ?><br>
                     <small><?php echo ucwords(str_replace('_', ' ', $_SESSION['admin_role'])); ?></small>

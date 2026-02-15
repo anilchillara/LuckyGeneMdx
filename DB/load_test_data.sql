@@ -1,8 +1,8 @@
--- LuckyGeneMdx Test Data
+-- LuckyGeneMDx Test Data
 -- Version 1.0
 -- This file populates the database with realistic test data
 
--- LuckyGeneMdx Resolved Load Script
+-- LuckyGeneMDx Resolved Load Script
 USE luckygenemdx_db;
 
 -- 1. CLEANUP: Temporarily disable checks and clear tables to reset IDs
@@ -198,16 +198,16 @@ INSERT INTO login_attempts (email, ip_address, attempted_at, success) VALUES
 INSERT INTO email_queue (recipient_email, subject, body, template, priority, status, attempts, created_at, sent_at) VALUES
 ('john.doe@email.com', 'Your Results Are Ready', 'Your carrier screening results are now available for viewing in your patient portal.', 'results_ready', 1, 'sent', 1, '2024-01-24 14:30:00', '2024-01-24 14:31:00'),
 ('sarah.johnson@email.com', 'Your Results Are Ready', 'Your carrier screening results are now available for viewing in your patient portal.', 'results_ready', 1, 'sent', 1, '2024-01-26 16:45:00', '2024-01-26 16:46:00'),
-('michael.chen@email.com', 'Your Kit Has Shipped', 'Your LuckyGeneMdx carrier screening kit has been shipped. Tracking: 1Z999AA10123456786', 'kit_shipped', 3, 'sent', 1, '2024-01-17 10:00:00', '2024-01-17 10:01:00'),
+('michael.chen@email.com', 'Your Kit Has Shipped', 'Your LuckyGeneMDx carrier screening kit has been shipped. Tracking: 1Z999AA10123456786', 'kit_shipped', 3, 'sent', 1, '2024-01-17 10:00:00', '2024-01-17 10:01:00'),
 ('emily.williams@email.com', 'Order Confirmation', 'Thank you for your order! Order number: LGM-2024-00004', 'order_confirmation', 2, 'sent', 1, '2024-02-01 14:50:00', '2024-02-01 14:51:00'),
 ('brian.hall@email.com', 'Payment Reminder', 'Your payment for order LGM-2024-00026 is pending.', 'payment_reminder', 1, 'pending', 0, '2024-02-14 15:00:00', NULL),
-('nicole.allen@email.com', 'Welcome to LuckyGeneMdx', 'Thank you for registering with LuckyGeneMdx!', 'welcome', 5, 'sent', 1, '2024-02-14 10:01:00', '2024-02-14 10:02:00');
+('nicole.allen@email.com', 'Welcome to LuckyGeneMDx', 'Thank you for registering with LuckyGeneMDx!', 'welcome', 5, 'sent', 1, '2024-02-14 10:01:00', '2024-02-14 10:02:00');
 
 -- ============================================
 -- Populate default settings used in settings.php
 -- ============================================
 INSERT IGNORE INTO site_settings (setting_key, value) VALUES
-('site_name', 'LuckyGeneMdx'),
+('site_name', 'LuckyGeneMDx'),
 ('site_url', 'https://luckygenemdx.com'),
 ('support_email', 'support@luckygenemdx.com'),
 ('support_phone', '1-800-GENE-TEST'),
@@ -220,7 +220,7 @@ INSERT IGNORE INTO site_settings (setting_key, value) VALUES
 ('smtp_username', ''),
 ('smtp_password', ''),
 ('from_email', 'noreply@luckygenemdx.com'),
-('from_name', 'LuckyGeneMdx'),
+('from_name', 'LuckyGeneMDx'),
 ('session_timeout', '30'),
 ('force_https', '1'),
 ('enable_2fa', '0');

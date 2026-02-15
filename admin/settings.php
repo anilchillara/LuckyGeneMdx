@@ -78,7 +78,7 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings - LuckyGeneMdx Admin</title>
+    <title>System Settings - LuckyGeneMDx Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
@@ -188,7 +188,7 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
     <div class="admin-wrapper">
         <aside class="admin-sidebar">
             <div class="admin-sidebar-header">
-                <h2>🧬 LuckyGeneMdx</h2>
+                <h2>🧬 LuckyGeneMDx</h2>
                 <div class="admin-sidebar-user">
                     <?php echo htmlspecialchars($adminName); ?><br>
                     <small><?php echo ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'admin')); ?></small>
@@ -236,7 +236,7 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
                         <input type="hidden" name="action" value="update_general">
                         <div class="form-group">
                             <label class="form-label">Site Name</label>
-                            <input type="text" name="settings[site_name]" class="form-input" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGeneMdx'); ?>">
+                            <input type="text" name="settings[site_name]" class="form-input" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGeneMDx'); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Site URL</label>

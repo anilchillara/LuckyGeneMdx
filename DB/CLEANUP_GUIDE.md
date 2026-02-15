@@ -1,4 +1,4 @@
-# 🧹 LuckyGeneMdx Test Data Cleanup Guide
+# 🧹 LuckyGeneMDx Test Data Cleanup Guide
 
 ## 📦 Available Cleanup Scripts
 

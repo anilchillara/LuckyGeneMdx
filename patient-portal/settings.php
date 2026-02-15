@@ -76,7 +76,7 @@ $userName = $_SESSION['user_name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Settings - LuckyGeneMdx Patient Portal</title>
+    <title>Account Settings - LuckyGeneMDx Patient Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
@@ -124,7 +124,7 @@ $userName = $_SESSION['user_name'];
         <!-- Sidebar -->
         <aside class="portal-sidebar">
             <div class="portal-sidebar-header">
-                <h2>🧬 LuckyGeneMdx</h2>
+                <h2>🧬 LuckyGeneMDx</h2>
                 <div class="portal-sidebar-user"><?php echo htmlspecialchars($userName); ?></div>
             </div>
             <nav class="portal-nav">

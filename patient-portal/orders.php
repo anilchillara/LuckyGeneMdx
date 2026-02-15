@@ -47,7 +47,7 @@ $firstName = explode(' ', $userName)[0];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders - LuckyGeneMdx Patient Portal</title>
+    <title>My Orders - LuckyGeneMDx Patient Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
@@ -132,7 +132,7 @@ $firstName = explode(' ', $userName)[0];
         <!-- Sidebar -->
         <aside class="portal-sidebar">
             <div class="portal-sidebar-header">
-                <h2>🧬 LuckyGeneMdx</h2>
+                <h2>🧬 LuckyGeneMDx</h2>
                 <div class="portal-sidebar-user">
                     <?php echo htmlspecialchars($firstName); ?><br>
                     <small><?php echo htmlspecialchars($user['email']); ?></small>

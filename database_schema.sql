@@ -1,4 +1,4 @@
--- LuckyGeneMdx Database Schema
+-- LuckyGeneMDx Database Schema
 -- Version 1.0
 
 CREATE DATABASE IF NOT EXISTS luckygenemdx_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

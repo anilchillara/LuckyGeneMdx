@@ -74,7 +74,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo htmlspecialchars($page_description); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMdx</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMDx</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -253,7 +253,7 @@ try {
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h4>LuckyGeneMdx</h4>
+                    <h4>LuckyGeneMDx</h4>
                     <p>Empowering families with genetic awareness for a healthier future.</p>
                 </div>
                 <div class="footer-col">
@@ -281,7 +281,7 @@ try {
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> LuckyGeneMdx. All rights reserved.</p>
+                <p>&copy; <?php echo date('Y'); ?> LuckyGeneMDx. All rights reserved.</p>
                 <p class="disclaimer">Carrier screening is not diagnostic. Consult with healthcare professionals for medical advice.</p>
             </div>
         </div>

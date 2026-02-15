@@ -1,6 +1,6 @@
 <?php
 /**
- * LuckyGeneMdx Configuration File
+ * LuckyGeneMDx Configuration File
  * Updated to use Environment Variables
  */
 
@@ -12,7 +12,7 @@ if (!defined('luckygenemdx')) {
 // Environment Configuration
 define('ENVIRONMENT', getenv('ENVIRONMENT') ?: 'production');
 define('SITE_URL', getenv('SITE_URL') ?: 'https://luckygenemdx.com');
-define('SITE_NAME', getenv('SITE_NAME') ?: 'LuckyGeneMdx');
+define('SITE_NAME', getenv('SITE_NAME') ?: 'LuckyGeneMDx');
 
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');

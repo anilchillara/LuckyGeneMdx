@@ -1,4 +1,4 @@
--- LuckyGeneMdx Selective Test Data Cleanup Script
+-- LuckyGeneMDx Selective Test Data Cleanup Script
 -- Version 1.0
 -- This script allows you to selectively clean specific data types
 

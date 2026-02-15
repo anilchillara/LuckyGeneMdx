@@ -1,8 +1,8 @@
 <!-- Navigation -->
 <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="navbar-container">
-        <a href="index.php" class="navbar-logo" aria-label="LuckyGeneMdx Home">
-            🧬 LuckyGeneMdx
+        <a href="index.php" class="navbar-logo" aria-label="LuckyGeneMDx Home">
+            🧬 LuckyGeneMDx
         </a>
         
         <button class="navbar-toggle" aria-label="Toggle navigation menu">☰</button>
