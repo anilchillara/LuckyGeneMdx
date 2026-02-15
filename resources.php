@@ -96,26 +96,34 @@ $resources = [
             </div>
         </section>
 
-        <section class="section">
+        
+        <section class="section marquee-3d-section">
             <div class="container">
-                <h2 class="text-center" style="margin-bottom: 2rem;">Clinical Knowledge Base</h2>
-                <div class="marquee-wrapper">
-                    <div class="marquee-container">
+                <div class="text-center mb-4"> <h2 class="section-title">Clinical Knowledge Base</h2>
+                    <p class="section-subtitle">Global genomic databases and clinical reference standards</p>
+                </div>
+
+                <div class="stage-3d">
+                    <div class="ring-container">
                         <?php 
-                        $loop_resources = array_merge($resources, $resources);
-                        foreach ($loop_resources as $res): 
+                        // Ensure $resources is defined in your PHP logic before this block
+                        $count = count($resources);
+                        foreach ($resources as $index => $res): 
+                            $rotation = $index * (360 / $count);
                         ?>
-                        <a href="<?php echo $res['url']; ?>" target="_blank" class="resource-card">
-                            <div class="glass-card" style="padding: 2rem; height: 100%;">
-                                <div style="font-size: 1.5rem; margin-bottom: 1rem;">🌐</div>
-                                <h4 style="margin-bottom: 0.2rem;"><?php echo $res['name']; ?></h4>
-                                <p style="font-size: 0.7rem; font-weight: bold; color: var(--color-medical-teal); text-transform: uppercase; margin-bottom: 1rem;"><?php echo $res['domain']; ?></p>
-                                <p style="font-size: 0.85rem; color: var(--color-dark-gray); line-height: 1.4;">
-                                    <?php echo $res['longDesc']; ?>
-                                </p>
-                                <div style="margin-top: 1.5rem; font-size: 0.75rem; font-weight: bold; color: var(--color-primary-deep-blue);">EXPLORE PORTAL →</div>
-                            </div>
-                        </a>
+                        <div class="ring-item" style="--rotation: <?php echo $rotation; ?>deg; position: absolute; width: 300px; left: 0; top: 30%; transform: rotateY(var(--rotation)) translateZ(500px);">
+                            <a href="<?php echo htmlspecialchars($res['url']); ?>" target="_blank" style="text-decoration: none; color: inherit;">
+                                <div class="resource-glass-card">
+                                    <div class="card-badge"><?php echo htmlspecialchars($res['domain']); ?></div>
+                                    <div class="card-icon" style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌐</div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($res['name']); ?></h4>
+                                    <p class="resource-desc" style="font-size: 0.85rem; color: var(--color-dark-gray); line-height: 1.4; margin-bottom: 1rem;">
+                                        <?php echo htmlspecialchars($res['longDesc']); ?>
+                                    </p>
+                                    <span class="explore-btn" style="color: var(--color-medical-teal); font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">visit site →</span>
+                                </div>
+                            </a>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>

@@ -252,50 +252,54 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <section class="section" style="background: var(--color-light-gray);" aria-labelledby="testimonials-heading">
+        <section class="section marquee-3d-section" style="background: var(--color-light-gray); overflow: hidden;">
             <div class="container">
                 <h2 id="testimonials-heading" class="text-center mb-5">
                     Trusted by Families Nationwide
                 </h2>
                 
-                <div class="testimonials-carousel" style="max-width: 800px; margin: 0 auto; position: relative;">
+                <div class="stage-3d" style="perspective: 3000px; height: 550px; width: 100%; display: flex; align-items: center; justify-content: center; position: relative;">
                     <?php
                     try {
                         $db = Database::getInstance()->getConnection();
-                        
-                        // Select active testimonials based on display_order
                         $stmt = $db->prepare("SELECT name, age, location, quote FROM testimonials WHERE is_active = 1 ORDER BY display_order ASC, created_at DESC");
                         $stmt->execute();
                         $testimonials = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         if (!empty($testimonials)):
-                            foreach ($testimonials as $testimonial):
+                            $count = count($testimonials);
                     ?>
-                                <div class="testimonial-item glass-card" style="text-align: center; padding: 3rem;">
-                                    <p style="font-size: 1.25rem; font-style: italic; margin-bottom: 2rem; line-height: 1.8;">
-                                        "<?php echo htmlspecialchars($testimonial['quote']); ?>"
-                                    </p>
-                                    <p style="font-weight: 600; color: var(--color-medical-teal); margin-bottom: 0.5rem;">
-                                        <?php echo htmlspecialchars($testimonial['name']); ?><?php echo !empty($testimonial['age']) ? ', ' . (int)$testimonial['age'] : ''; ?>
-                                    </p>
-                                    <?php if (!empty($testimonial['location'])): ?>
-                                        <p style="font-size: 0.9rem; color: var(--color-dark-gray);">
-                                            <?php echo htmlspecialchars($testimonial['location']); ?>
+                        <div class="ring-container testimonials-ring" style="transform-style: preserve-3d; animation: rotate-ring 80s linear infinite; width: 350px; position: absolute;">
+                            <?php 
+                            foreach ($testimonials as $index => $testimonial): 
+                                // Calculate rotation based on total count
+                                $rotation = $index * (360 / $count);
+                            ?>
+                                <div class="ring-item" style="position: absolute; width: 350px; left: 0; top: 20%; transform: rotateY(<?php echo $rotation; ?>deg) translateZ(600px); backface-visibility: hidden;">
+                                    <div class="testimonial-item glass-card" style="text-align: center; padding: 2.5rem; background: rgba(255, 255, 255, 0.9); border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5);">
+                                        <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; line-height: 1.6; color: var(--color-primary-deep-blue);">
+                                            "<?php echo htmlspecialchars($testimonial['quote']); ?>"
                                         </p>
-                                    <?php endif; ?>
+                                        <p style="font-weight: 600; color: var(--color-medical-teal); margin-bottom: 0.25rem;">
+                                            <?php echo htmlspecialchars($testimonial['name']); ?><?php echo !empty($testimonial['age']) ? ', ' . (int)$testimonial['age'] : ''; ?>
+                                        </p>
+                                        <?php if (!empty($testimonial['location'])): ?>
+                                            <p style="font-size: 0.85rem; color: var(--color-dark-gray);">
+                                                <?php echo htmlspecialchars($testimonial['location']); ?>
+                                            </p>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
+                            <?php endforeach; ?>
+                        </div>
                     <?php 
-                            endforeach;
                         else:
-                            echo '<p class="text-center">Start your journey toward genetic awareness today.</p>';
+                            echo '<p class="text-center">Join hundreds of families securing their future today.</p>';
                         endif;
                     } catch (Exception $e) {
                         error_log("Database error in index.php: " . $e->getMessage());
                     }
                     ?>
-                    
-                    <button class="carousel-prev" style="position: absolute; left: -50px; top: 50%; transform: translateY(-50%); background: var(--color-white); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: var(--shadow-md);" aria-label="Previous testimonial">‹</button>
-                    <button class="carousel-next" style="position: absolute; right: -50px; top: 50%; transform: translateY(-50%); background: var(--color-white); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: var(--shadow-md);" aria-label="Next testimonial">›</button>
                 </div>
             </div>
         </section>

@@ -791,3 +791,119 @@ p {
 #main-content {
     padding-top: 80px; /* Adjust this value to match your header height exactly */
 }
+
+
+/* Animated marquee for testrimonials section */
+
+.ring-container:hover {
+    animation-play-state: paused;
+}
+
+/* Individual Card Position */
+.ring-item {
+    position: absolute;
+    width: 300px;
+    left: 0;
+    top: 50%;
+    transform: rotateY(var(--rotation)) translateZ(500px); /* 500px is the radius of the circle */
+}
+
+@keyframes rotate-ring {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+.resource-glass-card:hover {
+    border-color: var(--color-medical-teal);
+    transform: scale(1.05);
+}
+
+.card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.resource-glass-card h4 {
+    color: var(--color-primary-deep-blue);
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+}
+
+.resource-desc {
+    font-size: 0.85rem;
+    color: var(--color-dark-gray);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    /* Limit lines for uniformity */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.explore-btn {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-medical-teal);
+    text-decoration: underline;
+}
+
+/* Mobile Compatibility - Flattens the ring so it stays usable */
+@media (max-width: 768px) {
+    .ring-item {
+        transform: rotateY(var(--rotation)) translateZ(300px); /* Smaller radius for mobile */
+    }
+}
+
+/* Targeted spacing adjustments */
+.marquee-3d-section { 
+    padding-top: 2rem !important;   /* Significantly reduced top space */
+    padding-bottom: 8rem !important; /* Added extra space at the bottom */
+    overflow: hidden; 
+    background: #fff; 
+}
+
+.stage-3d { 
+    perspective: 2000px; 
+    height: 450px; /* Reduced height to pull content up */
+    width: 100%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    position: relative;
+    margin-top: -2rem; /* Pulls the ring closer to the heading */
+}
+
+.ring-container { 
+    width: 300px; 
+    height: 100%; 
+    position: absolute; 
+    transform-style: preserve-3d; 
+    animation: rotate-ring 60s linear infinite; 
+}
+
+/* Professional Glass Card Styling */
+.resource-glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 179, 164, 0.2);
+    border-radius: 24px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    backface-visibility: hidden;
+}
+
+.card-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--color-medical-teal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(0, 179, 164, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
