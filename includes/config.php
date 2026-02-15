@@ -1,7 +1,7 @@
 <?php
 /**
  * LuckyGeneMdx Configuration File
- * Contains database, security, and application settings
+ * Updated to use Environment Variables
  */
 
 // Prevent direct access
@@ -10,46 +10,46 @@ if (!defined('luckygenemdx')) {
 }
 
 // Environment Configuration
-define('ENVIRONMENT', 'development'); // Change to 'production' when live
-define('SITE_URL', 'https://luckygenemdx.com');
-define('SITE_NAME', 'LuckyGeneMdx');
+define('ENVIRONMENT', getenv('ENVIRONMENT') ?: 'production');
+define('SITE_URL', getenv('SITE_URL') ?: 'https://luckygenemdx.com');
+define('SITE_NAME', getenv('SITE_NAME') ?: 'LuckyGeneMdx');
 
 // Database Configuration
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'luckygenemdx_db');
-define('DB_USER', 'luckygenemdx');
-define('DB_PASS', 'luckygenemdx');
-define('DB_CHARSET', 'utf8mb4');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'luckygenemdx_db');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
 
 // Security Settings
-define('SESSION_TIMEOUT', 1800); // 30 minutes
+define('SESSION_TIMEOUT', 1800); 
 define('MAX_LOGIN_ATTEMPTS', 5);
-define('LOCKOUT_TIME', 900); // 15 minutes
+define('LOCKOUT_TIME', 900); 
 define('PASSWORD_MIN_LENGTH', 8);
 
 // File Upload Settings
-define('UPLOAD_MAX_SIZE', 5242880); // 5MB in bytes
+define('UPLOAD_MAX_SIZE', 5242880); 
 define('ALLOWED_FILE_TYPES', ['pdf']);
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 
 // Encryption Settings
 define('ENCRYPTION_METHOD', 'AES-256-CBC');
-define('ENCRYPTION_KEY', 'your_32_character_encryption_key_here_changeme!'); // CHANGE THIS
+define('ENCRYPTION_KEY', getenv('ENCRYPTION_KEY')); 
 
 // Email Configuration
-define('SMTP_HOST', 'smtp.example.com');
-define('SMTP_PORT', 587);
-define('SMTP_USER', 'noreply@luckygenemdx.com');
-define('SMTP_PASS', 'luckygenemdx');
-define('EMAIL_FROM', 'support@luckygenemdx.com');
-define('EMAIL_FROM_NAME', 'LuckyGeneMdx Support');
+define('SMTP_HOST', getenv('SMTP_HOST'));
+define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
+define('SMTP_USER', getenv('SMTP_USER'));
+define('SMTP_PASS', getenv('SMTP_PASS'));
+define('EMAIL_FROM', getenv('EMAIL_FROM'));
+define('EMAIL_FROM_NAME', getenv('EMAIL_FROM_NAME'));
 
 // Application Settings
 define('KIT_PRICE', 99.00);
 define('CURRENCY', 'USD');
 define('RESULTS_PROCESSING_DAYS', '14-21');
 
-// Error Reporting
+// Error Reporting logic
 if (ENVIRONMENT === 'development') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -73,7 +73,7 @@ function setSecurityHeaders() {
     }
 }
 
-// CSRF Token Generation
+// CSRF Functions
 function generateCSRFToken() {
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -81,7 +81,6 @@ function generateCSRFToken() {
     return $_SESSION['csrf_token'];
 }
 
-// CSRF Token Validation
 function validateCSRFToken($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
