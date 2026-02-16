@@ -789,7 +789,7 @@ p {
 
 
 #main-content {
-    padding-top: 80px; /* Adjust this value to match your header height exactly */
+    padding-top: 0px; /* Adjust this value to match your header height exactly */
 }
 
 

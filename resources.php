@@ -20,7 +20,7 @@ $resources = [
         "url" => "https://clinicaltrials.gov",
         "domain" => "clinicaltrials.gov",
         "longDesc" => "A centralized registry and results database of publicly and privately funded clinical studies conducted around the world, managed by the U.S. National Library of Medicine to provide transparency in medical research.",
-        "color" => "#0A1F44" // Deep Blue
+        "color" => "#07327b" // Deep Blue
     ],
     [
         "name" => "GARD (NIH)",
@@ -41,7 +41,7 @@ $resources = [
         "url" => "https://globalgenes.org",
         "domain" => "globalgenes.org",
         "longDesc" => "A leading international non-profit that builds and unites the rare disease community by equipping patient advocates with tools, training, and resources to accelerate research and widen the drug development pipeline.",
-        "color" => "#0A1F44" // Deep Blue
+        "color" => "#07327b" // Deep Blue
     ],
     [
         "name" => "RDCRN",
