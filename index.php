@@ -1,7 +1,7 @@
 <?php
 define('luckygenemdx', true);
 require_once 'includes/config.php';
-require_once 'includes/Database.php'; // Required for dynamic testimonials
+require_once 'includes/Database.php';
 session_start();
 setSecurityHeaders();
 ?>
@@ -16,12 +16,137 @@ setSecurityHeaders();
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="css/main.css">
-    
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <style>
+        /* Simple Testimonials Carousel Styles */
+        .testimonials-simple-wrapper {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .testimonials-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 30px;
+        }
+        
+        .testimonial-slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .testimonial-card-centered {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .testimonial-quote-centered {
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.8;
+            color: #1a237e;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .testimonial-quote-centered::before {
+            content: '"';
+            font-size: 4rem;
+            color: #00B3A4;
+            opacity: 0.2;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .testimonial-author-centered {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00B3A4;
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-location-centered {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .carousel-nav-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .carousel-nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #00B3A4;
+            color: #00B3A4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .carousel-nav-btn:hover:not(:disabled) {
+            background: #00B3A4;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .carousel-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .carousel-indicator-dots {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .carousel-indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d4d4d4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator-dot.active {
+            background: #00B3A4;
+            width: 35px;
+            border-radius: 6px;
+        }
+        
+        @media (max-width: 768px) {
+            .testimonial-card-centered {
+                padding: 30px 20px;
+            }
+            .testimonial-quote-centered {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -29,6 +154,7 @@ setSecurityHeaders();
     <?php include 'includes/header.php'; ?>
     
     <main id="main-content">
+        <!-- Hero Section -->
         <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-background">
                 <div class="particles" aria-hidden="true"></div>
@@ -68,6 +194,7 @@ setSecurityHeaders();
             </div>
         </section>
         
+        <!-- What is Genetic Carrier Screening Section -->
         <section class="section" aria-labelledby="awareness-heading">
             <div class="container">
                 <div class="row">
@@ -164,6 +291,7 @@ setSecurityHeaders();
             </div>
         </section>
         
+        <!-- Medical Standards Section -->
         <section class="section" style="background: var(--gradient-hero); color: var(--color-white); text-align: center;">
             <div class="container">
                 <h2 style="color: var(--color-white);">Aligned with Medical Genetics Standards</h2>
@@ -200,6 +328,7 @@ setSecurityHeaders();
             </div>
         </section>
         
+        <!-- ORIGINAL "Plan Today. Protect Tomorrow" Timeline Section - UNCHANGED -->
         <section class="section timeline" aria-labelledby="timeline-heading">
             <div class="container">
                 <h2 id="timeline-heading" class="text-center mb-5">
@@ -219,6 +348,15 @@ setSecurityHeaders();
                         <p>
                             Learn your genetic status early in your relationship to make informed 
                             decisions together about your future family.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-icon">💑</div>
+                        <h4>Before Trying to Conceive</h4>
+                        <p>
+                            Get screened before pregnancy begins. This gives you maximum time to consult 
+                            with genetic counselors and understand your options.
                         </p>
                     </div>
                     
@@ -252,59 +390,75 @@ setSecurityHeaders();
             </div>
         </section>
         
+        <!-- FIXED Testimonials Section -->
         <section class="section marquee-3d-section" style="background: #f8f9fa; padding: 80px 0; overflow: hidden;">
             <div class="container">
                 <h2 id="testimonials-heading" class="text-center mb-5">
                     Trusted by Families Nationwide
                 </h2>
                 
-                <div class="stage-3d">
-                    <?php
-                    try {
-                        $db = Database::getInstance()->getConnection();
-                        $stmt = $db->prepare("SELECT name, age, location, quote FROM testimonials WHERE is_active = 1 ORDER BY display_order ASC, created_at DESC");
-                        $stmt->execute();
-                        $testimonials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                <?php
+                try {
+                    $db = Database::getInstance()->getConnection();
+                    $stmt = $db->prepare("
+                        SELECT name, age, location, quote 
+                        FROM testimonials 
+                        WHERE is_active = 1 
+                        ORDER BY display_order ASC, created_at DESC
+                    ");
+                    $stmt->execute();
+                    $testimonials = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        if (!empty($testimonials)):
-                            $count = count($testimonials);
-                            // Radius of the circle - increase this if you have many testimonials
-                            $radius = 500; 
-                    ?>
-                        <div class="ring-container testimonials-ring">
-                            <?php 
-                            foreach ($testimonials as $index => $testimonial): 
-                                $rotation = $index * (360 / $count);
-                            ?>
-                                <div class="ring-item" style="position: absolute; width: 350px; transform: rotateY(<?php echo $rotation; ?>deg) translateZ(<?php echo $radius; ?>px); backface-visibility: hidden;">
-                                    <div class="testimonial-item glass-card">
-                                        <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; line-height: 1.6; color: #1a237e;">
-                                            "<?php echo htmlspecialchars($testimonial['quote']); ?>"
-                                        </p>
-                                        <p style="font-weight: 600; color: #008080; margin-bottom: 0.25rem;">
+                    if (!empty($testimonials)):
+                ?>
+                    <div class="testimonials-simple-wrapper">
+                        <div class="testimonials-track" id="testimonialsTrack">
+                            <?php foreach ($testimonials as $testimonial): ?>
+                                <div class="testimonial-slide">
+                                    <div class="testimonial-card-centered">
+                                        <div class="testimonial-quote-centered">
+                                            <?php echo htmlspecialchars($testimonial['quote']); ?>
+                                        </div>
+                                        <div class="testimonial-author-centered">
                                             <?php echo htmlspecialchars($testimonial['name']); ?><?php echo !empty($testimonial['age']) ? ', ' . (int)$testimonial['age'] : ''; ?>
-                                        </p>
+                                        </div>
                                         <?php if (!empty($testimonial['location'])): ?>
-                                            <p style="font-size: 0.85rem; color: #6c757d;">
+                                            <div class="testimonial-location-centered">
                                                 <?php echo htmlspecialchars($testimonial['location']); ?>
-                                            </p>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                    <?php 
-                        else:
-                            echo '<p class="text-center">Join hundreds of families securing their future today.</p>';
-                        endif;
-                    } catch (Exception $e) {
-                        error_log("Database error: " . $e->getMessage());
-                    }
-                    ?>
-                </div>
+                        
+                        <?php if (count($testimonials) > 1): ?>
+                        <div class="carousel-nav-controls">
+                            <button class="carousel-nav-btn" id="prevBtn" onclick="changeTestimonial(-1)">‹</button>
+                            <div class="carousel-indicator-dots" id="indicatorDots">
+                                <?php for ($i = 0; $i < count($testimonials); $i++): ?>
+                                    <div class="carousel-indicator-dot <?php echo $i === 0 ? 'active' : ''; ?>" onclick="goToTestimonial(<?php echo $i; ?>)"></div>
+                                <?php endfor; ?>
+                            </div>
+                            <button class="carousel-nav-btn" id="nextBtn" onclick="changeTestimonial(1)">›</button>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px; color: #6c757d; font-size: 0.9rem;">
+                            <span id="testimonialCounter">1 / <?php echo count($testimonials); ?></span>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                <?php 
+                    else:
+                        echo '<p class="text-center">Join hundreds of families securing their future today.</p>';
+                    endif;
+                } catch (Exception $e) {
+                    error_log("Database error: " . $e->getMessage());
+                }
+                ?>
             </div>
         </section>
         
+        <!-- Conversion Section -->
         <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
                 <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 900px; margin: 0 auto;">
@@ -327,7 +481,7 @@ setSecurityHeaders();
                     </div>
 
                     <div style="margin-bottom: 2rem;">
-                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse " >
+                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
                             Get Your Screening Kit
                         </a>
                     </div>
@@ -354,7 +508,93 @@ setSecurityHeaders();
     <script>
         // Generate DNA helix on page load
         document.addEventListener('DOMContentLoaded', function() {
-            LuckyGeneMDx.generateDNAHelix('dna-container');
+            if (typeof LuckyGeneMDx !== 'undefined' && LuckyGeneMDx.generateDNAHelix) {
+                try {
+                    LuckyGeneMDx.generateDNAHelix('dna-container');
+                } catch (e) {
+                    console.log('DNA animation not available');
+                }
+            }
+            initTestimonialsCarousel();
+        });
+        
+        // Simple Testimonials Carousel
+        let currentTestimonial = 0;
+        let totalTestimonials = 0;
+        let autoPlayTimer = null;
+        
+        function initTestimonialsCarousel() {
+            const track = document.getElementById('testimonialsTrack');
+            if (!track) return;
+            
+            const slides = track.querySelectorAll('.testimonial-slide');
+            totalTestimonials = slides.length;
+            
+            if (totalTestimonials <= 1) return;
+            
+            updateTestimonialDisplay();
+            startAutoPlay();
+            
+            // Pause on hover
+            track.addEventListener('mouseenter', stopAutoPlay);
+            track.addEventListener('mouseleave', startAutoPlay);
+        }
+        
+        function changeTestimonial(direction) {
+            currentTestimonial += direction;
+            
+            if (currentTestimonial < 0) {
+                currentTestimonial = totalTestimonials - 1;
+            } else if (currentTestimonial >= totalTestimonials) {
+                currentTestimonial = 0;
+            }
+            
+            updateTestimonialDisplay();
+        }
+        
+        function goToTestimonial(index) {
+            currentTestimonial = index;
+            updateTestimonialDisplay();
+        }
+        
+        function updateTestimonialDisplay() {
+            const track = document.getElementById('testimonialsTrack');
+            const dots = document.querySelectorAll('.carousel-indicator-dot');
+            const counter = document.getElementById('testimonialCounter');
+            
+            if (!track) return;
+            
+            track.style.transform = `translateX(-${currentTestimonial * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentTestimonial);
+            });
+            
+            if (counter) {
+                counter.textContent = `${currentTestimonial + 1} / ${totalTestimonials}`;
+            }
+        }
+        
+        function startAutoPlay() {
+            stopAutoPlay();
+            if (totalTestimonials > 1) {
+                autoPlayTimer = setInterval(() => {
+                    changeTestimonial(1);
+                }, 6000);
+            }
+        }
+        
+        function stopAutoPlay() {
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeTestimonial(-1);
+            if (e.key === 'ArrowRight') changeTestimonial(1);
         });
     </script>
 </body>
