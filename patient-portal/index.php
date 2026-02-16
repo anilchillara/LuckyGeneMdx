@@ -85,8 +85,17 @@ $firstName = explode(' ', $userName)[0];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - LuckyGeneMDx Patient Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
     <style>
+
+        /* PATIENET PORTAL SPECIFIC STYLES  */
+        .welcome-banner {
+            background: var(--gradient-hero);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
         .portal-wrapper { display: flex; min-height: 100vh; }
         .portal-sidebar {
             width: 260px;

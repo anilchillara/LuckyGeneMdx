@@ -844,12 +844,3 @@ p {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     border: 1px solid rgba(255,255,255,0.3);
 }
-
-/* PATIENET PORTAL SPECIFIC STYLES  */
-.welcome-banner {
-    background: var(--gradient-hero);
-    color: white;
-    padding: 3rem 2rem;
-    border-radius: var(--radius-lg);
-    margin-bottom: 2rem;
-}

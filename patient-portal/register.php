@@ -151,6 +151,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
+        /* PATIENET PORTAL SPECIFIC STYLES  */
+        .welcome-banner {
+            background: var(--gradient-hero);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
         .register-container {
             min-height: 100vh;
             display: flex;
