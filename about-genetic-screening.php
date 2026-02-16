@@ -90,7 +90,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         <!-- Carrier status is a fundamental concept in genetics, and understanding it is crucial for anyone considering family planning. By identifying carrier status, individuals can gain insights into their genetic risks and make informed decisions about their reproductive health. In the next sections, we will explore why carrier screening is important, what conditions are commonly screened for, and who should consider getting screened. -->
         <section class="section">
             <div class="container">
-                <div class="row" style="align-items: center;">
+                <div class="row" >
                     <div class="col col-2">
                         <div style="display: inline-block; background: var(--color-medical-teal); color: white; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-bottom: 1rem;">GENETIC BLUEPRINT</div>
                         <h2>Hidden in our Genetic Code</h2>
@@ -315,9 +315,11 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                     </div>
                 </div>
 
-                <div class="glass-card" style="background: rgba(255, 152, 0, 0.1); border-left: 4px solid #FF9800; padding: 2rem; margin-top: 3rem;">
-                    <p style="margin: 0; font-size: 0.95rem;">
-                        <strong>Important Note:</strong> LuckyGeneMdx provides genetic carrier screening services 
+                <div class="glass-card" style="background: rgba(0, 179, 164, 0.1); border-left: 4px solid var(--color-medical-teal); padding: 1.5rem; margin: 2rem 0;">
+                    
+                <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Important Note</h4>
+                    <p style="margin: 0; ">
+                        <strong></strong> LuckyGeneMdx provides genetic carrier screening services 
                         aligned with professional standards. We are not affiliated with, endorsed by, or officially 
                         connected to ACMG, ACOG, CDC, or other medical organizations mentioned. Carrier screening 
                         is not a diagnostic test and should not replace consultation with qualified healthcare providers.

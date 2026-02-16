@@ -97,30 +97,42 @@ $resources = [
         </section>
 
         
-        <section class="section marquee-3d-section">
+        <section class="section marquee-3d-section preview-mode">
             <div class="container">
-                <div class="text-center mb-4"> <h2 class="section-title">Clinical Knowledge Base</h2>
+                <div class="text-center mb-4"> 
+                    <h2 class="section-title">Clinical Knowledge Base</h2>
                     <p class="section-subtitle">Global genomic databases and clinical reference standards</p>
                 </div>
 
                 <div class="stage-3d">
                     <div class="ring-container">
                         <?php 
-                        // Ensure $resources is defined in your PHP logic before this block
                         $count = count($resources);
                         foreach ($resources as $index => $res): 
                             $rotation = $index * (360 / $count);
+                            // Use a screenshot service or local assets
+                            $screenshotUrl = "https://s.wordpress.com/mshots/v1/" . urlencode($res['url']) . "?w=600";
                         ?>
-                        <div class="ring-item" style="--rotation: <?php echo $rotation; ?>deg; position: absolute; width: 300px; left: 0; top: 30%; transform: rotateY(var(--rotation)) translateZ(500px);">
-                            <a href="<?php echo htmlspecialchars($res['url']); ?>" target="_blank" style="text-decoration: none; color: inherit;">
-                                <div class="resource-glass-card">
-                                    <div class="card-badge"><?php echo htmlspecialchars($res['domain']); ?></div>
-                                    <div class="card-icon" style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌐</div>
-                                    <h4 style="margin-bottom: 0.5rem; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($res['name']); ?></h4>
-                                    <p class="resource-desc" style="font-size: 0.85rem; color: var(--color-dark-gray); line-height: 1.4; margin-bottom: 1rem;">
-                                        <?php echo htmlspecialchars($res['longDesc']); ?>
-                                    </p>
-                                    <span class="explore-btn" style="color: var(--color-medical-teal); font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">visit site →</span>
+                        <div class="ring-item" style="--rotation: <?php echo $rotation; ?>deg;">
+                            <a href="<?php echo htmlspecialchars($res['url']); ?>" target="_blank" class="preview-card-link">
+                                <div class="browser-glass-card">
+                                    <div class="browser-header">
+                                        <div class="dots"><span></span><span></span><span></span></div>
+                                        <div class="address-bar"><?php echo parse_url($res['url'], PHP_URL_HOST); ?></div>
+                                    </div>
+                                    
+                                    <div class="website-preview">
+                                        <img src="<?php echo $screenshotUrl; ?>" alt="<?php echo htmlspecialchars($res['name']); ?> Preview" loading="lazy">
+                                        <div class="preview-overlay">
+                                            <span class="view-text">Visit Portal →</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-details">
+                                        <div class="card-badge"><?php echo htmlspecialchars($res['domain']); ?></div>
+                                        <h4><?php echo htmlspecialchars($res['name']); ?></h4>
+                                        <p class="resource-desc"><?php echo htmlspecialchars($res['longDesc']); ?></p>
+                                    </div>
                                 </div>
                             </a>
                         </div>
