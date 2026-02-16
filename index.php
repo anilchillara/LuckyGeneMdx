@@ -252,13 +252,13 @@ setSecurityHeaders();
             </div>
         </section>
         
-        <section class="section marquee-3d-section" style="background: var(--color-light-gray); overflow: hidden;">
+        <section class="section marquee-3d-section" style="background: #f8f9fa; padding: 80px 0; overflow: hidden;">
             <div class="container">
                 <h2 id="testimonials-heading" class="text-center mb-5">
                     Trusted by Families Nationwide
                 </h2>
                 
-                <div class="stage-3d" style="perspective: 3000px; height: 550px; width: 100%; display: flex; align-items: center; justify-content: center; position: relative;">
+                <div class="stage-3d">
                     <?php
                     try {
                         $db = Database::getInstance()->getConnection();
@@ -268,23 +268,24 @@ setSecurityHeaders();
 
                         if (!empty($testimonials)):
                             $count = count($testimonials);
+                            // Radius of the circle - increase this if you have many testimonials
+                            $radius = 600; 
                     ?>
-                        <div class="ring-container testimonials-ring" style="transform-style: preserve-3d; animation: rotate-ring 80s linear infinite; width: 350px; position: absolute;">
+                        <div class="ring-container testimonials-ring">
                             <?php 
                             foreach ($testimonials as $index => $testimonial): 
-                                // Calculate rotation based on total count
                                 $rotation = $index * (360 / $count);
                             ?>
-                                <div class="ring-item" style="position: absolute; width: 350px; left: 0; top: 20%; transform: rotateY(<?php echo $rotation; ?>deg) translateZ(600px); backface-visibility: hidden;">
-                                    <div class="testimonial-item glass-card" style="text-align: center; padding: 2.5rem; background: rgba(255, 255, 255, 0.9); border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5);">
-                                        <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; line-height: 1.6; color: var(--color-primary-deep-blue);">
+                                <div class="ring-item" style="position: absolute; width: 350px; transform: rotateY(<?php echo $rotation; ?>deg) translateZ(<?php echo $radius; ?>px); backface-visibility: hidden;">
+                                    <div class="testimonial-item glass-card">
+                                        <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; line-height: 1.6; color: #1a237e;">
                                             "<?php echo htmlspecialchars($testimonial['quote']); ?>"
                                         </p>
-                                        <p style="font-weight: 600; color: var(--color-medical-teal); margin-bottom: 0.25rem;">
+                                        <p style="font-weight: 600; color: #008080; margin-bottom: 0.25rem;">
                                             <?php echo htmlspecialchars($testimonial['name']); ?><?php echo !empty($testimonial['age']) ? ', ' . (int)$testimonial['age'] : ''; ?>
                                         </p>
                                         <?php if (!empty($testimonial['location'])): ?>
-                                            <p style="font-size: 0.85rem; color: var(--color-dark-gray);">
+                                            <p style="font-size: 0.85rem; color: #6c757d;">
                                                 <?php echo htmlspecialchars($testimonial['location']); ?>
                                             </p>
                                         <?php endif; ?>
@@ -297,7 +298,7 @@ setSecurityHeaders();
                             echo '<p class="text-center">Join hundreds of families securing their future today.</p>';
                         endif;
                     } catch (Exception $e) {
-                        error_log("Database error in index.php: " . $e->getMessage());
+                        error_log("Database error: " . $e->getMessage());
                     }
                     ?>
                 </div>

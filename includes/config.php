@@ -2,34 +2,60 @@
 define('luckygenemdx', true);
 
 /**
- * .env Loader for Hostinger
+ * .env Loader for Hostinger & Local Dev
  */
 function loadEnv($path) {
     if (!file_exists($path)) return false;
 
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) continue; // Skip comments
+        $line = trim($line);
+        if (strpos($line, '#') === 0 || strpos($line, '=') === false) continue;
+
         list($name, $value) = explode('=', $line, 2);
         $name = trim($name);
-        $value = trim(trim($value), '"\''); // Remove quotes
+        $value = trim(trim($value), '"\'');
         
         putenv(sprintf('%s=%s', $name, $value));
         $_ENV[$name] = $value;
+        $_SERVER[$name] = $value; 
     }
     return true;
 }
 
-// Load the .env file from the directory above 'includes'
-loadEnv(__DIR__ . '/../.env');
+// --- Environment Selection Logic ---
+$envFile = '.env';
+$isLocal = false;
+
+if (file_exists(__DIR__ . '/../.env.local')) {
+    $envFile = '.env.local';
+    $isLocal = true;
+}
+
+loadEnv(__DIR__ . '/../' . $envFile);
+
+// Set ENVIRONMENT constant immediately to use in the logger
+define('ENVIRONMENT', getenv('ENVIRONMENT') ?: ($isLocal ? 'development' : 'production'));
+
+/**
+ * Environment Logger
+ * Prints to screen in dev, writes to file in prod.
+ */
+if (ENVIRONMENT === 'development') {
+    // Hidden in page source as a comment, but visible if you "View Source"
+    echo "\n";
+} else {
+    // Silently log to the PHP error log on the server
+    error_log("APP INFO: Environment loaded from {$envFile}");
+}
+// -----------------------------------
 
 // Prevent direct access
 if (!defined('luckygenemdx')) {
     die('Direct access not permitted');
 }
 
-// Environment Configuration
-define('ENVIRONMENT', getenv('ENVIRONMENT') ?: 'production');
+// Application Constants
 define('SITE_URL', getenv('SITE_URL') ?: 'https://luckygenemdx.com');
 define('SITE_NAME', getenv('SITE_NAME') ?: 'LuckyGeneMDx');
 
@@ -41,19 +67,19 @@ define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
 
 // Security Settings
-define('SESSION_TIMEOUT', 1800); 
+define('SESSION_TIMEOUT', 1800);
 define('MAX_LOGIN_ATTEMPTS', 5);
-define('LOCKOUT_TIME', 900); 
+define('LOCKOUT_TIME', 900);
 define('PASSWORD_MIN_LENGTH', 8);
 
 // File Upload Settings
-define('UPLOAD_MAX_SIZE', 5242880); 
+define('UPLOAD_MAX_SIZE', 5242880);
 define('ALLOWED_FILE_TYPES', ['pdf']);
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 
 // Encryption Settings
 define('ENCRYPTION_METHOD', 'AES-256-CBC');
-define('ENCRYPTION_KEY', getenv('ENCRYPTION_KEY')); 
+define('ENCRYPTION_KEY', getenv('ENCRYPTION_KEY'));
 
 // Email Configuration
 define('SMTP_HOST', getenv('SMTP_HOST'));
