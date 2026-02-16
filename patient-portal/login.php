@@ -225,8 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p style="color: var(--color-dark-gray); font-size: 0.9rem; margin-bottom: 1rem;">
                     Don't have an account yet?
                 </p>
-                <a href="../request-kit.php" class="btn btn-outline">
-                    Order Screening Kit
+                <a href="register.php" class="btn btn-outline">
+                    Register Now
                 </a>
             </div>
             
