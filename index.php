@@ -269,7 +269,7 @@ setSecurityHeaders();
                         if (!empty($testimonials)):
                             $count = count($testimonials);
                             // Radius of the circle - increase this if you have many testimonials
-                            $radius = 600; 
+                            $radius = 500; 
                     ?>
                         <div class="ring-container testimonials-ring">
                             <?php 
