@@ -114,10 +114,6 @@ $firstName = explode(' ', $userName)[0];
             background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24;
             padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;
         }
-        @media (max-width: 768px) {
-            .portal-sidebar { display: none; }
-            .portal-main { margin-left: 0; }
-        }
     </style>
 </head>
 <body>

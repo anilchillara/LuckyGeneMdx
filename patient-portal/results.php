@@ -78,10 +78,7 @@ $results = $stmt->fetchAll();
         }
         .info-label { font-size: 0.85rem; color: var(--color-dark-gray); margin-bottom: 0.25rem; }
         .info-value { font-weight: 500; color: var(--color-primary-deep-blue); }
-        @media (max-width: 768px) {
-            .portal-sidebar { display: none; }
-            .portal-main { margin-left: 0; }
-        }
+
     </style>
 </head>
 <body>

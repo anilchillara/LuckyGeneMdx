@@ -201,17 +201,25 @@ $firstName = explode(' ', $userName)[0];
             opacity: 0.3;
         }
         @media (max-width: 768px) {
-            .portal-sidebar {
-                transform: translateX(-100%);
-                transition: transform var(--transition-normal);
-            }
-            .portal-sidebar.active {
-                transform: translateX(0);
-            }
+            /* Ensure the main content is above the overlay when sidebar is closed */
             .portal-main {
-                margin-left: 0;
+                position: relative;
+                z-index: 1; 
+                margin-left: 0 !important;
+                padding-top: 80px !important; /* Prevents toggle button overlap */
+            }
+
+            /* Ensure the overlay only blocks clicks when the sidebar is actually OPEN */
+            .sidebar-overlay {
+                pointer-events: none;
+            }
+            
+            .sidebar-overlay.active {
+                pointer-events: auto;
+                z-index: 1050;
             }
         }
+        
     </style>
 </head>
 <body>
