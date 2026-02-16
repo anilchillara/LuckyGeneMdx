@@ -11,7 +11,7 @@ setSecurityHeaders();
  */
 $video_path = "assets/video/DNA_BG.mp4"; // Ensure the path matches your server structure
 $video_opacity = 0.4; // Adjust between 0.0 (hidden) and 1.0 (fully visible)
-$video_speed = 0.1;   // 1.0 is normal, 0.5 is half speed
+$video_speed = 0.4;   // 1.0 is normal, 0.5 is half speed
 ?>
 <!DOCTYPE html>
 <html lang="en">
