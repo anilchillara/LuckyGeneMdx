@@ -200,7 +200,7 @@ $video_speed = 0.4;   // 1.0 is normal, 0.5 is half speed
     <main id="main-content">
         <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-video-wrapper">
-                <video autoplay muted loop playsinline id="bg-dna-video" class="hero-video-wrapper">
+                <video autoplay muted loop playsinline id="bg-dna-video">
                     <source src="<?php echo $video_path; ?>" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
