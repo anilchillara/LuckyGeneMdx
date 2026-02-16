@@ -111,7 +111,7 @@ $allStatuses = $stmt->fetchAll();
     <!-- Navigation -->
     <?php include 'includes/header.php'; ?>
     
-    <main style="padding-top: 100px; min-height: 100vh; background: var(--color-light-gray);">
+    <main style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);">
         <div class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
             <h1 class="text-center" style="margin-bottom: 1rem;">Track Your Order</h1>
             <p class="text-center" style="max-width: 600px; margin: 0 auto 3rem; color: var(--color-dark-gray);">

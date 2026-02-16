@@ -82,7 +82,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
     <!-- Navigation -->
     <?php include 'includes/header.php'; ?>
     
-    <main style="padding-top: 100px; min-height: 100vh; background: var(--color-light-gray);">
+    <main style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);">
         <div class="container" style="max-width: 1000px; padding-top: 2rem; padding-bottom: 4rem;">
             
             <?php if ($success): ?>
