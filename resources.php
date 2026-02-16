@@ -72,46 +72,93 @@ $resources = [
             position: relative;
         }
         
+        /* ===== FIXED MARQUEE SECTION ===== */
+        .marquee-section {
+            background: #f8fafc;
+            padding: 80px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Gradient Fades for a "stunning" look */
         .marquee-section::before,
         .marquee-section::after {
             content: '';
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 150px;
+            width: 200px;
             z-index: 10;
             pointer-events: none;
         }
         
         .marquee-section::before {
             left: 0;
-            background: linear-gradient(to right, rgba(245, 247, 250, 1) 0%, rgba(245, 247, 250, 0) 100%);
+            background: linear-gradient(to right, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
         }
         
         .marquee-section::after {
             right: 0;
-            background: linear-gradient(to left, rgba(245, 247, 250, 1) 0%, rgba(245, 247, 250, 0) 100%);
+            background: linear-gradient(to left, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
         }
         
         .marquee-container {
             display: flex;
-            gap: 30px;
-            animation: scroll-infinite 4s linear infinite; /* Adjust Marquee speed control */
+            width: max-content; /* Critical: Allows the container to expand to its full content width */
+            animation: scroll-infinite 40s linear infinite; /* Slowed down to 40s for smooth movement */
             will-change: transform;
-        }
-        
-        .marquee-container:hover {
-            animation-play-state: paused;
-        }
-        
-        @keyframes scroll-infinite {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
         }
         
         .marquee-track {
             display: flex;
-            gap: 30px;
+            gap: 30px; /* Space between cards */
+            padding-right: 30px; /* Must match the gap to ensure the loop reset is invisible */
+        }
+        
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Resets perfectly onto the second track */
+        }
+        
+        .marquee-container:hover {
+            animation-play-state: paused; /* User can pause to read */
+        }
+
+        /* Card Styling */
+        .resource-card {
+            width: 380px;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #edf2f7;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .resource-card h3 {
+            color: #0A1F44;
+            margin: 0 0 15px;
+            font-size: 1.4rem;
+        }
+
+        .resource-card p {
+            color: #4A5568;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .resource-link {
+            color: #00B3A4;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         /* PREMIUM RESOURCE CARD */
