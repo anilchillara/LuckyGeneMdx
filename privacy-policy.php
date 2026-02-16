@@ -43,8 +43,6 @@ $page_title = 'Privacy Policy';
 
         .hero-badge {
             display: inline-block;
-            background: rgba(0, 179, 164, 0.5);
-            color: var(--primary-blue);
             padding: 6px 16px;
             border-radius: 50px;
             font-size: 0.85rem;
@@ -53,6 +51,7 @@ $page_title = 'Privacy Policy';
             letter-spacing: 1px;
             margin-bottom: 20px;
             border: 1px solid rgba(0, 179, 164, 0.3);
+            background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"
         }
 
         .legal-hero h1 {

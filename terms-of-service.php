@@ -46,8 +46,6 @@ $page_title = 'Terms of Service';
 
         .hero-badge {
             display: inline-block;
-            background: rgba(0, 179, 164, 0.5);
-            color: var(--primary-blue);
             padding: 6px 16px;
             border-radius: 50px;
             font-size: 0.85rem;
