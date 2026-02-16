@@ -66,7 +66,7 @@ $resources = [
     <style>
         /* PREMIUM INFINITE MARQUEE CAROUSEL */
         .marquee-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%,rgb(152, 214, 219) 100%);
             padding: 80px 0;
             overflow: hidden;
             position: relative;
@@ -96,7 +96,7 @@ $resources = [
         .marquee-container {
             display: flex;
             gap: 30px;
-            animation: scroll-infinite 40s linear infinite;
+            animation: scroll-infinite 4s linear infinite; /* Adjust Marquee speed control */
             will-change: transform;
         }
         
@@ -150,7 +150,7 @@ $resources = [
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shimmer 3s infinite;
+            animation: shimmer 1s infinite;
         }
         
         @keyframes shimmer {
@@ -276,7 +276,7 @@ $resources = [
             background: #22c55e;
             border-radius: 50%;
             display: inline-block;
-            animation: pulse 2s infinite;
+            animation: pulse 6s infinite;
         }
         
         @keyframes pulse {
