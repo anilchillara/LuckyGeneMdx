@@ -33,6 +33,8 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
             </div>
         </section>
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
         <section class="section">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 3rem;">
@@ -44,8 +46,8 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                     <div class="col col-2">
                         <div class="glass-card" style="padding: 2rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</span>
-                                <h3 style="margin: 0;">Order Your Kit</h3>
+                                <span style="background: var(--color-medical-teal); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</span>
+                                <h3 style="margin: 0;"><i class="fas fa-shopping-cart" style="color: var(--color-medical-teal); margin-right: 8px;"></i> Order Your Kit</h3>
                             </div>
                             <p>Complete our secure online form. Your kit ships within 1-2 business days.</p>
                             <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
@@ -59,8 +61,8 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                     <div class="col col-2">
                         <div class="glass-card" style="padding: 2rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</span>
-                                <h3 style="margin: 0;">Receive Your Kit</h3>
+                                <span style="background: var(--color-medical-teal); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</span>
+                                <h3 style="margin: 0;"><i class="fas fa-box-open" style="color: var(--color-medical-teal); margin-right: 8px;"></i> Receive Your Kit</h3>
                             </div>
                             <p>Everything needed for saliva collection—no needles or blood draws required.</p>
                             <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
@@ -74,20 +76,31 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 
                 <div class="row" style="margin-top: 2rem;">
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; height: 100%;">
-                            <h4 style="color: var(--color-medical-teal);">3. Collect Sample</h4>
+                        <div class="glass-card" style="padding: 1.5rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                                <span style="background: var(--color-medical-teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; flex-shrink: 0;">3</span>
+                                <h4 style="margin: 0; color: var(--color-medical-teal);"><i class="fas fa-vial"></i> Collect Sample</h4>
+                            </div>
                             <p style="font-size: 0.9rem;">Simple saliva-based collection. No fasting, just 10 minutes of your time.</p>
                         </div>
                     </div>
+                    
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; height: 100%;">
-                            <h4 style="color: var(--color-medical-teal);">4. Lab Analysis</h4>
+                        <div class="glass-card" style="padding: 1.5rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                                <span style="background: var(--color-medical-teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; flex-shrink: 0;">4</span>
+                                <h4 style="margin: 0; color: var(--color-medical-teal);"><i class="fas fa-microscope"></i> Lab Analysis</h4>
+                            </div>
                             <p style="font-size: 0.9rem;">Samples processed in CLIA-certified, CAP-accredited laboratories.</p>
                         </div>
                     </div>
+
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; height: 100%;">
-                            <h4 style="color: var(--color-medical-teal);">5. Access Results</h4>
+                        <div class="glass-card" style="padding: 1.5rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                                <span style="background: var(--color-medical-teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; flex-shrink: 0;">5</span>
+                                <h4 style="margin: 0; color: var(--color-medical-teal);"><i class="fas fa-file-medical-alt"></i> Access Results</h4>
+                            </div>
                             <p style="font-size: 0.9rem;">View your comprehensive report through our secure, encrypted portal.</p>
                         </div>
                     </div>

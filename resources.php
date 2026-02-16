@@ -8,13 +8,50 @@ $page_title = 'Clinical Resources & Genetic Library';
 $page_description = 'Explore our knowledge base on carrier status, rare diseases, and global clinical advocacy groups.';
 
 $resources = [
-    ["name" => "Orphanet", "url" => "https://www.orpha.net", "domain" => "orpha.net", "longDesc" => "The world's leading portal for rare diseases and orphan drugs providing a unique inventory of rare diseases.", "color" => "#E74C3C"],
-    ["name" => "ClinicalTrials.gov", "url" => "https://clinicaltrials.gov", "domain" => "clinicaltrials.gov", "longDesc" => "A global database of clinical studies provided by the U.S. National Library of Medicine.", "color" => "#3498DB"],
-    ["name" => "GARD (NIH)", "url" => "https://rarediseases.info.nih.gov", "domain" => "nih.gov", "longDesc" => "The Genetic and Rare Diseases Information Center providing reliable information about rare conditions.", "color" => "#2ECC71"],
-    ["name" => "NORD", "url" => "https://rarediseases.org", "domain" => "rarediseases.org", "longDesc" => "The National Organization for Rare Disorders dedicated to individuals with rare diseases.", "color" => "#9B59B6"],
-    ["name" => "Global Genes", "url" => "https://globalgenes.org", "domain" => "globalgenes.org", "longDesc" => "An international non-profit connecting and empowering the rare disease community.", "color" => "#F39C12"],
-    ["name" => "RDCRN", "url" => "https://www.rarediseasesnetwork.org", "domain" => "nih.gov", "longDesc" => "Facilitates collaboration to accelerate medical research and new treatment discoveries.", "color" => "#1ABC9C"]
+    [
+        "name" => "Orphanet",
+        "url" => "https://www.orpha.net",
+        "domain" => "orpha.net",
+        "longDesc" => "The definitive global resource for rare diseases and orphan drugs, offering a comprehensive nomenclature, an encyclopedia of conditions, and a directory of specialized care centers and diagnostic laboratories across 40 countries.",
+        "color" => "#00B3A4" // Medical Teal
+    ],
+    [
+        "name" => "ClinicalTrials.gov",
+        "url" => "https://clinicaltrials.gov",
+        "domain" => "clinicaltrials.gov",
+        "longDesc" => "A centralized registry and results database of publicly and privately funded clinical studies conducted around the world, managed by the U.S. National Library of Medicine to provide transparency in medical research.",
+        "color" => "#0A1F44" // Deep Blue
+    ],
+    [
+        "name" => "GARD (NIH)",
+        "url" => "https://rarediseases.info.nih.gov",
+        "domain" => "nih.gov",
+        "longDesc" => "The Genetic and Rare Diseases Information Center (GARD) provides the public with free, easy-to-understand information on rare and genetic conditions, translating complex scientific data into actionable resources for patients and families.",
+        "color" => "#6C63FF" // Soft Purple
+    ],
+    [
+        "name" => "NORD",
+        "url" => "https://rarediseases.org",
+        "domain" => "rarediseases.org",
+        "longDesc" => "The National Organization for Rare Disorders (NORD) is a primary advocacy organization providing patient assistance programs, education, and research grants while lobbying for legislation that benefits the 30 million Americans with rare diseases.",
+        "color" => "#00B3A4" // Medical Teal
+    ],
+    [
+        "name" => "Global Genes",
+        "url" => "https://globalgenes.org",
+        "domain" => "globalgenes.org",
+        "longDesc" => "A leading international non-profit that builds and unites the rare disease community by equipping patient advocates with tools, training, and resources to accelerate research and widen the drug development pipeline.",
+        "color" => "#0A1F44" // Deep Blue
+    ],
+    [
+        "name" => "RDCRN",
+        "url" => "https://www.rarediseasesnetwork.org",
+        "domain" => "nih.gov",
+        "longDesc" => "The Rare Diseases Clinical Research Network (RDCRN) facilitates collaborative research through a network of 20+ consortia, focusing on natural history studies, clinical trial readiness, and the training of new investigators in the field.",
+        "color" => "#6C63FF" // Soft Purple
+    ]
 ];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -130,7 +167,8 @@ $resources = [
         .card-icon {
             width: 60px;
             height: 60px;
-            background: var(--card-color);
+            /* background: var(--card-color); */
+            background: var(white);
             border-radius: 16px;
             display: flex;
             align-items: center;
