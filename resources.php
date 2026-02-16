@@ -8,12 +8,12 @@ $page_title = 'Clinical Resources & Genetic Library';
 $page_description = 'Explore our knowledge base on carrier status, rare diseases, and global clinical advocacy groups.';
 
 $resources = [
-    ["name" => "Orphanet", "url" => "https://www.orpha.net", "domain" => "orpha.net", "longDesc" => "The world's leading portal for rare diseases and orphan drugs providing a unique inventory of rare diseases."],
-    ["name" => "ClinicalTrials.gov", "url" => "https://clinicaltrials.gov", "domain" => "clinicaltrials.gov", "longDesc" => "A global database of clinical studies provided by the U.S. National Library of Medicine."],
-    ["name" => "GARD (NIH)", "url" => "https://rarediseases.info.nih.gov", "domain" => "nih.gov", "longDesc" => "The Genetic and Rare Diseases Information Center providing reliable information about rare conditions."],
-    ["name" => "NORD", "url" => "https://rarediseases.org", "domain" => "rarediseases.org", "longDesc" => "The National Organization for Rare Disorders dedicated to individuals with rare diseases."],
-    ["name" => "Global Genes", "url" => "https://globalgenes.org", "domain" => "globalgenes.org", "longDesc" => "An international non-profit connecting and empowering the rare disease community."],
-    ["name" => "RDCRN", "url" => "https://www.rarediseasesnetwork.org", "domain" => "nih.gov", "longDesc" => "Facilitates collaboration to accelerate medical research and new treatment discoveries."]
+    ["name" => "Orphanet", "url" => "https://www.orpha.net", "domain" => "orpha.net", "longDesc" => "The world's leading portal for rare diseases and orphan drugs providing a unique inventory of rare diseases.", "color" => "#E74C3C"],
+    ["name" => "ClinicalTrials.gov", "url" => "https://clinicaltrials.gov", "domain" => "clinicaltrials.gov", "longDesc" => "A global database of clinical studies provided by the U.S. National Library of Medicine.", "color" => "#3498DB"],
+    ["name" => "GARD (NIH)", "url" => "https://rarediseases.info.nih.gov", "domain" => "nih.gov", "longDesc" => "The Genetic and Rare Diseases Information Center providing reliable information about rare conditions.", "color" => "#2ECC71"],
+    ["name" => "NORD", "url" => "https://rarediseases.org", "domain" => "rarediseases.org", "longDesc" => "The National Organization for Rare Disorders dedicated to individuals with rare diseases.", "color" => "#9B59B6"],
+    ["name" => "Global Genes", "url" => "https://globalgenes.org", "domain" => "globalgenes.org", "longDesc" => "An international non-profit connecting and empowering the rare disease community.", "color" => "#F39C12"],
+    ["name" => "RDCRN", "url" => "https://www.rarediseasesnetwork.org", "domain" => "nih.gov", "longDesc" => "Facilitates collaboration to accelerate medical research and new treatment discoveries.", "color" => "#1ABC9C"]
 ];
 ?>
 <!DOCTYPE html>
@@ -24,27 +24,252 @@ $resources = [
     <title><?php echo $page_title; ?> | LuckyGeneMDx</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="css/main.css">
     
     <style>
-        .marquee-wrapper { position: relative; overflow: hidden; padding: 2rem 0; }
+        /* PREMIUM INFINITE MARQUEE CAROUSEL */
+        .marquee-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 80px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .marquee-section::before,
+        .marquee-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .marquee-section::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(245, 247, 250, 1) 0%, rgba(245, 247, 250, 0) 100%);
+        }
+        
+        .marquee-section::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(245, 247, 250, 1) 0%, rgba(245, 247, 250, 0) 100%);
+        }
+        
         .marquee-container {
             display: flex;
-            gap: 2rem;
-            width: max-content;
-            animation: scroll-left 50s linear infinite;
+            gap: 30px;
+            animation: scroll-infinite 40s linear infinite;
+            will-change: transform;
         }
-        .marquee-wrapper:hover .marquee-container { animation-play-state: paused; }
-        @keyframes scroll-left {
+        
+        .marquee-container:hover {
+            animation-play-state: paused;
+        }
+        
+        @keyframes scroll-infinite {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
+        
+        .marquee-track {
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* PREMIUM RESOURCE CARD */
         .resource-card {
-            width: 350px;
+            width: 420px;
             flex-shrink: 0;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             color: inherit;
+            display: block;
+            position: relative;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* COLOR ACCENT BAR */
+        .card-accent {
+            height: 6px;
+            background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-accent::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* CARD HEADER */
+        .card-header {
+            padding: 30px 30px 20px;
+            position: relative;
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--card-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-domain {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 179, 164, 0.08);
+            color: #00B3A4;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .card-domain::before {
+            content: '🌐';
+            font-size: 14px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0A1F44;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        
+        /* CARD BODY */
+        .card-body {
+            padding: 0 30px 25px;
+        }
+        
+        .card-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* CARD FOOTER */
+        .card-footer {
+            padding: 20px 30px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .visit-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover .visit-btn {
+            gap: 12px;
+            padding-right: 24px;
+        }
+        
+        .visit-btn::after {
+            content: '→';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .resource-card:hover .visit-btn::after {
+            transform: translateX(4px);
+        }
+        
+        .resource-type {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .resource-type::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* STATS BADGE */
+        .stats-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--card-color);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .resource-card {
+                width: 340px;
+            }
+            
+            .marquee-section::before,
+            .marquee-section::after {
+                width: 50px;
+            }
         }
     </style>
 </head>
@@ -52,6 +277,7 @@ $resources = [
     <?php include 'includes/header.php'; ?>
 
     <main id="main-content">
+        <!-- Page Header - UNCHANGED -->
         <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
             <div class="container">
                 <h1 style="color: var(--color-white); margin-bottom: 1rem;">Clinical Resources</h1>
@@ -61,8 +287,7 @@ $resources = [
             </div>
         </section>
 
-        
-
+        <!-- Statistics Section - UNCHANGED -->
         <section class="section" style="background: var(--color-light-gray);">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 3rem;">
@@ -96,53 +321,123 @@ $resources = [
             </div>
         </section>
 
-        
-        <section class="section marquee-3d-section preview-mode">
+        <!-- PREMIUM INFINITE MARQUEE - Clinical Knowledge Base -->
+        <section class="marquee-section">
             <div class="container">
-                <div class="text-center mb-4"> 
-                    <h2 class="section-title">Clinical Knowledge Base</h2>
-                    <p class="section-subtitle">Global genomic databases and clinical reference standards</p>
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <h2 style="font-size: 2.5rem; color: #0A1F44; margin-bottom: 12px; font-weight: 700;">
+                        Clinical Knowledge Base
+                    </h2>
+                    <p style="color: #64748b; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
+                        Trusted global genomic databases and clinical reference standards
+                    </p>
                 </div>
-
-                <div class="stage-3d">
-                    <div class="ring-container">
-                        <?php 
-                        $count = count($resources);
-                        foreach ($resources as $index => $res): 
-                            $rotation = $index * (360 / $count);
-                            // Use a screenshot service or local assets
-                            $screenshotUrl = "https://s.wordpress.com/mshots/v1/" . urlencode($res['url']) . "?w=600";
-                        ?>
-                        <div class="ring-item" style="--rotation: <?php echo $rotation; ?>deg;">
-                            <a href="<?php echo htmlspecialchars($res['url']); ?>" target="_blank" class="preview-card-link">
-                                <div class="browser-glass-card">
-                                    <div class="browser-header">
-                                        <div class="dots"><span></span><span></span><span></span></div>
-                                        <div class="address-bar"><?php echo parse_url($res['url'], PHP_URL_HOST); ?></div>
-                                    </div>
-                                    
-                                    <div class="website-preview">
-                                        <img src="<?php echo $screenshotUrl; ?>" alt="<?php echo htmlspecialchars($res['name']); ?> Preview" loading="lazy">
-                                        <div class="preview-overlay">
-                                            <span class="view-text">Visit Portal →</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-details">
-                                        <div class="card-badge"><?php echo htmlspecialchars($res['domain']); ?></div>
-                                        <h4><?php echo htmlspecialchars($res['name']); ?></h4>
-                                        <p class="resource-desc"><?php echo htmlspecialchars($res['longDesc']); ?></p>
-                                    </div>
+            </div>
+            
+            <div class="marquee-container">
+                <!-- First set of cards -->
+                <div class="marquee-track">
+                    <?php foreach ($resources as $resource): ?>
+                        <a href="<?php echo htmlspecialchars($resource['url']); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="resource-card"
+                           style="--card-color: <?php echo $resource['color']; ?>; --card-color-light: <?php echo $resource['color'] . '80'; ?>;">
+                            
+                            <!-- Color Accent -->
+                            <div class="card-accent"></div>
+                            
+                            <!-- Card Header -->
+                            <div class="card-header">
+                                <div class="stats-badge">Verified</div>
+                                
+                                <div class="card-icon">
+                                    🧬
                                 </div>
-                            </a>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
+                                
+                                <div class="card-domain">
+                                    <?php echo htmlspecialchars($resource['domain']); ?>
+                                </div>
+                                
+                                <h3 class="card-title">
+                                    <?php echo htmlspecialchars($resource['name']); ?>
+                                </h3>
+                            </div>
+                            
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <p class="card-description">
+                                    <?php echo htmlspecialchars($resource['longDesc']); ?>
+                                </p>
+                            </div>
+                            
+                            <!-- Card Footer -->
+                            <div class="card-footer">
+                                <div class="resource-type">
+                                    Active Portal
+                                </div>
+                                <div class="visit-btn">
+                                    Visit Resource
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
+                
+                <!-- Duplicate set for infinite loop -->
+                <div class="marquee-track" aria-hidden="true">
+                    <?php foreach ($resources as $resource): ?>
+                        <a href="<?php echo htmlspecialchars($resource['url']); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="resource-card"
+                           style="--card-color: <?php echo $resource['color']; ?>; --card-color-light: <?php echo $resource['color'] . '80'; ?>;">
+                            
+                            <div class="card-accent"></div>
+                            
+                            <div class="card-header">
+                                <div class="stats-badge">Verified</div>
+                                
+                                <div class="card-icon">
+                                    🧬
+                                </div>
+                                
+                                <div class="card-domain">
+                                    <?php echo htmlspecialchars($resource['domain']); ?>
+                                </div>
+                                
+                                <h3 class="card-title">
+                                    <?php echo htmlspecialchars($resource['name']); ?>
+                                </h3>
+                            </div>
+                            
+                            <div class="card-body">
+                                <p class="card-description">
+                                    <?php echo htmlspecialchars($resource['longDesc']); ?>
+                                </p>
+                            </div>
+                            
+                            <div class="card-footer">
+                                <div class="resource-type">
+                                    Active Portal
+                                </div>
+                                <div class="visit-btn">
+                                    Visit Resource
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="color: #64748b; font-size: 0.95rem; font-weight: 500;">
+                    ← Hover to pause • Click any card to visit portal →
+                </p>
             </div>
         </section>
 
-        <!-- CTA Section -->
+        <!-- CTA Section - UNCHANGED -->
         <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
                 <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 850px; margin: 0 auto;">
@@ -156,7 +451,7 @@ $resources = [
                     </h2>
                     
                     <p style="font-size: 1.2rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-                        Unlock the data hidden in your DNA. Understanding your carrier status is the most powerful step you can take for your family’s future health.
+                        Unlock the data hidden in your DNA. Understanding your carrier status is the most powerful step you can take for your family's future health.
                     </p>
 
                     <div style="margin-bottom: 2.5rem;">
@@ -165,7 +460,7 @@ $resources = [
                     </div>
 
                     <div style="margin-bottom: 2rem;">
-                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
+                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse">
                             Request Your Kit Now - $99
                         </a>
                     </div>

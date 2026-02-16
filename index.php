@@ -580,7 +580,7 @@ setSecurityHeaders();
             if (totalTestimonials > 1) {
                 autoPlayTimer = setInterval(() => {
                     changeTestimonial(1);
-                }, 6000);
+                }, 2200);
             }
         }
         
