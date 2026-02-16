@@ -24,12 +24,24 @@ function loadEnv($path) {
 }
 
 // --- Environment Selection Logic ---
-$envFile = '.env';
-$isLocal = false;
+// Define the base path to your environment files
+$basePath = __DIR__ . '/../';
 
-if (file_exists(__DIR__ . '/../.env.local')) {
+// --- Environment Selection Logic ---
+// 1. Check for .env.local first
+if (file_exists($basePath . '.env.local')) {
     $envFile = '.env.local';
     $isLocal = true;
+} 
+// 2. If .env.local is missing, fall back to .env.prod
+elseif (file_exists($basePath . '.env.prod')) {
+    $envFile = '.env.prod';
+    $isLocal = false;
+} 
+else {
+    // Fail-safe: Ensure the application doesn't run without configuration
+    error_log("Critical: No environment file (.env.local or .env.prod) found at " . $basePath);
+    die("Configuration Error: Environment file missing.");
 }
 
 loadEnv(__DIR__ . '/../' . $envFile);
