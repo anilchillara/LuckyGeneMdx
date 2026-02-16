@@ -86,30 +86,17 @@ $results = $stmt->fetchAll();
 </head>
 <body>
     <div class="portal-wrapper">
-        <!-- Sidebar -->
-        <aside class="portal-sidebar">
-            <div class="portal-sidebar-header">
-                <h2>🧬 LuckyGeneMDx</h2>
-                <div class="portal-sidebar-user">
-                    <?php echo htmlspecialchars($userName); ?>
-                </div>
-            </div>
-            <nav class="portal-nav">
-                <a href="index.php" class="portal-nav-item">🏠 Dashboard</a>
-                <a href="orders.php" class="portal-nav-item">📦 My Orders</a>
-                <a href="results.php" class="portal-nav-item active">📄 My Results</a>
-                <a href="settings.php" class="portal-nav-item">⚙️ Settings</a>
-                <a href="../index.php" class="portal-nav-item" style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">← Back to Website</a>
-                <a href="logout.php" class="portal-nav-item">🚪 Logout</a>
-            </nav>
-        </aside>
+        <!-- INCLUDE RESPONSIVE SIDEBAR -->
+        <?php include 'includes/portal-sidebar.php'; ?>
         
         <!-- Main Content -->
         <main class="portal-main">
-            <div class="page-header">
-                <h1 style="margin-bottom: 0.25rem;">My Results</h1>
-                <p style="color: var(--color-dark-gray); margin: 0;">
-                    View and download your genetic screening results
+
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+            <h1 style="color: white; margin-bottom: 0.5rem;">My Results</h1>
+                <p style="opacity: 0.9; margin: 0">
+                View and download your genetic screening results
                 </p>
             </div>
             

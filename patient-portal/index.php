@@ -122,13 +122,6 @@ $firstName = explode(' ', $userName)[0];
             padding: 2rem;
             background: var(--color-light-gray);
         }
-        .welcome-banner {
-            background: var(--gradient-hero);
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: var(--radius-lg);
-            margin-bottom: 2rem;
-        }
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -223,26 +216,10 @@ $firstName = explode(' ', $userName)[0];
 </head>
 <body>
     <div class="portal-wrapper">
-        <!-- Sidebar -->
-        <aside class="portal-sidebar">
-            <div class="portal-sidebar-header">
-                <h2>🧬 LuckyGeneMDx</h2>
-                <div class="portal-sidebar-user">
-                    <?php echo htmlspecialchars($firstName); ?><br>
-                    <small><?php echo htmlspecialchars($user['email']); ?></small>
-                </div>
-            </div>
-            
-            <nav class="portal-nav">
-                <a href="index.php" class="portal-nav-item active">🏠 Dashboard</a>
-                <a href="orders.php" class="portal-nav-item">📦 My Orders</a>
-                <a href="results.php" class="portal-nav-item">📄 My Results</a>
-                <a href="settings.php" class="portal-nav-item">⚙️ Settings</a>
-                <a href="../resources" class="portal-nav-item">📖 Resources</a>
-                <a href="logout.php" class="portal-nav-item" style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">🚪 Logout</a>
-            </nav>
-        </aside>
-        
+
+        <!-- INCLUDE RESPONSIVE SIDEBAR -->
+        <?php include 'includes/portal-sidebar.php'; ?>
+
         <!-- Main Content -->
         <main class="portal-main">
             <!-- Welcome Banner -->

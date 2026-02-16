@@ -69,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     }
 }
 
-$userName = $_SESSION['user_name'];
+$userName = $user['full_name'];
+$firstName = explode(' ', $userName)[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -121,27 +122,17 @@ $userName = $_SESSION['user_name'];
 </head>
 <body>
     <div class="portal-wrapper">
-        <!-- Sidebar -->
-        <aside class="portal-sidebar">
-            <div class="portal-sidebar-header">
-                <h2>🧬 LuckyGeneMDx</h2>
-                <div class="portal-sidebar-user"><?php echo htmlspecialchars($userName); ?></div>
-            </div>
-            <nav class="portal-nav">
-                <a href="index.php" class="portal-nav-item">🏠 Dashboard</a>
-                <a href="orders.php" class="portal-nav-item">📦 My Orders</a>
-                <a href="results.php" class="portal-nav-item">📄 My Results</a>
-                <a href="settings.php" class="portal-nav-item active">⚙️ Settings</a>
-                <a href="../index.php" class="portal-nav-item" style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">← Back to Website</a>
-                <a href="logout.php" class="portal-nav-item">🚪 Logout</a>
-            </nav>
-        </aside>
+        <!-- INCLUDE RESPONSIVE SIDEBAR -->
+        <?php include 'includes/portal-sidebar.php'; ?>
         
         <!-- Main Content -->
         <main class="portal-main">
-            <div class="page-header">
-                <h1 style="margin-bottom: 0.25rem;">Account Settings</h1>
-                <p style="color: var(--color-dark-gray); margin: 0;">Manage your account information and preferences</p>
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+            <h1 style="color: white; margin-bottom: 0.5rem;">Account Settings</h1>
+                <p style="opacity: 0.9; margin: 0">
+                Manage your account information and preferences
+                </p>
             </div>
             
             <?php if($success): ?>

@@ -129,32 +129,18 @@ $firstName = explode(' ', $userName)[0];
 </head>
 <body>
     <div class="portal-wrapper">
-        <!-- Sidebar -->
-        <aside class="portal-sidebar">
-            <div class="portal-sidebar-header">
-                <h2>🧬 LuckyGeneMDx</h2>
-                <div class="portal-sidebar-user">
-                    <?php echo htmlspecialchars($firstName); ?><br>
-                    <small><?php echo htmlspecialchars($user['email']); ?></small>
-                </div>
-            </div>
-            
-            <nav class="portal-nav">
-                <a href="index.php" class="portal-nav-item">🏠 Dashboard</a>
-                <a href="orders.php" class="portal-nav-item active">📦 My Orders</a>
-                <a href="results.php" class="portal-nav-item">📄 My Results</a>
-                <a href="settings.php" class="portal-nav-item">⚙️ Settings</a>
-                <a href="../resources" class="portal-nav-item">📖 Resources</a>
-                <a href="logout.php" class="portal-nav-item" style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">🚪 Logout</a>
-            </nav>
-        </aside>
+        <!-- INCLUDE RESPONSIVE SIDEBAR -->
+        <?php include 'includes/portal-sidebar.php'; ?>
         
         <!-- Main Content -->
         <main class="portal-main">
-            <h1 style="margin-bottom: 0.5rem;">My Orders</h1>
-            <p style="color: var(--color-dark-gray); margin-bottom: 2rem;">
-                View and track all your screening kit orders
-            </p>
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+            <h1 style="color: white; margin-bottom: 0.5rem;">My Orders</h1>
+                <p style="opacity: 0.9; margin: 0">
+                    View and track all your screening kit orders
+                </p>
+            </div>
             
             <?php if (empty($orders)): ?>
                 <!-- Empty State -->

@@ -1,46 +1,46 @@
 <?php
-define('luckygenemdx', true);
-require_once '../includes/config.php';
-require_once '../includes/Database.php';
+    define('luckygenemdx', true);
+    require_once '../includes/config.php';
+    require_once '../includes/Database.php';
 
-session_start();
+    session_start();
 
-// Check admin authentication
-if (!isset($_SESSION['admin_id'])) {
+    // Check admin authentication
+    if (! isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
-}
+    }
 
-// Check session timeout
-if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > SESSION_TIMEOUT)) {
+    // Check session timeout
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > SESSION_TIMEOUT)) {
     session_unset();
     session_destroy();
     header('Location: login.php?timeout=1');
     exit;
-}
-$_SESSION['last_activity'] = time();
+    }
+    $_SESSION['last_activity'] = time();
 
-$db = Database::getInstance()->getConnection();
+    $db = Database::getInstance()->getConnection();
 
-// Handle form submissions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle form submissions
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
         try {
             switch ($_POST['action']) {
                 case 'add':
                     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-                    if (!$email) {
+                    if (! $email) {
                         throw new Exception('Invalid email address');
                     }
-                    
+
                     $check = $db->prepare("SELECT user_id FROM users WHERE email = ?");
                     $check->execute([$email]);
                     if ($check->fetch()) {
                         throw new Exception('Email already exists');
                     }
-                    
+
                     $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    
+
                     $stmt = $db->prepare("INSERT INTO users (full_name, email, phone, password_hash, date_of_birth, address, city, state, zip_code, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, NOW())");
                     $stmt->execute([
                         $_POST['full_name'],
@@ -51,24 +51,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['address'] ?? null,
                         $_POST['city'] ?? null,
                         $_POST['state'] ?? null,
-                        $_POST['zip_code'] ?? null
+                        $_POST['zip_code'] ?? null,
                     ]);
-                    
+
                     $success = "User added successfully!";
                     break;
-                    
+
                 case 'update':
                     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-                    if (!$email) {
+                    if (! $email) {
                         throw new Exception('Invalid email address');
                     }
-                    
+
                     $check = $db->prepare("SELECT user_id FROM users WHERE email = ? AND user_id != ?");
                     $check->execute([$email, $_POST['user_id']]);
                     if ($check->fetch()) {
                         throw new Exception('Email already exists for another user');
                     }
-                    
+
                     $stmt = $db->prepare("UPDATE users SET full_name = ?, email = ?, phone = ?, date_of_birth = ?, address = ?, city = ?, state = ?, zip_code = ?, is_active = ?, updated_at = NOW() WHERE user_id = ?");
                     $stmt->execute([
                         $_POST['full_name'],
@@ -80,41 +80,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['state'] ?? null,
                         $_POST['zip_code'] ?? null,
                         $_POST['is_active'],
-                        $_POST['user_id']
+                        $_POST['user_id'],
                     ]);
-                    
+
                     $success = "User updated successfully!";
                     break;
-                    
+
                 case 'reset_password':
-                    $new_password = bin2hex(random_bytes(8));
+                    $new_password  = bin2hex(random_bytes(8));
                     $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
-                    
+
                     $stmt = $db->prepare("UPDATE users SET password_hash = ?, updated_at = NOW() WHERE user_id = ?");
                     $stmt->execute([$password_hash, $_POST['user_id']]);
-                    
+
                     $success = "Password reset! New password: <strong>" . $new_password . "</strong> (Save this - user will need it to login)";
                     break;
-                    
+
                 case 'toggle_status':
                     $stmt = $db->prepare("UPDATE users SET is_active = NOT is_active, updated_at = NOW() WHERE user_id = ?");
                     $stmt->execute([$_POST['user_id']]);
-                    
+
                     $success = "User status updated successfully!";
                     break;
-                    
+
                 case 'delete':
                     $check = $db->prepare("SELECT COUNT(*) FROM orders WHERE user_id = ?");
                     $check->execute([$_POST['user_id']]);
                     $orderCount = $check->fetchColumn();
-                    
+
                     if ($orderCount > 0) {
                         throw new Exception("Cannot delete user with existing orders. Deactivate instead.");
                     }
-                    
+
                     $stmt = $db->prepare("DELETE FROM users WHERE user_id = ?");
                     $stmt->execute([$_POST['user_id']]);
-                    
+
                     $success = "User deleted successfully!";
                     break;
             }
@@ -122,41 +122,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = $e->getMessage();
         }
     }
-}
+    }
 
-// Get filter parameters
-$status_filter = $_GET['status'] ?? 'all';
-$search = $_GET['search'] ?? '';
-$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$perPage = 25;
-$offset = ($page - 1) * $perPage;
+    // Get filter parameters
+    $status_filter = $_GET['status'] ?? 'all';
+    $search        = $_GET['search'] ?? '';
+    $page          = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+    $perPage       = 25;
+    $offset        = ($page - 1) * $perPage;
 
-// Build query
-$where_clauses = [];
-$params = [];
+    // Build query
+    $where_clauses = [];
+    $params        = [];
 
-if ($status_filter === 'active') {
+    if ($status_filter === 'active') {
     $where_clauses[] = "is_active = 1";
-} elseif ($status_filter === 'inactive') {
+    } elseif ($status_filter === 'inactive') {
     $where_clauses[] = "is_active = 0";
-}
+    }
 
-if (!empty($search)) {
-    $where_clauses[] = "(full_name LIKE :search OR email LIKE :search OR phone LIKE :search)";
+    if (! empty($search)) {
+    $where_clauses[]   = "(full_name LIKE :search OR email LIKE :search OR phone LIKE :search)";
     $params[':search'] = "%$search%";
-}
+    }
 
-$where_sql = !empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
+    $where_sql = ! empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
 
-// Get total count
-$countSql = "SELECT COUNT(*) as total FROM users $where_sql";
-$stmt = $db->prepare($countSql);
-$stmt->execute($params);
-$totalUsers = $stmt->fetch()['total'];
-$totalPages = ceil($totalUsers / $perPage);
+    // Get total count
+    $countSql = "SELECT COUNT(*) as total FROM users $where_sql";
+    $stmt     = $db->prepare($countSql);
+    $stmt->execute($params);
+    $totalUsers = $stmt->fetch()['total'];
+    $totalPages = ceil($totalUsers / $perPage);
 
-// Get users with order count
-$sql = "SELECT u.*, 
+    // Get users with order count
+    $sql = "SELECT u.*,
         COUNT(DISTINCT o.order_id) as order_count,
         MAX(o.order_date) as last_order_date
         FROM users u
@@ -166,25 +166,25 @@ $sql = "SELECT u.*,
         ORDER BY u.created_at DESC
         LIMIT :limit OFFSET :offset";
 
-$stmt = $db->prepare($sql);
-foreach ($params as $key => $value) {
+    $stmt = $db->prepare($sql);
+    foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value);
-}
-$stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-$stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get statistics
-$stats = [
-    'total' => $db->query("SELECT COUNT(*) FROM users")->fetchColumn(),
-    'active' => $db->query("SELECT COUNT(*) FROM users WHERE is_active = 1")->fetchColumn(),
-    'inactive' => $db->query("SELECT COUNT(*) FROM users WHERE is_active = 0")->fetchColumn(),
+    // Get statistics
+    $stats = [
+    'total'       => $db->query("SELECT COUNT(*) FROM users")->fetchColumn(),
+    'active'      => $db->query("SELECT COUNT(*) FROM users WHERE is_active = 1")->fetchColumn(),
+    'inactive'    => $db->query("SELECT COUNT(*) FROM users WHERE is_active = 0")->fetchColumn(),
     'with_orders' => $db->query("SELECT COUNT(DISTINCT user_id) FROM orders")->fetchColumn(),
-];
+    ];
 
-$adminName = $_SESSION['admin_username'];
-$adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
+    $adminName = $_SESSION['admin_username'];
+    $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -417,7 +417,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
     <div class="admin-wrapper">
         <!-- Sidebar -->
         <?php include 'sidenav.php'; ?>
-        
+
         <!-- Main Content -->
         <main class="admin-main">
             <div class="admin-header">
@@ -430,7 +430,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
             <?php if (isset($success)): ?>
                 <div class="alert alert-success"><?php echo $success; ?></div>
             <?php endif; ?>
-            
+
             <?php if (isset($error)): ?>
                 <div class="alert alert-error"><?php echo $error; ?></div>
             <?php endif; ?>
@@ -459,15 +459,15 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
             <form method="GET" action="" class="filters-bar">
                 <div class="filter-group">
                     <label class="form-label">Search</label>
-                    <input 
-                        type="text" 
-                        name="search" 
-                        class="form-input" 
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-input"
                         placeholder="Name, Email, Phone..."
                         value="<?php echo htmlspecialchars($search); ?>"
                     >
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="form-label">Status</label>
                     <select name="status" class="form-select">
@@ -476,19 +476,19 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                         <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive Only</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group" style="flex: 0;">
                     <button type="submit" class="btn btn-primary">
                         🔍 Filter
                     </button>
                 </div>
-                
+
                 <div class="filter-group" style="flex: 0;">
                     <button type="button" onclick="showAddModal()" class="btn btn-primary">
                         + Add User
                     </button>
                 </div>
-                
+
                 <?php if ($search || $status_filter !== 'all'): ?>
                 <div class="filter-group" style="flex: 0;">
                     <a href="users.php" class="btn btn-outline">
@@ -550,9 +550,9 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                                         </td>
                                         <td><?php echo date('M j, Y', strtotime($user['created_at'])); ?></td>
                                         <td style="white-space: nowrap;">
-                                            <button onclick='editUser(<?php echo json_encode($user, JSON_HEX_APOS | JSON_HEX_QUOT); ?>)' 
+                                            <button onclick='editUser(<?php echo json_encode($user, JSON_HEX_APOS | JSON_HEX_QUOT); ?>)'
                                                     class="btn btn-sm btn-secondary">Edit</button>
-                                            
+
                                             <form method="POST" style="display: inline;">
                                                 <input type="hidden" name="action" value="toggle_status">
                                                 <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
@@ -560,7 +560,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                                                     <?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>
                                                 </button>
                                             </form>
-                                            
+
                                             <?php if ($user['order_count'] == 0): ?>
                                                 <form method="POST" style="display: inline;" onsubmit="return confirm('Delete this user? This cannot be undone.');">
                                                     <input type="hidden" name="action" value="delete">
@@ -574,44 +574,49 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination -->
                     <?php if ($totalPages > 1): ?>
                     <div class="pagination">
                         <?php
-                        $queryParams = [];
-                        if ($search) $queryParams['search'] = $search;
-                        if ($status_filter !== 'all') $queryParams['status'] = $status_filter;
-                        
-                        // Previous button
-                        if ($page > 1):
-                            $queryParams['page'] = $page - 1;
+                            $queryParams = [];
+                            if ($search) {
+                                $queryParams['search'] = $search;
+                            }
+
+                            if ($status_filter !== 'all') {
+                                $queryParams['status'] = $status_filter;
+                            }
+
+                            // Previous button
+                            if ($page > 1):
+                                $queryParams['page'] = $page - 1;
                         ?>
                             <a href="?<?php echo http_build_query($queryParams); ?>">← Previous</a>
                         <?php else: ?>
                             <span class="disabled">← Previous</span>
                         <?php endif; ?>
-                        
+
                         <!-- Page numbers -->
                         <?php
-                        $start = max(1, $page - 2);
-                        $end = min($totalPages, $page + 2);
-                        
-                        for ($i = $start; $i <= $end; $i++):
-                            $queryParams['page'] = $i;
-                            if ($i == $page):
+                            $start = max(1, $page - 2);
+                            $end   = min($totalPages, $page + 2);
+
+                            for ($i = $start; $i <= $end; $i++):
+                                $queryParams['page'] = $i;
+                                if ($i == $page):
                         ?>
                                 <span class="active"><?php echo $i; ?></span>
                         <?php else: ?>
                                 <a href="?<?php echo http_build_query($queryParams); ?>"><?php echo $i; ?></a>
                         <?php
                             endif;
-                        endfor;
+                            endfor;
                         ?>
-                        
+
                         <!-- Next button -->
                         <?php if ($page < $totalPages):
-                            $queryParams['page'] = $page + 1;
+                                $queryParams['page'] = $page + 1;
                         ?>
                             <a href="?<?php echo http_build_query($queryParams); ?>">Next →</a>
                         <?php else: ?>
@@ -632,59 +637,59 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
             <form method="POST" id="userForm">
                 <input type="hidden" name="action" id="form_action" value="add">
                 <input type="hidden" name="user_id" id="form_user_id">
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>Full Name *</label>
                         <input type="text" name="full_name" id="form_full_name" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Email *</label>
                         <input type="email" name="email" id="form_email" required>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>Phone</label>
                         <input type="tel" name="phone" id="form_phone">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Date of Birth *</label>
                         <input type="date" name="date_of_birth" id="form_dob" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group" id="password_group">
                     <label>Password *</label>
                     <input type="password" name="password" id="form_password" minlength="8">
                     <small style="color: #666;">Minimum 8 characters</small>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Address</label>
                     <input type="text" name="address" id="form_address">
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>City</label>
                         <input type="text" name="city" id="form_city">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>State</label>
                         <input type="text" name="state" id="form_state" maxlength="2">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>ZIP Code</label>
                         <input type="text" name="zip_code" id="form_zip" maxlength="10">
                     </div>
                 </div>
-                
+
                 <div class="form-group" id="status_group" style="display: none;">
                     <label>Status</label>
                     <select name="is_active" id="form_is_active">
@@ -692,7 +697,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                         <option value="0">Inactive</option>
                     </select>
                 </div>
-                
+
                 <div style="margin-top: 1.5rem;">
                     <button type="submit" class="btn btn-primary">Save User</button>
                     <button type="button" class="btn btn-outline" onclick="closeUserModal()">Cancel</button>
@@ -725,7 +730,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
             document.getElementById('form_state').value = user.state || '';
             document.getElementById('form_zip').value = user.zip_code || '';
             document.getElementById('form_is_active').value = user.is_active;
-            
+
             document.getElementById('password_group').style.display = 'none';
             document.getElementById('form_password').required = false;
             document.getElementById('status_group').style.display = 'block';
