@@ -18,9 +18,25 @@
     --color-medium-gray: #E9ECEF;
     --color-dark-gray: #6C757D;
     --color-black: #212529;
+
+
+    /* Next-Gen Color Palette Definitions */
+    --color-midnight-violet: #2F377D;   /* Vibrant Primary */
+    --color-steel-indigo: #2F538B;    /* Deep Professional Indigo */
+    --color-ocean-teal: #2E82A6;      /* Medical Scientific Teal */
+
+    /* The Requested Primary Gradient */
+    --gradient-primary: linear-gradient(135deg,
+        var(--color-midnight-violet) 0%,         
+        var(--color-steel-indigo) 50%,
+        var(--color-medical-teal) 100%
+    );
+
+
+
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 75%, var(--color-soft-purple) 100%);
+    /* --gradient-primary: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 75%, var(--color-soft-purple) 100%); */
     /* --gradient-primary: linear-gradient(135deg, var(--color-soft-purple) 0%, var(--color-medical-teal) 50%, var(--color-primary-deep-blue) 100%); */
     /* --gradient-hero: linear-gradient(135deg, rgba(10, 31, 68, 0.95) 0%, rgba(0, 179, 164, 0.85) 90%, rgba(12, 38, 123, 0.85) 100%); */
     --gradient-hero: linear-gradient(135deg, rgba(10, 31, 68, 0.95) 0%, rgba(0, 179, 164, 0.85) 100%);

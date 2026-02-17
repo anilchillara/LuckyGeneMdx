@@ -754,7 +754,7 @@ setSecurityHeaders();
             justify-content: center;
             gap: 12px;
         }
-        .cta-price { font-family:'Poppins',sans-serif; font-size:5.5rem; font-weight:800; color:white; line-height:1; }
+        .cta-price { font-family:'Poppins',sans-serif; font-size:4.5rem; font-weight:500; color:white; line-height:1; }
         .cta-strike { font-size:1.8rem; color:rgba(255,255,255,0.25); text-decoration:line-through; }
         .btn-cta-main {
             display: inline-flex;
@@ -1053,7 +1053,7 @@ setSecurityHeaders();
         <section class="sec-cta">
             <div class="cta-box reveal">
                 <div class="cta-pill">Limited Time Pricing</div>
-                <h2>Invest $99 Today for<br>a Healthier Tomorrow</h2>
+                <h2>Invest Today for<br>a Healthier Tomorrow</h2>
                 <p>Take the first step toward informed family planning with comprehensive genetic carrier screening. Clear insights, delivered privately.</p>
                 <div class="cta-pricing">
                     <span class="cta-price">$99</span>
