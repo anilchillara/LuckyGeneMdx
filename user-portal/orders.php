@@ -1,5 +1,5 @@
 <?php
-define('LUCKYGENEMXD', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -51,113 +51,150 @@ $firstName = explode(' ', $userName)[0];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
-        /* PATIENET PORTAL SPECIFIC STYLES  */
-        .welcome-banner {
+        .portal-page {
+            min-height: 100vh;
+            background: var(--color-light-gray);
+            padding-bottom: 4rem;
+        }
+        
+        .portal-hero {
             background: var(--gradient-hero);
             color: white;
-            padding: 3rem 2rem;
-            border-radius: var(--radius-lg);
-            margin-bottom: 2rem;
+            padding: 4rem 0 3rem;
+            margin-bottom: 3rem;
         }
-        .portal-wrapper { display: flex; min-height: 100vh; }
-        .portal-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
+        
+        .portal-hero h1 {
             color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
         }
-        .portal-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        
+        .portal-hero p {
+            opacity: 0.9;
+            font-size: 1.125rem;
         }
-        .portal-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .portal-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .portal-nav { margin-top: 2rem; }
-        .portal-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-        }
-        .portal-nav-item:hover, .portal-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .portal-main {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
+        
         .content-card {
             background: white;
             padding: 2rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
         }
+        
         .order-card {
             padding: 1.5rem;
             background: var(--color-light-gray);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             margin-bottom: 1.5rem;
-            transition: all var(--transition-normal);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
+        
         .order-card:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-medical-teal);
         }
+        
         .order-status-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
             font-size: 0.85rem;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        .badge-received { background: #cce5ff; color: #004085; }
-        .badge-shipped { background: #d1ecf1; color: #0c5460; }
-        .badge-processing { background: #fff3cd; color: #856404; }
-        .badge-ready { background: #d4edda; color: #155724; }
+        
+        .badge-received { background: #e3f2fd; color: #1565c0; }
+        .badge-shipped { background: #e0f2f1; color: #00695c; }
+        .badge-processing { background: #fff3e0; color: #e65100; }
+        .badge-ready { background: #e8f5e9; color: #2e7d32; }
+        
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
             color: var(--color-dark-gray);
         }
+        
         .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
             opacity: 0.3;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-medical-teal);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--color-dark-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <div class="portal-wrapper">
-        <!-- INCLUDE RESPONSIVE SIDEBAR -->
-        <?php include 'includes/portal-sidebar.php'; ?>
+    <!-- Header with user dropdown -->
+    <?php include '../includes/header.php'; ?>
+    
+    <div class="portal-page">
+        <!-- Hero Section -->
+        <div class="portal-hero">
+            <div class="container">
+                <h1>My Orders</h1>
+                <p>View and track all your screening kit orders</p>
+            </div>
+        </div>
         
         <!-- Main Content -->
-        <main class="portal-main">
-            <!-- Welcome Banner -->
-            <div class="welcome-banner">
-            <h1 style="color: white; margin-bottom: 0.5rem;">My Orders</h1>
-                <p style="opacity: 0.9; margin: 0">
-                    View and track all your screening kit orders
-                </p>
-            </div>
+        <div class="container" style="max-width: 1200px;">
+            
+            <?php if (!empty($orders)): ?>
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number"><?php echo count($orders); ?></div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number"><?php echo count(array_filter($orders, fn($o) => $o['status_id'] == 5)); ?></div>
+                        <div class="stat-label">Results Ready</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number"><?php echo count(array_filter($orders, fn($o) => in_array($o['status_id'], [2, 3, 4]))); ?></div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                </div>
+            <?php endif; ?>
             
             <?php if (empty($orders)): ?>
                 <!-- Empty State -->
                 <div class="content-card">
                     <div class="empty-state">
                         <div class="empty-state-icon">📦</div>
-                        <h3>No Orders Yet</h3>
-                        <p style="margin-bottom: 1.5rem;">
-                            You haven't placed any orders yet. Order your first screening kit to get started.
+                        <h2 style="margin-bottom: 1rem;">No Orders Yet</h2>
+                        <p style="margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                            You haven't placed any orders yet. Order your first screening kit to get started on your genetic health journey.
                         </p>
                         <a href="../request-kit.php" class="btn btn-primary btn-large">
                             Order Screening Kit - $99
@@ -167,8 +204,13 @@ $firstName = explode(' ', $userName)[0];
             <?php else: ?>
                 <!-- Orders List -->
                 <div class="content-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <h2 style="margin: 0;"><?php echo count($orders); ?> Order<?php echo count($orders) > 1 ? 's' : ''; ?></h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--color-light-gray);">
+                        <div>
+                            <h2 style="margin: 0 0 0.5rem 0;">Order History</h2>
+                            <p style="color: var(--color-dark-gray); margin: 0;">
+                                <?php echo count($orders); ?> order<?php echo count($orders) > 1 ? 's' : ''; ?> placed
+                            </p>
+                        </div>
                         <a href="../request-kit.php" class="btn btn-primary">
                             + New Order
                         </a>
@@ -200,11 +242,11 @@ $firstName = explode(' ', $userName)[0];
                         <div class="order-card">
                             <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
                                 <div>
-                                    <div style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.5rem;">
+                                    <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--color-primary-deep-blue);">
                                         Order #<?php echo htmlspecialchars($order['order_number']); ?>
                                     </div>
-                                    <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
-                                        Placed on <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
+                                    <div style="font-size: 0.95rem; color: var(--color-dark-gray);">
+                                        📅 Placed on <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
                                     </div>
                                 </div>
                                 <span class="order-status-badge <?php echo $badgeClass; ?>">
@@ -212,21 +254,21 @@ $firstName = explode(' ', $userName)[0];
                                 </span>
                             </div>
                             
-                            <div style="padding-top: 1rem; border-top: 1px solid var(--color-medium-gray); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <div style="padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                                 <div>
-                                    <div style="font-size: 0.85rem; color: var(--color-dark-gray);">
-                                        Total: <strong>${<?php echo number_format($order['price'], 2); ?></strong>
+                                    <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                                        Total: <strong style="color: var(--color-primary-deep-blue); font-size: 1.1rem;">${<?php echo number_format($order['price'], 2); ?></strong>
                                     </div>
                                     <?php if ($order['status_id'] == 5): ?>
-                                        <div style="color: #27ae60; font-weight: 600; font-size: 0.9rem; margin-top: 0.25rem;">
+                                        <div style="color: #2e7d32; font-weight: 600; font-size: 0.95rem; margin-top: 0.5rem;">
                                             ✅ Results available
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                                     <a href="../track-order.php?order=<?php echo urlencode($order['order_number']); ?>" 
                                        class="btn btn-outline">
-                                        Track Order
+                                        📍 Track Order
                                     </a>
                                     <?php if ($order['status_id'] == 5): ?>
                                         <a href="results.php" class="btn btn-primary">
@@ -240,17 +282,19 @@ $firstName = explode(' ', $userName)[0];
                 </div>
                 
                 <!-- Order Again CTA -->
-                <div class="content-card" style="background: var(--gradient-hero); color: white; text-align: center;">
-                    <h3 style="color: white; margin-bottom: 1rem;">Need Another Screening?</h3>
-                    <p style="opacity: 0.9; margin-bottom: 1.5rem;">
+                <div class="content-card" style="background: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 100%); color: white; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 1rem; font-size: 1.75rem;">Need Another Screening?</h3>
+                    <p style="opacity: 0.95; margin-bottom: 2rem; font-size: 1.05rem;">
                         Order additional screening kits for family members or updated testing.
                     </p>
-                    <a href="../request-kit.php" class="btn btn-large" style="background: white; color: var(--color-primary-deep-blue);">
+                    <a href="../request-kit.php" class="btn btn-large" style="background: white; color: var(--color-primary-deep-blue); font-weight: 600;">
                         Order New Kit - $99
                     </a>
                 </div>
             <?php endif; ?>
-        </main>
+        </div>
     </div>
+    
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

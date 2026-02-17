@@ -1,5 +1,5 @@
 <?php
-define('LUCKYGENEMXD', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -68,7 +68,7 @@ $results = $stmt->fetchAll();
         .portal-nav-item:hover, .portal-nav-item.active {
             background: rgba(255,255,255,0.1); color: white; border-left-color: var(--color-medical-teal);
         }
-        .portal-main { flex: 1; margin-left: 260px; padding: 2rem; background: var(--color-light-gray); }
+        .portal-main { flex: 1; margin-left: o; padding: 2rem; background: var(--color-light-gray); }
         .page-header {
             background: white; padding: 1.5rem 2rem; border-radius: var(--radius-md);
             margin-bottom: 2rem; box-shadow: var(--shadow-sm);
@@ -91,8 +91,8 @@ $results = $stmt->fetchAll();
 </head>
 <body>
     <div class="portal-wrapper">
-        <!-- INCLUDE RESPONSIVE SIDEBAR -->
-        <?php include 'includes/portal-sidebar.php'; ?>
+        <!-- Header with user dropdown -->
+        <?php include '../includes/header.php'; ?>
         
         <!-- Main Content -->
         <main class="portal-main">

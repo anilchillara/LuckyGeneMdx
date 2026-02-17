@@ -1,5 +1,5 @@
 <?php
-define('LUCKYGENEMXD', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -127,7 +127,7 @@ $firstName = explode(' ', $userName)[0];
         }
         .portal-main {
             flex: 1;
-            margin-left: 260px;
+            margin-left: 0;
             padding: 2rem;
             background: var(--color-light-gray);
         }
@@ -234,8 +234,8 @@ $firstName = explode(' ', $userName)[0];
 <body>
     <div class="portal-wrapper">
 
-        <!-- INCLUDE RESPONSIVE SIDEBAR -->
-        <?php include 'includes/portal-sidebar.php'; ?>
+        <!-- Header with user dropdown -->
+        <?php include '../includes/header.php'; ?>
 
         <!-- Main Content -->
         <main class="portal-main">

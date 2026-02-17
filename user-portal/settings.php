@@ -1,5 +1,5 @@
 <?php
-define('LUCKYGENEMXD', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -105,7 +105,7 @@ $firstName = explode(' ', $userName)[0];
         .portal-nav-item:hover, .portal-nav-item.active {
             background: rgba(255,255,255,0.1); color: white; border-left-color: var(--color-medical-teal);
         }
-        .portal-main { flex: 1; margin-left: 260px; padding: 2rem; background: var(--color-light-gray); }
+        .portal-main { flex: 1; margin-left: 0; padding: 2rem; background: var(--color-light-gray); }
         .page-header {
             background: white; padding: 1.5rem 2rem; border-radius: var(--radius-md);
             margin-bottom: 2rem; box-shadow: var(--shadow-sm);
@@ -126,8 +126,8 @@ $firstName = explode(' ', $userName)[0];
 </head>
 <body>
     <div class="portal-wrapper">
-        <!-- INCLUDE RESPONSIVE SIDEBAR -->
-        <?php include 'includes/portal-sidebar.php'; ?>
+        <!-- Header with user dropdown -->
+        <?php include '../includes/header.php'; ?>
         
         <!-- Main Content -->
         <main class="portal-main">
@@ -166,16 +166,17 @@ $firstName = explode(' ', $userName)[0];
                         <small style="color: var(--color-dark-gray);">Email cannot be changed. Contact support if you need to update it.</small>
                     </div>
                     
+
                     <div class="form-group">
                         <label for="phone" class="form-label required">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-input" data-validate="phone"
-                            value="<?php echo htmlspecialchars($user['phone']); ?>" required>
+                        <input type="tel" name="phone" class="form-input"  value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" required>
                     </div>
-                    
+
+
                     <div class="form-group">
                         <label class="form-label">Date of Birth</label>
                         <input type="date" class="form-input" 
-                            value="<?php echo htmlspecialchars($user['dob']); ?>" disabled>
+                            value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>"  disabled>
                         <small style="color: var(--color-dark-gray);">Date of birth cannot be changed for verification purposes.</small>
                     </div>
                     

@@ -10,57 +10,101 @@ setSecurityHeaders();
 $success = false;
 $error = '';
 $orderNumber = '';
+$isLoggedIn = isset($_SESSION['user_id']);
+$user = null;
+
+// If logged in, get user data
+if ($isLoggedIn) {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->execute([':user_id' => $_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate CSRF token
     if (!isset($_POST['csrf_token']) || !validateCSRFToken($_POST['csrf_token'])) {
         $error = 'Security validation failed. Please try again.';
     } else {
-        $data = [
-            'full_name' => trim($_POST['full_name'] ?? ''),
-            'email' => trim($_POST['email'] ?? ''),
-            'phone' => trim($_POST['phone'] ?? ''),
-            'dob' => $_POST['dob'] ?? '',
-            'address_line1' => trim($_POST['address_line1'] ?? ''),
-            'address_line2' => trim($_POST['address_line2'] ?? ''),
-            'city' => trim($_POST['city'] ?? ''),
-            'state' => trim($_POST['state'] ?? ''),
-            'zip' => trim($_POST['zip'] ?? ''),
-            'password' => $_POST['password'] ?? '',
-            'consent' => isset($_POST['consent'])
-        ];
-        
-        // Validation
-        if (!$data['consent']) {
-            $error = 'You must agree to the consent statement.';
-        } elseif (strlen($data['password']) < PASSWORD_MIN_LENGTH) {
-            $error = 'Password must be at least ' . PASSWORD_MIN_LENGTH . ' characters.';
-        } else {
-            // Create user account
-            $userModel = new User();
-            $userResult = $userModel->register($data);
+        if ($isLoggedIn) {
+            // LOGGED IN USER - Only shipping address required
+            $data = [
+                'full_name' => $user['full_name'],
+                'email' => $user['email'],
+                'phone' => $user['phone'],
+                'dob' => $user['dob'],
+                'address_line1' => trim($_POST['address_line1'] ?? ''),
+                'address_line2' => trim($_POST['address_line2'] ?? ''),
+                'city' => trim($_POST['city'] ?? ''),
+                'state' => trim($_POST['state'] ?? ''),
+                'zip' => trim($_POST['zip'] ?? ''),
+                'consent' => isset($_POST['consent'])
+            ];
             
-            if ($userResult['success']) {
-                $userId = $userResult['user_id'];
-                
-                // Create order
+            // Validation
+            if (!$data['consent']) {
+                $error = 'You must agree to the consent statement.';
+            } else {
+                // Create order for logged in user
                 $orderModel = new Order();
-                $orderResult = $orderModel->createOrder($userId, $data);
+                $orderResult = $orderModel->createOrder($_SESSION['user_id'], $data);
                 
                 if ($orderResult['success']) {
                     $success = true;
                     $orderNumber = $orderResult['order_number'];
-                    
-                    // Auto-login the user
-                    $_SESSION['user_id'] = $userId;
-                    $_SESSION['user_email'] = $data['email'];
-                    $_SESSION['user_name'] = $data['full_name'];
-                    $_SESSION['last_activity'] = time();
                 } else {
                     $error = $orderResult['message'];
                 }
+            }
+            
+        } else {
+            // GUEST USER - Full registration required
+            $data = [
+                'full_name' => trim($_POST['full_name'] ?? ''),
+                'email' => trim($_POST['email'] ?? ''),
+                'phone' => trim($_POST['phone'] ?? ''),
+                'dob' => $_POST['dob'] ?? '',
+                'address_line1' => trim($_POST['address_line1'] ?? ''),
+                'address_line2' => trim($_POST['address_line2'] ?? ''),
+                'city' => trim($_POST['city'] ?? ''),
+                'state' => trim($_POST['state'] ?? ''),
+                'zip' => trim($_POST['zip'] ?? ''),
+                'password' => $_POST['password'] ?? '',
+                'consent' => isset($_POST['consent'])
+            ];
+            
+            // Validation
+            if (!$data['consent']) {
+                $error = 'You must agree to the consent statement.';
+            } elseif (strlen($data['password']) < 8) {
+                $error = 'Password must be at least 8 characters.';
             } else {
-                $error = $userResult['message'];
+                // Create user account first
+                $userModel = new User();
+                $userResult = $userModel->register($data);
+                
+                if ($userResult['success']) {
+                    $userId = $userResult['user_id'];
+                    
+                    // Create order
+                    $orderModel = new Order();
+                    $orderResult = $orderModel->createOrder($userId, $data);
+                    
+                    if ($orderResult['success']) {
+                        $success = true;
+                        $orderNumber = $orderResult['order_number'];
+                        
+                        // Auto-login the user
+                        $_SESSION['user_id'] = $userId;
+                        $_SESSION['user_email'] = $data['email'];
+                        $_SESSION['user_name'] = $data['full_name'];
+                        $_SESSION['last_activity'] = time();
+                    } else {
+                        $error = $orderResult['message'];
+                    }
+                } else {
+                    $error = $userResult['message'];
+                }
             }
         }
     }
@@ -116,16 +160,22 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                     </div>
                     
                     <div style="margin-top: 3rem;">
-                        <a href="track-order.php" class="btn btn-primary btn-large">Track Your Order</a>
+                        <a href="track-order.php?order=<?php echo urlencode($orderNumber); ?>" class="btn btn-primary btn-large">Track Your Order</a>
                         <a href="user-portal/" class="btn btn-outline btn-large" style="margin-left: 1rem;">Go to Patient Portal</a>
                     </div>
                 </div>
                 
             <?php else: ?>
                 <!-- Order Form -->
-                <h1 class="text-center" style="margin-bottom: 1rem;">Request Your Screening Kit</h1>
+                <h1 class="text-center" style="margin-bottom: 1rem;">
+                    <?php echo $isLoggedIn ? 'Order Another Screening Kit' : 'Request Your Screening Kit'; ?>
+                </h1>
                 <p class="text-center" style="max-width: 600px; margin: 0 auto 3rem; color: var(--color-dark-gray);">
-                    Complete your order below. Your kit will ship within 3-5 business days, and results will be available in 14-21 days.
+                    <?php if ($isLoggedIn): ?>
+                        Welcome back, <strong><?php echo htmlspecialchars($user['full_name']); ?></strong>! Complete your shipping information to place your order.
+                    <?php else: ?>
+                        Complete your order below. Your kit will ship within 3-5 business days, and results will be available in 14-21 days.
+                    <?php endif; ?>
                 </p>
                 
                 <?php if ($error): ?>
@@ -166,6 +216,15 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                 </div>
                             </div>
                             
+                            <?php if ($isLoggedIn): ?>
+                                <!-- Account Info -->
+                                <div style="background: rgba(0, 179, 164, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                                    <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-bottom: 0.5rem;">Ordering as:</div>
+                                    <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($user['full_name']); ?></div>
+                                    <div style="font-size: 0.9rem; color: var(--color-dark-gray);"><?php echo htmlspecialchars($user['email']); ?></div>
+                                </div>
+                            <?php endif; ?>
+                            
                             <div class="trust-badges" style="flex-direction: column; align-items: flex-start; margin-top: 1.5rem;">
                                 <div class="trust-badge" style="width: 100%; justify-content: flex-start;">
                                     <span>🔒</span>
@@ -189,40 +248,64 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                             <form method="POST" action="" data-validate>
                                 <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                                 
-                                <h3 style="margin-bottom: 1.5rem;">Personal Information</h3>
-                                
-                                <div class="form-group">
-                                    <label for="full_name" class="form-label required">Full Name</label>
-                                    <input type="text" id="full_name" name="full_name" class="form-input" required value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col col-2">
-                                        <div class="form-group">
-                                            <label for="email" class="form-label required">Email Address</label>
-                                            <input type="email" id="email" name="email" class="form-input" required data-validate="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                                <?php if (!$isLoggedIn): ?>
+                                    <!-- Personal Information - ONLY for guest users -->
+                                    <h3 style="margin-bottom: 1.5rem;">Personal Information</h3>
+                                    
+                                    <div class="form-group">
+                                        <label for="full_name" class="form-label required">Full Name</label>
+                                        <input type="text" id="full_name" name="full_name" class="form-input" required value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col col-2">
+                                            <div class="form-group">
+                                                <label for="email" class="form-label required">Email Address</label>
+                                                <input type="email" id="email" name="email" class="form-input" required data-validate="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col col-2">
+                                            <div class="form-group">
+                                                <label for="phone" class="form-label required">Phone Number</label>
+                                                <input type="tel" id="phone" name="phone" class="form-input" required data-validate="phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col col-2">
-                                        <div class="form-group">
-                                            <label for="phone" class="form-label required">Phone Number</label>
-                                            <input type="tel" id="phone" name="phone" class="form-input" required data-validate="phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
+                                    
+                                    <div class="form-group">
+                                        <label for="dob" class="form-label required">Date of Birth</label>
+                                        <input type="date" id="dob" name="dob" class="form-input" required value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="password" class="form-label required">Create Password</label>
+                                        <input type="password" id="password" name="password" class="form-input" required data-validate="password" minlength="8">
+                                        <small style="color: var(--color-dark-gray);">Minimum 8 characters for your patient portal account</small>
+                                    </div>
+                                    
+                                    <h3 style="margin: 2rem 0 1.5rem;">Shipping Address</h3>
+                                <?php else: ?>
+                                    <!-- Logged in user - show info summary -->
+                                    <div style="background: rgba(0, 179, 164, 0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                                        <h3 style="margin-bottom: 1rem; color: var(--color-primary-deep-blue);">Account Information</h3>
+                                        <div style="margin-bottom: 0.5rem;">
+                                            <strong>Name:</strong> <?php echo htmlspecialchars($user['full_name']); ?>
+                                        </div>
+                                        <div style="margin-bottom: 0.5rem;">
+                                            <strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?>
+                                        </div>
+                                        <div style="margin-bottom: 0.5rem;">
+                                            <strong>Phone:</strong> <?php echo htmlspecialchars($user['phone']); ?>
+                                        </div>
+                                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0, 179, 164, 0.2);">
+                                            <small style="color: var(--color-dark-gray);">
+                                                Not you? <a href="user-portal/logout.php" style="color: var(--color-medical-teal);">Log out</a> to order with a different account.
+                                            </small>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="dob" class="form-label required">Date of Birth</label>
-                                    <input type="date" id="dob" name="dob" class="form-input" required value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="password" class="form-label required">Create Password</label>
-                                    <input type="password" id="password" name="password" class="form-input" required data-validate="password" minlength="8">
-                                    <small style="color: var(--color-dark-gray);">Minimum 8 characters for your patient portal account</small>
-                                </div>
-                                
-                                <h3 style="margin: 2rem 0 1.5rem;">Shipping Address</h3>
+                                    
+                                    <h3 style="margin-bottom: 1.5rem;">Shipping Address</h3>
+                                <?php endif; ?>
                                 
                                 <div class="form-group">
                                     <label for="address_line1" class="form-label required">Street Address</label>
