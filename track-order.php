@@ -110,16 +110,22 @@ $allStatuses = $stmt->fetchAll();
 <body>
     <!-- Navigation -->
     <?php include 'includes/header.php'; ?>
-    
-    <main style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);">
-        <div class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
-            <h1 class="text-center" style="margin-bottom: 1rem;">Track Your Order</h1>
-            <p class="text-center" style="max-width: 600px; margin: 0 auto 3rem; color: var(--color-dark-gray);">
+
+
+    <main id="main-content">
+        <!-- Page Header - UNCHANGED -->
+        <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+            <div class="container">
+                <h1 style="color: var(--color-white); margin-bottom: 1rem;">Track Your Order</h1>
+                <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
                 Enter your order number to view the current status of your screening kit.
-            </p>
+                </p>
+            </div>
+        </section>
+    
             
             <!-- Search Form -->
-            <div class="glass-card" style="max-width: 600px; margin: 0 auto 3rem;">
+            <div class="glass-card" style="max-width: 600px; margin: 3rem auto 3rem;">
                 <form method="POST" action="">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label for="order_number" class="form-label">Order Number</label>
@@ -241,7 +247,7 @@ $allStatuses = $stmt->fetchAll();
             <?php endif; ?>
             
             <!-- Help Section -->
-            <div class="glass-card" style="max-width: 800px; margin: 3rem auto 0; text-align: center;">
+            <div class="glass-card" style="max-width: 800px; margin: 3rem auto 3rem; text-align: center;">
                 <h3 style="margin-bottom: 1rem;">Need Help?</h3>
                 <p style="color: var(--color-dark-gray); margin-bottom: 1.5rem;">
                     Have questions about your order or the screening process?
