@@ -359,7 +359,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                             <input type="text" id="city" name="city" class="form-input" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
                                         </div>
                                     </div>
-                                    <div class="col col-2">
+                                    <div class="col col-4">
                                         <div class="form-group">
                                             <label for="state" class="form-label required">State</label>
                                             <select id="state" name="state" class="form-select" required>
@@ -372,7 +372,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col col-3">
+                                    <div class="col col-4">
                                         <div class="form-group">
                                             <label for="zip" class="form-label required">ZIP Code</label>
                                             <input type="text" id="zip" name="zip" class="form-input" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
