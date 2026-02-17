@@ -16,9 +16,23 @@ $user = null;
 // If logged in, get user data
 if ($isLoggedIn) {
     $db = Database::getInstance()->getConnection();
-    $stmt = $db->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    // Explicitly name all columns to guarantee phone and dob are returned
+    $stmt = $db->prepare("
+        SELECT user_id, full_name, email, phone, dob, created_at 
+        FROM users 
+        WHERE user_id = :user_id 
+        LIMIT 1
+    ");
     $stmt->execute([':user_id' => $_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Sync session with latest DB values
+    if ($user) {
+        $_SESSION['user_name']  = $user['full_name'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_phone'] = $user['phone'];
+        $_SESSION['user_dob'] = $user['dob'];
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -28,17 +42,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if ($isLoggedIn) {
             // LOGGED IN USER - Only shipping address required
+            // Fallback chain: DB row -> session -> empty string (never null)
             $data = [
-                'full_name' => $user['full_name'],
-                'email' => $user['email'],
-                'phone' => $user['phone'],
-                'dob' => $user['dob'],
+                'full_name'     => $user['full_name']  ?? $_SESSION['user_name']  ?? '',
+                'email'         => $user['email']       ?? $_SESSION['user_email'] ?? '',
+                'phone'         => $user['phone']       ?? $_SESSION['user_phone'] ?? '',
+                'dob'           => $user['dob']         ?? $_SESSION['user_dob'] ?? '',
                 'address_line1' => trim($_POST['address_line1'] ?? ''),
                 'address_line2' => trim($_POST['address_line2'] ?? ''),
-                'city' => trim($_POST['city'] ?? ''),
-                'state' => trim($_POST['state'] ?? ''),
-                'zip' => trim($_POST['zip'] ?? ''),
-                'consent' => isset($_POST['consent'])
+                'city'          => trim($_POST['city']  ?? ''),
+                'state'         => trim($_POST['state'] ?? ''),
+                'zip'           => trim($_POST['zip']   ?? ''),
+                'consent'       => isset($_POST['consent'])
             ];
             
             // Validation
@@ -286,20 +301,40 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     <h3 style="margin: 2rem 0 1.5rem;">Shipping Address</h3>
                                 <?php else: ?>
                                     <!-- Logged in user - show info summary -->
-                                    <div style="background: rgba(0, 179, 164, 0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-                                        <h3 style="margin-bottom: 1rem; color: var(--color-primary-deep-blue);">Account Information</h3>
-                                        <div style="margin-bottom: 0.5rem;">
-                                            <strong>Name:</strong> <?php echo htmlspecialchars($user['full_name']); ?>
+                                    <?php
+                                        // Safe display values with fallback chain
+                                        $displayName  = $user['full_name'] ?? $_SESSION['user_name']  ?? 'N/A';
+                                        $displayEmail = $user['email']      ?? $_SESSION['user_email'] ?? 'N/A';
+                                        $displayPhone = $user['phone']      ?? $_SESSION['user_phone'] ?? '';
+                                        $displayPhone = !empty($displayPhone) ? $displayPhone : 'Not on file';
+                                        $displayDoB = $user['dob']      ?? $_SESSION['user_dob'] ?? '';
+                                        $displayDoB = !empty($displayDoB) ? $displayDoB : 'Not on file';
+                                    ?>
+                                    <div style="background: rgba(0, 179, 164, 0.1); border-left: 4px solid var(--color-medical-teal); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                                        <h3 style="margin-bottom: 1.25rem; color: var(--color-primary-deep-blue); font-size: 1.1rem;">
+                                            ✅ Ordering as
+                                        </h3>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 2rem;">
+                                            <div>
+                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Name</div>
+                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayName); ?></div>
+                                            </div>
+                                            <div>
+                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Phone</div>
+                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayPhone); ?></div>
+                                            </div>
+                                            <div style="grid-column: 1 / -1;">
+                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Email</div>
+                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayEmail); ?></div>
+                                            </div>
+                                            <div style="grid-column: 1 / -1;">
+                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Date of Birth</div>
+                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayDoB); ?></div>
+                                            </div>
                                         </div>
-                                        <div style="margin-bottom: 0.5rem;">
-                                            <strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?>
-                                        </div>
-                                        <div style="margin-bottom: 0.5rem;">
-                                            <strong>Phone:</strong> <?php echo htmlspecialchars($user['phone']); ?>
-                                        </div>
-                                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0, 179, 164, 0.2);">
+                                        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(0, 179, 164, 0.2);">
                                             <small style="color: var(--color-dark-gray);">
-                                                Not you? <a href="user-portal/logout.php" style="color: var(--color-medical-teal);">Log out</a> to order with a different account.
+                                                Not you? <a href="patient-portal/logout.php" style="color: var(--color-medical-teal); font-weight: 600;">Log out</a> to order with a different account.
                                             </small>
                                         </div>
                                     </div>
@@ -324,7 +359,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                             <input type="text" id="city" name="city" class="form-input" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
                                         </div>
                                     </div>
-                                    <div class="col col-4">
+                                    <div class="col col-2">
                                         <div class="form-group">
                                             <label for="state" class="form-label required">State</label>
                                             <select id="state" name="state" class="form-select" required>
@@ -337,7 +372,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col col-4">
+                                    <div class="col col-3">
                                         <div class="form-group">
                                             <label for="zip" class="form-label required">ZIP Code</label>
                                             <input type="text" id="zip" name="zip" class="form-input" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
