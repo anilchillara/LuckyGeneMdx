@@ -847,8 +847,8 @@ setSecurityHeaders();
                     those icy blues and teal glows from the video.
                 -->
                 <video autoplay muted loop playsinline preload="auto" aria-hidden="true">
+                    <source src="assets/video/My580.webm" type="video/webm">    
                     <source src="assets/video/My580.mp4" type="video/mp4">
-                    <source src="assets/videos/dna-hero.webm" type="video/webm">
                 </video>
             </div>
             <div class="hero-overlay" aria-hidden="true"></div>
