@@ -258,7 +258,7 @@ LuckyGeneMdx-Refactored-v2.0/
 │   ├── blog.php                # Blog management
 │   └── settings.php            # System settings
 │
-├── patient-portal/              # Patient area
+├── user-portal/              # Patient area
 │   ├── index.php               # Dashboard
 │   ├── login.php               # Patient login
 │   ├── orders.php              # View orders

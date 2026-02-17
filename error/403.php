@@ -141,7 +141,7 @@
                 <a href="../index.php" class="error-btn error-btn-primary">
                     Go to Homepage
                 </a>
-                <a href="../patient-portal/login.php" class="error-btn error-btn-secondary">
+                <a href="../user-portal/login.php" class="error-btn error-btn-secondary">
                     Patient Login
                 </a>
             </div>

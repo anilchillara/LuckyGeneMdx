@@ -12,7 +12,7 @@ php -S localhost:8000
 http://localhost:8000/request-kit.php      # Order a kit
 http://localhost:8000/track-order.php      # Track order
 http://localhost:8000/admin/login.php      # Admin login
-http://localhost:8000/patient-portal/login.php  # Patient login
+http://localhost:8000/user-portal/login.php  # Patient login
 
 # Default admin credentials:
 Username: admin

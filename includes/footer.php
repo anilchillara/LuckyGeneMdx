@@ -144,7 +144,7 @@ if (!defined('luckygenemdx')) exit;
             <h4>Support</h4>
             <ul class="footer-links">
                 <li><a href="track-order.php">Track Order</a></li>
-                <li><a href="patient-portal/login.php">Patient Login</a></li>
+                <li><a href="user-portal/login.php">Patient Login</a></li>
                 <li><a href="faq.php">Help Center</a></li>
             </ul>
         </div>

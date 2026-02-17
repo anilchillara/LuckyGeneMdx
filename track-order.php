@@ -233,8 +233,8 @@ $allStatuses = $stmt->fetchAll();
                     <?php elseif ($order['display_order'] == 4): ?>
                         <p>Your sample is currently being processed. Results are expected within <?php echo RESULTS_PROCESSING_DAYS; ?> business days. We'll email you as soon as they're ready.</p>
                     <?php else: ?>
-                        <p>Your results are ready! You can now view them in your patient portal.</p>
-                        <a href="patient-portal/" class="btn btn-primary" style="margin-top: 1rem;">View Results</a>
+                        <p>Your results are ready! You can now view them in your user portal.</p>
+                        <a href="user-portal/" class="btn btn-primary" style="margin-top: 1rem;">View Results</a>
                     <?php endif; ?>
                 </div>
                 

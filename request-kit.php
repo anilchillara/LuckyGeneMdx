@@ -117,7 +117,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                     
                     <div style="margin-top: 3rem;">
                         <a href="track-order.php" class="btn btn-primary btn-large">Track Your Order</a>
-                        <a href="patient-portal/" class="btn btn-outline btn-large" style="margin-left: 1rem;">Go to Patient Portal</a>
+                        <a href="user-portal/" class="btn btn-outline btn-large" style="margin-left: 1rem;">Go to Patient Portal</a>
                     </div>
                 </div>
                 

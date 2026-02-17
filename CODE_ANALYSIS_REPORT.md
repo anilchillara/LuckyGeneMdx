@@ -149,7 +149,7 @@ ini_set('session.use_strict_mode', 1);
 **Files to Update:**
 - `config.php` - Secure session config
 - All admin/*.php - Consistent auth checks
-- All patient-portal/*.php - CSRF validation
+- All user-portal/*.php - CSRF validation
 - `login.php` files - Rate limiting
 
 ### Phase 2: Code Quality Improvements (Week 2)

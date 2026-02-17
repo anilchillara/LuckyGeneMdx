@@ -241,7 +241,7 @@ class SessionManager {
      * @param string $redirectUrl
      * @return void
      */
-    public static function requirePatient(string $redirectUrl = '/patient-portal/login.php'): void {
+    public static function requirePatient(string $redirectUrl = '/user-portal/login.php'): void {
         if (!self::isPatientAuthenticated()) {
             self::flash('error', 'Please login to continue');
             header('Location: ' . $redirectUrl);
