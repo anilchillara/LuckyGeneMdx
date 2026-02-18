@@ -41,7 +41,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         <!-- Page Header -->
         <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
             <div class="container">
-                <h1 style="color: var(--color-white); margin-bottom: 1rem;">Understanding Genetic Carrier Screening</h1>
+                <h1 style="color: var(--color-white); margin-bottom: 1rem;">Genetic Carrier Screening</h1>
                 <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
                     Knowledge that empowers your family planning decisions
                 </p>
