@@ -321,4 +321,68 @@ class User {
             return ['success' => false, 'message' => 'Password change failed. Please try again.'];
         }
     }
+
+    /**
+     * Reset password based on personal identity verification
+     * Used by password-reset.php
+     */
+    public function resetPasswordVerifyInfo($email, $dob, $phone, $new_password) {
+        try {
+            // 1. Basic Validation
+            if (!$this->validateEmail($email)) {
+                return ['success' => false, 'message' => 'Invalid email format.'];
+            }
+            if (strlen($new_password) < 8) {
+                return ['success' => false, 'message' => 'New password must be at least 8 characters.'];
+            }
+
+            // 2. Sanitize inputs for query
+            $email = $this->sanitize($email);
+            $dob = $this->sanitize($dob);
+            // Normalize phone for comparison (remove non-numeric)
+            $phoneNumeric = preg_replace('/[^0-9]/', '', $phone);
+
+            // 3. Find user matching ALL three criteria
+            // We use a LIKE check for phone to handle different formatting stored in DB
+            $sql = "SELECT user_id FROM users 
+                    WHERE email = :email 
+                    AND dob = :dob 
+                    AND REPLACE(REPLACE(REPLACE(REPLACE(phone, '-', ''), ' ', ''), '(', ''), ')', '') = :phone 
+                    AND is_active = 1";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':email' => $email,
+                ':dob' => $dob,
+                ':phone' => $phoneNumeric
+            ]);
+            
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user) {
+                // Generic error message for security (don't reveal which field was wrong)
+                return ['success' => false, 'message' => 'Identity verification failed. Information does not match our records.'];
+            }
+
+            // 4. Update Password
+            $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
+            $updateSql = "UPDATE users SET password_hash = :password_hash WHERE user_id = :user_id";
+            $updateStmt = $this->db->prepare($updateSql);
+            $result = $updateStmt->execute([
+                ':password_hash' => $new_hash,
+                ':user_id' => $user['user_id']
+            ]);
+
+            if ($result) {
+                error_log("Password reset via identity verify for user ID: " . $user['user_id']);
+                return ['success' => true, 'message' => 'Password has been successfully reset.'];
+            }
+
+            return ['success' => false, 'message' => 'An error occurred while updating the password.'];
+
+        } catch (PDOException $e) {
+            error_log("Reset Password Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Database error. Please try again later.'];
+        }
+    }
 }
