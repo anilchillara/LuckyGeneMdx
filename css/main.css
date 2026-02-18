@@ -2,7 +2,7 @@
  * LuckyGeneMDx - Refactored Main Stylesheet
  * Clean, responsive, no DNA container code
  */
-
+ 
  :root {
     --color-primary-deep-blue: #0A1F44;
     --color-medical-teal: #00B3A4;
@@ -12,7 +12,7 @@
     --color-medium-gray: #E9ECEF;
     --color-dark-gray: #6C757D;
     --color-black: #212529;
-    --gradient-primary: linear-gradient(135deg, #2F377D 0%, #2F538B 40%, #4CB7AA 100%);
+    --gradient-primary: linear-gradient(145deg, #03193c 55%, #00B3A4 100%);
     --gradient-hero: linear-gradient(135deg, rgba(10, 31, 68, 0.95) 0%, rgba(0, 179, 164, 0.85) 100%);
     --font-primary: 'Poppins', sans-serif;
     --font-body: 'Inter', sans-serif;

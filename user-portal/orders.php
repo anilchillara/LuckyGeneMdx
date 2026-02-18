@@ -257,7 +257,7 @@ $firstName = explode(' ', $userName)[0];
                             <div style="padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                                 <div>
                                     <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
-                                        Total: <strong style="color: var(--color-primary-deep-blue); font-size: 1.1rem;">${<?php echo number_format($order['price'], 2); ?></strong>
+                                        Total: <strong style="color: var(--color-primary-deep-blue); font-size: 1.1rem;">$<?php echo number_format($order['price'], 2); ?></strong>
                                     </div>
                                     <?php if ($order['status_id'] == 5): ?>
                                         <div style="color: #2e7d32; font-weight: 600; font-size: 0.95rem; margin-top: 0.5rem;">
