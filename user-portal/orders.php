@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+// define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -25,276 +25,183 @@ $db = Database::getInstance()->getConnection();
 $orderModel = new Order();
 $userId = $_SESSION['user_id'];
 
-// Get user information
 try {
     $stmt = $db->prepare("SELECT * FROM users WHERE user_id = :user_id");
     $stmt->execute([':user_id' => $userId]);
     $user = $stmt->fetch();
-    
-    // Get all user's orders
     $orders = $orderModel->getUserOrders($userId);
-    
 } catch(PDOException $e) {
     error_log("Patient Orders Error: " . $e->getMessage());
     $orders = [];
 }
-
-$userName = $user['full_name'];
-$firstName = explode(' ', $userName)[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders - LuckyGeneMDx Patient Portal</title>
+    <title>My Orders - LuckyGeneMDx</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
-        .portal-page {
-            min-height: 100vh;
-            background: var(--color-light-gray);
-            padding-bottom: 4rem;
-        }
-        
-        .portal-hero {
-            background: var(--gradient-hero);
-            color: white;
-            padding: 4rem 0 3rem;
-            margin-bottom: 3rem;
-        }
-        
-        .portal-hero h1 {
-            color: white;
-            margin-bottom: 0.5rem;
-            font-size: 2.5rem;
-        }
-        
-        .portal-hero p {
-            opacity: 0.9;
-            font-size: 1.125rem;
-        }
-        
-        .content-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            margin-bottom: 2rem;
-        }
-        
-        .order-card {
-            padding: 1.5rem;
-            background: var(--color-light-gray);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-        
-        .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: var(--color-medical-teal);
-        }
-        
-        .order-status-badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        
-        .badge-received { background: #e3f2fd; color: #1565c0; }
-        .badge-shipped { background: #e0f2f1; color: #00695c; }
-        .badge-processing { background: #fff3e0; color: #e65100; }
-        .badge-ready { background: #e8f5e9; color: #2e7d32; }
-        
-        .empty-state {
-            text-align: center;
-            padding: 5rem 2rem;
-            color: var(--color-dark-gray);
-        }
-        
-        .empty-state-icon {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.3;
-        }
-        
+        /* Page Specific Styles */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
+            margin-top: -3rem; /* Overlap hero */
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
         }
-        
         .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: var(--color-white);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
             text-align: center;
+            border: 1px solid rgba(0,0,0,0.04);
         }
+        .stat-val { font-family: var(--font-primary); font-size: 2.5rem; font-weight: 700; color: var(--color-medical-teal); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-lbl { color: var(--color-dark-gray); font-size: 0.9rem; font-weight: 500; }
+
+        .order-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: all var(--transition-normal);
+        }
+        .order-card:hover {
+            border-color: var(--color-medical-teal);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .order-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-light-gray); padding-bottom: 1rem; }
         
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-medical-teal);
-            margin-bottom: 0.5rem;
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
         }
+        .badge-received { background: #e3f2fd; color: #1565c0; }
+        .badge-shipped { background: rgba(0, 179, 164, 0.12); color: var(--color-medical-teal); }
+        .badge-processing { background: #fff3e0; color: #e65100; }
+        .badge-ready { background: #e8f5e9; color: #2e7d32; }
+
+        .order-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .meta-label { font-size: 0.8rem; color: var(--color-dark-gray); margin-bottom: 0.25rem; }
+        .meta-value { font-weight: 600; color: var(--color-primary-deep-blue); }
         
-        .stat-label {
-            color: var(--color-dark-gray);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
+        .order-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
     </style>
 </head>
 <body>
-    <!-- Header with user dropdown -->
     <?php include '../includes/header.php'; ?>
-    
-    <div class="portal-page">
-        <!-- Hero Section -->
+
+    <main class="portal-page">
         <div class="portal-hero">
             <div class="container">
                 <h1>My Orders</h1>
-                <p>View and track all your screening kit orders</p>
+                <p>Track your screening kits and view order history.</p>
             </div>
         </div>
-        
-        <!-- Main Content -->
-        <div class="container" style="max-width: 1200px;">
+
+        <div class="container">
             
             <?php if (!empty($orders)): ?>
-                <!-- Quick Stats -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number"><?php echo count($orders); ?></div>
-                        <div class="stat-label">Total Orders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number"><?php echo count(array_filter($orders, fn($o) => $o['status_id'] == 5)); ?></div>
-                        <div class="stat-label">Results Ready</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number"><?php echo count(array_filter($orders, fn($o) => in_array($o['status_id'], [2, 3, 4]))); ?></div>
-                        <div class="stat-label">In Progress</div>
-                    </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val"><?php echo count($orders); ?></div>
+                    <div class="stat-lbl">Total Orders</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-val"><?php echo count(array_filter($orders, fn($o) => in_array($o['status_id'], [2, 3, 4]))); ?></div>
+                    <div class="stat-lbl">In Progress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val"><?php echo count(array_filter($orders, fn($o) => $o['status_id'] == 5)); ?></div>
+                    <div class="stat-lbl">Results Ready</div>
+                </div>
+            </div>
             <?php endif; ?>
-            
+
             <?php if (empty($orders)): ?>
-                <!-- Empty State -->
-                <div class="content-card">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
-                        <h2 style="margin-bottom: 1rem;">No Orders Yet</h2>
-                        <p style="margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
-                            You haven't placed any orders yet. Order your first screening kit to get started on your genetic health journey.
-                        </p>
-                        <a href="../request-kit.php" class="btn btn-primary btn-large">
-                            Order Screening Kit - $99
-                        </a>
-                    </div>
-                </div>
-            <?php else: ?>
-                <!-- Orders List -->
-                <div class="content-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--color-light-gray);">
-                        <div>
-                            <h2 style="margin: 0 0 0.5rem 0;">Order History</h2>
-                            <p style="color: var(--color-dark-gray); margin: 0;">
-                                <?php echo count($orders); ?> order<?php echo count($orders) > 1 ? 's' : ''; ?> placed
-                            </p>
-                        </div>
-                        <a href="../request-kit.php" class="btn btn-primary">
-                            + New Order
-                        </a>
-                    </div>
-                    
-                    <?php foreach($orders as $order): 
-                        $badgeClass = 'badge-received';
-                        $badgeText = 'Order Received';
-                        
-                        switch($order['status_id']) {
-                            case 2:
-                                $badgeClass = 'badge-shipped';
-                                $badgeText = 'Kit Shipped';
-                                break;
-                            case 3:
-                                $badgeClass = 'badge-processing';
-                                $badgeText = 'Sample Received';
-                                break;
-                            case 4:
-                                $badgeClass = 'badge-processing';
-                                $badgeText = 'Processing';
-                                break;
-                            case 5:
-                                $badgeClass = 'badge-ready';
-                                $badgeText = 'Results Ready';
-                                break;
-                        }
-                    ?>
-                        <div class="order-card">
-                            <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
-                                <div>
-                                    <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--color-primary-deep-blue);">
-                                        Order #<?php echo htmlspecialchars($order['order_number']); ?>
-                                    </div>
-                                    <div style="font-size: 0.95rem; color: var(--color-dark-gray);">
-                                        📅 Placed on <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
-                                    </div>
-                                </div>
-                                <span class="order-status-badge <?php echo $badgeClass; ?>">
-                                    <?php echo $badgeText; ?>
-                                </span>
-                            </div>
-                            
-                            <div style="padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                                <div>
-                                    <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
-                                        Total: <strong style="color: var(--color-primary-deep-blue); font-size: 1.1rem;">$<?php echo number_format($order['price'], 2); ?></strong>
-                                    </div>
-                                    <?php if ($order['status_id'] == 5): ?>
-                                        <div style="color: #2e7d32; font-weight: 600; font-size: 0.95rem; margin-top: 0.5rem;">
-                                            ✅ Results available
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                    <a href="../track-order.php?order=<?php echo urlencode($order['order_number']); ?>" 
-                                       class="btn btn-outline">
-                                        📍 Track Order
-                                    </a>
-                                    <?php if ($order['status_id'] == 5): ?>
-                                        <a href="results.php" class="btn btn-primary">
-                                            View Results →
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <!-- Order Again CTA -->
-                <div class="content-card" style="background: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 100%); color: white; text-align: center;">
-                    <h3 style="color: white; margin-bottom: 1rem; font-size: 1.75rem;">Need Another Screening?</h3>
-                    <p style="opacity: 0.95; margin-bottom: 2rem; font-size: 1.05rem;">
-                        Order additional screening kits for family members or updated testing.
+                <div class="content-card text-center mb-5">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.2;">📦</div>
+                    <h2 style="margin-bottom: 1rem;">No Orders Yet</h2>
+                    <p style="max-width: 500px; margin: 0 auto 2rem auto;">
+                        Start your journey to genetic clarity. Order your first screening kit today.
                     </p>
-                    <a href="../request-kit.php" class="btn btn-large" style="background: white; color: var(--color-primary-deep-blue); font-weight: 600;">
-                        Order New Kit - $99
+                    <a href="../request-kit.php" class="btn btn-primary btn-large">
+                        Order Screening Kit &mdash; $99
                     </a>
                 </div>
+            <?php else: ?>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Order History</h3>
+                    <a href="../request-kit.php" class="btn btn-primary">+ New Order</a>
+                </div>
+
+                <?php foreach($orders as $order): 
+                    $badgeClass = 'badge-received';
+                    $badgeIcon = '📋';
+                    $statusText = 'Received';
+                    
+                    switch($order['status_id']) {
+                        case 2: $badgeClass = 'badge-shipped'; $badgeIcon = '🚚'; $statusText = 'Shipped'; break;
+                        case 3: $badgeClass = 'badge-processing'; $badgeIcon = '🧪'; $statusText = 'Sample Received'; break;
+                        case 4: $badgeClass = 'badge-processing'; $badgeIcon = '🔬'; $statusText = 'Processing'; break;
+                        case 5: $badgeClass = 'badge-ready'; $badgeIcon = '✅'; $statusText = 'Results Ready'; break;
+                    }
+                ?>
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <h4 style="margin: 0; color: var(--color-primary-deep-blue);">
+                                Order #<?php echo htmlspecialchars($order['order_number']); ?>
+                            </h4>
+                            <span style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                                <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
+                            </span>
+                        </div>
+                        <span class="badge <?php echo $badgeClass; ?>">
+                            <span><?php echo $badgeIcon; ?></span> <?php echo $statusText; ?>
+                        </span>
+                    </div>
+
+                    <div class="order-meta">
+                        <div>
+                            <div class="meta-label">Total Amount</div>
+                            <div class="meta-value">$<?php echo number_format($order['price'], 2); ?></div>
+                        </div>
+                        <div>
+                            <div class="meta-label">Shipping To</div>
+                            <div class="meta-value"><?php echo htmlspecialchars($user['full_name']); ?></div>
+                        </div>
+                        <div>
+                            <div class="meta-label">Last Update</div>
+                            <div class="meta-value"><?php echo date('M j', strtotime($order['order_date'])); // Simplified ?></div>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <a href="../track-order.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-outline">
+                            Track Status
+                        </a>
+                        <?php if ($order['status_id'] == 5): ?>
+                            <a href="results.php" class="btn btn-primary">View Results</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
-    </div>
-    
+    </main>
+
     <?php include '../includes/footer.php'; ?>
 </body>
 </html>
