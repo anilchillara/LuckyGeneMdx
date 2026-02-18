@@ -141,8 +141,9 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
     <!-- Navigation -->
     <?php include 'includes/header.php'; ?>
     
-    <main style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);">
-        <div class="container" style="max-width: 1000px; padding-top: 2rem; padding-bottom: 4rem;">
+    <main d="main-content" >
+    <!-- <main d="main-content" style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);"> -->
+        <div class="container">
             
             <?php if ($success): ?>
                 <!-- Success Message -->
@@ -182,16 +183,27 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                 
             <?php else: ?>
                 <!-- Order Form -->
-                <h1 class="text-center" style="margin-bottom: 1rem;">
-                    <?php echo $isLoggedIn ? 'Order Another Screening Kit' : 'Request Your Screening Kit'; ?>
-                </h1>
-                <p class="text-center" style="max-width: 600px; margin: 0 auto 3rem; color: var(--color-dark-gray);">
-                    <?php if ($isLoggedIn): ?>
-                        Welcome back, <strong><?php echo htmlspecialchars($user['full_name']); ?></strong>! Complete your shipping information to place your order.
-                    <?php else: ?>
-                        Complete your order below. Your kit will ship within 3-5 business days, and results will be available in 14-21 days.
-                    <?php endif; ?>
-                </p>
+                <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+                    <div class="container">
+                        <h1 style="color: var(--color-white); margin-bottom: 1rem;">
+                            <?php echo $isLoggedIn ? 'Order Another Screening Kit' : 'Request Your Screening Kit'; ?>
+                        </h1>
+
+
+                        <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                        
+                            <?php if ($isLoggedIn): ?>
+                                Welcome back, <strong><?php echo htmlspecialchars($user['full_name']); ?></strong>! Complete your shipping information to place your order.
+                            <?php else: ?>
+                                Complete your order below. Your kit will ship within 3-5 business days, and results will be available in 14-21 days.
+                            <?php endif; ?>
+
+
+
+                        </p>
+                    </div>
+                </section>
+
                 
                 <?php if ($error): ?>
                     <div class="glass-card" style="background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); padding: 1rem; margin-bottom: 2rem;">
@@ -334,7 +346,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                         </div>
                                         <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(0, 179, 164, 0.2);">
                                             <small style="color: var(--color-dark-gray);">
-                                                Not you? <a href="patient-portal/logout.php" style="color: var(--color-medical-teal); font-weight: 600;">Log out</a> to order with a different account.
+                                                Not you? <a href="user-portal/logout.php" style="color: var(--color-medical-teal); font-weight: 600;">Log out</a> to order with a different account.
                                             </small>
                                         </div>
                                     </div>
