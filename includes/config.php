@@ -94,12 +94,14 @@ define('ENCRYPTION_METHOD', 'AES-256-CBC');
 define('ENCRYPTION_KEY', getenv('ENCRYPTION_KEY'));
 
 // Email Configuration
-define('SMTP_HOST', getenv('SMTP_HOST'));
-define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
-define('SMTP_USER', getenv('SMTP_USER'));
-define('SMTP_PASS', getenv('SMTP_PASS'));
-define('EMAIL_FROM', getenv('EMAIL_FROM'));
-define('EMAIL_FROM_NAME', getenv('EMAIL_FROM_NAME'));
+define('MAIL_HOST', getenv('SMTP_HOST'));
+define('MAIL_PORT', getenv('SMTP_PORT') ?: 587);
+define('MAIL_USERNAME', getenv('SMTP_USER'));
+define('MAIL_PASSWORD', getenv('SMTP_PASS'));
+define('MAIL_FROM', getenv('EMAIL_FROM'));
+define('MAIL_FROM_NAME', getenv('EMAIL_FROM_NAME'));
+
+define('BASE_URL', getenv('BASE_URL'));
 
 // Application Settings
 define('KIT_PRICE', 99.00);

@@ -198,8 +198,8 @@ class User {
             );
             $stmt->execute([':token' => $token, ':expires' => $expires, ':user_id' => $user_id]);
 
-            $base_url   = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost';
-            $verify_url = $base_url . '/portal/verify-email.php?token=' . urlencode($token);
+            $base_url   = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:9999';
+            $verify_url = $base_url . '/user-portal/verify-email.php?token=' . urlencode($token);
 
             $mail = $this->createMailer();
             $mail->addAddress($email, $full_name);
