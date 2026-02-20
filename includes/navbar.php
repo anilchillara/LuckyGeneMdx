@@ -120,6 +120,53 @@ $isLoggedIn = isset($_SESSION['user_id']);
         border-color: var(--nav-teal-dark);
     }
 
+    /* Mobile Toggle */
+    .mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--nav-deep-blue);
+        padding: 0.5rem;
+    }
+
+    @media (max-width: 960px) {
+        .navbar {
+            flex-wrap: wrap;
+            padding: 1rem;
+        }
+        
+        .mobile-toggle {
+            display: block;
+        }
+
+        .nav-items, .nav-actions {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            margin-top: 1rem;
+        }
+        
+        .nav-items.active, .nav-actions.active {
+            display: flex;
+        }
+
+        .nav-link {
+            width: 100%;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--nav-border);
+        }
+        
+        .nav-actions {
+            border-top: 1px solid var(--nav-border);
+            padding-top: 1rem;
+            gap: 1rem;
+        }
+    }
+
     /* Dark Mode Overrides for Navbar */
     body.dark-theme .navbar {
         background: rgba(26, 29, 33, 0.95);
@@ -135,13 +182,17 @@ $isLoggedIn = isset($_SESSION['user_id']);
         color: #ffffff;
         border-color: #495057;
     }
+    body.dark-theme .mobile-toggle {
+        color: #ffffff;
+    }
 </style>
 
 <nav class="navbar">
     <a href="index.php" class="brand">
         <span>🧬</span> LuckyGeneMDx
     </a>
-    <div class="nav-items">
+    <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
+    <div class="nav-items" id="nav-items">
         <a href="index.php" class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>">Home</a>
         <a href="about-genetic-screening.php" class="nav-link <?php echo $currentPage == 'about-genetic-screening.php' ? 'active' : ''; ?>">About Screening</a>
         <a href="how-it-works.php" class="nav-link <?php echo $currentPage == 'how-it-works.php' ? 'active' : ''; ?>">How It Works</a>
@@ -149,7 +200,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <a href="contact.php" class="nav-link <?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>">Contact</a>
         <a href="track-order.php" class="nav-link <?php echo $currentPage == 'track-order.php' ? 'active' : ''; ?>">Track Order</a>
     </div>
-    <div class="nav-actions">
+    <div class="nav-actions" id="nav-actions">
         <button id="theme-toggle" class="btn-nav btn-nav-outline" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
         <?php if ($isLoggedIn): ?>
             <a href="user-portal/index.php" class="btn-nav btn-nav-outline">Dashboard</a>
@@ -176,6 +227,16 @@ $isLoggedIn = isset($_SESSION['user_id']);
             const isDark = body.classList.contains('dark-theme');
             localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
             toggle.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const navItems = document.getElementById('nav-items');
+        const navActions = document.getElementById('nav-actions');
+        if(mobileBtn) mobileBtn.addEventListener('click', () => {
+            navItems.classList.toggle('active');
+            navActions.classList.toggle('active');
+            mobileBtn.textContent = navItems.classList.contains('active') ? '✕' : '☰';
         });
     })();
 </script>

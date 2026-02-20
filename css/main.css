@@ -810,6 +810,13 @@ ul { list-style: none; }
     .progress-step { margin-bottom: 2rem; }
     .resource-card { width: 340px; }
     .marquee-section::before, .marquee-section::after { width: 50px; }
+    
+    /* Responsive Grid System */
+    .col-2, .col-3, .col-4 { flex: 0 0 100%; max-width: 100%; margin-bottom: 1.5rem; }
+    .row { margin: 0; }
+    .col { padding: 0; }
+    .container { padding: 0 1.5rem; }
+    .section { padding: 3rem 0; }
 }
 @media(max-width:600px) {
     .hero h1 { letter-spacing:-0.5px; }
