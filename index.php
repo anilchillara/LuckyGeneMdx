@@ -833,7 +833,7 @@ setSecurityHeaders();
 </head>
 <body>
     <a href="#main-content" class="skip-link" style="position:absolute;top:-40px;left:0;padding:8px 16px;background:var(--teal);color:white;z-index:9999;border-radius:0 0 8px 0;transition:top 0.3s;text-decoration:none;font-size:0.9rem;">Skip to main content</a>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <main id="main-content">
 

@@ -359,7 +359,7 @@ $resources = [
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <main id="main-content">
         <!-- Page Header - UNCHANGED -->

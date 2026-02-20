@@ -1,6 +1,8 @@
 <?php
 define('luckygenemdx', true);
 require_once 'includes/config.php';
+session_start();
+setSecurityHeaders();
 $page_title = 'Contact Us';
 ?>
 <!DOCTYPE html>
@@ -156,7 +158,7 @@ $page_title = 'Contact Us';
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <section class="contact-hero">
         <div class="hero-dna-overlay"></div>

@@ -1,5 +1,8 @@
 <?php
+define('luckygenemdx', true);
 require_once 'includes/config.php';
+session_start();
+setSecurityHeaders();
 
 // Only allow POST requests
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -91,6 +94,7 @@ $success = mail($to_email, $email_subject, $email_body, $headers);
     </style>
 </head>
 <body>
+    <?php include 'includes/navbar.php'; ?>
     <div class="success-page">
         <div class="success-icon">✔️</div>
         <h1>Message Received</h1>

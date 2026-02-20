@@ -34,7 +34,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <!-- Navigation -->
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
     
     <!-- Main Content -->
     <main id="main-content">

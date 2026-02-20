@@ -1,6 +1,8 @@
 <?php
 define('luckygenemdx', true);
 require_once 'includes/config.php';
+session_start();
+setSecurityHeaders();
 $page_title = 'Frequently Asked Questions';
 ?>
 <!DOCTYPE html>
@@ -24,7 +26,7 @@ $page_title = 'Frequently Asked Questions';
             position: relative;
             background: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 75%, var(--color-soft-purple) 100%);
             color: var(--white);
-            padding: 100px 20px 140px;
+            padding: 60px 20px 80px;
             text-align: center;
         }
 
@@ -36,9 +38,14 @@ $page_title = 'Frequently Asked Questions';
             background-size: 30px 30px;
         }
 
+        .faq-hero h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 15px;
+        }
+
         .faq-container {
             max-width: 900px;
-            margin: -80px auto 80px;
+            margin: -40px auto 80px;
             position: relative;
             z-index: 20;
             padding: 0 20px;
@@ -122,12 +129,12 @@ $page_title = 'Frequently Asked Questions';
 
         @media (max-width: 768px) {
             .faq-tabs { flex-wrap: wrap; }
-            .faq-hero { padding: 60px 20px 100px; }
+            .faq-hero { padding: 50px 20px 70px; }
         }
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <section class="faq-hero">
         <div class="hero-dna-overlay"></div>

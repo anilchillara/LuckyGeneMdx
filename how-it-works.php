@@ -21,7 +21,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 </head>
 <body>
     <!-- Navigation -->
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <main id="main-content">
         <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">

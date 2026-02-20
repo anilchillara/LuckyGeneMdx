@@ -1,6 +1,8 @@
 <?php
 define('luckygenemdx', true);
 require_once 'includes/config.php';
+session_start();
+setSecurityHeaders();
 $page_title = 'Privacy Policy';
 ?>
 <!DOCTYPE html>
@@ -25,7 +27,7 @@ $page_title = 'Privacy Policy';
             position: relative;
             background: linear-gradient(135deg, var(--color-primary-deep-blue) 0%, var(--color-medical-teal) 75%, var(--color-soft-purple) 100%);
             color: var(--white);
-            padding: 100px 20px 140px;
+            padding: 60px 20px 80px;
             text-align: center;
             overflow: hidden;
         }
@@ -57,7 +59,7 @@ $page_title = 'Privacy Policy';
 
         .legal-hero h1 {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-size: clamp(2rem, 4vw, 2.8rem);
             font-weight: 700;
             margin-bottom: 20px;
             line-height: 1.2;
@@ -75,7 +77,7 @@ $page_title = 'Privacy Policy';
         /* ===== CONTENT STRUCTURE ===== */
         .legal-content {
             max-width: 1000px;
-            margin: -80px auto 80px;
+            margin: -40px auto 80px;
             background: var(--white);
             padding: 60px;
             border-radius: 24px;
@@ -180,7 +182,7 @@ $page_title = 'Privacy Policy';
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <section class="legal-hero">
         <div class="hero-dna-overlay"></div>

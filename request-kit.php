@@ -139,7 +139,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
 </head>
 <body>
     <!-- Navigation -->
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
     
     <main d="main-content" >
     <!-- <main d="main-content" style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);"> -->
