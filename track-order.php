@@ -46,10 +46,10 @@ $allStatuses = $stmt->fetchAll();
 
     <main id="main-content">
         <!-- Page Header - UNCHANGED -->
-        <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+        <section class="page-header">
             <div class="container">
-                <h1 style="color: var(--color-white); margin-bottom: 1rem;">Track Your Order</h1>
-                <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                <h1>Track Your Order</h1>
+                <p>
                 Enter your order number to view the current status of your screening kit.
                 </p>
             </div>
@@ -57,11 +57,11 @@ $allStatuses = $stmt->fetchAll();
     
             
             <!-- Search Form -->
-            <div class="glass-card" style="max-width: 600px; margin: 3rem auto 3rem;">
+            <div class="glass-card track-order-form-card">
                 <form method="POST" action="">
-                    <div class="form-group" style="margin-bottom: 0;">
+                    <div class="form-group track-order-form-group">
                         <label for="order_number" class="form-label">Order Number</label>
-                        <div style="display: flex; gap: 1rem;">
+                        <div class="track-order-input-group">
                             <input 
                                 type="text" 
                                 id="order_number" 
@@ -69,14 +69,14 @@ $allStatuses = $stmt->fetchAll();
                                 class="form-input" 
                                 placeholder="LGM240214ABC123"
                                 required
-                                style="flex: 1;"
+                                class="track-order-input"
                                 value="<?php echo htmlspecialchars($orderNumber); ?>"
                             >
-                            <button type="submit" class="btn btn-primary" style="padding: 0.875rem 2rem;">
+                            <button type="submit" class="btn btn-primary track-order-btn">
                                 Track Order
                             </button>
                         </div>
-                        <small style="color: var(--color-dark-gray); display: block; margin-top: 0.5rem;">
+                        <small class="track-order-help">
                             Your order number was sent to your email and begins with "LGM"
                         </small>
                     </div>
@@ -84,24 +84,24 @@ $allStatuses = $stmt->fetchAll();
             </div>
             
             <?php if ($error): ?>
-                <div class="glass-card" style="max-width: 600px; margin: 0 auto; background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3);">
-                    <p style="margin: 0; color: #c33;"><strong>Error:</strong> <?php echo htmlspecialchars($error); ?></p>
+                <div class="glass-card track-order-error">
+                    <p class="track-order-error-text"><strong>Error:</strong> <?php echo htmlspecialchars($error); ?></p>
                 </div>
             <?php endif; ?>
             
             <?php if ($order): ?>
                 <!-- Order Details -->
-                <div class="glass-card" style="max-width: 800px; margin: 0 auto 3rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                <div class="glass-card track-order-details">
+                    <div class="track-order-header">
                         <div>
-                            <h2 style="margin-bottom: 0.5rem;">Order Details</h2>
-                            <p style="color: var(--color-dark-gray); margin: 0;">
+                            <h2 class="mb-1">Order Details</h2>
+                            <p class="text-dark-gray mb-0">
                                 Order placed on <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
                             </p>
                         </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 0.9rem; color: var(--color-dark-gray); margin-bottom: 0.25rem;">Order Number</div>
-                            <div style="font-size: 1.25rem; font-weight: 700; color: var(--color-primary-deep-blue);">
+                        <div class="text-right">
+                            <div class="font-sm text-dark-gray mb-1">Order Number</div>
+                            <div class="font-lg font-bold text-deep-blue">
                                 <?php echo htmlspecialchars($order['order_number']); ?>
                             </div>
                         </div>
@@ -109,9 +109,9 @@ $allStatuses = $stmt->fetchAll();
                     
                     <div class="row">
                         <div class="col col-2">
-                            <div style="padding: 1rem; background: var(--color-light-gray); border-radius: var(--radius-sm);">
-                                <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-bottom: 0.25rem;">Current Status</div>
-                                <div style="font-size: 1.125rem; font-weight: 600; color: var(--color-medical-teal);">
+                            <div class="track-order-status-box">
+                                <div class="font-sm text-dark-gray mb-1">Current Status</div>
+                                <div class="font-lg font-semibold text-teal">
                                     <?php echo htmlspecialchars($order['status_name']); ?>
                                 </div>
                             </div>
@@ -119,9 +119,9 @@ $allStatuses = $stmt->fetchAll();
                         
                         <?php if ($order['tracking_number']): ?>
                         <div class="col col-2">
-                            <div style="padding: 1rem; background: var(--color-light-gray); border-radius: var(--radius-sm);">
-                                <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-bottom: 0.25rem;">Tracking Number</div>
-                                <div style="font-size: 1.125rem; font-weight: 600; color: var(--color-primary-deep-blue);">
+                            <div class="track-order-status-box">
+                                <div class="font-sm text-dark-gray mb-1">Tracking Number</div>
+                                <div class="font-lg font-semibold text-deep-blue">
                                     <?php echo htmlspecialchars($order['tracking_number']); ?>
                                 </div>
                             </div>
@@ -160,8 +160,8 @@ $allStatuses = $stmt->fetchAll();
                 </div>
                 
                 <!-- Next Steps -->
-                <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
-                    <h3 style="margin-bottom: 1rem;">What's Next?</h3>
+                <div class="glass-card track-order-next-steps">
+                    <h3 class="mb-2">What's Next?</h3>
                     <?php if ($order['display_order'] == 1): ?>
                         <p>Your order has been received and is being prepared for shipment. You should receive your kit within 3-5 business days.</p>
                     <?php elseif ($order['display_order'] == 2): ?>
@@ -172,21 +172,21 @@ $allStatuses = $stmt->fetchAll();
                         <p>Your sample is currently being processed. Results are expected within <?php echo RESULTS_PROCESSING_DAYS; ?> business days. We'll email you as soon as they're ready.</p>
                     <?php else: ?>
                         <p>Your results are ready! You can now view them in your user portal.</p>
-                        <a href="user-portal/" class="btn btn-primary" style="margin-top: 1rem;">View Results</a>
+                        <a href="user-portal/" class="btn btn-primary mt-2">View Results</a>
                     <?php endif; ?>
                 </div>
                 
             <?php endif; ?>
             
             <!-- Help Section -->
-            <div class="glass-card" style="max-width: 800px; margin: 3rem auto 3rem; text-align: center;">
-                <h3 style="margin-bottom: 1rem;">Need Help?</h3>
-                <p style="color: var(--color-dark-gray); margin-bottom: 1.5rem;">
+            <div class="glass-card track-order-help-section">
+                <h3 class="mb-2">Need Help?</h3>
+                <p class="text-dark-gray mb-3">
                     Have questions about your order or the screening process?
                 </p>
                 <div>
                     <a href="mailto:support@luckygenemdx.com" class="btn btn-outline">Email Support</a>
-                    <a href="tel:1-800-GENE-TEST" class="btn btn-outline" style="margin-left: 1rem;">Call Us</a>
+                    <a href="tel:1-800-GENE-TEST" class="btn btn-outline ml-2">Call Us</a>
                 </div>
             </div>
         </div>

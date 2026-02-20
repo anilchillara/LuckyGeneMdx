@@ -39,10 +39,10 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
     <!-- Main Content -->
     <main id="main-content">
         <!-- Page Header -->
-        <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+        <section class="page-header">
             <div class="container">
-                <h1 style="color: var(--color-white); margin-bottom: 1rem;">Genetic Carrier Screening</h1>
-                <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                <h1>Genetic Carrier Screening</h1>
+                <p>
                     Knowledge that empowers your family planning decisions
                 </p>
             </div>
@@ -67,9 +67,9 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                             and be affected by the disorder.
                         </p>
 
-                        <div class="glass-card" style="background: rgba(0, 179, 164, 0.1); border-left: 4px solid var(--color-medical-teal); padding: 1.5rem; margin: 2rem 0;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Key Point</h4>
-                            <p style="margin: 0;">
+                        <div class="glass-card glass-card-teal-left p-3 mt-4 mb-4">
+                            <h4 class="text-teal mb-1">Key Point</h4>
+                            <p class="mb-0">
                                 Carrier screening is <strong>not diagnostic</strong>. It identifies risk before 
                                 pregnancy, allowing couples to make informed decisions about family planning.
                             </p>
@@ -77,8 +77,8 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                     </div>
                     
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 1.5rem; text-align: center;">
-                            <img src="assets/images/CarrierStatus.png" alt="Inheritance Pattern" style="width: 100%; border-radius: 8px;">
+                        <div class="glass-card p-3 text-center">
+                            <img src="assets/images/CarrierStatus.png" alt="Inheritance Pattern" class="w-100 img-rounded">
                             <!-- Legend -->
                             <text x="200" y="310" text-anchor="middle" fill="#0A1F44" font-size="12">Inheritance Pattern</text>
                         </div>
@@ -92,30 +92,30 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
             <div class="container">
                 <div class="row" >
                     <div class="col col-2">
-                        <div style="display: inline-block; background: var(--color-medical-teal); color: white; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-bottom: 1rem;">GENETIC BLUEPRINT</div>
+                        <div class="pill-badge pill-badge-teal mb-2">GENETIC BLUEPRINT</div>
                         <h2>Hidden in our Genetic Code</h2>
                         <p>Carrier status refers to individuals who carry one mutated gene for a recessive condition. While typically asymptomatic, if both parents are carriers, there is a 25% probability of passing it to their children.</p>
                         
-                        <div class="row" style="margin-top: 2rem;">
+                        <div class="row mt-4">
                             <div class="col col-2">
-                                <div class="glass-card" style="padding: 1.5rem; border-top: 4px solid var(--color-medical-teal);">
-                                    <h3 style="color: var(--color-medical-teal); margin-bottom: 0;">25%</h3>
-                                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Inheritance risk if both parents are carriers.</p>
+                                <div class="glass-card p-3 glass-card-teal-top">
+                                    <h3 class="text-teal mb-0">25%</h3>
+                                    <p class="font-sm mt-1">Inheritance risk if both parents are carriers.</p>
                                 </div>
                             </div>
                             <div class="col col-2">
-                                <div class="glass-card" style="padding: 1.5rem; border-top: 4px solid var(--color-primary-deep-blue);">
-                                    <h3 style="color: var(--color-primary-deep-blue); margin-bottom: 0;">1 in 4</h3>
-                                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Probability of a child being affected.</p>
+                                <div class="glass-card p-3 glass-card-blue-top">
+                                    <h3 class="text-deep-blue mb-0">1 in 4</h3>
+                                    <p class="font-sm mt-1">Probability of a child being affected.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 1.5rem; text-align: center;">
-                            <img src="assets/images/autoRes.png" alt="Inheritance Pattern" style="width: 100%; border-radius: 8px;">
-                            <p style="font-size: 0.75rem; margin-top: 1rem; font-style: italic; color: var(--color-dark-gray);">Visualizing the autosomal recessive probability distribution.</p>
+                        <div class="glass-card p-3 text-center">
+                            <img src="assets/images/autoRes.png" alt="Inheritance Pattern" class="w-100 img-rounded">
+                            <p class="font-xs mt-2 font-italic text-dark-gray">Visualizing the autosomal recessive probability distribution.</p>
                         </div>
                     </div>
                 </div>
@@ -123,38 +123,38 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         </section>
 
         <!-- Why Screen -->
-        <section class="section" style="background: var(--color-light-gray);">
+        <section class="section section-light">
             <div class="container">
-                <h2 class="text-center" style="margin-bottom: 1rem;">Why Consider Carrier Screening?</h2>
-                <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--color-dark-gray);">
+                <h2 class="text-center mb-2">Why Consider Carrier Screening?</h2>
+                <p class="section-intro text-dark-gray">
                     Understanding your carrier status provides valuable information for family planning
                 </p>
                 
                 <div class="row">
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem; height: 100%;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="icon-box">📊</div>
                             <h3>Know Your Risk</h3>
                             <p>Understand if you and your partner are carriers for the same genetic conditions.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem; height: 100%;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="icon-box">🎯</div>
                             <h3>Plan Ahead</h3>
                             <p>Make informed decisions about family planning with comprehensive genetic information.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem; height: 100%;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">🏥</div>
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="icon-box">🏥</div>
                             <h3>Early Awareness</h3>
                             <p>Prepare for potential medical needs and connect with specialists early if needed.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem; height: 100%;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">💙</div>
+                        <div class="glass-card text-center p-4 h-100">
+                            <div class="icon-box">💙</div>
                             <h3>Peace of Mind</h3>
                             <p>Gain confidence and reduce uncertainty about your genetic health.</p>
                         </div>
@@ -166,64 +166,64 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         <!-- What Conditions -->
         <section class="section">
             <div class="container">
-                <h2 class="text-center" style="margin-bottom: 1rem;">Common Conditions Screened</h2>
-                <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--color-dark-gray);">
+                <h2 class="text-center mb-2">Common Conditions Screened</h2>
+                <p class="section-intro text-dark-gray">
                     Our comprehensive panel tests for over 300 genetic conditions, including:
                 </p>
                 
                 <div class="row">
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Cystic Fibrosis</h4>
-                            <p style="font-size: 0.9rem; margin: 0;">
+                        <div class="glass-card p-3 mb-3">
+                            <h4 class="text-teal mb-1">Cystic Fibrosis</h4>
+                            <p class="font-sm mb-0">
                                 Affects the lungs and digestive system. Carrier frequency: 1 in 25 (Caucasian)
                             </p>
                         </div>
                     </div>
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Sickle Cell Disease</h4>
-                            <p style="font-size: 0.9rem; margin: 0;">
+                        <div class="glass-card p-3 mb-3">
+                            <h4 class="text-teal mb-1">Sickle Cell Disease</h4>
+                            <p class="font-sm mb-0">
                                 Affects red blood cells and oxygen transport. Carrier frequency: 1 in 13 (African American)
                             </p>
                         </div>
                     </div>
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Tay-Sachs Disease</h4>
-                            <p style="font-size: 0.9rem; margin: 0;">
+                        <div class="glass-card p-3 mb-3">
+                            <h4 class="text-teal mb-1">Tay-Sachs Disease</h4>
+                            <p class="font-sm mb-0">
                                 Progressive nervous system disorder. Carrier frequency: 1 in 30 (Ashkenazi Jewish)
                             </p>
                         </div>
                     </div>
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Spinal Muscular Atrophy</h4>
-                            <p style="font-size: 0.9rem; margin: 0;">
+                        <div class="glass-card p-3 mb-3">
+                            <h4 class="text-teal mb-1">Spinal Muscular Atrophy</h4>
+                            <p class="font-sm mb-0">
                                 Affects muscle movement and strength. Carrier frequency: 1 in 50 (general population)
                             </p>
                         </div>
                     </div>
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Fragile X Syndrome</h4>
-                            <p style="font-size: 0.9rem; margin: 0;">
+                        <div class="glass-card p-3 mb-3">
+                            <h4 class="text-teal mb-1">Fragile X Syndrome</h4>
+                            <p class="font-sm mb-0">
                                 Leading inherited cause of intellectual disability. Carrier frequency: 1 in 250 females
                             </p>
                         </div>
                     </div>
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Thalassemia</h4>
-                            <p style="font-size: 0.9rem; margin: 0;">
+                        <div class="glass-card p-3 mb-3">
+                            <h4 class="text-teal mb-1">Thalassemia</h4>
+                            <p class="font-sm mb-0">
                                 Blood disorder affecting hemoglobin. Carrier frequency: varies by ethnicity
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="text-center" style="margin-top: 2rem;">
-                    <p style="color: var(--color-dark-gray); margin-bottom: 1rem;">
+                <div class="text-center mt-4">
+                    <p class="text-dark-gray mb-2">
                         And 294+ additional genetic conditions
                     </p>
                 </div>
@@ -231,45 +231,45 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         </section>
 
         <!-- Who Should Screen -->
-        <section class="section" style="background: var(--color-light-gray);">
+        <section class="section section-light">
             <div class="container">
-                <h2 class="text-center" style="margin-bottom: 3rem;">Who Should Consider Screening?</h2>
+                <h2 class="text-center mb-5">Who Should Consider Screening?</h2>
                 
                 <div class="row">
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem; margin-bottom: 1.5rem;">
-                            <h3 style="color: var(--color-medical-teal);">✓ Pre-Conception Planning</h3>
+                        <div class="glass-card p-4 mb-3">
+                            <h3 class="text-teal">✓ Pre-Conception Planning</h3>
                             <p>Couples planning to have children who want to understand their genetic risks before pregnancy.</p>
                         </div>
                     </div>
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem; margin-bottom: 1.5rem;">
-                            <h3 style="color: var(--color-medical-teal);">✓ Family History</h3>
+                        <div class="glass-card p-4 mb-3">
+                            <h3 class="text-teal">✓ Family History</h3>
                             <p>Individuals with a family history of genetic disorders or known carriers in the family.</p>
                         </div>
                     </div>
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem; margin-bottom: 1.5rem;">
-                            <h3 style="color: var(--color-medical-teal);">✓ Ethnic Background</h3>
+                        <div class="glass-card p-4 mb-3">
+                            <h3 class="text-teal">✓ Ethnic Background</h3>
                             <p>Individuals from populations with higher carrier frequencies for certain conditions.</p>
                         </div>
                     </div>
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem; margin-bottom: 1.5rem;">
-                            <h3 style="color: var(--color-medical-teal);">✓ General Awareness</h3>
+                        <div class="glass-card p-4 mb-3">
+                            <h3 class="text-teal">✓ General Awareness</h3>
                             <p>Anyone interested in understanding their genetic health and potential risks.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card" style="background: rgba(108, 99, 255, 0.1); border-left: 4px solid var(--color-purple-accent); padding: 2rem; margin-top: 2rem;">
-                    <h4 style="color: var(--color-purple-accent); margin-bottom: 1rem;">Professional Guidelines</h4>
+                <div class="glass-card glass-card-purple-left p-4 mt-4">
+                    <h4 class="text-purple mb-2">Professional Guidelines</h4>
                     <p>
                         The American College of Obstetricians and Gynecologists (ACOG) and the American College 
                         of Medical Genetics and Genomics (ACMG) recommend offering carrier screening to all 
                         individuals considering pregnancy or currently pregnant.
                     </p>
-                    <p style="font-size: 0.9rem; margin: 0; opacity: 0.8;">
+                    <p class="font-sm mb-0 opacity-80">
                         <em>LuckyGeneMdx follows these professional guidelines but is not directly affiliated with these organizations.</em>
                     </p>
                 </div>
@@ -279,46 +279,46 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
         <!-- Scientific Credibility -->
         <section class="section">
             <div class="container">
-                <h2 class="text-center" style="margin-bottom: 1rem;">Scientific Standards & Credibility</h2>
-                <p class="text-center" style="max-width: 700px; margin: 0 auto 3rem; color: var(--color-dark-gray);">
+                <h2 class="text-center mb-2">Scientific Standards & Credibility</h2>
+                <p class="section-intro text-dark-gray">
                     Our screening aligns with established medical genetics standards
                 </p>
                 
                 <div class="row">
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">🔬</div>
+                        <div class="glass-card text-center p-4">
+                            <div class="icon-box">🔬</div>
                             <h4>ACMG Guidelines</h4>
                             <p>Our panel follows American College of Medical Genetics and Genomics standards.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
+                        <div class="glass-card text-center p-4">
+                            <div class="icon-box">✓</div>
                             <h4>CLIA-Certified Lab</h4>
                             <p>All testing performed in Clinical Laboratory Improvement Amendments certified laboratories.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                        <div class="glass-card text-center p-4">
+                            <div class="icon-box">🏆</div>
                             <h4>CAP-Accredited</h4>
                             <p>Laboratory partners maintain College of American Pathologists accreditation.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">👨‍⚕️</div>
+                        <div class="glass-card text-center p-4">
+                            <div class="icon-box">👨‍⚕️</div>
                             <h4>Board-Certified Review</h4>
                             <p>Results reviewed by board-certified geneticists and genetic counselors.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card" style="background: rgba(0, 179, 164, 0.1); border-left: 4px solid var(--color-medical-teal); padding: 1.5rem; margin: 2rem 0;">
+                <div class="glass-card glass-card-teal-left p-3 mt-4 mb-4">
                     
-                <h4 style="color: var(--color-medical-teal); margin-bottom: 0.5rem;">Important Note</h4>
-                    <p style="margin: 0; ">
+                <h4 class="text-teal mb-1">Important Note</h4>
+                    <p class="mb-0">
                         <strong></strong> LuckyGeneMdx provides genetic carrier screening services 
                         aligned with professional standards. We are not affiliated with, endorsed by, or officially 
                         connected to ACMG, ACOG, CDC, or other medical organizations mentioned. Carrier screening 
@@ -330,40 +330,40 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
 
         <!-- CTA Section -->
         
-        <section class="section conversion-block" style="background: var(--color-light-gray); padding: 6rem 0;">
+        <section class="section conversion-block section-light section-padded">
             <div class="container">
-                <div class="cta-card" style="background: var(--color-white); border-radius: 20px; box-shadow: 0 20px 40px rgba(10, 31, 68, 0.1); padding: 4rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 1000px; margin: 0 auto;">
+                <div class="cta-card-large">
                     
-                    <div style="display: inline-block; background: rgba(0, 179, 164, 0.1); color: var(--color-medical-teal); padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">
+                    <div class="pill-badge-outline-teal mb-3">
                         Limited Time Offer
                     </div>
 
-                    <h2 style="color: var(--color-primary-deep-blue); margin-bottom: 1.5rem; font-size: 2.5rem; font-weight: 700;">
+                    <h2 class="text-deep-blue mb-3 font-xxl font-bold">
                         Secure Your Family's Future
                     </h2>
                     
-                    <p style="font-size: 1.15rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    <p class="text-dark-gray mb-5 mx-auto lh-1-6" style="font-size: 1.15rem; max-width: 650px;">
                         Join thousands of proactive families. Get clinical-grade insights delivered privately to your door in just 14-21 days.
                     </p>
 
-                    <div style="margin-bottom: 3rem;">
-                        <span style="font-size: 4rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
-                        <span style="font-size: 1.5rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.6; margin-left: 10px;">$249</span>
+                    <div class="mb-5">
+                        <span class="price-display">$99</span>
+                        <span class="price-strike">$249</span>
                     </div>
 
-                    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                    <div class="flex-center-wrap" style="gap: 1.5rem;">
                         <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
                             Order Your Screening Kit
                         </a>
-                        <a href="how-it-works.php" class="btn btn-outline btn-large" style="border: 2px solid var(--color-primary-deep-blue); color: var(--color-primary-deep-blue); padding: 1.2rem 3rem; border-radius: 12px; font-size: 1.1rem; text-decoration: none; font-weight: 600; display: inline-block;">
+                        <a href="how-it-works.php" class="btn btn-outline btn-large">
                             See How It Works
                         </a>
                     </div>
 
-                    <div style="margin-top: 3rem; display: flex; justify-content: center; gap: 2.5rem; opacity: 0.8; border-top: 1px solid var(--color-medium-gray); padding-top: 2rem; flex-wrap: wrap;">
-                        <span style="font-size: 0.9rem; color: var(--color-primary-deep-blue); font-weight: 500;">✓ HIPAA Compliant</span>
-                        <span style="font-size: 0.9rem; color: var(--color-primary-deep-blue); font-weight: 500;">✓ CLIA Certified Lab</span>
-                        <span style="font-size: 0.9rem; color: var(--color-primary-deep-blue); font-weight: 500;">✓ Free 2-Day Shipping</span>
+                    <div class="check-list-horizontal mt-5">
+                        <span class="check-item"><span>✓</span> HIPAA Compliant</span>
+                        <span class="check-item"><span>✓</span> CLIA Certified Lab</span>
+                        <span class="check-item"><span>✓</span> Free 2-Day Shipping</span>
                     </div>
                 </div>
             </div>

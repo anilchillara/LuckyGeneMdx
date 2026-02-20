@@ -147,26 +147,26 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
             
             <?php if ($success): ?>
                 <!-- Success Message -->
-                <div class="glass-card" style="text-align: center; padding: 3rem;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
-                    <h1 style="color: var(--color-medical-teal); margin-bottom: 1rem;">Order Confirmed!</h1>
-                    <p style="font-size: 1.125rem; margin-bottom: 2rem;">
+                <div class="glass-card success-container">
+                    <div class="icon-box-lg mb-2">✅</div>
+                    <h1 class="text-teal mb-2">Order Confirmed!</h1>
+                    <p class="font-lg mb-4">
                         Thank you for your order. Your screening kit will be shipped within 3-5 business days.
                     </p>
                     
-                    <div class="glass-card" style="background: rgba(0, 179, 164, 0.1); padding: 2rem; margin: 2rem 0;">
-                        <div style="font-size: 0.9rem; color: var(--color-dark-gray); margin-bottom: 0.5rem;">Your Order Number</div>
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--color-primary-deep-blue); letter-spacing: 2px;">
+                    <div class="glass-card order-number-box">
+                        <div class="font-sm text-dark-gray mb-1">Your Order Number</div>
+                        <div class="font-xl font-bold text-deep-blue ls-2">
                             <?php echo htmlspecialchars($orderNumber); ?>
                         </div>
-                        <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-top: 0.5rem;">
+                        <div class="font-sm text-dark-gray mt-1">
                             Please save this number for tracking
                         </div>
                     </div>
                     
-                    <h3 style="margin: 2rem 0 1rem;">What's Next?</h3>
-                    <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-                        <ol style="line-height: 1.8;">
+                    <h3 class="mt-4 mb-2">What's Next?</h3>
+                    <div class="next-steps-list">
+                        <ol class="lh-1-8">
                             <li><strong>Check your email</strong> for order confirmation and instructions</li>
                             <li><strong>Receive your kit</strong> within 3-5 business days</li>
                             <li><strong>Collect your sample</strong> following the included instructions</li>
@@ -175,22 +175,22 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                         </ol>
                     </div>
                     
-                    <div style="margin-top: 3rem;">
+                    <div class="mt-5">
                         <a href="track-order.php?order=<?php echo urlencode($orderNumber); ?>" class="btn btn-primary btn-large">Track Your Order</a>
-                        <a href="user-portal/" class="btn btn-outline btn-large" style="margin-left: 1rem;">Go to Patient Portal</a>
+                        <a href="user-portal/" class="btn btn-outline btn-large ml-2">Go to Patient Portal</a>
                     </div>
                 </div>
                 
             <?php else: ?>
                 <!-- Order Form -->
-                <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+                <section class="page-header">
                     <div class="container">
-                        <h1 style="color: var(--color-white); margin-bottom: 1rem;">
+                        <h1>
                             <?php echo $isLoggedIn ? 'Order Another Screening Kit' : 'Request Your Screening Kit'; ?>
                         </h1>
 
 
-                        <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                        <p>
                         
                             <?php if ($isLoggedIn): ?>
                                 Welcome back, <strong><?php echo htmlspecialchars($user['full_name']); ?></strong>! Complete your shipping information to place your order.
@@ -206,62 +206,62 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
 
                 
                 <?php if ($error): ?>
-                    <div class="glass-card" style="background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); padding: 1rem; margin-bottom: 2rem;">
-                        <strong style="color: #c33;">Error:</strong> <?php echo htmlspecialchars($error); ?>
+                    <div class="glass-card glass-card-error p-3 mb-4">
+                        <strong class="text-error">Error:</strong> <?php echo htmlspecialchars($error); ?>
                     </div>
                 <?php endif; ?>
                 
                 <div class="row">
                     <!-- Product Summary -->
                     <div class="col col-2">
-                        <div class="glass-card" style="position: sticky; top: 100px;">
+                        <div class="glass-card sticky-summary">
                             <h3>Order Summary</h3>
-                            <div style="padding: 1.5rem 0; border-bottom: 1px solid var(--color-medium-gray);">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <div class="summary-row">
+                                <div class="summary-flex">
                                     <strong>Comprehensive Carrier Screening Kit</strong>
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--color-dark-gray); margin-bottom: 1rem;">
+                                <div class="font-sm text-dark-gray mb-2">
                                     Tests for 300+ genetic conditions
                                 </div>
                             </div>
                             
-                            <div style="padding: 1.5rem 0; border-bottom: 1px solid var(--color-medium-gray);">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <div class="summary-row">
+                                <div class="summary-flex">
                                     <span>Subtotal</span>
                                     <span>$99.00</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <div class="summary-flex">
                                     <span>Shipping</span>
-                                    <span style="color: var(--color-medical-teal);">FREE</span>
+                                    <span class="text-teal">FREE</span>
                                 </div>
                             </div>
                             
-                            <div style="padding: 1.5rem 0;">
-                                <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700;">
+                            <div class="summary-row">
+                                <div class="summary-flex font-lg font-bold">
                                     <span>Total</span>
-                                    <span style="color: var(--color-medical-teal);">$99.00</span>
+                                    <span class="text-teal">$99.00</span>
                                 </div>
                             </div>
                             
                             <?php if ($isLoggedIn): ?>
                                 <!-- Account Info -->
-                                <div style="background: rgba(0, 179, 164, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                                    <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-bottom: 0.5rem;">Ordering as:</div>
-                                    <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($user['full_name']); ?></div>
-                                    <div style="font-size: 0.9rem; color: var(--color-dark-gray);"><?php echo htmlspecialchars($user['email']); ?></div>
+                                <div class="account-info-box">
+                                    <div class="font-sm text-dark-gray mb-1">Ordering as:</div>
+                                    <div class="font-semibold text-deep-blue"><?php echo htmlspecialchars($user['full_name']); ?></div>
+                                    <div class="font-sm text-dark-gray"><?php echo htmlspecialchars($user['email']); ?></div>
                                 </div>
                             <?php endif; ?>
                             
-                            <div class="trust-badges" style="flex-direction: column; align-items: flex-start; margin-top: 1.5rem;">
-                                <div class="trust-badge" style="width: 100%; justify-content: flex-start;">
+                            <div class="trust-badges trust-badges-vertical">
+                                <div class="trust-badge">
                                     <span>🔒</span>
                                     <span>Secure Checkout</span>
                                 </div>
-                                <div class="trust-badge" style="width: 100%; justify-content: flex-start;">
+                                <div class="trust-badge">
                                     <span>📦</span>
                                     <span>Free Shipping</span>
                                 </div>
-                                <div class="trust-badge" style="width: 100%; justify-content: flex-start;">
+                                <div class="trust-badge">
                                     <span>🔐</span>
                                     <span>Private Results</span>
                                 </div>
@@ -277,7 +277,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                 
                                 <?php if (!$isLoggedIn): ?>
                                     <!-- Personal Information - ONLY for guest users -->
-                                    <h3 style="margin-bottom: 1.5rem;">Personal Information</h3>
+                                    <h3 class="mb-3">Personal Information</h3>
                                     
                                     <div class="form-group">
                                         <label for="full_name" class="form-label required">Full Name</label>
@@ -307,10 +307,10 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     <div class="form-group">
                                         <label for="password" class="form-label required">Create Password</label>
                                         <input type="password" id="password" name="password" class="form-input" required data-validate="password" minlength="8">
-                                        <small style="color: var(--color-dark-gray);">Minimum 8 characters for your patient portal account</small>
+                                        <small class="text-dark-gray">Minimum 8 characters for your patient portal account</small>
                                     </div>
                                     
-                                    <h3 style="margin: 2rem 0 1.5rem;">Shipping Address</h3>
+                                    <h3 class="mt-4 mb-3">Shipping Address</h3>
                                 <?php else: ?>
                                     <!-- Logged in user - show info summary -->
                                     <?php
@@ -322,36 +322,36 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                         $displayDoB = $user['dob']      ?? $_SESSION['user_dob'] ?? '';
                                         $displayDoB = !empty($displayDoB) ? $displayDoB : 'Not on file';
                                     ?>
-                                    <div style="background: rgba(0, 179, 164, 0.1); border-left: 4px solid var(--color-medical-teal); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-                                        <h3 style="margin-bottom: 1.25rem; color: var(--color-primary-deep-blue); font-size: 1.1rem;">
+                                    <div class="ordering-as-box">
+                                        <h3 class="mb-3 text-deep-blue font-lg">
                                             ✅ Ordering as
                                         </h3>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 2rem;">
+                                        <div class="ordering-grid">
                                             <div>
-                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Name</div>
-                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayName); ?></div>
+                                                <div class="ordering-label">Name</div>
+                                                <div class="ordering-value"><?php echo htmlspecialchars($displayName); ?></div>
                                             </div>
                                             <div>
-                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Phone</div>
-                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayPhone); ?></div>
+                                                <div class="ordering-label">Phone</div>
+                                                <div class="ordering-value"><?php echo htmlspecialchars($displayPhone); ?></div>
                                             </div>
                                             <div style="grid-column: 1 / -1;">
-                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Email</div>
-                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayEmail); ?></div>
+                                                <div class="ordering-label">Email</div>
+                                                <div class="ordering-value"><?php echo htmlspecialchars($displayEmail); ?></div>
                                             </div>
                                             <div style="grid-column: 1 / -1;">
-                                                <div style="font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Date of Birth</div>
-                                                <div style="font-weight: 600; color: var(--color-primary-deep-blue);"><?php echo htmlspecialchars($displayDoB); ?></div>
+                                                <div class="ordering-label">Date of Birth</div>
+                                                <div class="ordering-value"><?php echo htmlspecialchars($displayDoB); ?></div>
                                             </div>
                                         </div>
-                                        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(0, 179, 164, 0.2);">
-                                            <small style="color: var(--color-dark-gray);">
-                                                Not you? <a href="user-portal/logout.php" style="color: var(--color-medical-teal); font-weight: 600;">Log out</a> to order with a different account.
+                                        <div class="ordering-footer">
+                                            <small class="text-dark-gray">
+                                                Not you? <a href="user-portal/logout.php" class="text-teal font-semibold">Log out</a> to order with a different account.
                                             </small>
                                         </div>
                                     </div>
                                     
-                                    <h3 style="margin-bottom: 1.5rem;">Shipping Address</h3>
+                                    <h3 class="mb-3">Shipping Address</h3>
                                 <?php endif; ?>
                                 
                                 <div class="form-group">
@@ -392,20 +392,20 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     </div>
                                 </div>
                                 
-                                <h3 style="margin: 2rem 0 1.5rem;">Consent</h3>
+                                <h3 class="mt-4 mb-3">Consent</h3>
                                 
                                 <div class="form-checkbox">
                                     <input type="checkbox" id="consent" name="consent" required>
-                                    <label for="consent" style="font-size: 0.9rem;">
+                                    <label for="consent" class="font-sm">
                                         I understand that this is a carrier screening test, not a diagnostic test. This test does not replace genetic counseling or physician consultation. I consent to genetic testing and agree to the <a href="terms-of-service.php" target="_blank">Terms of Service</a> and <a href="privacy-policy.php" target="_blank">Privacy Policy</a>.
                                     </label>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-primary btn-full btn-large" style="margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary btn-full btn-large mt-4">
                                     Complete Order - $99.00
                                 </button>
                                 
-                                <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--color-dark-gray);">
+                                <p class="text-center mt-2 font-sm text-dark-gray">
                                     🔒 Your information is encrypted and secure
                                 </p>
                             </form>

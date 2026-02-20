@@ -17,15 +17,15 @@ $page_title = 'Contact Us';
 <body>
     <?php include 'includes/navbar.php'; ?>
 
-    <section class="contact-hero">
-        <div class="hero-dna-overlay"></div>
+    <main id="main-content">
+        <section class="page-header">
         <div class="container">
-            <div class="hero-badge">Get in Touch</div>
             <h1>How can we help?</h1>
-            <p class="hero-subtitle">Whether you are a patient looking for results or a clinician seeking partnership, our MDx experts are here to assist.</p>
+            <p>Whether you are a patient looking for results or a clinician seeking partnership, our experts are here to assist.</p>
         </div>
     </section>
 
+    <section class="section">
     <div class="contact-container">
         <div class="contact-triage">
             <div class="triage-card">
@@ -123,6 +123,9 @@ $page_title = 'Contact Us';
             </div>
         </div>
     </div>
+    </section>
+    </main>
+
 
     <?php include 'includes/footer.php'; ?>
 </body>

@@ -119,6 +119,22 @@ $isLoggedIn = isset($_SESSION['user_id']);
         background: var(--nav-teal-dark);
         border-color: var(--nav-teal-dark);
     }
+
+    /* Dark Mode Overrides for Navbar */
+    body.dark-theme .navbar {
+        background: rgba(26, 29, 33, 0.95);
+        border-bottom-color: #343a40;
+    }
+    body.dark-theme .nav-link {
+        color: #adb5bd;
+    }
+    body.dark-theme .nav-link:hover, body.dark-theme .nav-link.active {
+        color: var(--nav-teal);
+    }
+    body.dark-theme .btn-nav-outline {
+        color: #ffffff;
+        border-color: #495057;
+    }
 </style>
 
 <nav class="navbar">
@@ -134,6 +150,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <a href="track-order.php" class="nav-link <?php echo $currentPage == 'track-order.php' ? 'active' : ''; ?>">Track Order</a>
     </div>
     <div class="nav-actions">
+        <button id="theme-toggle" class="btn-nav btn-nav-outline" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
         <?php if ($isLoggedIn): ?>
             <a href="user-portal/index.php" class="btn-nav btn-nav-outline">Dashboard</a>
             <a href="user-portal/logout.php" class="btn-nav btn-nav-primary">Sign Out</a>
@@ -143,3 +160,22 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <?php endif; ?>
     </div>
 </nav>
+
+<script>
+    (function() {
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            if(toggle) toggle.textContent = '☀️';
+        }
+
+        if(toggle) toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
+    })();
+</script>

@@ -17,8 +17,7 @@ $page_title = 'Frequently Asked Questions';
 <body>
     <?php include 'includes/navbar.php'; ?>
 
-    <section class="faq-hero">
-        <div class="hero-dna-overlay"></div>
+    <section class="page-header">
         <div class="container">
             <div class="hero-badge">Resource Center</div>
             <h1>Common Questions</h1>

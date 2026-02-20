@@ -24,10 +24,10 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
     <?php include 'includes/navbar.php'; ?>
 
     <main id="main-content">
-        <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+        <section class="page-header">
             <div class="container">
-                <h1 style="color: var(--color-white); margin-bottom: 1rem;">How It Works</h1>
-                <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                <h1>How It Works</h1>
+                <p>
                     Simple, secure, and scientifically rigorous — from order to results in 2-3 weeks.
                 </p>
             </div>

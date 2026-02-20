@@ -68,10 +68,10 @@ $resources = [
 
     <main id="main-content">
         <!-- Page Header - UNCHANGED -->
-        <section class="page-header" style="background: var(--gradient-primary); color: var(--color-white); padding: 4rem 0 3rem; text-align: center;">
+        <section class="page-header">
             <div class="container">
-                <h1 style="color: var(--color-white); margin-bottom: 1rem;">Clinical Resources</h1>
-                <p style="font-size: 1.25rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                <h1>Clinical Resources</h1>
+                <p>
                     Access global knowledge bases and advocacy networks for genetic health.
                 </p>
             </div>
@@ -114,11 +114,11 @@ $resources = [
         <!-- PREMIUM INFINITE MARQUEE - Clinical Knowledge Base -->
         <section class="marquee-section">
             <div class="container">
-                <div style="text-align: center; margin-bottom: 50px;">
-                    <h2 style="font-size: 2.5rem; color: #0A1F44; margin-bottom: 12px; font-weight: 700;">
+                <div class="resources-intro">
+                    <h2>
                         Clinical Knowledge Base
                     </h2>
-                    <p style="color: #64748b; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
+                    <p>
                         Trusted global genomic databases and clinical reference standards
                     </p>
                 </div>
@@ -220,8 +220,8 @@ $resources = [
                 </div>
             </div>
             
-            <div style="text-align: center; margin-top: 40px;">
-                <p style="color: #64748b; font-size: 0.95rem; font-weight: 500;">
+            <div class="resources-footer">
+                <p>
                     ← Hover to pause • Click any card to visit portal →
                 </p>
             </div>
