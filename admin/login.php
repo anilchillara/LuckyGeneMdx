@@ -21,6 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username && $password) {
         try {
             $db = Database::getInstance()->getConnection();
+            
+            // Check for lockout
+            $stmt = $db->prepare("SELECT COUNT(*) FROM login_attempts WHERE email = :username AND ip_address = :ip AND success = 0 AND attempted_at > (NOW() - INTERVAL " . (int)LOCKOUT_TIME . " SECOND)");
+            $stmt->execute([':username' => $username, ':ip' => $_SERVER['REMOTE_ADDR']]);
+            if ($stmt->fetchColumn() >= MAX_LOGIN_ATTEMPTS) {
+                $error = 'Too many failed attempts. Please try again in 15 minutes.';
+            } else {
             $sql = "SELECT admin_id, username, password_hash, role, is_active FROM admins WHERE username = :username";
             $stmt = $db->prepare($sql);
             $stmt->execute([':username' => $username]);
@@ -43,6 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     session_regenerate_id(true);
                     
+                    // Handle Remember Me
+                    if (isset($_POST['remember'])) {
+                        $params = session_get_cookie_params();
+                        setcookie(session_name(), session_id(), time() + (86400 * 30), $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+                    }
+
                     // Log activity
                     $log = "INSERT INTO activity_log (admin_id, action, ip_address) VALUES (:admin_id, 'login', :ip)";
                     $stmt_log = $db->prepare($log);
@@ -58,12 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Invalid username or password.';
                 
                 // Log failed attempt
-                $log = "INSERT INTO login_attempts (email, ip_address, success) VALUES (:username, :ip, 0)";
+                $log = "INSERT INTO login_attempts (email, ip_address, success, attempted_at) VALUES (:username, :ip, 0, NOW())";
                 $stmt_log = $db->prepare($log);
                 $stmt_log->execute([
                     ':username' => $username,
                     ':ip' => $_SERVER['REMOTE_ADDR']
                 ]);
+            }
             }
         } catch(PDOException $e) {
             error_log("Admin Login Error: " . $e->getMessage());
@@ -120,23 +134,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    required
-                    autocomplete="current-password"
-                >
+                <div style="position: relative;">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        autocomplete="current-password"
+                        style="padding-right: 40px;"
+                    >
+                    <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                </div>
             </div>
             
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
+                <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
+            </div>
+
             <button type="submit" class="btn btn-full" style="margin-top: 1.5rem;">
                 Sign In
             </button>
+            <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
         </form>
         
         <div style="text-align: center; margin-top: 2rem;">
             <p style="font-size: 0.85rem; color: var(--text-secondary);">Authorized personnel only. All activities are logged.</p>
         </div>
     </div>
+
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
 </body>
 </html>

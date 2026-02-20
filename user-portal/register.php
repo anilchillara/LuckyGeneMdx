@@ -124,11 +124,24 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
             <div class="reg-step" id="step-2" style="display:none;">
                 <div class="form-group">
                     <label>Create Password</label>
-                    <input type="password" name="password" id="reg-pw" placeholder="••••••••" autocomplete="new-password">
+                    <div style="position: relative;">
+                        <input type="password" name="password" id="reg-pw" placeholder="••••••••" autocomplete="new-password" style="padding-right: 40px;" oninput="checkStrength(this.value)">
+                        <button type="button" onclick="togglePw('reg-pw')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    </div>
+                    <div class="pw-strength">
+                        <div class="pw-seg" id="seg1"></div>
+                        <div class="pw-seg" id="seg2"></div>
+                        <div class="pw-seg" id="seg3"></div>
+                        <div class="pw-seg" id="seg4"></div>
+                    </div>
+                    <div class="pw-label" id="pw-label"></div>
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" name="confirm_password" id="reg-pw2" placeholder="••••••••" autocomplete="new-password">
+                    <div style="position: relative;">
+                        <input type="password" name="confirm_password" id="reg-pw2" placeholder="••••••••" autocomplete="new-password" style="padding-right: 40px;">
+                        <button type="button" onclick="togglePw('reg-pw2')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    </div>
                 </div>
                 <button type="button" class="btn btn-full" onclick="regNext(3)">Continue →</button>
                 <button type="button" class="btn btn-outline btn-full" style="margin-top:10px;" onclick="regNext(1)">← Back</button>
@@ -207,6 +220,28 @@ function clear(id) {}
 function setRegType(type, el) {
     document.getElementById('registration_type').value = type;
     document.getElementById('order-field').style.display = type === 'with_order' ? 'block' : 'none';
+}
+
+function togglePw(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function checkStrength(pw) {
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw))   score++;
+    if (/\d/.test(pw))       score++;
+    if (/[^A-Za-z\d]/.test(pw)) score++;
+
+    const cls   = ['','weak','weak','fair','good'];
+    const label = ['','Weak','Weak','Fair','Strong'];
+
+    for (let i = 1; i <= 4; i++) {
+        const seg = document.getElementById('seg' + i);
+        seg.className = 'pw-seg ' + (i <= score && score > 0 ? cls[score] : '');
+    }
+    document.getElementById('pw-label').textContent = pw.length ? label[score] : '';
 }
 
 <?php if ($error): ?>

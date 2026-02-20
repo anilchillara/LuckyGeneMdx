@@ -189,6 +189,15 @@ input:focus, select:focus { outline: none; border-color: var(--ms-blue); border-
 .action-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
 .action-label { font-size: 0.9rem; font-weight: 500; }
 
+/* Password strength */
+.pw-strength { display:flex; gap:4px; margin-top:8px; }
+.pw-seg { height:3px; flex:1; border-radius:3px; background:rgba(0,0,0,0.1); transition:.4s; }
+body.dark-theme .pw-seg { background:rgba(255,255,255,0.1); }
+.pw-seg.weak { background:var(--error); }
+.pw-seg.fair { background:var(--warning); }
+.pw-seg.good { background:var(--success); }
+.pw-label { font-size:.7rem; margin-top:4px; text-align:right; transition:.3s; color: var(--text-secondary); }
+
 /* Responsive */
 @media (max-width: 768px) {
     .grid { display: flex; flex-direction: column; }

@@ -21,7 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password    = $_POST['password'] ?? '';
         if ($orderNumber && $password) {
             $result = $userModel->loginWithOrderId($orderNumber, $password);
-            if ($result['success']) { header('Location: index.php'); exit; }
+            if ($result['success']) {
+                if (isset($_POST['remember'])) {
+                    $params = session_get_cookie_params();
+                    setcookie(session_name(), session_id(), time() + (86400 * 30), $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+                }
+                header('Location: index.php');
+                exit;
+            }
             else { $error = $result['message']; }
         } else { $error = 'Please enter both order number and password.'; }
     } else {
@@ -29,7 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['password'] ?? '';
         if ($email && $password) {
             $result = $userModel->login($email, $password);
-            if ($result['success']) { header('Location: index.php'); exit; }
+            if ($result['success']) {
+                if (isset($_POST['remember'])) {
+                    $params = session_get_cookie_params();
+                    setcookie(session_name(), session_id(), time() + (86400 * 30), $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+                }
+                header('Location: index.php');
+                exit;
+            }
             else { $error = $result['message']; }
         } else { $error = 'Please enter both email and password.'; }
     }
@@ -98,7 +112,14 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="current-password">
+                <div style="position: relative;">
+                    <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="current-password" style="padding-right: 40px;">
+                    <button type="button" onclick="togglePassword('password-input')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
+                <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
             </div>
             <button type="submit" class="btn btn-full">Sign In</button>
             <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
@@ -139,6 +160,11 @@ function goToStep1() {
     document.getElementById('step-1').style.display = 'block';
     document.getElementById('header-title').textContent = 'Patient Portal';
     document.getElementById('header-desc').textContent  = 'Welcome back to LuckyGeneMDx';
+}
+
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
 }
 </script>
 </body>

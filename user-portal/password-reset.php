@@ -1,8 +1,10 @@
 <?php
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
 session_start();
+setSecurityHeaders();
 
 $error = '';
 $success = '';
@@ -83,7 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-group">
                     <label>New Security Password</label>
-                    <input type="password" name="new_password" id="new_password" placeholder="••••••••">
+                    <div style="position: relative;">
+                        <input type="password" name="new_password" id="new_password" placeholder="••••••••" style="padding-right: 40px;">
+                        <button type="button" onclick="togglePassword('new_password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-full">Reset & Sign In</button>
                 <button type="button" onclick="showStep(1)" class="btn btn-outline btn-full" style="margin-top:10px;">← Back</button>
@@ -112,6 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             document.querySelectorAll('.step-content').forEach(s => s.style.display = 'none');
             document.getElementById('step-' + step).style.display = 'block';
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
         }
     </script>
 </body>

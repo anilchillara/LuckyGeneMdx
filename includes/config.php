@@ -53,8 +53,7 @@ define('ENVIRONMENT', getenv('ENVIRONMENT') ?: ($isLocal ? 'development' : 'prod
  * Prints to screen in dev, writes to file in prod.
  */
 if (ENVIRONMENT === 'development') {
-    // Hidden in page source as a comment, but visible if you "View Source"
-    echo "\n";
+    // Logging disabled to prevent "Headers already sent" errors
 } else {
     // Silently log to the PHP error log on the server
     error_log("APP INFO: Environment loaded from {$envFile}");

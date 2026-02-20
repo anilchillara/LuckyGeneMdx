@@ -88,6 +88,21 @@ class User {
     }
 
     // ─────────────────────────────────────────────────────────────
+    //  Security / Rate Limiting
+    // ─────────────────────────────────────────────────────────────
+
+    private function isLockedOut($identifier, $ip) {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM login_attempts WHERE email = :identifier AND ip_address = :ip AND success = 0 AND attempted_at > (NOW() - INTERVAL " . LOCKOUT_TIME . " SECOND)");
+        $stmt->execute([':identifier' => $identifier, ':ip' => $ip]);
+        return $stmt->fetchColumn() >= MAX_LOGIN_ATTEMPTS;
+    }
+
+    private function logAttempt($identifier, $ip, $success) {
+        $stmt = $this->db->prepare("INSERT INTO login_attempts (email, ip_address, success, attempted_at) VALUES (:identifier, :ip, :success, NOW())");
+        $stmt->execute([':identifier' => $identifier, ':ip' => $ip, ':success' => $success ? 1 : 0]);
+    }
+
+    // ─────────────────────────────────────────────────────────────
     //  PHPMailer — Gmail SMTP factory
     // ─────────────────────────────────────────────────────────────
 
@@ -354,6 +369,11 @@ HTML;
      */
     public function login($email, $password) {
         $email = $this->sanitize($email);
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        if ($this->isLockedOut($email, $ip)) {
+            return ['success' => false, 'message' => 'Too many failed login attempts. Please try again in 15 minutes.'];
+        }
 
         try {
             $stmt = $this->db->prepare(
@@ -363,6 +383,7 @@ HTML;
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if (!$user || !password_verify($password, $user['password_hash'])) {
+                $this->logAttempt($email, $ip, false);
                 return ['success' => false, 'message' => 'Invalid email or password.'];
             }
             if (!$user['email_verified']) {
@@ -398,6 +419,11 @@ HTML;
      */
     public function loginWithOrderId($order_number, $password) {
         $order_number = $this->sanitize($order_number);
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        if ($this->isLockedOut($order_number, $ip)) {
+            return ['success' => false, 'message' => 'Too many failed login attempts. Please try again in 15 minutes.'];
+        }
 
         try {
             $stmt = $this->db->prepare(
@@ -410,6 +436,7 @@ HTML;
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if (!$user || !password_verify($password, $user['password_hash'])) {
+                $this->logAttempt($order_number, $ip, false);
                 return ['success' => false, 'message' => 'Invalid order number or password.'];
             }
             if (!$user['email_verified']) {

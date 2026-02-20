@@ -30,6 +30,16 @@ try {
         FROM orders o JOIN order_status os ON o.status_id = os.status_id
         GROUP BY os.status_name, os.display_order ORDER BY os.display_order
     ")->fetchAll();
+
+    // Get order trends (last 30 days)
+    $orderTrends = $db->query("
+        SELECT DATE(order_date) as date, COUNT(*) as count 
+        FROM orders 
+        WHERE order_date >= DATE_SUB(NOW(), INTERVAL 30 DAY) 
+        GROUP BY DATE(order_date) 
+        ORDER BY date ASC
+    ")->fetchAll(PDO::FETCH_KEY_PAIR);
+
 } catch(PDOException $e) { error_log($e->getMessage()); $totalOrders=$pendingOrders=$resultsReady=$totalUsers=0; $recentOrders=$ordersByStatus=[]; }
 
 $adminName = $_SESSION['admin_username'];
@@ -55,6 +65,7 @@ $initials  = strtoupper(substr($adminName,0,2));
     <a href="orders.php" class="nav-link">Orders</a>
     <a href="users.php" class="nav-link">Users</a>
     <a href="upload-results.php" class="nav-link">Upload Results</a>
+    <a href="activity-log.php" class="nav-link">Activity Log</a>
     <a href="settings.php" class="nav-link">Settings</a>
   </div>
   <div class="user-menu">
@@ -99,6 +110,18 @@ $initials  = strtoupper(substr($adminName,0,2));
     </div>
 
     <div class="grid" style="margin-top: 2rem;">
+        <!-- Order Trends Chart -->
+        <div class="col-span-12">
+            <div class="card">
+                <div class="header-section">
+                    <h3>Order Trends (Last 30 Days)</h3>
+                </div>
+                <div style="position: relative; height: 250px; width: 100%;">
+                    <canvas id="orderTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Recent Orders -->
         <div class="col-span-12">
             <div class="card">
@@ -166,6 +189,60 @@ $initials  = strtoupper(substr($adminName,0,2));
         const isDark = body.classList.contains('dark-theme');
         localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
         toggle.textContent = isDark ? '☀️' : '🌙';
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    // Chart.js Implementation
+    const ctx = document.getElementById('orderTrendsChart').getContext('2d');
+    
+    // Prepare data
+    const dates = <?php echo json_encode(array_keys($orderTrends)); ?>;
+    const counts = <?php echo json_encode(array_values($orderTrends)); ?>;
+    
+    // Fill in missing dates with 0
+    const today = new Date();
+    const last30Days = [];
+    const dataPoints = [];
+    
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dateString = d.toISOString().split('T')[0];
+        last30Days.push(dateString);
+        
+        const index = dates.indexOf(dateString);
+        dataPoints.push(index !== -1 ? counts[index] : 0);
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: last30Days,
+            datasets: [{
+                label: 'Orders',
+                data: dataPoints,
+                borderColor: '#0078D4',
+                backgroundColor: 'rgba(0, 120, 212, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
     });
 </script>
 </body>
