@@ -123,6 +123,7 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
             </div>
             <button type="submit" class="btn btn-full">Sign In</button>
             <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
+            <a href="forgot-username.php" style="display:block; text-align:center; margin-top:0.5rem; font-size:0.85rem; color:var(--text-secondary);">Forgot Email?</a>
         </div>
     </form>
 

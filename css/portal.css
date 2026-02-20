@@ -75,7 +75,7 @@ a:hover { color: var(--ms-blue-dark); text-decoration: underline; }
 /* Navigation */
 .navbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0.8rem 2rem; background: #fff;
+    padding: 0.8rem 2rem; background: var(--glass-panel);
     border-bottom: 1px solid var(--glass-border);
     position: sticky; top: 0; z-index: 100;
 }
@@ -134,6 +134,15 @@ input:focus, select:focus { outline: none; border-color: var(--ms-blue); border-
     border: 1px solid var(--text-secondary);
 }
 .btn-outline:hover { background: #edebe9; }
+.btn-outline.active {
+    background: var(--ms-blue-light);
+    color: var(--ms-blue-dark);
+    border-color: var(--ms-blue);
+}
+body.dark-theme .btn-outline.active {
+    background: rgba(71, 158, 245, 0.2);
+    color: var(--ms-blue);
+}
 .btn-full { width: 100%; }
 .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
 
@@ -172,9 +181,9 @@ input:focus, select:focus { outline: none; border-color: var(--ms-blue); border-
 .timeline { position: relative; padding-left: 20px; }
 .timeline::before { content:''; position: absolute; left: 7px; top: 5px; bottom: 5px; width: 2px; background: var(--glass-border); }
 .tl-item { position: relative; margin-bottom: 1.5rem; }
-.tl-dot { position: absolute; left: -20px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 2px solid var(--glass-border); }
+.tl-dot { position: absolute; left: -20px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: var(--glass-panel); border: 2px solid var(--glass-border); }
 .tl-dot.active { border-color: var(--ms-blue); background: var(--ms-blue); }
-.tl-dot.done { border-color: var(--ms-blue); background: #fff; }
+.tl-dot.done { border-color: var(--ms-blue); background: var(--glass-panel); }
 .tl-content h5 { margin-bottom: 2px; }
 .tl-content p { margin-bottom: 0; font-size: 0.85rem; }
 
@@ -185,7 +194,7 @@ input:focus, select:focus { outline: none; border-color: var(--ms-blue); border-
     padding: 1.5rem 1rem; background: var(--glass-hover); border: 1px solid var(--glass-border);
     border-radius: var(--radius); color: var(--text-primary); text-decoration: none; transition: .2s;
 }
-.action-btn:hover { background: #ffffff; transform: translateY(-2px); border-color: var(--ms-blue); box-shadow: var(--shadow-hover); text-decoration: none; }
+.action-btn:hover { background: var(--glass-panel); transform: translateY(-2px); border-color: var(--ms-blue); box-shadow: var(--shadow-hover); text-decoration: none; }
 .action-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
 .action-label { font-size: 0.9rem; font-weight: 500; }
 

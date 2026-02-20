@@ -589,4 +589,44 @@ HTML;
             return ['success' => false, 'message' => 'Error sending notification email.'];
         }
     }
+
+    /**
+     * Recover email address using Order Number or Phone + DOB.
+     */
+    public function recoverEmail($order_number = null, $phone = null, $dob = null) {
+        try {
+            if ($order_number) {
+                $order_number = $this->sanitize($order_number);
+                $stmt = $this->db->prepare(
+                    "SELECT u.email FROM users u 
+                     INNER JOIN orders o ON u.user_id = o.user_id 
+                     WHERE o.order_number = :order_number LIMIT 1"
+                );
+                $stmt->execute([':order_number' => $order_number]);
+                $email = $stmt->fetchColumn();
+                if ($email) return ['success' => true, 'email' => $email];
+            }
+
+            if ($phone && $dob) {
+                $phoneClean = preg_replace('/[^0-9]/', '', $phone);
+                $dob = $this->sanitize($dob);
+                
+                $stmt = $this->db->prepare(
+                    "SELECT email FROM users 
+                     WHERE dob = :dob 
+                     AND REPLACE(REPLACE(REPLACE(REPLACE(phone,'-',''),' ',''),'(',''),')','') = :phone 
+                     LIMIT 1"
+                );
+                $stmt->execute([':dob' => $dob, ':phone' => $phoneClean]);
+                $email = $stmt->fetchColumn();
+                if ($email) return ['success' => true, 'email' => $email];
+            }
+
+            return ['success' => false, 'message' => 'No account found with provided details.'];
+
+        } catch (PDOException $e) {
+            error_log("Recover Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'System error. Please try again.'];
+        }
+    }
 }
