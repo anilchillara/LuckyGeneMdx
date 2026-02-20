@@ -1,5 +1,5 @@
 <?php
-// define('luckygenemdx', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -27,6 +27,9 @@ $success = '';
 $error = '';
 
 $user_data = $userModel->getUserById($userId);
+
+$initials  = strtoupper(substr($user_data['full_name'],0,1));
+if (strpos($user_data['full_name'],' ')!==false) $initials .= strtoupper(substr(explode(' ',$user_data['full_name'])[1],0,1));
 
 // Handle profile update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
@@ -75,40 +78,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-        .msg-box { padding: 1rem 1.5rem; border-radius: var(--radius-sm); margin-bottom: 2rem; }
-        .msg-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-        .msg-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        
-        .section-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-medium-gray); }
-        .section-header h3 { margin-bottom: 0.25rem; }
-        .section-header p { color: var(--color-dark-gray); font-size: 0.9rem; margin: 0; }
-
-        .helper-text { font-size: 0.85rem; color: var(--color-dark-gray); margin-top: 0.4rem; display: block; }
-    </style>
+    <link rel="stylesheet" href="../css/portal.css">
 </head>
 <body>
-    <?php include '../includes/header.php'; ?>
+    <nav class="navbar">
+      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
+      <div class="nav-items">
+        <a href="index.php" class="nav-link">Dashboard</a>
+        <a href="orders.php" class="nav-link">My Orders</a>
+        <a href="results.php" class="nav-link">Results</a>
+        <a href="settings.php" class="nav-link active">Settings</a>
+      </div>
+      <div class="user-menu">
+        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </nav>
 
-    <main class="portal-page">
-        <div class="portal-hero">
-            <div class="container">
-                <h1>Account Settings</h1>
-                <p>Manage your personal information and security preferences.</p>
-            </div>
+    <div class="container">
+        <div class="header-section">
+            <h1>Account Settings</h1>
+            <p>Manage your personal information and security preferences.</p>
         </div>
 
-        <div class="container" style="max-width: 900px;">
+        <div class="grid">
             
-            <?php if($success): ?><div class="msg-box msg-success"><?php echo htmlspecialchars($success); ?></div><?php endif; ?>
-            <?php if($error): ?><div class="msg-box msg-error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
+            <div class="col-span-12">
+                <?php if($success): ?><div class="msg msg-success"><?php echo htmlspecialchars($success); ?></div><?php endif; ?>
+                <?php if($error): ?><div class="msg msg-error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
+            </div>
 
-            <div class="row">
-                <div class="col col-2">
+            <div class="col-span-8">
                     
-                    <div class="content-card">
-                        <div class="section-header">
+                    <div class="card" style="margin-bottom: 1.5rem;">
+                        <div style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
                             <h3>Personal Information</h3>
                             <p>Update your contact details.</p>
                         </div>
@@ -116,31 +120,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                             <input type="hidden" name="update_profile" value="1">
                             
                             <div class="form-group">
-                                <label for="full_name" class="form-label required">Full Name</label>
-                                <input type="text" id="full_name" name="full_name" class="form-input" 
+                                <label for="full_name">Full Name</label>
+                                <input type="text" id="full_name" name="full_name" 
                                     value="<?php echo htmlspecialchars($user_data['full_name']); ?>" required>
                             </div>
                             
                             <div class="form-group">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" id="email" class="form-input" 
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" 
                                     value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled 
-                                    style="background:var(--color-light-gray); color:var(--color-dark-gray);">
-                                <small class="helper-text">Contact support to change email.</small>
+                                    style="background:#f3f2f1; color:#605e5c;">
+                                <small style="display:block; margin-top:4px; color:#605e5c;">Contact support to change email.</small>
                             </div>
 
                             <div class="form-group">
-                                <label for="phone" class="form-label required">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-input" 
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" 
                                     value="<?php echo htmlspecialchars($user_data['phone'] ?? ''); ?>" required>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="submit" class="btn">Save Changes</button>
                         </form>
                     </div>
 
-                    <div class="content-card">
-                        <div class="section-header">
+                    <div class="card">
+                        <div style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
                             <h3>Security</h3>
                             <p>Update your password.</p>
                         </div>
@@ -148,37 +152,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                             <input type="hidden" name="change_password" value="1">
                             
                             <div class="form-group">
-                                <label for="current_password" class="form-label required">Current Password</label>
-                                <input type="password" id="current_password" name="current_password" class="form-input" required>
+                                <label for="current_password">Current Password</label>
+                                <input type="password" id="current_password" name="current_password" required>
                             </div>
                             
                             <div class="form-group">
-                                <label for="new_password" class="form-label required">New Password</label>
-                                <input type="password" id="new_password" name="new_password" class="form-input" required minlength="8">
-                                <small class="helper-text">Min. 8 characters</small>
+                                <label for="new_password">New Password</label>
+                                <input type="password" id="new_password" name="new_password" required minlength="8">
+                                <small style="display:block; margin-top:4px; color:#605e5c;">Min. 8 characters</small>
                             </div>
                             
                             <div class="form-group">
-                                <label for="confirm_password" class="form-label required">Confirm New Password</label>
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-input" required>
+                                <label for="confirm_password">Confirm New Password</label>
+                                <input type="password" id="confirm_password" name="confirm_password" required>
                             </div>
                             
                             <button type="submit" class="btn btn-outline">Update Password</button>
                         </form>
                     </div>
 
-                </div>
+            </div>
 
-                <div class="col col-2">
-                    <div class="glass-card" style="position:sticky; top:2rem;">
+            <div class="col-span-4">
+                    <div class="card" style="position:sticky; top:5rem;">
                         <h4 style="margin-bottom: 1rem;">Account Summary</h4>
                         <ul style="list-style:none; padding:0; margin:0; font-size:0.9rem;">
                             <li style="display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid rgba(0,0,0,0.05);">
-                                <span style="color:var(--color-dark-gray);">Member Since</span>
+                                <span style="color:#605e5c;">Member Since</span>
                                 <span style="font-weight:600;"><?php echo date('Y', strtotime($user_data['created_at'] ?? '')); ?></span>
                             </li>
                             <li style="display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid rgba(0,0,0,0.05);">
-                                <span style="color:var(--color-dark-gray);">Last Login</span>
+                                <span style="color:#605e5c;">Last Login</span>
                                 <span style="font-weight:600;">
                                     <?php echo $user_data['last_login'] ? date('M j', strtotime($user_data['last_login'])) : 'N/A'; ?>
                                 </span>
@@ -187,16 +191,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 
                         <div style="margin-top: 2rem;">
                             <h5 style="margin-bottom: 0.5rem;">Data Privacy</h5>
-                            <p style="font-size: 0.85rem; color: var(--color-dark-gray); margin-bottom: 1rem;">
+                            <p style="font-size: 0.85rem; color: #605e5c; margin-bottom: 1rem;">
                                 Your genetic data is encrypted and stored securely. We do not sell your data.
                             </p>
                             <a href="../privacy-policy.php" style="font-size: 0.85rem; text-decoration: underline;">Read Privacy Policy</a>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
-    </main>
+    </div>
     <?php include '../includes/footer.php'; ?>
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
+    </script>
 </body>
 </html>

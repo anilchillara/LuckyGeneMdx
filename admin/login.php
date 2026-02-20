@@ -81,98 +81,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - LuckyGeneMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--gradient-hero);
-            padding: 2rem;
-        }
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius-lg);
-            padding: 3rem;
-            box-shadow: var(--shadow-lg);
-            max-width: 450px;
-            width: 100%;
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .login-header h1 {
-            color: var(--color-primary-deep-blue);
-            margin-bottom: 0.5rem;
-        }
-        .alert-error {
-            background: #fee;
-            border: 1px solid #fcc;
-            color: #c33;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
-<body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>🧬 Admin Login</h1>
-                <p style="color: var(--color-dark-gray);">LuckyGeneMDx Administration</p>
+<body class="auth-body">
+
+    <div class="auth-bg-video">
+        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
+    </div>
+
+    <div class="auth-card">
+        <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+
+        <div style="text-align:center; margin-bottom: 2rem;">
+            <div style="font-size: 3rem;">🧬</div>
+            <h1>LuckyGeneMDx <span class="admin-badge">Admin</span></h1>
+            <p>Secure System Access</p>
+        </div>
+            
+        <?php if ($error): ?>
+            <div class="msg msg-error" role="alert">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
+        <?php endif; ?>
+        
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    required 
+                    autofocus
+                    autocomplete="username"
+                    value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
+                >
             </div>
             
-            <?php if ($error): ?>
-                <div class="alert-error" role="alert">
-                    <?php echo htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
-            
-            <form method="POST" action="" data-validate>
-                <div class="form-group">
-                    <label for="username" class="form-label required">Username</label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        class="form-input" 
-                        required 
-                        autofocus
-                        autocomplete="username"
-                        value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
-                    >
-                </div>
-                
-                <div class="form-group">
-                    <label for="password" class="form-label required">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        class="form-input" 
-                        required
-                        autocomplete="current-password"
-                    >
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-full" style="margin-top: 1.5rem;">
-                    Sign In
-                </button>
-            </form>
-            
-            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-medium-gray);">
-                <a href="../index.php" style="color: var(--color-dark-gray); font-size: 0.9rem;">
-                    ← Back to Website
-                </a>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    autocomplete="current-password"
+                >
             </div>
+            
+            <button type="submit" class="btn btn-full" style="margin-top: 1.5rem;">
+                Sign In
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Authorized personnel only. All activities are logged.</p>
         </div>
     </div>
-    
-    <script src="../js/main.js"></script>
 </body>
 </html>

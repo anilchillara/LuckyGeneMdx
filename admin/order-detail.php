@@ -102,6 +102,8 @@ try {
 }
 
 $adminName = $_SESSION['admin_username'];
+$adminRole = ucwords(str_replace('_',' ',$_SESSION['admin_role'] ?? 'Admin'));
+$initials  = strtoupper(substr($adminName,0,2));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,171 +112,81 @@ $adminName = $_SESSION['admin_username'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title>Order #<?php echo htmlspecialchars($order['order_number']); ?> - LuckyGeneMDx Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
-        .content-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        .info-item {
-            padding: 1rem;
-            background: var(--color-light-gray);
-            border-radius: var(--radius-sm);
-        }
-        .info-label {
-            font-size: 0.85rem;
-            color: var(--color-dark-gray);
-            margin-bottom: 0.25rem;
-        }
-        .info-value {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--color-primary-deep-blue);
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-full);
-            font-weight: 500;
-        }
-        .status-badge.received { background: #cce5ff; color: #004085; }
-        .status-badge.shipped { background: #d1ecf1; color: #0c5460; }
-        .status-badge.processing { background: #fff3cd; color: #856404; }
-        .status-badge.ready { background: #d4edda; color: #155724; }
-        .alert-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-        }
-        .alert-error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-        }
-        .breadcrumb {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-        }
-        .breadcrumb a {
-            color: var(--color-dark-gray);
-        }
-        .breadcrumb a:hover {
-            color: var(--color-medical-teal);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar (same as orders.php) -->
-        <?php include 'sidenav.php'; ?>
-        
-        <!-- Main Content -->
-        <main class="admin-main">
-            <div class="breadcrumb">
+    <nav class="navbar">
+      <a href="index.php" class="brand">
+        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
+      </a>
+      <div class="nav-items">
+        <a href="index.php" class="nav-link">Dashboard</a>
+        <a href="orders.php" class="nav-link active">Orders</a>
+        <a href="users.php" class="nav-link">Users</a>
+        <a href="upload-results.php" class="nav-link">Upload Results</a>
+        <a href="settings.php" class="nav-link">Settings</a>
+      </div>
+      <div class="user-menu">
+        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <div style="font-size: 0.9rem;">
                 <a href="index.php">Dashboard</a>
                 <span>/</span>
                 <a href="orders.php">Orders</a>
                 <span>/</span>
                 <span><?php echo htmlspecialchars($order['order_number']); ?></span>
             </div>
+        </div>
             
             <?php if ($success): ?>
-                <div class="alert-success"><?php echo htmlspecialchars($success); ?></div>
+                <div class="msg msg-success"><?php echo htmlspecialchars($success); ?></div>
             <?php endif; ?>
             
             <?php if ($error): ?>
-                <div class="alert-error"><?php echo htmlspecialchars($error); ?></div>
+                <div class="msg msg-error"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
             
             <!-- Order Header -->
-            <div class="content-card">
+            <div class="card" style="margin-bottom: 2rem;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
                     <div>
                         <h1 style="margin-bottom: 0.5rem;">Order #<?php echo htmlspecialchars($order['order_number']); ?></h1>
-                        <p style="color: var(--color-dark-gray); margin: 0;">
+                        <p style="color: var(--text-secondary); margin: 0;">
                             Placed on <?php echo date('F j, Y \a\t g:i A', strtotime($order['order_date'])); ?>
                         </p>
                     </div>
                     <div>
                         <?php
-                        $badgeClass = 'received';
-                        if ($order['display_order'] == 2) $badgeClass = 'shipped';
-                        elseif ($order['display_order'] >= 3 && $order['display_order'] <= 4) $badgeClass = 'processing';
-                        elseif ($order['display_order'] == 5) $badgeClass = 'ready';
+                        $badgeClass = 'orange';
+                        if ($order['display_order'] == 2) $badgeClass = 'blue';
+                        elseif ($order['display_order'] >= 3 && $order['display_order'] <= 4) $badgeClass = 'orange';
+                        elseif ($order['display_order'] == 5) $badgeClass = 'green';
                         ?>
-                        <span class="status-badge <?php echo $badgeClass; ?>">
+                        <span class="badge badge-<?php echo $badgeClass; ?>">
                             <?php echo htmlspecialchars($order['status_name']); ?>
                         </span>
                     </div>
                 </div>
                 
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Order Total</div>
-                        <div class="info-value">$<?php echo number_format($order['price'], 2); ?></div>
+                <div class="grid">
+                    <div class="col-span-4">
+                        <div class="stat-lbl">Order Total</div>
+                        <div style="font-size:1.2rem; font-weight:600;">$<?php echo number_format($order['price'], 2); ?></div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">Payment Status</div>
-                        <div class="info-value"><?php echo ucfirst($order['payment_status']); ?></div>
+                    <div class="col-span-4">
+                        <div class="stat-lbl">Payment Status</div>
+                        <div style="font-size:1.2rem; font-weight:600;"><?php echo ucfirst($order['payment_status']); ?></div>
                     </div>
                     <?php if ($order['tracking_number']): ?>
-                    <div class="info-item">
-                        <div class="info-label">Tracking Number</div>
-                        <div class="info-value" style="font-family: monospace; font-size: 1rem;">
+                    <div class="col-span-4">
+                        <div class="stat-lbl">Tracking Number</div>
+                        <div style="font-family: monospace; font-size: 1.1rem; font-weight:600;">
                             <?php echo htmlspecialchars($order['tracking_number']); ?>
                         </div>
                     </div>
@@ -283,17 +195,17 @@ $adminName = $_SESSION['admin_username'];
             </div>
             
             <!-- Customer Information -->
-            <div class="content-card">
+            <div class="card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Customer Information</h2>
                 
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Full Name</div>
-                        <div class="info-value"><?php echo htmlspecialchars($order['full_name']); ?></div>
+                <div class="grid">
+                    <div class="col-span-6">
+                        <div class="stat-lbl">Full Name</div>
+                        <div style="font-size:1.2rem; font-weight:600;"><?php echo htmlspecialchars($order['full_name']); ?></div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">Email Address</div>
-                        <div class="info-value" style="font-size: 1rem;">
+                    <div class="col-span-6">
+                        <div class="stat-lbl">Email Address</div>
+                        <div style="font-size: 1.1rem;">
                             <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>">
                                 <?php echo htmlspecialchars($order['email']); ?>
                             </a>
@@ -302,8 +214,8 @@ $adminName = $_SESSION['admin_username'];
                 </div>
                 
                 <h3 style="margin: 2rem 0 1rem;">Shipping Address</h3>
-                <div class="info-item">
-                    <div class="info-value" style="font-weight: 400; line-height: 1.6;">
+                <div style="background:var(--glass-hover); padding:1rem; border-radius:var(--radius);">
+                    <p style="margin:0; line-height:1.7;">
                         <?php echo htmlspecialchars($order['shipping_address_line1']); ?><br>
                         <?php if ($order['shipping_address_line2']): ?>
                             <?php echo htmlspecialchars($order['shipping_address_line2']); ?><br>
@@ -311,23 +223,23 @@ $adminName = $_SESSION['admin_username'];
                         <?php echo htmlspecialchars($order['shipping_city']); ?>, 
                         <?php echo htmlspecialchars($order['shipping_state']); ?> 
                         <?php echo htmlspecialchars($order['shipping_zip']); ?>
-                    </div>
+                    </p>
                 </div>
             </div>
             
             <!-- Update Order Status -->
-            <div class="content-card">
+            <div class="card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Update Order</h2>
                 
                 <form method="POST" action="">
                     <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                     <input type="hidden" name="update_status" value="1">
                     
-                    <div class="row">
-                        <div class="col col-2">
+                    <div class="grid">
+                        <div class="col-span-6">
                             <div class="form-group">
-                                <label for="status_id" class="form-label required">Order Status</label>
-                                <select id="status_id" name="status_id" class="form-select" required>
+                                <label for="status_id">Order Status</label>
+                                <select id="status_id" name="status_id" required>
                                     <?php foreach($statuses as $status): ?>
                                         <option value="<?php echo $status['status_id']; ?>" 
                                                 <?php echo $order['status_id'] == $status['status_id'] ? 'selected' : ''; ?>>
@@ -338,14 +250,13 @@ $adminName = $_SESSION['admin_username'];
                             </div>
                         </div>
                         
-                        <div class="col col-2">
+                        <div class="col-span-6">
                             <div class="form-group">
-                                <label for="tracking_number" class="form-label">Tracking Number</label>
+                                <label for="tracking_number">Tracking Number</label>
                                 <input 
                                     type="text" 
                                     id="tracking_number" 
                                     name="tracking_number" 
-                                    class="form-input"
                                     value="<?php echo htmlspecialchars($order['tracking_number'] ?? ''); ?>"
                                     placeholder="e.g., 1Z999AA10123456784"
                                 >
@@ -354,43 +265,42 @@ $adminName = $_SESSION['admin_username'];
                     </div>
                     
                     <div class="form-group">
-                        <label for="notes" class="form-label">Internal Notes</label>
+                        <label for="notes">Internal Notes</label>
                         <textarea 
                             id="notes" 
                             name="notes" 
-                            class="form-input" 
                             rows="4"
                             placeholder="Add any internal notes about this order..."
                         ><?php echo htmlspecialchars($order['notes'] ?? ''); ?></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-large">
+                    <button type="submit" class="btn">
                         💾 Update Order
                     </button>
                 </form>
             </div>
             
             <!-- Results Section -->
-            <div class="content-card">
+            <div class="card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Test Results</h2>
                 
                 <?php if ($result): ?>
-                    <div style="padding: 1.5rem; background: var(--color-light-gray); border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                    <div style="padding: 1.5rem; background: var(--glass-hover); border-radius: var(--radius); margin-bottom: 1rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <div style="font-weight: 600; color: var(--color-primary-deep-blue); margin-bottom: 0.5rem;">
+                                <div style="font-weight: 600; margin-bottom: 0.5rem;">
                                     ✅ Results Available
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">
                                     Uploaded on <?php echo date('F j, Y', strtotime($result['upload_date'])); ?>
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">
                                     Accessed <?php echo $result['accessed_count']; ?> time(s)
                                 </div>
                             </div>
                             <div>
                                 <a href="../api/download-result.php?order_id=<?php echo $orderId; ?>" 
-                                   class="btn btn-primary" 
+                                   class="btn" 
                                    target="_blank">
                                     📄 View PDF
                                 </a>
@@ -398,12 +308,12 @@ $adminName = $_SESSION['admin_username'];
                         </div>
                     </div>
                 <?php else: ?>
-                    <div style="padding: 2rem; background: var(--color-light-gray); border-radius: var(--radius-sm); text-align: center;">
+                    <div style="padding: 2rem; background: var(--glass-hover); border-radius: var(--radius); text-align: center;">
                         <div style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;">📄</div>
-                        <p style="color: var(--color-dark-gray); margin-bottom: 1rem;">
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
                             No results uploaded yet
                         </p>
-                        <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-primary">
+                        <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn">
                             📤 Upload Results
                         </a>
                     </div>
@@ -415,14 +325,29 @@ $adminName = $_SESSION['admin_username'];
                 <a href="orders.php" class="btn btn-outline">
                     ← Back to Orders
                 </a>
-                <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-primary">
+                <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn">
                     📤 Upload Results
                 </a>
                 <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>" class="btn btn-outline">
                     ✉️ Email Customer
                 </a>
             </div>
-        </main>
     </div>
+<script>
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    if (localStorage.getItem('portal_theme') === 'dark') {
+        body.classList.add('dark-theme');
+        toggle.textContent = '☀️';
+    }
+
+    toggle.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+        const isDark = body.classList.contains('dark-theme');
+        localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+        toggle.textContent = isDark ? '☀️' : '🌙';
+    });
+</script>
 </body>
 </html>

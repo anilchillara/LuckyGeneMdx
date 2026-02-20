@@ -72,6 +72,7 @@ $system_info = [
 ];
 
 $adminName = $_SESSION['admin_username'] ?? 'Admin';
+$initials  = strtoupper(substr($adminName,0,2));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,76 +80,14 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Settings - LuckyGeneMDx Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
     <style>
-        /* Shared layout from orders.php */
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-            text-decoration: none;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
-        .admin-header {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        /* Settings Specific Card Styling */
-        .settings-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-        }
-        .settings-card h2 { 
-            font-size: 1.25rem; 
-            color: var(--color-primary-deep-blue); 
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--color-medium-gray);
-        }
-
-        /* Tabs styling from settings.php integrated with orders.php colors */
+        /* Page specific styles */
         .tabs {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 2rem;
-            border-bottom: 2px solid var(--color-medium-gray);
+            border-bottom: 2px solid var(--glass-border);
         }
         .tab-btn {
             padding: 1rem 2rem;
@@ -157,50 +96,58 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            color: var(--color-dark-gray);
+            color: var(--text-secondary);
             border-bottom: 3px solid transparent;
-            transition: all var(--transition-fast);
+            transition: all 0.2s;
         }
-        .tab-btn:hover { color: var(--color-medical-teal); }
+        .tab-btn:hover { color: var(--ms-blue); }
         .tab-btn.active {
-            color: var(--color-medical-teal);
-            border-bottom-color: var(--color-medical-teal);
+            color: var(--ms-blue);
+            border-bottom-color: var(--ms-blue);
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
         /* Table styling for System Info */
         .info-table { width: 100%; border-collapse: collapse; }
-        .info-table td { padding: 1rem; border-bottom: 1px solid var(--color-medium-gray); }
+        .info-table td { padding: 1rem; border-bottom: 1px solid var(--glass-border); }
         .info-table tr:last-child td { border-bottom: none; }
-        .info-table strong { color: var(--color-primary-deep-blue); }
-
-        .alert {
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 2rem;
-        }
-        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info-table strong { color: var(--text-primary); }
     </style>
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <?php include 'sidenav.php'; ?>
+    <nav class="navbar">
+      <a href="index.php" class="brand">
+        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
+      </a>
+      <div class="nav-items">
+        <a href="index.php" class="nav-link">Dashboard</a>
+        <a href="orders.php" class="nav-link">Orders</a>
+        <a href="users.php" class="nav-link">Users</a>
+        <a href="upload-results.php" class="nav-link">Upload Results</a>
+        <a href="settings.php" class="nav-link active">Settings</a>
+      </div>
+      <div class="user-menu">
+        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </nav>
 
-        <main class="admin-main">
-            <div class="admin-header">
-                <h1 style="margin-bottom: 0.25rem;">System Settings</h1>
-                <p style="color: var(--color-dark-gray); margin: 0;">Configure site behavior and security</p>
+    <div class="container">
+        <div class="header-section">
+            <div>
+                <h1>System Settings</h1>
+                <p>Configure site behavior and security</p>
             </div>
+        </div>
 
             <?php if (isset($success)): ?>
-                <div class="alert alert-success"><?php echo $success; ?></div>
+                <div class="msg msg-success"><?php echo $success; ?></div>
             <?php endif; ?>
             
             <?php if (isset($error)): ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
+                <div class="msg msg-error"><?php echo $error; ?></div>
             <?php endif; ?>
 
             <div class="tabs">
@@ -211,31 +158,31 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
             </div>
 
             <div id="general" class="tab-content active">
-                <div class="settings-card">
+                <div class="card" style="margin-bottom: 2rem;">
                     <h2>General Configuration</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_general">
                         <div class="form-group">
                             <label class="form-label">Site Name</label>
-                            <input type="text" name="settings[site_name]" class="form-input" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGeneMDx'); ?>">
+                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGeneMDx'); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Site URL</label>
-                            <input type="url" name="settings[site_url]" class="form-input" value="<?php echo htmlspecialchars($settings['site_url'] ?? SITE_URL); ?>">
+                            <input type="url" name="settings[site_url]" value="<?php echo htmlspecialchars($settings['site_url'] ?? SITE_URL); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Support Email</label>
-                            <input type="email" name="settings[support_email]" class="form-input" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@luckygenemdx.com'); ?>">
+                            <input type="email" name="settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@luckygenemdx.com'); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Kit Price (USD)</label>
-                            <input type="number" name="settings[kit_price]" step="0.01" class="form-input" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>">
+                            <input type="number" name="settings[kit_price]" step="0.01" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>">
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn">Save Changes</button>
                     </form>
                 </div>
 
-                <div class="settings-card">
+                <div class="card">
                     <h2>Maintenance Mode</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_maintenance">
@@ -249,7 +196,7 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
             </div>
 
             <div id="system" class="tab-content">
-                <div class="settings-card">
+                <div class="card">
                     <h2>Server Information</h2>
                     <table class="info-table">
                         <?php foreach ($system_info as $key => $val): ?>
@@ -261,8 +208,6 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
                     </table>
                 </div>
             </div>
-
-            </main>
     </div>
 
     <script>
@@ -276,6 +221,22 @@ $adminName = $_SESSION['admin_username'] ?? 'Admin';
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
+    </script>
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
     </script>
 </body>
 </html>

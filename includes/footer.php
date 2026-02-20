@@ -4,6 +4,12 @@
  * Refactored: No zoom, correct paths, unified styling
  */
 if (!defined('luckygenemdx')) exit;
+
+// Determine base URL if not already set (e.g. if header wasn't included)
+if (!isset($baseUrl)) {
+    $inPortal = strpos($_SERVER['PHP_SELF'], '/user-portal/') !== false;
+    $baseUrl = $inPortal ? '../' : '';
+}
 ?>
 
 <!-- #2F377D 0%, #2F538B 40%, #4CB7AA 100% -->
@@ -190,10 +196,10 @@ if (!defined('luckygenemdx')) exit;
         <div class="footer-column">
             <h4>Platform</h4>
             <ul class="footer-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="about-genetic-screening.php">About Screening</a></li>
-                <li><a href="how-it-works.php">How It Works</a></li>
-                <li><a href="resources.php">Resources</a></li>
+                <li><a href="<?php echo $baseUrl; ?>index.php">Home</a></li>
+                <li><a href="<?php echo $baseUrl; ?>about-genetic-screening.php">About Screening</a></li>
+                <li><a href="<?php echo $baseUrl; ?>how-it-works.php">How It Works</a></li>
+                <li><a href="<?php echo $baseUrl; ?>resources.php">Resources</a></li>
             </ul>
         </div>
 
@@ -201,10 +207,10 @@ if (!defined('luckygenemdx')) exit;
         <div class="footer-column">
             <h4>Support</h4>
             <ul class="footer-links">
-                <li><a href="track-order.php">Track Order</a></li>
-                <li><a href="user-portal/login.php">Patient Login</a></li>
-                <li><a href="faq.php">Help Center</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
+                <li><a href="<?php echo $baseUrl; ?>track-order.php">Track Order</a></li>
+                <li><a href="<?php echo $baseUrl; ?>user-portal/login.php">Patient Login</a></li>
+                <li><a href="<?php echo $baseUrl; ?>faq.php">Help Center</a></li>
+                <li><a href="<?php echo $baseUrl; ?>contact.php">Contact Us</a></li>
             </ul>
         </div>
 
@@ -219,7 +225,7 @@ if (!defined('luckygenemdx')) exit;
                     📞 1-800-GENE-TEST
                 </li>
                 <li style="margin-top: 1.5rem;">
-                    <a href="request-kit.php" class="footer-cta-btn">
+                    <a href="<?php echo $baseUrl; ?>request-kit.php" class="footer-cta-btn">
                         Order Kit - $99
                     </a>
                 </li>
@@ -237,8 +243,8 @@ if (!defined('luckygenemdx')) exit;
         </div>
         
         <div class="footer-legal">
-            <a href="privacy-policy.php">Privacy Policy</a>
-            <a href="terms-of-service.php">Terms of Service</a>
+            <a href="<?php echo $baseUrl; ?>privacy-policy.php">Privacy Policy</a>
+            <a href="<?php echo $baseUrl; ?>terms-of-service.php">Terms of Service</a>
             <span style="opacity: 0.5; margin-left: 1rem;">
                 © <?php echo date('Y'); ?> LuckyGeneMDx. All rights reserved.
             </span>

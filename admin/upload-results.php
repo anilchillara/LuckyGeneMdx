@@ -3,6 +3,7 @@ define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
+require_once '../includes/User.php';
 session_start();
 setSecurityHeaders();
 
@@ -118,8 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['result_file'])) {
                         
                         $success = "Results uploaded successfully for order #{$orderNumber}!";
                         
-                        // TODO: Send email notification to customer
-                        // sendResultsReadyEmail($order['order_id']);
+                        // Send email notification
+                        $userModel = new User();
+                        $userModel->sendResultsNotification($order['email'], $order['full_name'], $order['order_number']);
                         
                     } catch(PDOException $e) {
                         error_log("Results Upload Error: " . $e->getMessage());
@@ -141,6 +143,7 @@ if ($searchQuery && !$order) {
 }
 
 $adminName = $_SESSION['admin_username'];
+$initials  = strtoupper(substr($adminName,0,2));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -149,153 +152,102 @@ $adminName = $_SESSION['admin_username'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title>Upload Results - LuckyGeneMDx Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
     <style>
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
-        .content-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-        }
-        .alert-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-        }
-        .alert-error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-        }
-        .alert-warning {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-        }
+        /* Page specific styles */
         .file-upload-area {
-            border: 2px dashed var(--color-medium-gray);
-            border-radius: var(--radius-md);
+            border: 2px dashed var(--glass-border);
+            border-radius: var(--radius);
             padding: 3rem 2rem;
             text-align: center;
-            transition: all var(--transition-normal);
+            transition: all 0.2s;
             cursor: pointer;
+            background: var(--glass-hover);
         }
         .file-upload-area:hover {
-            border-color: var(--color-medical-teal);
-            background: rgba(0, 179, 164, 0.05);
+            border-color: var(--ms-blue);
+            background: var(--glass-panel);
         }
         .file-upload-area.dragover {
-            border-color: var(--color-medical-teal);
-            background: rgba(0, 179, 164, 0.1);
+            border-color: var(--ms-blue);
+            background: var(--ms-blue-light);
         }
         .file-info {
             margin-top: 1rem;
             padding: 1rem;
-            background: var(--color-light-gray);
-            border-radius: var(--radius-sm);
+            background: var(--glass-hover);
+            border-radius: var(--radius);
             display: none;
         }
         .order-info {
             padding: 1.5rem;
-            background: var(--color-light-gray);
-            border-radius: var(--radius-sm);
+            background: var(--glass-hover);
+            border-radius: var(--radius);
             margin-bottom: 2rem;
         }
     </style>
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <?php include 'sidenav.php'; ?>
-        
-        <!-- Main Content -->
-        <main class="admin-main">
-            <h1 style="margin-bottom: 1rem;">Upload Test Results</h1>
-            <p style="color: var(--color-dark-gray); margin-bottom: 2rem;">
-                Upload PDF result files for customer orders. Files are encrypted and stored securely.
-            </p>
+    <nav class="navbar">
+      <a href="index.php" class="brand">
+        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
+      </a>
+      <div class="nav-items">
+        <a href="index.php" class="nav-link">Dashboard</a>
+        <a href="orders.php" class="nav-link">Orders</a>
+        <a href="users.php" class="nav-link">Users</a>
+        <a href="upload-results.php" class="nav-link active">Upload Results</a>
+        <a href="settings.php" class="nav-link">Settings</a>
+      </div>
+      <div class="user-menu">
+        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <div>
+                <h1>Upload Test Results</h1>
+                <p>Upload PDF result files for customer orders. Files are encrypted and stored securely.</p>
+            </div>
+        </div>
             
             <?php if ($success): ?>
-                <div class="alert-success">
+                <div class="msg msg-success">
                     <strong>✅ Success!</strong> <?php echo htmlspecialchars($success); ?>
                     <div style="margin-top: 1rem;">
-                        <a href="upload-results.php" class="btn btn-primary">Upload Another</a>
+                        <a href="upload-results.php" class="btn">Upload Another</a>
                         <a href="orders.php" class="btn btn-outline" style="margin-left: 1rem;">View Orders</a>
                     </div>
                 </div>
             <?php endif; ?>
             
             <?php if ($error): ?>
-                <div class="alert-error">
+                <div class="msg msg-error">
                     <strong>❌ Error:</strong> <?php echo htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
             
             <!-- Search for Order -->
-            <div class="content-card">
+            <div class="card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Find Order</h2>
                 
                 <form method="GET" action="">
                     <div style="display: flex; gap: 1rem; align-items: end;">
                         <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                            <label for="order" class="form-label">Order Number</label>
+                            <label for="order">Order Number</label>
                             <input 
                                 type="text" 
                                 id="order" 
                                 name="order" 
-                                class="form-input" 
                                 placeholder="LGM240214ABC123"
                                 value="<?php echo htmlspecialchars($searchQuery); ?>"
                                 required
                             >
                         </div>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn">
                             🔍 Search
                         </button>
                     </div>
@@ -308,19 +260,19 @@ $adminName = $_SESSION['admin_username'];
                     <h3 style="margin-bottom: 1rem;">Order Information</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--color-dark-gray);">Order Number</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Order Number</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['order_number']); ?></div>
                         </div>
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--color-dark-gray);">Customer</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Customer</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['full_name']); ?></div>
                         </div>
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--color-dark-gray);">Email</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Email</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['email']); ?></div>
                         </div>
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--color-dark-gray);">Current Status</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Current Status</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['status_name']); ?></div>
                         </div>
                     </div>
@@ -334,7 +286,7 @@ $adminName = $_SESSION['admin_username'];
                 
                 if ($existingResult):
                 ?>
-                    <div class="alert-warning">
+                    <div class="msg" style="background:#fff3cd; color:#856404; border:1px solid #ffeaa7;">
                         <strong>⚠️ Notice:</strong> Results have already been uploaded for this order on 
                         <?php echo date('F j, Y', strtotime($existingResult['upload_date'])); ?>.
                         Uploading a new file will replace the existing one.
@@ -342,7 +294,7 @@ $adminName = $_SESSION['admin_username'];
                 <?php endif; ?>
                 
                 <!-- Upload Form -->
-                <div class="content-card">
+                <div class="card" style="margin-bottom: 2rem;">
                     <h2 style="margin-bottom: 1.5rem;">Upload PDF Results</h2>
                     
                     <form method="POST" action="" enctype="multipart/form-data" id="uploadForm">
@@ -354,7 +306,7 @@ $adminName = $_SESSION['admin_username'];
                             <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">
                                 Drop PDF file here or click to browse
                             </div>
-                            <div style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">
                                 Maximum file size: 5MB | PDF files only
                             </div>
                             <input 
@@ -373,7 +325,7 @@ $adminName = $_SESSION['admin_username'];
                         </div>
                         
                         <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                            <button type="submit" class="btn btn-primary btn-large" id="uploadButton" disabled>
+                            <button type="submit" class="btn" id="uploadButton" disabled>
                                 📤 Upload Results
                             </button>
                             <a href="upload-results.php" class="btn btn-outline">
@@ -385,7 +337,7 @@ $adminName = $_SESSION['admin_username'];
             <?php endif; ?>
             
             <!-- Instructions -->
-            <div class="content-card" style="background: #f8f9fa;">
+            <div class="card" style="background: var(--glass-hover);">
                 <h3 style="margin-bottom: 1rem;">📋 Upload Instructions</h3>
                 <ol style="line-height: 1.8;">
                     <li>Search for the order using the order number</li>
@@ -401,11 +353,10 @@ $adminName = $_SESSION['admin_username'];
                     </li>
                 </ol>
                 
-                <div style="margin-top: 1.5rem; padding: 1rem; background: white; border-radius: var(--radius-sm); border-left: 4px solid var(--color-medical-teal);">
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--glass-panel); border-radius: var(--radius); border-left: 4px solid var(--ms-blue);">
                     <strong>Security Note:</strong> All uploaded files are encrypted and stored outside the web root for maximum security.
                 </div>
             </div>
-        </main>
     </div>
     
     <script>
@@ -473,6 +424,22 @@ $adminName = $_SESSION['admin_username'];
         document.getElementById('uploadForm')?.addEventListener('submit', (e) => {
             uploadButton.disabled = true;
             uploadButton.innerHTML = '<span class="spinner"></span> Uploading...';
+        });
+    </script>
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
         });
     </script>
 </body>

@@ -1,5 +1,5 @@
 <?php
-// define('luckygenemdx', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -34,6 +34,10 @@ try {
     error_log("Patient Orders Error: " . $e->getMessage());
     $orders = [];
 }
+
+$firstName = explode(' ', $user['full_name'])[0];
+$initials  = strtoupper(substr($user['full_name'],0,1));
+if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explode(' ',$user['full_name'])[1],0,1));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,85 +48,42 @@ try {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-        /* Page Specific Styles */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-top: -3rem; /* Overlap hero */
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 2;
-        }
-        .stat-card {
-            background: var(--color-white);
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
-            text-align: center;
-            border: 1px solid rgba(0,0,0,0.04);
-        }
-        .stat-val { font-family: var(--font-primary); font-size: 2.5rem; font-weight: 700; color: var(--color-medical-teal); line-height: 1; margin-bottom: 0.5rem; }
-        .stat-lbl { color: var(--color-dark-gray); font-size: 0.9rem; font-weight: 500; }
-
-        .order-card {
-            background: var(--color-white);
-            border: 1px solid var(--color-medium-gray);
-            border-radius: var(--radius-md);
-            padding: 1.75rem;
-            margin-bottom: 1.5rem;
-            transition: all var(--transition-normal);
-        }
-        .order-card:hover {
-            border-color: var(--color-medical-teal);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-        .order-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-light-gray); padding-bottom: 1rem; }
-        
-        .badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 6px 14px; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .badge-received { background: #e3f2fd; color: #1565c0; }
-        .badge-shipped { background: rgba(0, 179, 164, 0.12); color: var(--color-medical-teal); }
-        .badge-processing { background: #fff3e0; color: #e65100; }
-        .badge-ready { background: #e8f5e9; color: #2e7d32; }
-
-        .order-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .meta-label { font-size: 0.8rem; color: var(--color-dark-gray); margin-bottom: 0.25rem; }
-        .meta-value { font-weight: 600; color: var(--color-primary-deep-blue); }
-        
-        .order-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    </style>
+    <link rel="stylesheet" href="../css/portal.css">
 </head>
 <body>
-    <?php include '../includes/header.php'; ?>
+    <!-- Portal Navbar -->
+    <nav class="navbar">
+      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
+      <div class="nav-items">
+        <a href="index.php" class="nav-link">Dashboard</a>
+        <a href="orders.php" class="nav-link active">My Orders</a>
+        <a href="results.php" class="nav-link">Results</a>
+        <a href="settings.php" class="nav-link">Settings</a>
+      </div>
+      <div class="user-menu">
+        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </nav>
 
-    <main class="portal-page">
-        <div class="portal-hero">
-            <div class="container">
-                <h1>My Orders</h1>
-                <p>Track your screening kits and view order history.</p>
-            </div>
+    <div class="container">
+        <div class="header-section">
+            <h1>My Orders</h1>
+            <p>Track your screening kits and view order history.</p>
         </div>
 
-        <div class="container">
-            
             <?php if (!empty($orders)): ?>
-            <div class="stats-grid">
-                <div class="stat-card">
+            <div class="grid" style="margin-bottom: 2rem;">
+                <div class="card stat-card col-span-4">
                     <div class="stat-val"><?php echo count($orders); ?></div>
                     <div class="stat-lbl">Total Orders</div>
                 </div>
-                <div class="stat-card">
+                <div class="card stat-card col-span-4">
                     <div class="stat-val"><?php echo count(array_filter($orders, fn($o) => in_array($o['status_id'], [2, 3, 4]))); ?></div>
                     <div class="stat-lbl">In Progress</div>
                 </div>
-                <div class="stat-card">
+                <div class="card stat-card col-span-4">
                     <div class="stat-val"><?php echo count(array_filter($orders, fn($o) => $o['status_id'] == 5)); ?></div>
                     <div class="stat-lbl">Results Ready</div>
                 </div>
@@ -130,78 +91,89 @@ try {
             <?php endif; ?>
 
             <?php if (empty($orders)): ?>
-                <div class="content-card text-center mb-5">
+                <div class="card" style="text-align:center; padding: 4rem;">
                     <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.2;">📦</div>
                     <h2 style="margin-bottom: 1rem;">No Orders Yet</h2>
                     <p style="max-width: 500px; margin: 0 auto 2rem auto;">
                         Start your journey to genetic clarity. Order your first screening kit today.
                     </p>
-                    <a href="../request-kit.php" class="btn btn-primary btn-large">
+                    <a href="../request-kit.php" class="btn">
                         Order Screening Kit &mdash; $99
                     </a>
                 </div>
             <?php else: ?>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h3>Order History</h3>
-                    <a href="../request-kit.php" class="btn btn-primary">+ New Order</a>
+                    <a href="../request-kit.php" class="btn">+ New Order</a>
                 </div>
 
                 <?php foreach($orders as $order): 
-                    $badgeClass = 'badge-received';
-                    $badgeIcon = '📋';
+                    $badgeClass = 'orange';
                     $statusText = 'Received';
                     
                     switch($order['status_id']) {
-                        case 2: $badgeClass = 'badge-shipped'; $badgeIcon = '🚚'; $statusText = 'Shipped'; break;
-                        case 3: $badgeClass = 'badge-processing'; $badgeIcon = '🧪'; $statusText = 'Sample Received'; break;
-                        case 4: $badgeClass = 'badge-processing'; $badgeIcon = '🔬'; $statusText = 'Processing'; break;
-                        case 5: $badgeClass = 'badge-ready'; $badgeIcon = '✅'; $statusText = 'Results Ready'; break;
+                        case 2: $badgeClass = 'blue'; $statusText = 'Shipped'; break;
+                        case 3: $badgeClass = 'orange'; $statusText = 'Sample Received'; break;
+                        case 4: $badgeClass = 'orange'; $statusText = 'Processing'; break;
+                        case 5: $badgeClass = 'green'; $statusText = 'Results Ready'; break;
                     }
                 ?>
-                <div class="order-card">
-                    <div class="order-header">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid var(--glass-border); padding-bottom:1rem;">
                         <div>
-                            <h4 style="margin: 0; color: var(--color-primary-deep-blue);">
+                            <h4 style="margin: 0;">
                                 Order #<?php echo htmlspecialchars($order['order_number']); ?>
                             </h4>
-                            <span style="font-size: 0.9rem; color: var(--color-dark-gray);">
+                            <span style="font-size: 0.9rem; color: var(--text-secondary);">
                                 <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
                             </span>
                         </div>
-                        <span class="badge <?php echo $badgeClass; ?>">
-                            <span><?php echo $badgeIcon; ?></span> <?php echo $statusText; ?>
-                        </span>
+                        <span class="badge badge-<?php echo $badgeClass; ?>"><?php echo $statusText; ?></span>
                     </div>
 
-                    <div class="order-meta">
+                    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; margin-bottom:1.5rem;">
                         <div>
-                            <div class="meta-label">Total Amount</div>
-                            <div class="meta-value">$<?php echo number_format($order['price'], 2); ?></div>
+                            <div class="stat-lbl">Total Amount</div>
+                            <div style="font-weight:600;">$<?php echo number_format($order['price'], 2); ?></div>
                         </div>
                         <div>
-                            <div class="meta-label">Shipping To</div>
-                            <div class="meta-value"><?php echo htmlspecialchars($user['full_name']); ?></div>
+                            <div class="stat-lbl">Shipping To</div>
+                            <div style="font-weight:600;"><?php echo htmlspecialchars($user['full_name']); ?></div>
                         </div>
                         <div>
-                            <div class="meta-label">Last Update</div>
-                            <div class="meta-value"><?php echo date('M j', strtotime($order['order_date'])); // Simplified ?></div>
+                            <div class="stat-lbl">Last Update</div>
+                            <div style="font-weight:600;"><?php echo date('M j', strtotime($order['order_date'])); ?></div>
                         </div>
                     </div>
 
-                    <div class="order-actions">
+                    <div style="display:flex; gap:1rem;">
                         <a href="../track-order.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-outline">
                             Track Status
                         </a>
                         <?php if ($order['status_id'] == 5): ?>
-                            <a href="results.php" class="btn btn-primary">View Results</a>
+                            <a href="results.php" class="btn">View Results</a>
                         <?php endif; ?>
                     </div>
                 </div>
                 <?php endforeach; ?>
             <?php endif; ?>
-        </div>
-    </main>
-
+    </div>
     <?php include '../includes/footer.php'; ?>
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
+    </script>
 </body>
 </html>

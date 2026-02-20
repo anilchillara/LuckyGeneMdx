@@ -6,18 +6,9 @@ require_once '../includes/Order.php';
 session_start();
 setSecurityHeaders();
 
-// Check patient authentication
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
-// Check session timeout
+if (!isset($_SESSION['user_id'])) { header('Location: login.php'); exit; }
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > SESSION_TIMEOUT)) {
-    session_unset();
-    session_destroy();
-    header('Location: login.php?timeout=1');
-    exit;
+    session_unset(); session_destroy(); header('Location: login.php?timeout=1'); exit;
 }
 $_SESSION['last_activity'] = time();
 
@@ -25,401 +16,217 @@ $db = Database::getInstance()->getConnection();
 $orderModel = new Order();
 $userId = $_SESSION['user_id'];
 
-// Get user information
 try {
     $stmt = $db->prepare("SELECT * FROM users WHERE user_id = :user_id");
     $stmt->execute([':user_id' => $userId]);
     $user = $stmt->fetch();
-    
-    if (!$user) {
-        session_unset();
-        session_destroy();
-        header('Location: login.php');
-        exit;
-    }
-    
-    // Get user's orders
-    $orders = $orderModel->getUserOrders($userId);
-    
-    // Get order statistics
-    $totalOrders = count($orders);
-    $pendingOrders = 0;
-    $resultsReady = 0;
-    
-    foreach ($orders as $order) {
-        if ($order['status_id'] < 5) {
-            $pendingOrders++;
-        }
-        if ($order['status_id'] == 5) {
-            $resultsReady++;
-        }
-    }
-    
-    // Get most recent order
+    if (!$user) { session_unset(); session_destroy(); header('Location: login.php'); exit; }
+    $orders       = $orderModel->getUserOrders($userId);
+    $totalOrders  = count($orders);
+    $pendingOrders = 0; $resultsReady = 0;
+    foreach ($orders as $o) { if ($o['status_id'] < 5) $pendingOrders++; if ($o['status_id'] == 5) $resultsReady++; }
     $recentOrder = !empty($orders) ? $orders[0] : null;
-    
-    // Check if any results are available
-    $stmt = $db->prepare("
-        SELECT r.*, o.order_number, o.order_date 
-        FROM results r
-        JOIN orders o ON r.order_id = o.order_id
-        WHERE o.user_id = :user_id
-        ORDER BY r.upload_date DESC
-    ");
+    $stmt = $db->prepare("SELECT r.*, o.order_number, o.order_date FROM results r JOIN orders o ON r.order_id = o.order_id WHERE o.user_id = :user_id ORDER BY r.upload_date DESC");
     $stmt->execute([':user_id' => $userId]);
     $results = $stmt->fetchAll();
-    
-} catch(PDOException $e) {
-    error_log("Patient Dashboard Error: " . $e->getMessage());
-    $orders = [];
-    $results = [];
-}
+} catch(PDOException $e) { error_log($e->getMessage()); $orders = []; $results = []; }
 
-$userName = $user['full_name'];
-$firstName = explode(' ', $userName)[0];
+$firstName = explode(' ', $user['full_name'])[0];
+$initials  = strtoupper(substr($user['full_name'],0,1));
+if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explode(' ',$user['full_name'])[1],0,1));
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - LuckyGeneMDx Patient Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-
-        /* PATIENET PORTAL SPECIFIC STYLES  */
-        .welcome-banner {
-            background: var(--gradient-hero);
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: var(--radius-lg);
-            margin-bottom: 2rem;
-        }
-        .portal-wrapper { display: flex; min-height: 100vh; }
-        .portal-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .portal-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .portal-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .portal-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .portal-nav { margin-top: 2rem; }
-        .portal-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-        }
-        .portal-nav-item:hover, .portal-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .portal-main {
-            flex: 1;
-            margin-left: 0;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-normal);
-        }
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        .stat-value { 
-            font-size: 2.5rem; 
-            font-weight: 700; 
-            color: var(--color-medical-teal); 
-            margin: 0.5rem 0; 
-        }
-        .stat-label { 
-            color: var(--color-dark-gray); 
-            font-size: 0.9rem; 
-        }
-        .content-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-        }
-        .order-status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        .badge-received { background: #cce5ff; color: #004085; }
-        .badge-shipped { background: #d1ecf1; color: #0c5460; }
-        .badge-processing { background: #fff3cd; color: #856404; }
-        .badge-ready { background: #d4edda; color: #155724; }
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        .quick-action-card {
-            background: var(--color-light-gray);
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            text-align: center;
-            transition: all var(--transition-normal);
-            text-decoration: none;
-            color: var(--color-primary-deep-blue);
-        }
-        .quick-action-card:hover {
-            background: var(--color-medical-teal);
-            color: white;
-            transform: translateY(-2px);
-        }
-        .quick-action-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--color-dark-gray);
-        }
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-        @media (max-width: 768px) {
-            /* Ensure the main content is above the overlay when sidebar is closed */
-            .portal-main {
-                position: relative;
-                z-index: 1; 
-                margin-left: 0 !important;
-                padding-top: 80px !important; /* Prevents toggle button overlap */
-            }
-
-            /* Ensure the overlay only blocks clicks when the sidebar is actually OPEN */
-            .sidebar-overlay {
-                pointer-events: none;
-            }
-            
-            .sidebar-overlay.active {
-                pointer-events: auto;
-                z-index: 1050;
-            }
-        }
-        
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Dashboard | LuckyGeneMDx</title>
+<link rel="stylesheet" href="../css/portal.css">
 </head>
 <body>
-    <div class="portal-wrapper">
 
-        <!-- Header with user dropdown -->
-        <?php include '../includes/header.php'; ?>
+<!-- TOP NAV -->
+<nav class="navbar">
+  <a href="../index.php" class="brand">
+    <span>🧬</span> LuckyGeneMDx
+  </a>
+  <div class="nav-items">
+    <a href="index.php" class="nav-link active">Dashboard</a>
+    <a href="orders.php" class="nav-link">My Orders</a>
+    <a href="results.php" class="nav-link">Results</a>
+    <a href="settings.php" class="nav-link">Settings</a>
+  </div>
+  <div class="user-menu">
+    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+    <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+    <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+  </div>
+</nav>
 
-        <!-- Main Content -->
-        <main class="portal-main">
-            <!-- Welcome Banner -->
-            <div class="welcome-banner">
-                <h1 style="color: white; margin-bottom: 0.5rem;">Welcome back, <?php echo htmlspecialchars($firstName); ?>!</h1>
-                <p style="opacity: 0.9; margin: 0;">
-                    <?php if ($resultsReady > 0): ?>
-                        You have <?php echo $resultsReady; ?> result<?php echo $resultsReady > 1 ? 's' : ''; ?> ready to view.
-                    <?php elseif ($pendingOrders > 0): ?>
-                        Your order<?php echo $pendingOrders > 1 ? 's are' : ' is'; ?> being processed.
-                    <?php else: ?>
-                        Your genetic health journey starts here.
-                    <?php endif; ?>
-                </p>
-            </div>
-            
-            <!-- Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Orders</div>
-                    <div class="stat-value"><?php echo $totalOrders; ?></div>
-                    <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-top: 0.5rem;">
-                        All time
+<div class="container">
+
+    <!-- Header -->
+    <div class="header-section">
+        <h1>Welcome back, <?php echo htmlspecialchars($firstName); ?></h1>
+        <p><?php echo date('l, F jS'); ?> • Patient Portal</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid">
+        <div class="card stat-card col-span-4 blue">
+            <div class="stat-lbl">Total Orders</div>
+            <div class="stat-val"><?php echo $totalOrders; ?></div>
+            <div class="stat-desc">Lifetime history</div>
+        </div>
+        <div class="card stat-card col-span-4 orange">
+            <div class="stat-lbl">In Progress</div>
+            <div class="stat-val"><?php echo $pendingOrders; ?></div>
+            <div class="stat-desc">Processing at lab</div>
+        </div>
+        <div class="card stat-card col-span-4 green">
+            <div class="stat-lbl">Results Ready</div>
+            <div class="stat-val"><?php echo $resultsReady; ?></div>
+            <div class="stat-desc">Available for download</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid" style="margin-top: 2rem;">
+        
+        <!-- Left Column: Recent Activity -->
+        <div class="col-span-8">
+            <div class="card">
+                <div class="section-header">
+                    <h3>Recent Activity</h3>
+                    <a href="orders.php" class="section-link">View All Orders →</a>
+                </div>
+
+                <?php if (empty($orders)): ?>
+                    <div style="text-align:center; padding: 2rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📦</div>
+                        <p>No orders yet. Start your journey today.</p>
+                        <a href="../request-kit.php" class="btn">Order Kit</a>
                     </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-label">In Progress</div>
-                    <div class="stat-value" style="color: #f39c12;"><?php echo $pendingOrders; ?></div>
-                    <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-top: 0.5rem;">
-                        Being processed
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-label">Results Ready</div>
-                    <div class="stat-value" style="color: #27ae60;"><?php echo $resultsReady; ?></div>
-                    <div style="font-size: 0.85rem; color: var(--color-dark-gray); margin-top: 0.5rem;">
-                        Available to view
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Actions -->
-            <div class="content-card">
-                <h2 style="margin-bottom: 1.5rem;">Quick Actions</h2>
-                <div class="quick-actions">
-                    <a href="orders.php" class="quick-action-card">
-                        <div class="quick-action-icon">📦</div>
-                        <div style="font-weight: 600;">View Orders</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.7;">Track your kits</div>
-                    </a>
-                    
-                    <a href="results.php" class="quick-action-card">
-                        <div class="quick-action-icon">📄</div>
-                        <div style="font-weight: 600;">View Results</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.7;">Access your reports</div>
-                    </a>
-                    
-                    <a href="../request-kit.php" class="quick-action-card">
-                        <div class="quick-action-icon">🛒</div>
-                        <div style="font-weight: 600;">Order Kit</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.7;">New screening</div>
-                    </a>
-                    
-                    <a href="settings.php" class="quick-action-card">
-                        <div class="quick-action-icon">⚙️</div>
-                        <div style="font-weight: 600;">Settings</div>
-                        <div style="font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.7;">Update profile</div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Recent Order -->
-            <?php if ($recentOrder): ?>
-            <div class="content-card">
-                <h2 style="margin-bottom: 1.5rem;">Most Recent Order</h2>
-                
-                <div style="padding: 1.5rem; background: var(--color-light-gray); border-radius: var(--radius-md);">
-                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                <?php else: ?>
+                    <?php foreach(array_slice($orders, 0, 3) as $o): 
+                        $statusClass = 'pending';
+                        $statusText = 'Processing';
+                        if ($o['status_id'] == 2) { $statusClass = 'shipped'; $statusText = 'Shipped'; }
+                        if ($o['status_id'] == 5) { $statusClass = 'complete'; $statusText = 'Complete'; }
+                    ?>
+                    <div class="list-item">
                         <div>
-                            <div style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.5rem;">
-                                Order #<?php echo htmlspecialchars($recentOrder['order_number']); ?>
-                            </div>
-                            <div style="font-size: 0.9rem; color: var(--color-dark-gray); margin-bottom: 1rem;">
-                                Placed on <?php echo date('F j, Y', strtotime($recentOrder['order_date'])); ?>
-                            </div>
-                            <?php
-                            $badgeClass = 'badge-received';
-                            if ($recentOrder['status_id'] == 2) $badgeClass = 'badge-shipped';
-                            elseif ($recentOrder['status_id'] >= 3 && $recentOrder['status_id'] <= 4) $badgeClass = 'badge-processing';
-                            elseif ($recentOrder['status_id'] == 5) $badgeClass = 'badge-ready';
-                            ?>
-                            <span class="order-status-badge <?php echo $badgeClass; ?>">
-                                <?php echo htmlspecialchars($recentOrder['status_name']); ?>
-                            </span>
+                            <h4>Order #<?php echo htmlspecialchars($o['order_number']); ?></h4>
+                            <p><?php echo date('M j, Y', strtotime($o['order_date'])); ?></p>
                         </div>
-                        <div>
-                            <a href="../track-order.php?order=<?php echo urlencode($recentOrder['order_number']); ?>" class="btn btn-primary">
-                                Track Order →
-                            </a>
-                        </div>
+                        <span class="badge badge-<?php echo $statusClass == 'pending' ? 'orange' : ($statusClass == 'shipped' ? 'blue' : 'green'); ?>"><?php echo $statusText; ?></span>
                     </div>
-                    
-                    <?php if ($recentOrder['status_id'] == 5): ?>
-                        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-medium-gray);">
-                            <div style="color: #27ae60; font-weight: 600; margin-bottom: 0.5rem;">
-                                ✅ Your results are ready!
-                            </div>
-                            <a href="results.php" class="btn btn-primary">
-                                View Results →
-                            </a>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
-            <?php else: ?>
-            <div class="content-card">
-                <div class="empty-state">
-                    <div class="empty-state-icon">🧬</div>
-                    <h3>No Orders Yet</h3>
-                    <p style="margin-bottom: 1.5rem;">
-                        Ready to start your genetic health journey? Order your first screening kit today.
-                    </p>
-                    <a href="../request-kit.php" class="btn btn-primary btn-large">
-                        Order Screening Kit - $99
-                    </a>
-                </div>
-            </div>
-            <?php endif; ?>
-            
-            <!-- Available Results -->
+
+            <!-- Latest Results -->
             <?php if (!empty($results)): ?>
-            <div class="content-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2 style="margin: 0;">Recent Results</h2>
-                    <a href="results.php" style="color: var(--color-medical-teal); font-weight: 500;">View All →</a>
+            <div class="card">
+                <div class="section-header">
+                    <h3>Latest Results</h3>
+                    <a href="results.php" class="section-link">View All →</a>
                 </div>
-                
-                <?php foreach(array_slice($results, 0, 3) as $result): ?>
-                    <div style="padding: 1.25rem; background: var(--color-light-gray); border-radius: var(--radius-sm); margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                            <div>
-                                <div style="font-weight: 600; margin-bottom: 0.25rem;">
-                                    Order #<?php echo htmlspecialchars($result['order_number']); ?>
-                                </div>
-                                <div style="font-size: 0.85rem; color: var(--color-dark-gray);">
-                                    Results uploaded <?php echo date('F j, Y', strtotime($result['upload_date'])); ?>
-                                </div>
-                            </div>
-                            <a href="results.php" class="btn btn-primary">
-                                View PDF →
-                            </a>
-                        </div>
+                <?php foreach(array_slice($results, 0, 2) as $r): ?>
+                <div class="list-item">
+                    <div>
+                        <h4>Result for Order #<?php echo htmlspecialchars($r['order_number']); ?></h4>
+                        <p>Uploaded: <?php echo date('M j, Y', strtotime($r['upload_date'])); ?></p>
                     </div>
+                    <a href="results.php" class="section-link">Download PDF</a>
+                </div>
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
+        </div>
+
+        <!-- Right Column: Progress & Actions -->
+        <div class="col-span-4">
             
-            <!-- Help Section -->
-            <div class="content-card" style="background: #f8f9fa;">
-                <h3 style="margin-bottom: 1rem;">Need Help?</h3>
-                <p style="color: var(--color-dark-gray); margin-bottom: 1rem;">
-                    Have questions about your screening or results? Our support team is here to help.
-                </p>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="mailto:support@luckygenemxd.com" class="btn btn-outline">
-                        ✉️ Email Support
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Quick Actions</h3>
+                <div class="action-grid">
+                    <a href="../request-kit.php" class="action-btn">
+                        <span class="action-icon">🛒</span>
+                        <span class="action-label">New Order</span>
                     </a>
-                    <a href="tel:1-800-GENE-TEST" class="btn btn-outline">
-                        📞 Call Us
+                    <a href="results.php" class="action-btn">
+                        <span class="action-icon">📄</span>
+                        <span class="action-label">My Results</span>
                     </a>
-                    <a href="../resources" class="btn btn-outline">
-                        📖 FAQs & Resources
+                    <a href="settings.php" class="action-btn">
+                        <span class="action-icon">⚙️</span>
+                        <span class="action-label">Settings</span>
+                    </a>
+                    <a href="../support.php" class="action-btn">
+                        <span class="action-icon">💬</span>
+                        <span class="action-label">Support</span>
                     </a>
                 </div>
             </div>
-        </main>
+
+            <!-- Active Order Progress -->
+            <?php if ($recentOrder && $recentOrder['status_id'] < 5): ?>
+            <div class="card">
+                <h3>Order #<?php echo htmlspecialchars($recentOrder['order_number']); ?></h3>
+                <div class="timeline">
+                    <div class="tl-item">
+                        <div class="tl-dot done"></div>
+                        <div class="tl-content">
+                            <h5>Order Placed</h5>
+                            <p><?php echo date('M j', strtotime($recentOrder['order_date'])); ?></p>
+                        </div>
+                    </div>
+                    <div class="tl-item <?php echo $recentOrder['status_id'] < 2 ? 'dimmed' : ''; ?>">
+                        <div class="tl-dot <?php echo $recentOrder['status_id'] >= 2 ? 'done' : ''; ?>"></div>
+                        <div class="tl-content">
+                            <h5>Shipped</h5>
+                            <p>Kit on the way</p>
+                        </div>
+                    </div>
+                    <div class="tl-item <?php echo $recentOrder['status_id'] < 3 ? 'dimmed' : ''; ?>">
+                        <div class="tl-dot <?php echo $recentOrder['status_id'] >= 3 ? 'done' : ''; ?>"></div>
+                        <div class="tl-content">
+                            <h5>Sample Received</h5>
+                            <p>Arrived at lab</p>
+                        </div>
+                    </div>
+                    <div class="tl-item <?php echo $recentOrder['status_id'] < 4 ? 'dimmed' : ''; ?>">
+                        <div class="tl-dot <?php echo $recentOrder['status_id'] == 4 ? 'active' : ''; ?>"></div>
+                        <div class="tl-content">
+                            <h5>Processing</h5>
+                            <p>Genomic analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+        </div>
     </div>
+</div>
+<?php include '../includes/footer.php'; ?>
+<script>
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
     
-    <script>
-        // Mobile menu toggle (if needed in future)
-        // Add hamburger menu for mobile
-    </script>
+    if (localStorage.getItem('portal_theme') === 'dark') {
+        body.classList.add('dark-theme');
+        toggle.textContent = '☀️';
+    }
+
+    toggle.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+        const isDark = body.classList.contains('dark-theme');
+        localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+        toggle.textContent = isDark ? '☀️' : '🌙';
+    });
+</script>
 </body>
 </html>

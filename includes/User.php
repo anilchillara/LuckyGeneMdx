@@ -518,4 +518,48 @@ HTML;
             return ['success' => false, 'message' => 'Database error. Please try again later.'];
         }
     }
+
+    /**
+     * Send results ready notification email.
+     */
+    public function sendResultsNotification($email, $full_name, $order_number) {
+        try {
+            $base_url = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost/luckygenemdx';
+            $login_url = $base_url . '/user-portal/login.php';
+
+            $mail = $this->createMailer();
+            $mail->addAddress($email, $full_name);
+            $mail->Subject = "Your Results Are Ready - Order #$order_number";
+            
+            $first = htmlspecialchars(explode(' ', $full_name)[0]);
+            $order_number = htmlspecialchars($order_number);
+            
+            $mail->Body = <<<HTML
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#0f172a;font-family:Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 20px">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#0a1f44;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:40px;max-width:100%">
+        <tr><td align="center" style="padding-bottom:24px"><div style="font-size:48px">🧬</div><h1 style="color:#00E0C6;font-size:22px;margin:12px 0 4px;font-family:Arial,sans-serif">LuckyGeneMDx</h1><p style="color:#94a3b8;font-size:14px;margin:0;font-family:Arial,sans-serif">Patient Portal</p></td></tr>
+        <tr><td style="padding-bottom:24px"><p style="color:#ffffff;font-size:16px;margin:0 0 12px;font-family:Arial,sans-serif">Hi {$first},</p><p style="color:#94a3b8;font-size:15px;line-height:1.7;margin:0;font-family:Arial,sans-serif">Great news! The results for your order <strong>#{$order_number}</strong> are now available. You can view and download your comprehensive report securely from the patient portal.</p></td></tr>
+        <tr><td align="center" style="padding:8px 0 28px"><a href="{$login_url}" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#00B3A4,#00E0C6);color:#ffffff;text-decoration:none;border-radius:12px;font-weight:700;font-size:16px;font-family:Arial,sans-serif">View My Results</a></td></tr>
+        <tr><td style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px"><p style="color:#64748b;font-size:12px;margin:0;font-family:Arial,sans-serif">If you have any questions about your results, please contact our support team.</p></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
+HTML;
+            $mail->AltBody = "Hi $first,\n\nYour results for order #$order_number are ready.\n\nLog in to view them: $login_url\n\n— LuckyGeneMDx";
+
+            $mail->send();
+            return ['success' => true, 'message' => 'Notification email sent.'];
+
+        } catch (Exception $e) {
+            error_log("sendResultsNotification error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error sending notification email.'];
+        }
+    }
 }

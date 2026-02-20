@@ -92,6 +92,8 @@ try {
 }
 
 $adminName = $_SESSION['admin_username'];
+$adminRole = ucwords(str_replace('_',' ',$_SESSION['admin_role'] ?? 'Admin'));
+$initials  = strtoupper(substr($adminName,0,2));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,160 +101,53 @@ $adminName = $_SESSION['admin_username'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management - LuckyGeneMDx Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
-        .admin-header {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-        }
-        .filters-bar {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: end;
-        }
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        .table-container {
-            background: white;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--color-medium-gray); }
-        .table th { font-weight: 600; color: var(--color-primary-deep-blue); background: var(--color-light-gray); white-space: nowrap; }
-        .table tbody tr:hover { background: var(--color-light-gray); }
-        .table tbody tr { cursor: pointer; }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        .badge-received { background: #cce5ff; color: #004085; }
-        .badge-shipped { background: #d1ecf1; color: #0c5460; }
-        .badge-processing { background: #fff3cd; color: #856404; }
-        .badge-ready { background: #d4edda; color: #155724; }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 0 0 var(--radius-md) var(--radius-md);
-        }
-        .pagination a, .pagination span {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--color-medium-gray);
-            border-radius: var(--radius-sm);
-            color: var(--color-primary-deep-blue);
-            text-decoration: none;
-            transition: all var(--transition-fast);
-        }
-        .pagination a:hover {
-            background: var(--color-medical-teal);
-            color: white;
-            border-color: var(--color-medical-teal);
-        }
-        .pagination .active {
-            background: var(--color-medical-teal);
-            color: white;
-            border-color: var(--color-medical-teal);
-        }
-        .pagination .disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--color-dark-gray);
-        }
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <?php include 'sidenav.php'; ?>
-        
-        <!-- Main Content -->
-        <main class="admin-main">
-            <div class="admin-header">
-                <h1 style="margin-bottom: 0.25rem;">Order Management</h1>
-                <p style="color: var(--color-dark-gray); margin: 0;">
-                    <?php echo number_format($totalOrders); ?> total orders
-                </p>
-            </div>
-            
-            <!-- Filters -->
-            <form method="GET" action="" class="filters-bar">
-                <div class="filter-group">
-                    <label class="form-label">Search</label>
+
+<nav class="navbar">
+  <a href="index.php" class="brand">
+    <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
+  </a>
+  <div class="nav-items">
+    <a href="index.php" class="nav-link">Dashboard</a>
+    <a href="orders.php" class="nav-link active">Orders</a>
+    <a href="users.php" class="nav-link">Users</a>
+    <a href="upload-results.php" class="nav-link">Upload Results</a>
+    <a href="settings.php" class="nav-link">Settings</a>
+  </div>
+  <div class="user-menu">
+    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+    <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+    <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+  </div>
+</nav>
+
+<div class="container">
+
+    <div class="header-section">
+        <div>
+            <h1>Order Management</h1>
+            <p><?php echo number_format($totalOrders); ?> total orders</p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card" style="margin-bottom: 2rem;">
+        <form method="GET" action="" style="display:flex; gap:1rem; align-items:end; flex-wrap:wrap;">
+            <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
+                <label>Search</label>
                     <input 
                         type="text" 
                         name="search" 
-                        class="form-input" 
                         placeholder="Order #, Name, Email..."
                         value="<?php echo htmlspecialchars($searchQuery); ?>"
                     >
-                </div>
-                
-                <div class="filter-group">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-select">
+            </div>
+            
+            <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
+                <label>Status</label>
+                <select name="status">
                         <option value="">All Statuses</option>
                         <?php foreach($statuses as $status): ?>
                             <option value="<?php echo $status['status_id']; ?>" <?php echo $statusFilter == $status['status_id'] ? 'selected' : ''; ?>>
@@ -260,30 +155,23 @@ $adminName = $_SESSION['admin_username'];
                             </option>
                         <?php endforeach; ?>
                     </select>
-                </div>
-                
-                <div class="filter-group" style="flex: 0;">
-                    <button type="submit" class="btn btn-primary">
-                        🔍 Filter
-                    </button>
-                </div>
-                
-                <?php if ($searchQuery || $statusFilter): ?>
-                <div class="filter-group" style="flex: 0;">
-                    <a href="orders.php" class="btn btn-outline">
-                        ✕ Clear
-                    </a>
-                </div>
-                <?php endif; ?>
-            </form>
+            </div>
             
-            <!-- Orders Table -->
-            <div class="table-container">
+            <button type="submit" class="btn">🔍 Filter</button>
+            
+            <?php if ($searchQuery || $statusFilter): ?>
+                <a href="orders.php" class="btn btn-outline">✕ Clear</a>
+            <?php endif; ?>
+        </form>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="card" style="padding:0; overflow:hidden;">
                 <?php if (empty($orders)): ?>
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
+            <div style="text-align:center; padding:4rem 2rem;">
+                <div style="font-size:4rem; margin-bottom:1rem; opacity:0.3;">📦</div>
                         <h3>No orders found</h3>
-                        <p>
+                <p style="color:var(--text-secondary);">
                             <?php if ($searchQuery || $statusFilter): ?>
                                 Try adjusting your filters or search terms.
                             <?php else: ?>
@@ -293,13 +181,12 @@ $adminName = $_SESSION['admin_username'];
                     </div>
                 <?php else: ?>
                     <div style="overflow-x: auto;">
-                        <table class="table">
+                <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>Order Number</th>
                                     <th>Customer</th>
                                     <th>Email</th>
-                                    <th>Location</th>
                                     <th>Date</th>
                                     <th>Status</th>
                                     <th>Tracking</th>
@@ -308,27 +195,26 @@ $adminName = $_SESSION['admin_username'];
                             </thead>
                             <tbody>
                                 <?php foreach($orders as $order): 
-                                    $badgeClass = 'badge-received';
-                                    if ($order['display_order'] == 2) $badgeClass = 'badge-shipped';
-                                    elseif ($order['display_order'] >= 3 && $order['display_order'] <= 4) $badgeClass = 'badge-processing';
-                                    elseif ($order['display_order'] == 5) $badgeClass = 'badge-ready';
+                            $badgeClass = 'orange';
+                            if ($order['display_order'] == 2) $badgeClass = 'blue';
+                            elseif ($order['display_order'] >= 3 && $order['display_order'] <= 4) $badgeClass = 'orange';
+                            elseif ($order['display_order'] == 5) $badgeClass = 'green';
                                 ?>
-                                    <tr onclick="window.location.href='order-detail.php?id=<?php echo $order['order_id']; ?>'">
+                        <tr onclick="window.location.href='order-detail.php?id=<?php echo $order['order_id']; ?>'" style="cursor:pointer;">
                                         <td>
-                                            <strong><?php echo htmlspecialchars($order['order_number']); ?></strong>
+                                <span style="font-family:monospace; font-weight:600; color:var(--ms-blue);"><?php echo htmlspecialchars($order['order_number']); ?></span>
                                         </td>
                                         <td><?php echo htmlspecialchars($order['full_name']); ?></td>
-                                        <td><?php echo htmlspecialchars($order['email']); ?></td>
-                                        <td><?php echo htmlspecialchars($order['shipping_city'] . ', ' . $order['shipping_state']); ?></td>
+                                <td><span style="color:var(--text-secondary); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span></td>
                                         <td><?php echo date('M j, Y', strtotime($order['order_date'])); ?></td>
                                         <td>
-                                            <span class="badge <?php echo $badgeClass; ?>">
+                                    <span class="badge badge-<?php echo $badgeClass; ?>">
                                                 <?php echo htmlspecialchars($order['status_name']); ?>
                                             </span>
                                         </td>
                                         <td>
                                             <?php if ($order['tracking_number']): ?>
-                                                <span style="font-family: monospace; font-size: 0.85rem;">
+                                        <span style="font-family: monospace; font-size: 0.85rem; color:var(--text-primary);">
                                                     <?php echo htmlspecialchars($order['tracking_number']); ?>
                                                 </span>
                                             <?php else: ?>
@@ -336,9 +222,7 @@ $adminName = $_SESSION['admin_username'];
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <a href="order-detail.php?id=<?php echo $order['order_id']; ?>" 
-                                               style="color: var(--color-medical-teal); font-weight: 500;"
-                                               onclick="event.stopPropagation();">
+                                    <a href="order-detail.php?id=<?php echo $order['order_id']; ?>" class="btn btn-outline btn-sm" onclick="event.stopPropagation();">
                                                 View →
                                             </a>
                                         </td>
@@ -350,7 +234,7 @@ $adminName = $_SESSION['admin_username'];
                     
                     <!-- Pagination -->
                     <?php if ($totalPages > 1): ?>
-                    <div class="pagination">
+            <div style="padding:1rem; display:flex; justify-content:center; gap:0.5rem; border-top:1px solid var(--glass-border);">
                         <?php
                         $queryParams = [];
                         if ($searchQuery) $queryParams['search'] = $searchQuery;
@@ -360,9 +244,9 @@ $adminName = $_SESSION['admin_username'];
                         if ($page > 1):
                             $queryParams['page'] = $page - 1;
                         ?>
-                            <a href="?<?php echo http_build_query($queryParams); ?>">← Previous</a>
+                        <a href="?<?php echo http_build_query($queryParams); ?>" class="btn btn-outline btn-sm">← Previous</a>
                         <?php else: ?>
-                            <span class="disabled">← Previous</span>
+                        <button class="btn btn-outline btn-sm" disabled style="opacity:0.5; cursor:not-allowed;">← Previous</button>
                         <?php endif; ?>
                         
                         <!-- Page numbers -->
@@ -374,9 +258,9 @@ $adminName = $_SESSION['admin_username'];
                             $queryParams['page'] = $i;
                             if ($i == $page):
                         ?>
-                                <span class="active"><?php echo $i; ?></span>
+                            <button class="btn btn-sm" style="cursor:default;"><?php echo $i; ?></button>
                         <?php else: ?>
-                                <a href="?<?php echo http_build_query($queryParams); ?>"><?php echo $i; ?></a>
+                            <a href="?<?php echo http_build_query($queryParams); ?>" class="btn btn-outline btn-sm"><?php echo $i; ?></a>
                         <?php
                             endif;
                         endfor;
@@ -386,15 +270,31 @@ $adminName = $_SESSION['admin_username'];
                         <?php if ($page < $totalPages):
                             $queryParams['page'] = $page + 1;
                         ?>
-                            <a href="?<?php echo http_build_query($queryParams); ?>">Next →</a>
+                        <a href="?<?php echo http_build_query($queryParams); ?>" class="btn btn-outline btn-sm">Next →</a>
                         <?php else: ?>
-                            <span class="disabled">Next →</span>
+                        <button class="btn btn-outline btn-sm" disabled style="opacity:0.5; cursor:not-allowed;">Next →</button>
                         <?php endif; ?>
                     </div>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-        </main>
-    </div>
+</div>
+
+<script>
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    if (localStorage.getItem('portal_theme') === 'dark') {
+        body.classList.add('dark-theme');
+        toggle.textContent = '☀️';
+    }
+
+    toggle.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+        const isDark = body.classList.contains('dark-theme');
+        localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+        toggle.textContent = isDark ? '☀️' : '🌙';
+    });
+</script>
 </body>
 </html>

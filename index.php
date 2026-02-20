@@ -1,5 +1,5 @@
 <?php
-// define('luckygenemdx', true);
+define('luckygenemdx', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 session_start();

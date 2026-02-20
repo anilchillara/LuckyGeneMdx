@@ -1,4 +1,5 @@
 <?php
+define('luckygenemdx', true);
 require_once 'includes/config.php';
 $page_title = 'Frequently Asked Questions';
 ?>

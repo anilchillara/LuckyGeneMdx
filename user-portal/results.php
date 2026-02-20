@@ -1,5 +1,5 @@
 <?php
-// define('luckygenemdx', true);
+define('luckygenemdx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -31,6 +31,12 @@ $stmt = $db->prepare("
 ");
 $stmt->execute([':user_id' => $userId]);
 $results = $stmt->fetchAll();
+
+$stmt = $db->prepare("SELECT full_name FROM users WHERE user_id = :user_id");
+$stmt->execute([':user_id' => $userId]);
+$user = $stmt->fetch();
+$initials  = strtoupper(substr($user['full_name'],0,1));
+if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explode(' ',$user['full_name'])[1],0,1));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,114 +47,80 @@ $results = $stmt->fetchAll();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <style>
-        .result-item {
-            display: flex; flex-direction: column;
-            border-left: 4px solid var(--color-medical-teal);
-            margin-bottom: 2rem;
-        }
-        .result-meta-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem; margin: 1.5rem 0;
-            background: var(--color-light-gray);
-            padding: 1.5rem; border-radius: var(--radius-sm);
-        }
-        .meta-lbl { font-size: 0.8rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; }
-        .meta-val { font-weight: 600; color: var(--color-primary-deep-blue); font-size: 1.05rem; }
-        
-        .disclaimer-box {
-            background: rgba(10, 31, 68, 0.03);
-            border: 1px solid rgba(10, 31, 68, 0.08);
-            border-radius: var(--radius-sm);
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--color-dark-gray);
-        }
-        .disclaimer-box ul { padding-left: 1.2rem; margin: 0.5rem 0 0; }
-        .disclaimer-box li { margin-bottom: 0.25rem; }
-
-        .empty-icon {
-            width: 80px; height: 80px;
-            background: var(--color-light-gray);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1.5rem;
-            color: var(--color-dark-gray);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/portal.css">
 </head>
 <body>
-    <?php include '../includes/header.php'; ?>
+    <nav class="navbar">
+      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
+      <div class="nav-items">
+        <a href="index.php" class="nav-link">Dashboard</a>
+        <a href="orders.php" class="nav-link">My Orders</a>
+        <a href="results.php" class="nav-link active">Results</a>
+        <a href="settings.php" class="nav-link">Settings</a>
+      </div>
+      <div class="user-menu">
+        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </nav>
 
-    <main class="portal-page">
-        <div class="portal-hero">
-            <div class="container">
-                <h1>Genetic Reports</h1>
-                <p>View, download, and share your comprehensive screening results.</p>
-            </div>
+    <div class="container">
+        <div class="header-section">
+            <h1>Genetic Reports</h1>
+            <p>View, download, and share your comprehensive screening results.</p>
         </div>
 
-        <div class="container">
             <?php if (empty($results)): ?>
-                <div class="content-card text-center" style="padding: 4rem 2rem;">
-                    <div class="empty-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                    </div>
+                <div class="card" style="text-align:center; padding: 4rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
                     <h3 style="margin-bottom: 1rem;">No Results Available</h3>
-                    <p style="margin-bottom: 2rem; color: var(--color-dark-gray);">
+                    <p style="margin-bottom: 2rem;">
                         Your results will appear here once your sample has been processed.<br>
                         Standard processing time is 14–21 days from sample receipt.
                     </p>
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="orders.php" class="btn btn-primary">View Order Status</a>
+                        <a href="orders.php" class="btn">View Order Status</a>
                         <a href="../track-order.php" class="btn btn-outline">Track Shipment</a>
                     </div>
                 </div>
             <?php else: ?>
                 <?php foreach ($results as $result): ?>
-                    <div class="content-card result-item">
+                    <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--ms-blue);">
                         <div style="display: flex; justify-content: space-between; align-items: start;">
                             <div>
                                 <h3>Results: Order #<?php echo htmlspecialchars($result['order_number']); ?></h3>
-                                <p style="color: var(--color-medical-teal); font-weight: 500;">
+                                <p style="color: var(--ms-blue); font-weight: 600;">
                                     <span style="font-size:1.2rem; vertical-align:middle;">✨</span> Comprehensive Carrier Screen Ready
                                 </p>
                             </div>
                         </div>
 
-                        <div class="result-meta-grid">
+                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; background: #f8f9fa; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
                             <div>
-                                <div class="meta-lbl">Result Date</div>
-                                <div class="meta-val"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
+                                <div class="stat-lbl">Result Date</div>
+                                <div style="font-weight:600;"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
                             </div>
                             <div>
-                                <div class="meta-lbl">Type</div>
-                                <div class="meta-val">Full Panel (300+)</div>
+                                <div class="stat-lbl">Type</div>
+                                <div style="font-weight:600;">Full Panel (300+)</div>
                             </div>
                             <div>
-                                <div class="meta-lbl">File Size</div>
-                                <div class="meta-val"><?php echo number_format($result['file_size'] / 1024, 1); ?> KB</div>
+                                <div class="stat-lbl">File Size</div>
+                                <div style="font-weight:600;"><?php echo number_format($result['file_size'] / 1024, 1); ?> KB</div>
                             </div>
                         </div>
 
-                        <div class="disclaimer-box">
+                        <div style="background: #fff8f0; border: 1px solid #ffeeba; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.9rem;">
                             <strong>Important Medical Context:</strong>
-                            <ul>
+                            <ul style="margin: 0.5rem 0 0 1.5rem;">
                                 <li>These are screening results, not a medical diagnosis.</li>
                                 <li>We recommend reviewing this report with a genetic counselor or your healthcare provider.</li>
                             </ul>
                         </div>
 
                         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <a href="view-result.php?id=<?php echo $result['result_id']; ?>" target="_blank" class="btn btn-primary">
+                            <a href="view-result.php?id=<?php echo $result['result_id']; ?>" target="_blank" class="btn">
                                 View PDF Report
                             </a>
                             <a href="download-result.php?id=<?php echo $result['result_id']; ?>" class="btn btn-outline" download>
@@ -161,14 +133,29 @@ $results = $stmt->fetchAll();
                     </div>
                 <?php endforeach; ?>
 
-                <div class="glass-card text-center" style="margin-top: 3rem;">
+                <div class="card" style="margin-top: 3rem; text-align: center;">
                     <h3>Need help interpreting your results?</h3>
                     <p>Our team of board-certified genetic counselors is here to walk you through your report.</p>
                     <a href="../support.php" class="btn btn-outline" style="margin-top: 1rem;">Visit Support Center</a>
                 </div>
             <?php endif; ?>
-        </div>
-    </main>
+    </div>
     <?php include '../includes/footer.php'; ?>
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
+    </script>
 </body>
 </html>

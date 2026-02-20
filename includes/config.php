@@ -1,5 +1,4 @@
 <?php
-define('luckygenemdx', true);
 
 /**
  * .env Loader for Hostinger & Local Dev
