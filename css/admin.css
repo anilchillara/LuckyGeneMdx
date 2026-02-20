@@ -4,23 +4,34 @@
  */
 
 :root {
-    --ms-blue:      #0078D4;
-    --ms-blue-dark: #005A9E;
-    --ms-blue-light:#eff6fc;
-    --ms-red:       #d13438; /* Admin Accent */
-    --bg-body:      #f3f2f1;
-    --glass-panel:  #ffffff;
-    --glass-border: #e1dfdd;
-    --glass-hover:  #faf9f8;
-    --text-primary: #201f1e;
-    --text-secondary:#605e5c;
+    /* Brand Palette */
+    --color-primary-deep-blue: #0A1F44;
+    --color-medical-teal: #00B3A4;
+    --teal-ice: #4ef0e6;
+    --color-white: #FFFFFF;
+    --color-light-gray: #F8F9FA;
+    --color-medium-gray: #E9ECEF;
+    --color-dark-gray: #6C757D;
+    --color-black: #212529;
+
+    /* Theme Mapping */
+    --ms-blue:      var(--color-medical-teal);
+    --ms-blue-dark: #008c7a;
+    --ms-blue-light: rgba(0, 179, 164, 0.1);
+    --ms-red:       #d13438; /* Admin Accent - Keeping distinct red */
+    --bg-body:      var(--color-light-gray);
+    --glass-panel:  var(--color-white);
+    --glass-border: var(--color-medium-gray);
+    --glass-hover:  #f1f3f5;
+    --text-primary: var(--color-primary-deep-blue);
+    --text-secondary: var(--color-dark-gray);
     --success:      #107C10;
     --warning:      #d83b01;
     --error:        #a80000;
     --font-family:  system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     --font-body:    var(--font-family);
-    --shadow-card:  0 2px 4px rgba(0,0,0,0.04);
-    --shadow-hover: 0 8px 16px rgba(0,0,0,0.1);
+    --shadow-card:  0 2px 8px rgba(10, 31, 68, 0.06);
+    --shadow-hover: 0 8px 24px rgba(10, 31, 68, 0.12);
     --radius:       4px;
 }
 
@@ -35,16 +46,16 @@ body {
 }
 
 body.dark-theme {
-    --ms-blue:      #479ef5;
-    --ms-blue-dark: #0078d4;
-    --ms-blue-light:rgba(71, 158, 245, 0.1);
-    --ms-red:       #e05d5d;
-    --bg-body:      #1b1b1b;
-    --glass-panel:  #252525;
-    --glass-border: #333333;
-    --glass-hover:  #2f2f2f;
-    --text-primary: #ffffff;
-    --text-secondary:#d0d0d0;
+    --ms-blue:      var(--teal-ice);
+    --ms-blue-dark: var(--color-medical-teal);
+    --ms-blue-light: rgba(78, 240, 230, 0.15);
+    --ms-red:       #e05d5d; /* Lighter red for dark mode */
+    --bg-body:      #1a1d21;
+    --glass-panel:  var(--color-black);
+    --glass-border: #343a40;
+    --glass-hover:  #2c3035;
+    --text-primary: var(--color-white);
+    --text-secondary: #adb5bd;
     --shadow-card:  0 4px 8px rgba(0,0,0,0.4);
 }
 body.dark-theme .btn-outline:hover { background: #3a3a3a; }
