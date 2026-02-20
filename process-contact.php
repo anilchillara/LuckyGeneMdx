@@ -87,11 +87,6 @@ $success = mail($to_email, $email_subject, $email_body, $headers);
     <meta charset="UTF-8">
     <title>Inquiry Received | LuckyGeneMDx</title>
     <link rel="stylesheet" href="css/main.css">
-    <style>
-        .success-page { text-align: center; padding: 100px 20px; font-family: 'Poppins', sans-serif; }
-        .success-icon { font-size: 4rem; color: #00B3A4; margin-bottom: 20px; }
-        .btn-home { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #0A1F44; color: white; text-decoration: none; border-radius: 8px; }
-    </style>
 </head>
 <body>
     <?php include 'includes/navbar.php'; ?>
