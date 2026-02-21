@@ -16,8 +16,10 @@ if (!isset($baseUrl)) {
 
 <style>
 /* Footer-specific styles (rest comes from main.css) */
+
 .site-footer {
-    background: linear-gradient(-45deg, #2F377D ,rgb(2, 150, 138), #2F538B, rgb(45, 150, 137));
+    background: linear-gradient(-45deg, #0A1F44, #008c7a, #0A1F44 );
+    /* background: linear-gradient(-45deg, #2F377D ,rgb(2, 150, 138), #2F538B, rgb(45, 150, 137)); */
     background-size: 400% 400%;
     animation: footerFlow 30s ease infinite;
     color: #FFFFFF;

@@ -47,12 +47,9 @@ $allStatuses = $stmt->fetchAll();
     <main id="main-content">
         <!-- Page Header - UNCHANGED -->
         <section class="page-header">
-            <div class="container">
-                <h1>Track Your Order</h1>
                 <p>
                 Enter your order number to view the current status of your screening kit.
                 </p>
-            </div>
         </section>
     
             

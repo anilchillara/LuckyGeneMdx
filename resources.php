@@ -69,12 +69,9 @@ $resources = [
     <main id="main-content">
         <!-- Page Header - UNCHANGED -->
         <section class="page-header">
-            <div class="container">
-                <h1>Clinical Resources</h1>
                 <p>
                     Access global knowledge bases and advocacy networks for genetic health.
                 </p>
-            </div>
         </section>
 
         <!-- Statistics Section - UNCHANGED -->

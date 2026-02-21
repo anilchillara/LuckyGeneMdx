@@ -18,12 +18,10 @@ $page_title = 'Frequently Asked Questions';
     <?php include 'includes/navbar.php'; ?>
 
     <section class="page-header">
-        <div class="container">
-            <div class="hero-badge">Resource Center</div>
-            <h1>Common Questions</h1>
-            <p class="hero-subtitle">Clear answers about carrier screening, clinical accuracy, and your genetic journey.</p>
-        </div>
+    <p class="hero-subtitle">Clear answers about carrier screening, clinical accuracy, and your genetic journey.</p>
+
     </section>
+
 
     <main class="faq-container">
         <div class="faq-tabs">

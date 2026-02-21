@@ -246,42 +246,46 @@ class User {
 <!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#0f172a;font-family:Arial,sans-serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 20px">
+<body style="margin:0;padding:0;background-color:#f4f6fa;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0"
-             style="background:#0a1f44;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:40px;max-width:100%">
+             style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
         <tr><td align="center" style="padding-bottom:24px">
-          <div style="font-size:48px">🧬</div>
-          <h1 style="color:#00E0C6;font-size:22px;margin:12px 0 4px;font-family:Arial,sans-serif">LuckyGeneMDx</h1>
-          <p style="color:#94a3b8;font-size:14px;margin:0;font-family:Arial,sans-serif">Patient Portal</p>
+          <div style="font-size:48px;margin-bottom:10px;">🧬</div>
+          <h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGeneMDx</h1>
+          <p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p>
         </td></tr>
         <tr><td style="padding-bottom:24px">
-          <p style="color:#ffffff;font-size:16px;margin:0 0 12px;font-family:Arial,sans-serif">Hi {$first},</p>
-          <p style="color:#94a3b8;font-size:15px;line-height:1.7;margin:0;font-family:Arial,sans-serif">
-            Thanks for registering with LuckyGeneMDx. Click the button below to verify
-            your email address and activate your account.
-            This link expires in <strong style="color:#ffffff">24 hours</strong>.
+          <p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p>
+          <p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">
+            Thanks for registering with LuckyGeneMDx. Please verify your email address to activate your account and access the patient portal.
+          </p>
+          <p style="color:#475569;font-size:14px;line-height:1.6;margin:12px 0 0;">
+            This link will expire in <strong style="color:#0A1F44">24 hours</strong>.
           </p>
         </td></tr>
-        <tr><td align="center" style="padding:8px 0 28px">
+        <tr><td align="center" style="padding:10px 0 32px">
           <a href="{$verify_url}"
-             style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#00B3A4,#00E0C6);color:#ffffff;text-decoration:none;border-radius:12px;font-weight:700;font-size:16px;font-family:Arial,sans-serif">
+             style="display:inline-block;padding:14px 32px;background-color:#00B3A4;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(0, 179, 164, 0.2);">
             Verify My Email
           </a>
         </td></tr>
-        <tr><td style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px">
-          <p style="color:#64748b;font-size:12px;margin:0 0 8px;font-family:Arial,sans-serif">
-            If the button doesn't work, copy and paste this link into your browser:
+        <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px">
+          <p style="color:#94a3b8;font-size:12px;margin:0 0 8px;">
+            If the button above doesn't work, copy and paste this link into your browser:
           </p>
-          <p style="color:#00B3A4;font-size:12px;word-break:break-all;margin:0;font-family:Arial,sans-serif">{$verify_url}</p>
+          <p style="margin:0;"><a href="{$verify_url}" style="color:#00B3A4;font-size:12px;word-break:break-all;text-decoration:none;">{$verify_url}</a></p>
         </td></tr>
         <tr><td style="padding-top:24px">
-          <p style="color:#64748b;font-size:12px;margin:0;font-family:Arial,sans-serif">
+          <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;">
             If you didn't create this account, you can safely ignore this email.
           </p>
         </td></tr>
       </table>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">
+        &copy; LuckyGeneMDx. All rights reserved.
+      </p>
     </td></tr>
   </table>
 </body>
@@ -565,15 +569,16 @@ HTML;
 <!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#0f172a;font-family:Arial,sans-serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 20px">
+<body style="margin:0;padding:0;background-color:#f4f6fa;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
     <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="background:#0a1f44;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:40px;max-width:100%">
-        <tr><td align="center" style="padding-bottom:24px"><div style="font-size:48px">🧬</div><h1 style="color:#00E0C6;font-size:22px;margin:12px 0 4px;font-family:Arial,sans-serif">LuckyGeneMDx</h1><p style="color:#94a3b8;font-size:14px;margin:0;font-family:Arial,sans-serif">Patient Portal</p></td></tr>
-        <tr><td style="padding-bottom:24px"><p style="color:#ffffff;font-size:16px;margin:0 0 12px;font-family:Arial,sans-serif">Hi {$first},</p><p style="color:#94a3b8;font-size:15px;line-height:1.7;margin:0;font-family:Arial,sans-serif">Great news! The results for your order <strong>#{$order_number}</strong> are now available. You can view and download your comprehensive report securely from the patient portal.</p></td></tr>
-        <tr><td align="center" style="padding:8px 0 28px"><a href="{$login_url}" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#00B3A4,#00E0C6);color:#ffffff;text-decoration:none;border-radius:12px;font-weight:700;font-size:16px;font-family:Arial,sans-serif">View My Results</a></td></tr>
-        <tr><td style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px"><p style="color:#64748b;font-size:12px;margin:0;font-family:Arial,sans-serif">If you have any questions about your results, please contact our support team.</p></td></tr>
+      <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+        <tr><td align="center" style="padding-bottom:24px"><div style="font-size:48px;margin-bottom:10px;">🧬</div><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGeneMDx</h1><p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p></td></tr>
+        <tr><td style="padding-bottom:24px"><p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">Great news! The results for your order <strong style="color:#0A1F44">#{$order_number}</strong> are now available. You can view and download your comprehensive report securely from the patient portal.</p></td></tr>
+        <tr><td align="center" style="padding:10px 0 32px"><a href="{$login_url}" style="display:inline-block;padding:14px 32px;background-color:#00B3A4;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(0, 179, 164, 0.2);">View My Results</a></td></tr>
+        <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px"><p style="color:#94a3b8;font-size:12px;margin:0;">If you have any questions about your results, please contact our support team.</p></td></tr>
       </table>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGeneMDx. All rights reserved.</p>
     </td></tr>
   </table>
 </body>

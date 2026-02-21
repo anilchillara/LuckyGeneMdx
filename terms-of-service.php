@@ -17,15 +17,10 @@ $page_title = 'Terms of Service';
 <body>
     <?php include 'includes/navbar.php'; ?>
 
-    <section class="legal-hero">
-        <div class="hero-dna-overlay"></div>
-        <div class="container">
-            <div class="hero-badge">Legal Agreement</div>
-            <h1>Terms of Service</h1>
-            <p class="hero-subtitle">Governing the use of LuckyGeneMDx clinical platforms and genetic screening protocols.</p>
-            <div class="last-updated">📅 Effective Date: February 16, 2026</div>
-        </div>
-    </section>
+    <section class="page-header">
+                <p class="hero-subtitle">Governing the use of LuckyGeneMDx clinical platforms and genetic screening protocols.</p>
+                <div class="last-updated">📅 Effective Date: February 16, 2026</div>
+        </section>
 
     <main class="legal-content">
         <section class="legal-section">

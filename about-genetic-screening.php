@@ -40,12 +40,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
     <main id="main-content">
         <!-- Page Header -->
         <section class="page-header">
-            <div class="container">
-                <h1>Genetic Carrier Screening</h1>
-                <p>
-                    Knowledge that empowers your family planning decisions
-                </p>
-            </div>
+            <p>Knowledge that empowers your family planning decisions</p>
         </section>
 
         <!-- What is Carrier Screening -->

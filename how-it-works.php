@@ -25,12 +25,9 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 
     <main id="main-content">
         <section class="page-header">
-            <div class="container">
-                <h1>How It Works</h1>
                 <p>
                     Simple, secure, and scientifically rigorous — from order to results in 2-3 weeks.
                 </p>
-            </div>
         </section>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

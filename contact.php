@@ -19,10 +19,7 @@ $page_title = 'Contact Us';
 
     <main id="main-content">
         <section class="page-header">
-        <div class="container">
-            <h1>How can we help?</h1>
-            <p>Whether you are a patient looking for results or a clinician seeking partnership, our experts are here to assist.</p>
-        </div>
+            <p>How can we help?</p>
     </section>
 
     <section class="section">
