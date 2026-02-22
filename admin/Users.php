@@ -243,7 +243,7 @@
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
+        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>

@@ -35,7 +35,7 @@ $allStatuses = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Your Order - LuckyGeneMDx</title>
+    <title>Track Your Order - <?php echo htmlspecialchars(SITE_NAME); ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -182,7 +182,7 @@ $allStatuses = $stmt->fetchAll();
                     Have questions about your order or the screening process?
                 </p>
                 <div>
-                    <a href="mailto:support@luckygenemdx.com" class="btn btn-outline">Email Support</a>
+                    <a href="mailto:<?php echo htmlspecialchars(SUPPORT_EMAIL); ?>" class="btn btn-outline">Email Support</a>
                     <a href="tel:1-800-GENE-TEST" class="btn btn-outline ml-2">Call Us</a>
                 </div>
             </div>

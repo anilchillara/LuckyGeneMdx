@@ -10,6 +10,31 @@ if (!isset($baseUrl)) {
     $inPortal = strpos($_SERVER['PHP_SELF'], '/user-portal/') !== false;
     $baseUrl = $inPortal ? '../' : '';
 }
+
+// Fetch Navbar Items status for footer visibility control
+$navStatus = [];
+try {
+    require_once __DIR__ . '/Database.php';
+    $db = Database::getInstance()->getConnection();
+    
+    // Check if table exists to avoid errors during setup
+    $stmt = $db->query("SHOW TABLES LIKE 'navbar_items'");
+    if ($stmt->rowCount() > 0) {
+        $stmt = $db->query("SELECT url, is_active FROM navbar_items");
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $navStatus[$row['url']] = (bool)$row['is_active'];
+        }
+    }
+} catch (Exception $e) {
+    // Fallback: assume everything is active if DB fails
+}
+
+// Helper to check visibility
+$isNavActive = function($url) use ($navStatus) {
+    // If URL is in the navbar database, respect its active status.
+    // If not in database, default to visible (true).
+    return !array_key_exists($url, $navStatus) || $navStatus[$url];
+};
 ?>
 
 <!-- #2F377D 0%, #2F538B 40%, #4CB7AA 100% -->
@@ -204,7 +229,7 @@ body.dark-theme .footer-cta-btn:hover {
     <div class="footer-grid">
         <!-- Brand Column -->
         <div class="footer-brand">
-            <h3>🧬 LuckyGeneMDx</h3>
+            <h3>🧬 <?php echo htmlspecialchars(SITE_NAME); ?></h3>
             <p>
                 Advancing family health through clinical-grade genetic carrier screening. 
                 We provide the clarity needed to make informed decisions about your genetic future.
@@ -215,10 +240,21 @@ body.dark-theme .footer-cta-btn:hover {
         <div class="footer-column">
             <h4>Platform</h4>
             <ul class="footer-links">
-                <li><a href="<?php echo $baseUrl; ?>index.php">Home</a></li>
-                <li><a href="<?php echo $baseUrl; ?>about-genetic-screening.php">About Screening</a></li>
-                <li><a href="<?php echo $baseUrl; ?>how-it-works.php">How It Works</a></li>
-                <li><a href="<?php echo $baseUrl; ?>resources.php">Resources</a></li>
+                <?php if ($isNavActive('index.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>index.php">Home</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('about-genetic-screening.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>about-genetic-screening.php">About Screening</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('how-it-works.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>how-it-works.php">How It Works</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('resources.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>resources.php">Resources</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('intrest-list.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>intrest-list.php">Interest List</a></li>
+                <?php endif; ?>
             </ul>
         </div>
 
@@ -226,10 +262,18 @@ body.dark-theme .footer-cta-btn:hover {
         <div class="footer-column">
             <h4>Support</h4>
             <ul class="footer-links">
-                <li><a href="<?php echo $baseUrl; ?>track-order.php">Track Order</a></li>
-                <li><a href="<?php echo $baseUrl; ?>user-portal/login.php">Patient Login</a></li>
-                <li><a href="<?php echo $baseUrl; ?>faq.php">Help Center</a></li>
-                <li><a href="<?php echo $baseUrl; ?>contact.php">Contact Us</a></li>
+                <?php if ($isNavActive('track-order.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>track-order.php">Track Order</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('user-portal/login.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>user-portal/login.php">Patient Login</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('faq.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>faq.php">Help Center</a></li>
+                <?php endif; ?>
+                <?php if ($isNavActive('contact.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>contact.php">Contact Us</a></li>
+                <?php endif; ?>
             </ul>
         </div>
 
@@ -238,16 +282,18 @@ body.dark-theme .footer-cta-btn:hover {
             <h4>Contact Us</h4>
             <ul class="footer-links">
                 <li style="opacity: 0.9; font-size: 0.9rem;">
-                    📧 support@luckygenemdx.com
+                    📧 <?php echo htmlspecialchars(SUPPORT_EMAIL); ?>
                 </li>
                 <li style="opacity: 0.9; font-size: 0.9rem;">
                     📞 1-800-GENE-TEST
                 </li>
+                <?php if ($isNavActive('request-kit.php')): ?>
                 <li style="margin-top: 1.5rem;">
                     <a href="<?php echo $baseUrl; ?>request-kit.php" class="footer-cta-btn">
-                        Order Kit - $99
+                        Order Kit - $<?php echo number_format(KIT_PRICE, 0); ?>
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
@@ -256,7 +302,7 @@ body.dark-theme .footer-cta-btn:hover {
     <div class="footer-bottom">
         <div class="disclaimer-text">
             <strong>Clinical Disclaimer:</strong> 
-            LuckyGeneMDx screening results are for informational purposes and are not diagnostic. 
+            <?php echo htmlspecialchars(SITE_NAME); ?> screening results are for informational purposes and are not diagnostic. 
             This test does not replace genetic counseling or professional medical consultation. 
             We operate in alignment with ACMG and CDC standards for genetic testing.
         </div>
@@ -265,7 +311,7 @@ body.dark-theme .footer-cta-btn:hover {
             <a href="<?php echo $baseUrl; ?>privacy-policy.php">Privacy Policy</a>
             <a href="<?php echo $baseUrl; ?>terms-of-service.php">Terms of Service</a>
             <span style="opacity: 0.5; margin-left: 1rem;">
-                © <?php echo date('Y'); ?> LuckyGeneMDx. All rights reserved.
+                © <?php echo date('Y'); ?> <?php echo htmlspecialchars(SITE_NAME); ?>. All rights reserved.
             </span>
         </div>
     </div>

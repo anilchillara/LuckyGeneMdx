@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div style="text-align:center; margin-bottom: 2rem;">
             <div style="font-size: 3rem;">🧬</div>
-            <h1>LuckyGeneMDx <span class="admin-badge">Admin</span></h1>
+            <h1><?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span></h1>
             <p>Secure System Access</p>
         </div>
             

@@ -48,7 +48,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <!-- TOP NAV -->
 <nav class="navbar">
   <a href="../index.php" class="brand">
-    <span>🧬</span> LuckyGeneMDx
+    <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?>
   </a>
   <div class="nav-items">
     <a href="index.php" class="nav-link active">Dashboard</a>

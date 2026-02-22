@@ -12,7 +12,7 @@ setSecurityHeaders();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Secure Your Family's Genetic Future with LuckyGeneMDx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title>LuckyGeneMDx - Comprehensive Genetic Carrier Screening | $99</title>
+    <title><?php echo htmlspecialchars(SITE_NAME); ?> - Comprehensive Genetic Carrier Screening | $<?php echo number_format(KIT_PRICE, 0); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -64,7 +64,7 @@ setSecurityHeaders();
 
                 <div class="hero-btns">
                     <a href="request-kit.php" class="btn-primary-hero">
-                        Request Screening Kit — $99
+                        Request Screening Kit — $<?php echo number_format(KIT_PRICE, 0); ?>
                         <svg class="btn-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -92,7 +92,7 @@ setSecurityHeaders();
         <div class="stats-band">
             <div class="stats-band-inner">
                 <div class="stat-cell"><div class="stat-num" data-count="300">300+</div><div class="stat-lbl">Conditions Screened</div></div>
-                <div class="stat-cell"><div class="stat-num">$99</div><div class="stat-lbl">Flat Transparent Price</div></div>
+                <div class="stat-cell"><div class="stat-num">$<?php echo number_format(KIT_PRICE, 0); ?></div><div class="stat-lbl">Flat Transparent Price</div></div>
                 <div class="stat-cell"><div class="stat-num" data-count="21">21</div><div class="stat-lbl">Day Results Maximum</div></div>
                 <div class="stat-cell"><div class="stat-num">ACMG</div><div class="stat-lbl">Aligned Standards</div></div>
             </div>
@@ -162,9 +162,9 @@ setSecurityHeaders();
                 <div class="standards-grid">
                     <div class="std-card reveal reveal-d1"><div class="std-num">300+</div><p>Genetic Conditions Screened</p></div>
                     <div class="std-card reveal reveal-d2"><div class="std-num">ACMG</div><p>Standards Alignment</p></div>
-                    <div class="std-card reveal reveal-d3"><div class="std-num">$99</div><p>Affordable, Transparent Pricing</p></div>
+                    <div class="std-card reveal reveal-d3"><div class="std-num">$<?php echo number_format(KIT_PRICE, 0); ?></div><p>Affordable, Transparent Pricing</p></div>
                 </div>
-                <p class="std-disclaimer"><em>LuckyGeneMDx is not affiliated with ACMG or CDC. Our testing aligns with standards established by these organizations.</em></p>
+                <p class="std-disclaimer"><em><?php echo htmlspecialchars(SITE_NAME); ?> is not affiliated with ACMG or CDC. Our testing aligns with standards established by these organizations.</em></p>
             </div>
         </section>
 
@@ -238,13 +238,14 @@ setSecurityHeaders();
         </section>
 
         <!-- ══ CTA ══════════════════════════════════════════ -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-cta">
             <div class="cta-box reveal">
                 <div class="cta-pill">Limited Time Pricing</div>
                 <h2>Invest Today for<br>a Healthier Tomorrow</h2>
                 <p>Take the first step toward informed family planning with comprehensive genetic carrier screening. Clear insights, delivered privately.</p>
                 <div class="cta-pricing">
-                    <span class="cta-price">$99</span>
+                    <span class="cta-price">$<?php echo number_format(KIT_PRICE, 0); ?></span>
                     <span class="cta-strike">$249</span>
                 </div>
                 <a href="request-kit.php" class="btn-cta-main">
@@ -267,6 +268,7 @@ setSecurityHeaders();
                 </div>
             </div>
         </section>
+        <?php endif; ?>
 
     </main>
 

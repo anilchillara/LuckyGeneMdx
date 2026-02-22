@@ -14,7 +14,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo htmlspecialchars($page_description); ?>">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMdx</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | <?php echo htmlspecialchars(SITE_NAME); ?></title>
     
     <!-- Preload critical assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -314,7 +314,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                     
                 <h4 class="text-teal mb-1">Important Note</h4>
                     <p class="mb-0">
-                        <strong></strong> LuckyGeneMdx provides genetic carrier screening services 
+                        <strong></strong> <?php echo htmlspecialchars(SITE_NAME); ?> provides genetic carrier screening services 
                         aligned with professional standards. We are not affiliated with, endorsed by, or officially 
                         connected to ACMG, ACOG, CDC, or other medical organizations mentioned. Carrier screening 
                         is not a diagnostic test and should not replace consultation with qualified healthcare providers.
@@ -325,6 +325,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
 
         <!-- CTA Section -->
         
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="section conversion-block section-light section-padded">
             <div class="container">
                 <div class="cta-card-large">
@@ -342,7 +343,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                     </p>
 
                     <div class="mb-5">
-                        <span class="price-display">$99</span>
+                        <span class="price-display">$<?php echo number_format(KIT_PRICE, 0); ?></span>
                         <span class="price-strike">$249</span>
                     </div>
 
@@ -363,6 +364,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                 </div>
             </div>
         </section>
+        <?php endif; ?>
 
     </main>
     

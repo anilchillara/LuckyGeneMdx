@@ -13,7 +13,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo htmlspecialchars($page_description); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMDx</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | <?php echo htmlspecialchars(SITE_NAME); ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
@@ -48,7 +48,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                             </div>
                             <p>Complete our secure online form. Your kit ships within 1-2 business days.</p>
                             <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
-                                <li>Payment information ($99)</li>
+                                <li>Payment information ($<?php echo number_format(KIT_PRICE, 0); ?>)</li>
                                 <li>Informed consent included</li>
                             </ul>
                             <div style="margin-top: 1rem; font-weight: 600; color: var(--color-medical-teal);">⏱️ 5 minutes</div>
@@ -129,6 +129,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 
         <!-- CTA Section -->
 
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
                 <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 800px; margin: 0 auto;">
@@ -146,13 +147,13 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                     </p>
 
                     <div style="margin-bottom: 2.5rem;">
-                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
+                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$<?php echo number_format(KIT_PRICE, 0); ?></span>
                         <span style="font-size: 1.8rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.5; margin-left: 12px;">$249</span>
                     </div>
 
                     <div style="margin-bottom: 2rem;">
                         <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
-                            Request Your Kit Now - $99
+                            Request Your Kit Now - $<?php echo number_format(KIT_PRICE, 0); ?>
                         </a>
                     </div>
 
@@ -170,6 +171,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                 </div>
             </div>
         </section>
+        <?php endif; ?>
     </main>
 
     <?php include 'includes/footer.php'; ?>

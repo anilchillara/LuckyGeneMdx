@@ -1,4 +1,6 @@
 <?php
+define('luckygenemdx', true);
+require_once 'includes/config.php';
 $success = false;
 $errors = [];
 
@@ -31,23 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <style>
   /* Overrides for this specific landing page */
 
-  :root {
-    --cream:   var(--color-light-gray);
-    --parchment: #eef2f6;
-    --espresso: var(--color-primary-deep-blue);
-    --moss:    var(--color-medical-teal);
-    --sage:    #4dccc2;
-    --gold:    var(--color-purple-accent);
-    --warm-white: var(--color-white);
-    --text-muted: var(--color-dark-gray);
-  }
-
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Inter', sans-serif;
-    background: var(--cream);
-    color: var(--espresso);
+    background: var(--color-light-gray);
+    color: var(--color-primary-deep-blue);
     min-height: 100vh;
   }
 
@@ -73,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   .badge {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--moss);
+    background: var(--color-medical-teal);
     color: var(--white);
     font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
     padding: 6px 18px; border-radius: 100px;
@@ -94,15 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     font-weight: 300;
     line-height: 1.12;
     letter-spacing: -.01em;
-    color: var(--espresso);
+    color: var(--color-primary-deep-blue);
     max-width: 720px;
     margin: 0 auto 20px;
   }
-  h1 em { font-style: italic; color: var(--moss); }
+  h1 em { font-style: italic; color: var(--color-medical-teal); }
 
   .subtitle {
     font-size: 1.05rem;
-    color: var(--text-muted);
+    color: var(--color-dark-gray);
     max-width: 560px;
     margin: 0 auto;
     line-height: 1.7;
@@ -113,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   .partner-strip {
     max-width: 820px;
     margin: 52px auto 0;
-    background: var(--warm-white);
+    background: var(--color-white);
     border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 28px 36px;
@@ -127,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   .partner-icon {
     width: 48px; height: 48px;
-    background: linear-gradient(135deg, var(--moss), #008c7a);
+    background: linear-gradient(135deg, var(--color-medical-teal), #008c7a);
     border-radius: 12px;
     display: grid; place-items: center;
     font-size: 22px;
@@ -139,11 +129,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     display: block;
     font-family: 'Poppins', sans-serif;
     font-size: 1.1rem; font-weight: 600;
-    color: var(--espresso);
+    color: var(--color-primary-deep-blue);
     margin-bottom: 4px;
   }
   .partner-text p {
-    font-size: .9rem; color: var(--text-muted); line-height: 1.65;
+    font-size: .9rem; color: var(--color-dark-gray); line-height: 1.65;
   }
 
   /* ── STATS ROW ── */
@@ -157,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   .stat-card {
-    background: var(--warm-white);
+    background: var(--color-white);
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 22px 20px;
@@ -167,12 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   .stat-card .num {
     font-family: 'Poppins', sans-serif;
     font-size: 2.4rem; font-weight: 600;
-    color: var(--moss);
+    color: var(--color-medical-teal);
     line-height: 1;
   }
   .stat-card .label {
     font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--text-muted); margin-top: 6px;
+    color: var(--color-dark-gray); margin-top: 6px;
   }
 
   /* ── DIVIDER ── */
@@ -189,14 +179,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   .divider span {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1rem; font-style: italic;
-    color: var(--text-muted); white-space: nowrap;
+    color: var(--color-dark-gray); white-space: nowrap;
   }
 
   /* ── FORM CARD ── */
   .form-card {
     max-width: 820px;
     margin: 40px auto 80px;
-    background: var(--warm-white);
+    background: var(--color-white);
     border: 1px solid var(--border-color);
     border-radius: 28px;
     padding: clamp(32px, 6vw, 56px);
@@ -214,32 +204,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   label {
     display: block;
     font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--espresso); font-weight: 600;
+    color: var(--color-primary-deep-blue); font-weight: 600;
     margin-bottom: 8px;
-  }
-
-  input, select, textarea {
-    width: 100%;
-    background: var(--light-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-family: 'Inter', sans-serif;
-    font-size: .95rem;
-    color: var(--espresso);
-    outline: none;
-    transition: border-color .2s, box-shadow .2s, background .2s;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--medical-teal);
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(0, 179, 164, 0.1);
-  }
-  textarea { resize: vertical; min-height: 100px; }
-  select { appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b8f6e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 16px center;
-    padding-right: 44px;
   }
 
   .errors {
@@ -249,35 +215,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     font-size: .875rem; color: #b94a4a; line-height: 1.6;
   }
 
-  .submit-btn {
-    width: 100%; margin-top: 12px;
-    background: var(--moss);
-    color: #fff;
-    border: 1px solid var(--moss);
-    border-radius: 14px;
-    padding: 18px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem; font-weight: 600;
-    letter-spacing: .02em;
-    cursor: pointer;
-    transition: background .25s, transform .15s, box-shadow .25s;
-    position: relative; overflow: hidden;
-  }
-  .submit-btn::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.12));
-  }
-  .submit-btn:hover {
-    background: #008c7a;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(0, 179, 164, 0.25);
-  }
-  .submit-btn:active { transform: translateY(0); }
+  /* Custom overrides for form elements to match landing page style */
+  .form-input, .form-select { background: var(--light-bg); border-radius: 12px; padding: 14px 18px; }
+  textarea.form-input { min-height: 100px; resize: vertical; }
 
   .privacy-note {
     text-align: center; margin-top: 16px;
-    font-size: .78rem; color: var(--text-muted);
+    font-size: .78rem; color: var(--color-dark-gray);
   }
   .privacy-note svg { vertical-align: middle; margin-right: 4px; }
 
@@ -287,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
   .success-icon {
     width: 80px; height: 80px;
-    background: linear-gradient(135deg, var(--moss), #008c7a);
+    background: linear-gradient(135deg, var(--color-medical-teal), #008c7a);
     border-radius: 50%;
     margin: 0 auto 28px;
     display: grid; place-items: center;
@@ -301,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     font-size: 2.2rem; font-weight: 400;
     margin-bottom: 12px;
   }
-  .success-state p { color: var(--text-muted); line-height: 1.7; max-width: 400px; margin: 0 auto; }
+  .success-state p { color: var(--color-dark-gray); line-height: 1.7; max-width: 400px; margin: 0 auto; }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
@@ -323,9 +267,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .stats { grid-template-columns: 1fr; }
     .partner-strip { grid-template-columns: 1fr; }
   }
+
+  /* Dark Mode Support */
+  body.dark-theme {
+    background: #0f1216;
+    color: #e9ecef;
+  }
+  
+  body.dark-theme::before {
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 179, 164, 0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 85% 80%, rgba(108, 99, 255, 0.08) 0%, transparent 55%);
+  }
+
+  body.dark-theme .partner-strip,
+  body.dark-theme .stat-card,
+  body.dark-theme .form-card {
+    border-color: #343a40;
+    box-shadow: none;
+  }
+
+  body.dark-theme .divider::before, 
+  body.dark-theme .divider::after {
+    background: linear-gradient(to right, transparent, rgba(255,255,255,.15));
+  }
+  body.dark-theme .divider::after {
+    background: linear-gradient(to left, transparent, rgba(255,255,255,.15));
+  }
+
+  body.dark-theme .form-input, 
+  body.dark-theme .form-select {
+    background: #1a1d21;
+    border-color: #495057;
+    color: #e9ecef;
+  }
+  body.dark-theme .stat-card .label, body.dark-theme .partner-text p, body.dark-theme .subtitle, body.dark-theme .privacy-note { color: #adb5bd; }
 </style>
 </head>
 <body>
+<?php include 'includes/navbar.php'; ?>
 <div class="page-wrap">
 
   <header>
@@ -392,25 +372,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div>
           <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" placeholder="Jane Smith"
+          <input type="text" id="name" name="name" class="form-input" placeholder="Jane Smith"
             value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
         </div>
 
         <div>
           <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" placeholder="jane@example.com"
+          <input type="email" id="email" name="email" class="form-input" placeholder="jane@example.com"
             value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
         </div>
 
         <div>
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000"
+          <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 000-0000"
             value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
         </div>
 
         <div>
           <label for="role">I am a *</label>
-          <select id="role" name="role" required>
+          <select id="role" name="role" class="form-select" required>
             <option value="" disabled <?= empty($_POST['role']) ? 'selected' : '' ?>>Select your role</option>
             <option value="patient" <?= ($_POST['role'] ?? '') === 'patient' ? 'selected' : '' ?>>Patient / Individual</option>
             <option value="couple" <?= ($_POST['role'] ?? '') === 'couple' ? 'selected' : '' ?>>Couple / Family</option>
@@ -424,12 +404,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="full">
           <label for="interest">What matters most to you? <span style="opacity:.5;font-style:italic;text-transform:none;letter-spacing:0">optional</span></label>
-          <textarea id="interest" name="interest" placeholder="e.g. Affordable pricing, specific conditions covered, counseling support…"><?= htmlspecialchars($_POST['interest'] ?? '') ?></textarea>
+          <textarea id="interest" name="interest" class="form-input" placeholder="e.g. Affordable pricing, specific conditions covered, counseling support…"><?= htmlspecialchars($_POST['interest'] ?? '') ?></textarea>
         </div>
 
       </div>
 
-      <button type="submit" class="submit-btn">Reserve My Spot — It's Free</button>
+      <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 12px; border-radius: 14px;">Reserve My Spot — It's Free</button>
 
       <p class="privacy-note">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
@@ -441,5 +421,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
 </div>
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>

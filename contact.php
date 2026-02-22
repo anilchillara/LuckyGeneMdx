@@ -10,7 +10,7 @@ $page_title = 'Contact Us';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | LuckyGeneMDx</title>
+    <title><?php echo $page_title; ?> | <?php echo htmlspecialchars(SITE_NAME); ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -65,7 +65,7 @@ $page_title = 'Contact Us';
                     <span>📧</span>
                     <div>
                         <strong>Email Us</strong>
-                        support@luckygenemdx.com<br>
+                        <?php echo htmlspecialchars(SUPPORT_EMAIL); ?><br>
                         providers@luckygenemdx.com
                     </div>
                 </div>

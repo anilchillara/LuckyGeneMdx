@@ -133,7 +133,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title>Request Screening Kit - LuckyGeneMDx</title>
+    <title>Request Screening Kit - <?php echo htmlspecialchars(SITE_NAME); ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -228,7 +228,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                             <div class="summary-row">
                                 <div class="summary-flex">
                                     <span>Subtotal</span>
-                                    <span>$99.00</span>
+                                    <span>$<?php echo number_format(KIT_PRICE, 2); ?></span>
                                 </div>
                                 <div class="summary-flex">
                                     <span>Shipping</span>
@@ -239,7 +239,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                             <div class="summary-row">
                                 <div class="summary-flex font-lg font-bold">
                                     <span>Total</span>
-                                    <span class="text-teal">$99.00</span>
+                                    <span class="text-teal">$<?php echo number_format(KIT_PRICE, 2); ?></span>
                                 </div>
                             </div>
                             
@@ -402,7 +402,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary btn-full btn-large mt-4">
-                                    Complete Order - $99.00
+                                    Complete Order - $<?php echo number_format(KIT_PRICE, 2); ?>
                                 </button>
                                 
                                 <p class="text-center mt-2 font-sm text-dark-gray">

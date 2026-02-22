@@ -58,7 +58,7 @@ $resources = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | LuckyGeneMDx</title>
+    <title><?php echo $page_title; ?> | <?php echo htmlspecialchars(SITE_NAME); ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
@@ -225,6 +225,7 @@ $resources = [
         </section>
 
         <!-- CTA Section - UNCHANGED -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
             <div class="container">
                 <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 850px; margin: 0 auto;">
@@ -242,13 +243,13 @@ $resources = [
                     </p>
 
                     <div style="margin-bottom: 2.5rem;">
-                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$99</span>
+                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$<?php echo number_format(KIT_PRICE, 0); ?></span>
                         <span style="font-size: 1.8rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.5; margin-left: 12px;">$249</span>
                     </div>
 
                     <div style="margin-bottom: 2rem;">
                         <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse">
-                            Request Your Kit Now - $99
+                            Request Your Kit Now - $<?php echo number_format(KIT_PRICE, 0); ?>
                         </a>
                     </div>
 
@@ -266,6 +267,7 @@ $resources = [
                 </div>
             </div>
         </section>
+        <?php endif; ?>
     </main>
 
     <?php include 'includes/footer.php'; ?>

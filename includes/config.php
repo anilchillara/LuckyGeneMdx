@@ -65,16 +65,57 @@ if (!defined('luckygenemdx')) {
     die('Direct access not permitted');
 }
 
-// Application Constants
-define('SITE_URL', getenv('SITE_URL') ?: 'https://luckygenemdx.com');
-define('SITE_NAME', getenv('SITE_NAME') ?: 'LuckyGeneMDx');
-
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_NAME', getenv('DB_NAME') ?: 'luckygenemdx_db');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
+
+// Load Dynamic Settings from Database
+require_once __DIR__ . '/Database.php';
+$dbSettings = [];
+try {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->query("SELECT setting_key, value FROM site_settings");
+    $dbSettings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+} catch (Exception $e) {
+    // Fallback if DB connection fails or table missing
+}
+
+// Application Constants
+define('SITE_URL', $dbSettings['site_url'] ?? (getenv('SITE_URL') ?: 'https://luckygenemdx.com'));
+define('SITE_NAME', $dbSettings['site_name'] ?? (getenv('SITE_NAME') ?: 'LuckyGeneMDx'));
+define('SUPPORT_EMAIL', $dbSettings['support_email'] ?? 'support@luckygenemdx.com');
+
+// Access Control: Block direct access to disabled navbar pages
+if (isset($db) && strpos($_SERVER['PHP_SELF'], '/admin/') === false) {
+    try {
+        $stmt = $db->prepare("SELECT url FROM navbar_items WHERE is_active = 0");
+        $stmt->execute();
+        $disabledPages = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        if (!empty($disabledPages)) {
+            $currentScript = trim($_SERVER['PHP_SELF']);
+            foreach ($disabledPages as $pageUrl) {
+                // Check if current script ends with the disabled URL
+                if (substr($currentScript, -strlen($pageUrl)) === $pageUrl) {
+                    $boundary = substr($currentScript, -(strlen($pageUrl) + 1), 1);
+                    if ($boundary === '/' || $boundary === false) {
+                        if ($pageUrl === 'index.php') {
+                            header("HTTP/1.1 503 Service Unavailable");
+                            die("<h1>Service Unavailable</h1><p>This page is currently disabled.</p>");
+                        } else {
+                            $redirect = (strpos($currentScript, '/user-portal/') !== false) ? '../index.php' : 'index.php';
+                            header("Location: " . $redirect);
+                            exit;
+                        }
+                    }
+                }
+            }
+        }
+    } catch (Exception $e) { /* Ignore access control errors */ }
+}
 
 // Security Settings
 define('SESSION_TIMEOUT', 1800);
@@ -102,7 +143,8 @@ define('MAIL_FROM_NAME', getenv('EMAIL_FROM_NAME'));
 define('BASE_URL', getenv('BASE_URL'));
 
 // Application Settings
-define('KIT_PRICE', 99.00);
+define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 99.00);
+define('SHOW_CTA', isset($dbSettings['show_cta']) ? (bool)$dbSettings['show_cta'] : true);
 define('CURRENCY', 'USD');
 define('RESULTS_PROCESSING_DAYS', '14-21');
 

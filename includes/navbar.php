@@ -4,6 +4,49 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $currentPage = basename($_SERVER['PHP_SELF']);
 $isLoggedIn = isset($_SESSION['user_id']);
+
+// Ensure Database class is loaded
+require_once __DIR__ . '/Database.php';
+
+// Fetch Navbar Items from Database
+$navItems = [];
+$mainItems = [];
+$actionItems = [];
+$useDbNav = false;
+try {
+    $db = Database::getInstance()->getConnection();
+    // Check if table exists to prevent errors before migration
+    $stmt = $db->query("SHOW TABLES LIKE 'navbar_items'");
+    if ($stmt->rowCount() > 0) {
+        $useDbNav = true;
+        $stmt = $db->query("SELECT * FROM navbar_items WHERE is_active = 1 ORDER BY display_order ASC");
+        $navItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($navItems as $item) {
+            if (!isset($item['section']) || $item['section'] === 'main') {
+                $mainItems[] = $item;
+            } else {
+                $actionItems[] = $item;
+            }
+        }
+    }
+} catch (Exception $e) {
+    // Fallback to defaults if DB error
+    $useDbNav = false;
+}
+
+// Default items if DB is empty or table missing
+if (!$useDbNav) {
+    $mainItems = [
+        ['label' => 'Home', 'url' => 'index.php'],
+        ['label' => 'About Screening', 'url' => 'about-genetic-screening.php'],
+        ['label' => 'How It Works', 'url' => 'how-it-works.php'],
+        ['label' => 'Resources', 'url' => 'resources.php'],
+        ['label' => 'Contact', 'url' => 'contact.php'],
+        ['label' => 'Track Order', 'url' => 'track-order.php'],
+        ['label' => 'Interest List', 'url' => 'intrest-list.php']
+    ];
+}
 ?>
 <style>
     :root {
@@ -189,25 +232,38 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
 <nav class="navbar">
     <a href="index.php" class="brand">
-        <span>🧬</span> LuckyGeneMDx
+        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?>
     </a>
     <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
     <div class="nav-items" id="nav-items">
-        <a href="index.php" class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>">Home</a>
-        <a href="about-genetic-screening.php" class="nav-link <?php echo $currentPage == 'about-genetic-screening.php' ? 'active' : ''; ?>">About Screening</a>
-        <a href="how-it-works.php" class="nav-link <?php echo $currentPage == 'how-it-works.php' ? 'active' : ''; ?>">How It Works</a>
-        <a href="resources.php" class="nav-link <?php echo $currentPage == 'resources.php' ? 'active' : ''; ?>">Resources</a>
-        <a href="contact.php" class="nav-link <?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>">Contact</a>
-        <a href="track-order.php" class="nav-link <?php echo $currentPage == 'track-order.php' ? 'active' : ''; ?>">Track Order</a>
+        <?php foreach ($mainItems as $item): ?>
+            <a href="<?php echo htmlspecialchars($item['url']); ?>" class="nav-link <?php echo $currentPage == basename($item['url']) ? 'active' : ''; ?>">
+                <?php echo htmlspecialchars($item['label']); ?>
+            </a>
+        <?php endforeach; ?>
     </div>
     <div class="nav-actions" id="nav-actions">
         <button id="theme-toggle" class="btn-nav btn-nav-outline" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <?php if ($isLoggedIn): ?>
+        
+        <?php if ($useDbNav): ?>
+            <?php foreach ($actionItems as $item): 
+                // Auth Status: 0=All, 1=LoggedIn, 2=LoggedOut
+                if ($item['auth_status'] == 1 && !$isLoggedIn) continue;
+                if ($item['auth_status'] == 2 && $isLoggedIn) continue;
+            ?>
+                <a href="<?php echo htmlspecialchars($item['url']); ?>" class="<?php echo htmlspecialchars($item['css_class'] ?? 'btn-nav btn-nav-outline'); ?>">
+                    <?php echo htmlspecialchars($item['label']); ?>
+                </a>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <?php if ($isLoggedIn): ?>
+            <!-- Fallback if DB empty -->
             <a href="user-portal/index.php" class="btn-nav btn-nav-outline">Dashboard</a>
             <a href="user-portal/logout.php" class="btn-nav btn-nav-primary">Sign Out</a>
-        <?php else: ?>
+            <?php else: ?>
             <a href="user-portal/login.php" class="btn-nav btn-nav-outline">Patient Login</a>
             <a href="request-kit.php" class="btn-nav btn-nav-primary">Order Kit</a>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </nav>

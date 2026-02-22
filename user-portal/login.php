@@ -74,7 +74,7 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
     <div style="text-align:center; margin-bottom: 2rem;">
         <div style="font-size: 3rem;">🧬</div>
         <h1 id="header-title">Patient Portal</h1>
-        <p id="header-desc">Welcome back to LuckyGeneMDx</p>
+        <p id="header-desc">Welcome back to <?php echo htmlspecialchars(SITE_NAME); ?></p>
     </div>
 
     <?php if ($error): ?>
@@ -160,7 +160,7 @@ function goToStep1() {
     document.getElementById('step-2').style.display = 'none';
     document.getElementById('step-1').style.display = 'block';
     document.getElementById('header-title').textContent = 'Patient Portal';
-    document.getElementById('header-desc').textContent  = 'Welcome back to LuckyGeneMDx';
+    document.getElementById('header-desc').textContent  = 'Welcome back to <?php echo htmlspecialchars(SITE_NAME); ?>';
 }
 
 function togglePassword(id) {
