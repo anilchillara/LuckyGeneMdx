@@ -8,7 +8,8 @@ if (!defined('luckygenemdx')) exit;
 // Determine base URL if not already set (e.g. if header wasn't included)
 if (!isset($baseUrl)) {
     $inPortal = strpos($_SERVER['PHP_SELF'], '/user-portal/') !== false;
-    $baseUrl = $inPortal ? '../' : '';
+    $inAdmin = strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
+    $baseUrl = ($inPortal || $inAdmin) ? '../' : '';
 }
 
 // Fetch Navbar Items status for footer visibility control
