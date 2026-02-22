@@ -29,10 +29,13 @@ use PHPMailer\PHPMailer\Exception as MailException;
 // PHPMailer — Composer (preferred) or manual install fallback
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/phpmailer/src/PHPMailer.php')) {
+    require_once __DIR__ . '/phpmailer/src/Exception.php';
+    require_once __DIR__ . '/phpmailer/src/PHPMailer.php';
+    require_once __DIR__ . '/phpmailer/src/SMTP.php';
 } else {
-    require_once __DIR__ . '/../includes/phpmailer/src/Exception.php';
-    require_once __DIR__ . '/../includes/phpmailer/src/PHPMailer.php';
-    require_once __DIR__ . '/../includes/phpmailer/src/SMTP.php';
+    // Prevent fatal error if PHPMailer is missing
+    error_log("PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/");
 }
 
 class User {

@@ -2,3 +2,6 @@
 [16-Feb-2026 02:58:10 Europe/Berlin] Database Connection Error: SQLSTATE[HY000] [1045] Access denied for user 'u340306091_luckygenemdx'@'localhost' (using password: YES)
 [16-Feb-2026 03:22:16 Europe/Berlin] Database Connection Error: SQLSTATE[HY000] [1044] Access denied for user 'luckygenemdx'@'localhost' to database 'luckygenemdx'
 [16-Feb-2026 03:25:57 Europe/Berlin] Database Connection Error: SQLSTATE[HY000] [1044] Access denied for user 'luckygenemdx'@'localhost' to database 'luckygenemdx'
+[22-Feb-2026 00:43:16 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 00:43:29 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 02:42:37 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/

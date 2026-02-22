@@ -181,6 +181,23 @@ if (!isset($baseUrl)) {
         text-align: center;
     }
 }
+
+/* Dark Mode Overrides */
+body.dark-theme .site-footer {
+    background: linear-gradient(-45deg, #0f1216, #1a1d21, #0f1216);
+}
+
+body.dark-theme .footer-cta-btn {
+    background: #212529;
+    color: #e9ecef !important;
+    border: 1px solid #343a40;
+}
+
+body.dark-theme .footer-cta-btn:hover {
+    background: #00B3A4;
+    color: #ffffff !important;
+    border-color: #00B3A4;
+}
 </style>
 
 <footer class="site-footer">
