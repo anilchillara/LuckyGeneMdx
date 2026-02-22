@@ -84,7 +84,18 @@ try {
 }
 
 // Application Constants
-define('SITE_URL', $dbSettings['site_url'] ?? (getenv('SITE_URL') ?: 'https://luckygenemdx.com'));
+// Auto-detect URL for development if not set in DB
+$detectedUrl = 'https://luckygenemdx.com';
+if (isset($_SERVER['HTTP_HOST'])) {
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false) {
+        // If running on a port (e.g. :8000), use root. Otherwise assume folder structure.
+        $isPort = strpos($_SERVER['HTTP_HOST'], ':') !== false;
+        $detectedUrl = $isPort ? "$protocol://{$_SERVER['HTTP_HOST']}" : "$protocol://{$_SERVER['HTTP_HOST']}/LuckyGeneMdx";
+    }
+}
+
+define('SITE_URL', $dbSettings['site_url'] ?? (getenv('SITE_URL') ?: $detectedUrl));
 define('SITE_NAME', $dbSettings['site_name'] ?? (getenv('SITE_NAME') ?: 'LuckyGeneMDx'));
 define('SUPPORT_EMAIL', $dbSettings['support_email'] ?? 'support@luckygenemdx.com');
 
@@ -154,7 +165,7 @@ define('MAIL_PASSWORD', $dbSettings['smtp_password'] ?? (getenv('SMTP_PASS') ?: 
 define('MAIL_FROM', $dbSettings['from_email'] ?? (getenv('EMAIL_FROM') ?: ''));
 define('MAIL_FROM_NAME', $dbSettings['from_name'] ?? (getenv('EMAIL_FROM_NAME') ?: 'LuckyGeneMDx'));
 
-define('BASE_URL', getenv('BASE_URL'));
+define('BASE_URL', $dbSettings['base_url'] ?? (getenv('BASE_URL') ?: SITE_URL));
 
 // Application Settings
 define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 99.00);

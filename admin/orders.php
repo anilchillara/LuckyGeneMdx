@@ -41,8 +41,10 @@ if ($statusFilter) {
 }
 
 if ($searchQuery) {
-    $where[] = "(o.order_number LIKE :search OR u.full_name LIKE :search OR u.email LIKE :search)";
-    $params[':search'] = '%' . $searchQuery . '%';
+    $where[] = "(o.order_number LIKE :s1 OR u.full_name LIKE :s2 OR u.email LIKE :s3)";
+    $params[':s1'] = '%' . $searchQuery . '%';
+    $params[':s2'] = '%' . $searchQuery . '%';
+    $params[':s3'] = '%' . $searchQuery . '%';
 }
 
 $whereClause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
@@ -113,6 +115,7 @@ $initials  = strtoupper(substr($adminName,0,2));
     <a href="index.php" class="nav-link">Dashboard</a>
     <a href="orders.php" class="nav-link active">Orders</a>
     <a href="users.php" class="nav-link">Users</a>
+    <a href="interest-list.php" class="nav-link">Interest List</a>
     <a href="upload-results.php" class="nav-link">Upload Results</a>
     <a href="activity-log.php" class="nav-link">Activity Log</a>
     <a href="settings.php" class="nav-link">Settings</a>

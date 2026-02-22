@@ -56,8 +56,16 @@ class User {
         return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
     }
 
-    private function validateEmail($email) {
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    public function validateEmail($email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        // Check for valid MX or A records to ensure domain can receive mail
+        $domain = substr(strrchr($email, "@"), 1);
+        if (function_exists('checkdnsrr')) {
+            return checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A');
+        }
+        return true;
     }
 
     private function validatePhone($phone) {
@@ -231,7 +239,7 @@ class User {
             );
             $stmt->execute([':token' => $token, ':expires' => $expires, ':user_id' => $user_id]);
 
-            $base_url   = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:9999';
+            $base_url   = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:8888';
             $verify_url = $base_url . '/user-portal/verify-email.php?token=' . urlencode($token);
 
             $mail = $this->createMailer();
@@ -573,7 +581,7 @@ HTML;
      */
     public function sendResultsNotification($email, $full_name, $order_number) {
         try {
-            $base_url = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost/luckygenemdx';
+            $base_url = defined('BASE_URL') ? rtrim(SITE_URL, '/') : 'http://localhost:8888';
             $login_url = $base_url . '/user-portal/login.php';
 
             $mail = $this->createMailer();
@@ -673,6 +681,51 @@ HTML;
         } catch (Exception $e) {
             error_log("Test Email Error: " . $e->getMessage());
             return ['success' => false, 'message' => 'System Error: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Send welcome email to interest list subscriber.
+     */
+    public function sendInterestWelcomeEmail($email, $name) {
+        try {
+            $base_url = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:8888';
+            $unsubscribe_url = $base_url . '/unsubscribe.php?email=' . urlencode($email);
+
+            $mail = $this->createMailer();
+            $mail->addAddress($email, $name);
+            $mail->Subject = 'Welcome to the LuckyGeneMDx Interest List';
+            
+            $first = htmlspecialchars(explode(' ', trim($name))[0]);
+            
+            $mail->Body = <<<HTML
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background-color:#f4f6fa;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+        <tr><td align="center" style="padding-bottom:24px"><div style="font-size:48px;margin-bottom:10px;">🧬</div><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGeneMDx</h1></td></tr>
+        <tr><td style="padding-bottom:24px"><p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">Thank you for joining our interest list! You've taken the first step toward affordable, comprehensive genetic carrier screening.</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:12px 0 0;">We are working hard to launch our services. You will be among the first to know when we go live, and you'll receive exclusive early-access pricing.</p></td></tr>
+        <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px"><p style="color:#94a3b8;font-size:12px;margin:0;">We promise to keep your information secure and never spam you.</p></td></tr>
+      </table>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGeneMDx. All rights reserved.</p>
+      <p style="color:#94a3b8;font-size:12px;margin:10px 0 0;text-align:center;">To be removed from receiving future emails, <a href="{$unsubscribe_url}" style="color:#94a3b8;text-decoration:underline;">unsubscribe here</a>.</p>
+    </td></tr>
+  </table>
+</body>
+</html>
+HTML;
+            $mail->AltBody = "Hi $first,\n\nThank you for joining the LuckyGeneMDx interest list! We will notify you as soon as we launch with exclusive early-access pricing.\n\n— LuckyGeneMDx";
+
+            $mail->send();
+            error_log("Interest list welcome email sent successfully to: $email");
+            return ['success' => true];
+
+        } catch (Exception $e) {
+            error_log("Interest Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error sending email.'];
         }
     }
 }

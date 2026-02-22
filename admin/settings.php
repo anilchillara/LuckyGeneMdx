@@ -306,6 +306,7 @@ $initials  = strtoupper(substr($adminName,0,2));
         <a href="index.php" class="nav-link">Dashboard</a>
         <a href="orders.php" class="nav-link">Orders</a>
         <a href="users.php" class="nav-link">Users</a>
+        <a href="interest-list.php" class="nav-link">Interest List</a>
         <a href="upload-results.php" class="nav-link">Upload Results</a>
         <a href="activity-log.php" class="nav-link">Activity Log</a>
         <a href="settings.php" class="nav-link active">Settings</a>
@@ -353,6 +354,10 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <div class="form-group">
                             <label class="form-label">Site URL</label>
                             <input type="url" name="settings[site_url]" value="<?php echo htmlspecialchars($settings['site_url'] ?? SITE_URL); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Base URL</label>
+                            <input type="url" name="settings[base_url]" value="<?php echo htmlspecialchars($settings['base_url'] ?? BASE_URL); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Kit Price (USD)</label>
