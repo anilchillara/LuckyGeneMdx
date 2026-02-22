@@ -88,8 +88,21 @@ define('SITE_URL', $dbSettings['site_url'] ?? (getenv('SITE_URL') ?: 'https://lu
 define('SITE_NAME', $dbSettings['site_name'] ?? (getenv('SITE_NAME') ?: 'LuckyGeneMDx'));
 define('SUPPORT_EMAIL', $dbSettings['support_email'] ?? 'support@luckygenemdx.com');
 
-// Access Control: Block direct access to disabled navbar pages
-if (isset($db) && strpos($_SERVER['PHP_SELF'], '/admin/') === false) {
+// --- ACCESS CONTROL SYSTEM ---
+$currentScript = $_SERVER['PHP_SELF'];
+$isAdminArea = strpos($currentScript, '/admin/') !== false;
+$isMaintenancePage = basename($currentScript) === 'maintenance.php';
+
+// 1. Global Maintenance Mode Check
+// Redirects all non-admin traffic to maintenance.php if enabled in settings
+if (isset($dbSettings['maintenance_mode']) && $dbSettings['maintenance_mode'] && !$isAdminArea && !$isMaintenancePage) {
+    header("Location: " . (defined('BASE_URL') ? BASE_URL : '') . "/maintenance.php");
+    exit;
+}
+
+// 2. Disabled Navbar Pages Check
+// Blocks access to specific pages disabled via Navbar Settings
+if (isset($db) && !$isAdminArea && !$isMaintenancePage) {
     try {
         $stmt = $db->prepare("SELECT url FROM navbar_items WHERE is_active = 0");
         $stmt->execute();
@@ -103,8 +116,8 @@ if (isset($db) && strpos($_SERVER['PHP_SELF'], '/admin/') === false) {
                     $boundary = substr($currentScript, -(strlen($pageUrl) + 1), 1);
                     if ($boundary === '/' || $boundary === false) {
                         if ($pageUrl === 'index.php') {
-                            header("HTTP/1.1 503 Service Unavailable");
-                            die("<h1>Service Unavailable</h1><p>This page is currently disabled.</p>");
+                            header("Location: maintenance.php");
+                            exit;
                         } else {
                             $redirect = (strpos($currentScript, '/user-portal/') !== false) ? '../index.php' : 'index.php';
                             header("Location: " . $redirect);
