@@ -270,20 +270,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   /* Dark Mode Support */
   body.dark-theme {
-    background: #0f1216;
-    color: #e9ecef;
+    background: #3B3B3B;
+    color: #B2B2B2;
   }
   
   body.dark-theme::before {
     background-image:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 179, 164, 0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 85% 80%, rgba(108, 99, 255, 0.08) 0%, transparent 55%);
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(178, 178, 178, 0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 85% 80%, rgba(144, 144, 144, 0.08) 0%, transparent 55%);
   }
 
   body.dark-theme .partner-strip,
   body.dark-theme .stat-card,
   body.dark-theme .form-card {
-    border-color: #343a40;
+    border-color: #606060;
     box-shadow: none;
   }
 
@@ -297,11 +297,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   body.dark-theme .form-input, 
   body.dark-theme .form-select {
-    background: #1a1d21;
-    border-color: #495057;
-    color: #e9ecef;
+    background: #3B3B3B;
+    border-color: #606060;
+    color: #B2B2B2;
   }
-  body.dark-theme .stat-card .label, body.dark-theme .partner-text p, body.dark-theme .subtitle, body.dark-theme .privacy-note { color: #adb5bd; }
+  body.dark-theme .stat-card .label, body.dark-theme .partner-text p, body.dark-theme .subtitle, body.dark-theme .privacy-note { color: #909090; }
 </style>
 </head>
 <body>

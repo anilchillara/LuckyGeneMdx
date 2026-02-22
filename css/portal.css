@@ -46,19 +46,29 @@ body {
 }
 
 body.dark-theme {
-    --ms-blue:      var(--color-medical-teal);
-    --ms-blue-dark: #008c7a;
-    --ms-blue-light: rgba(0, 179, 164, 0.2);
-    --bg-body:      #1a1d21; /* Darker shade of black */
-    --glass-panel:  var(--color-black);
-    --glass-border: #343a40;
-    --glass-hover:  #2c3035;
-    --text-primary: var(--color-white);
-    --text-secondary: #adb5bd;
+    --ms-blue:      #B2B2B2;
+    --ms-blue-dark: #D3D3D3;
+    --ms-blue-light: rgba(178, 178, 178, 0.2);
+    --bg-body:      #3B3B3B;
+    --glass-panel:  #454545;
+    --glass-border: #606060;
+    --glass-hover:  #505050;
+    --text-primary: #B2B2B2;
+    --text-secondary: #909090;
     --shadow-card:  0 4px 8px rgba(0,0,0,0.4);
-    --brand-gradient: linear-gradient(135deg, #4ef0e6 0%, #00B3A4 100%);
+    --brand-gradient: linear-gradient(135deg, #909090 0%, #B2B2B2 100%);
 }
-body.dark-theme .btn-outline:hover { background: #3a3a3a; }
+body.dark-theme .btn-outline:hover { background: #606060; }
+body.dark-theme input[type="text"],
+body.dark-theme input[type="email"],
+body.dark-theme input[type="password"],
+body.dark-theme input[type="date"],
+body.dark-theme input[type="tel"],
+body.dark-theme select {
+    background-color: #3B3B3B;
+    border-color: #606060;
+    color: #B2B2B2;
+}
 
 a { text-decoration: none; color: var(--ms-blue); transition: .2s; }
 a:hover { color: var(--ms-blue-dark); text-decoration: underline; }

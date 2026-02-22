@@ -212,21 +212,26 @@ if (!$useDbNav) {
 
     /* Dark Mode Overrides for Navbar */
     body.dark-theme .navbar {
-        background: rgba(26, 29, 33, 0.95);
-        border-bottom-color: #343a40;
+        background: rgba(59, 59, 59, 0.95);
+        border-bottom-color: #606060;
     }
     body.dark-theme .nav-link {
-        color: #adb5bd;
+        color: #909090;
     }
     body.dark-theme .nav-link:hover, body.dark-theme .nav-link.active {
-        color: var(--nav-teal);
+        color: #B2B2B2;
     }
     body.dark-theme .btn-nav-outline {
-        color: #ffffff;
-        border-color: #495057;
+        color: #B2B2B2;
+        border-color: #606060;
     }
     body.dark-theme .mobile-toggle {
-        color: #ffffff;
+        color: #B2B2B2;
+    }
+    body.dark-theme .brand {
+        background: linear-gradient(135deg, #909090 0%, #B2B2B2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 </style>
 

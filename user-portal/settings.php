@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                                 <label for="email">Email Address</label>
                                 <input type="email" id="email" 
                                     value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled 
-                                    style="background:#f3f2f1; color:#605e5c;">
+                                    style="background:#777777; color:#AAAAAA;">
                                 <small style="display:block; margin-top:4px; color:#605e5c;">Contact support to change email.</small>
                             </div>
 
@@ -178,11 +178,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                         <h4 style="margin-bottom: 1rem;">Account Summary</h4>
                         <ul style="list-style:none; padding:0; margin:0; font-size:0.9rem;">
                             <li style="display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid rgba(0,0,0,0.05);">
-                                <span style="color:#605e5c;">Member Since</span>
+                                <span style="color:#909090;">Member Since</span>
                                 <span style="font-weight:600;"><?php echo date('Y', strtotime($user_data['created_at'] ?? '')); ?></span>
                             </li>
                             <li style="display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid rgba(0,0,0,0.05);">
-                                <span style="color:#605e5c;">Last Login</span>
+                                <span style="color:#909090;">Last Login</span>
                                 <span style="font-weight:600;">
                                     <?php echo $user_data['last_login'] ? date('M j', strtotime($user_data['last_login'])) : 'N/A'; ?>
                                 </span>
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 
                         <div style="margin-top: 2rem;">
                             <h5 style="margin-bottom: 0.5rem;">Data Privacy</h5>
-                            <p style="font-size: 0.85rem; color: #605e5c; margin-bottom: 1rem;">
+                            <p style="font-size: 0.85rem; color: #909090; margin-bottom: 1rem;">
                                 Your genetic data is encrypted and stored securely. We do not sell your data.
                             </p>
                             <a href="../privacy-policy.php" style="font-size: 0.85rem; text-decoration: underline;">Read Privacy Policy</a>

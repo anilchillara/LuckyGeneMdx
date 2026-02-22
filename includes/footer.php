@@ -209,19 +209,19 @@ $isNavActive = function($url) use ($navStatus) {
 
 /* Dark Mode Overrides */
 body.dark-theme .site-footer {
-    background: linear-gradient(-45deg, #0f1216, #1a1d21, #0f1216);
+    background: linear-gradient(-45deg, #3B3B3B, #454545, #3B3B3B);
 }
 
 body.dark-theme .footer-cta-btn {
-    background: #212529;
-    color: #e9ecef !important;
-    border: 1px solid #343a40;
+    background: #454545;
+    color: #B2B2B2 !important;
+    border: 1px solid #606060;
 }
 
 body.dark-theme .footer-cta-btn:hover {
-    background: #00B3A4;
-    color: #ffffff !important;
-    border-color: #00B3A4;
+    background: #B2B2B2;
+    color: #3B3B3B !important;
+    border-color: #B2B2B2;
 }
 </style>
 
