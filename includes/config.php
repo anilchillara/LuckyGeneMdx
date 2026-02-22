@@ -146,12 +146,13 @@ define('ENCRYPTION_METHOD', 'AES-256-CBC');
 define('ENCRYPTION_KEY', getenv('ENCRYPTION_KEY'));
 
 // Email Configuration
-define('MAIL_HOST', getenv('SMTP_HOST'));
-define('MAIL_PORT', getenv('SMTP_PORT') ?: 587);
-define('MAIL_USERNAME', getenv('SMTP_USER'));
-define('MAIL_PASSWORD', getenv('SMTP_PASS'));
-define('MAIL_FROM', getenv('EMAIL_FROM'));
-define('MAIL_FROM_NAME', getenv('EMAIL_FROM_NAME'));
+define('MAIL_HOST', $dbSettings['smtp_host'] ?? (getenv('SMTP_HOST') ?: 'smtp.gmail.com'));
+define('MAIL_PORT', $dbSettings['smtp_port'] ?? (getenv('SMTP_PORT') ?: 587));
+define('MAIL_ENCRYPTION', $dbSettings['smtp_security'] ?? (getenv('SMTP_SECURITY') ?: 'tls'));
+define('MAIL_USERNAME', $dbSettings['smtp_username'] ?? (getenv('SMTP_USER') ?: ''));
+define('MAIL_PASSWORD', $dbSettings['smtp_password'] ?? (getenv('SMTP_PASS') ?: ''));
+define('MAIL_FROM', $dbSettings['from_email'] ?? (getenv('EMAIL_FROM') ?: ''));
+define('MAIL_FROM_NAME', $dbSettings['from_name'] ?? (getenv('EMAIL_FROM_NAME') ?: 'LuckyGeneMDx'));
 
 define('BASE_URL', getenv('BASE_URL'));
 

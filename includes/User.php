@@ -33,7 +33,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . '/phpmailer/src/Exception.php';
     require_once __DIR__ . '/phpmailer/src/PHPMailer.php';
     require_once __DIR__ . '/phpmailer/src/SMTP.php';
-} else {
+}  else {
     // Prevent fatal error if PHPMailer is missing
     error_log("PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/");
 }
@@ -113,19 +113,34 @@ class User {
      * Returns a configured PHPMailer instance pointed at Gmail SMTP.
      * Settings are read from constants defined in config.php.
      */
-    private function createMailer(): PHPMailer {
+    private function createMailer() {
+        if (!class_exists(PHPMailer::class)) {
+            throw new Exception("PHPMailer library not found. Please install via Composer or download to includes/phpmailer/.");
+        }
+
         $mail = new PHPMailer(true); // true = throw MailException on error
 
         $mail->isSMTP();
-        $mail->Host       = defined('MAIL_HOST')     ? MAIL_HOST     : 'smtp.gmail.com';
+        $mail->Host       = MAIL_HOST;
         $mail->SMTPAuth   = true;
-        $mail->Username   = defined('MAIL_USERNAME') ? MAIL_USERNAME : '';
-        $mail->Password   = defined('MAIL_PASSWORD') ? MAIL_PASSWORD : ''; // App Password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = defined('MAIL_PORT')     ? MAIL_PORT     : 587;
+        $mail->Username   = MAIL_USERNAME;
+        $mail->Password   = MAIL_PASSWORD;
+        
+        // Dynamic Security Setting
+        $encryption = defined('MAIL_ENCRYPTION') ? MAIL_ENCRYPTION : 'tls';
+        if ($encryption === 'ssl') {
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        } elseif ($encryption === 'tls') {
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        } else {
+            $mail->SMTPAutoTLS = false;
+            $mail->SMTPSecure = '';
+        }
+        
+        $mail->Port       = MAIL_PORT;
 
-        $fromEmail = defined('MAIL_FROM')      ? MAIL_FROM      : (defined('MAIL_USERNAME') ? MAIL_USERNAME : '');
-        $fromName  = defined('MAIL_FROM_NAME') ? MAIL_FROM_NAME : 'LuckyGeneMDx';
+        $fromEmail = MAIL_FROM ?: MAIL_USERNAME;
+        $fromName  = MAIL_FROM_NAME;
         $mail->setFrom($fromEmail, $fromName);
         $mail->addReplyTo($fromEmail, $fromName);
 
@@ -635,6 +650,29 @@ HTML;
         } catch (PDOException $e) {
             error_log("Recover Email Error: " . $e->getMessage());
             return ['success' => false, 'message' => 'System error. Please try again.'];
+        }
+    }
+
+    /**
+     * Send a test email to verify SMTP settings.
+     */
+    public function sendTestEmail($to) {
+        try {
+            $mail = $this->createMailer();
+            $mail->addAddress($to);
+            $mail->Subject = 'SMTP Configuration Test - ' . SITE_NAME;
+            $mail->Body    = '<h1>SMTP Test Successful</h1><p>Your email configuration is working correctly.</p><p>Sent from: ' . SITE_NAME . '</p>';
+            $mail->AltBody = "SMTP Test Successful.\nYour email configuration is working correctly.\nSent from: " . SITE_NAME;
+
+            $mail->send();
+            return ['success' => true, 'message' => 'Test email sent successfully to ' . $to];
+
+        } catch (MailException $e) {
+            error_log("Test Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Mailer Error: ' . $e->getMessage()];
+        } catch (Exception $e) {
+            error_log("Test Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'System Error: ' . $e->getMessage()];
         }
     }
 }

@@ -15,6 +15,13 @@ $db = Database::getInstance()->getConnection();
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Fetch current settings for change comparison
+    $currentSettings = [];
+    $stmt = $db->query("SELECT setting_key, value FROM site_settings");
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $currentSettings[$row['setting_key']] = $row['value'];
+    }
+
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
             case 'update_general':
@@ -22,7 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $update = $db->prepare("UPDATE site_settings SET value = ? WHERE setting_key = ?");
                 $insert = $db->prepare("INSERT INTO site_settings (setting_key, value) VALUES (?, ?)");
 
+                $changes = [];
                 foreach ($_POST['settings'] as $key => $value) {
+                    $oldValue = $currentSettings[$key] ?? '';
+                    if ($oldValue != $value) {
+                        $changes[] = "$key: '$oldValue' -> '$value'";
+                    }
+
                     $check->execute([$key]);
                     if ($check->fetch()) {
                         $update->execute([$value, $key]);
@@ -31,14 +44,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 $success = "General settings updated successfully!";
+                // Log Activity
+                $details = empty($changes) ? "No changes made" : "Updated: " . implode(', ', $changes);
+                $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, details, ip_address) VALUES (?, 'update_general_settings', ?, ?)");
+                $stmt->execute([$_SESSION['admin_id'], $details, $_SERVER['REMOTE_ADDR']]);
                 break;
                 
             case 'update_email':
-                $stmt = $db->prepare("UPDATE site_settings SET value = ? WHERE setting_key = ?");
+                $check = $db->prepare("SELECT 1 FROM site_settings WHERE setting_key = ?");
+                $update = $db->prepare("UPDATE site_settings SET value = ? WHERE setting_key = ?");
+                $insert = $db->prepare("INSERT INTO site_settings (setting_key, value) VALUES (?, ?)");
+
+                $changes = [];
                 foreach ($_POST['email_settings'] as $key => $value) {
-                    $stmt->execute([$value, $key]);
+                    $oldValue = $currentSettings[$key] ?? '';
+                    if ($oldValue != $value) {
+                        if (strpos($key, 'pass') !== false) {
+                            $changes[] = "$key changed";
+                        } else {
+                            $changes[] = "$key: '$oldValue' -> '$value'";
+                        }
+                    }
+
+                    $check->execute([$key]);
+                    if ($check->fetch()) {
+                        $update->execute([$value, $key]);
+                    } else {
+                        $insert->execute([$key, $value]);
+                    }
                 }
                 $success = "Email settings updated successfully!";
+                // Log Activity
+                $details = empty($changes) ? "No changes made" : "Updated email settings: " . implode(', ', $changes);
+                $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, details, ip_address) VALUES (?, 'update_email_settings', ?, ?)");
+                $stmt->execute([$_SESSION['admin_id'], $details, $_SERVER['REMOTE_ADDR']]);
+                break;
+                
+            case 'test_email':
+                require_once '../includes/User.php';
+                $userModel = new User();
+                $testTo = $_POST['test_recipient'] ?? '';
+                
+                if (filter_var($testTo, FILTER_VALIDATE_EMAIL)) {
+                    $result = $userModel->sendTestEmail($testTo);
+                    if ($result['success']) {
+                        $success = $result['message'];
+                    } else {
+                        $error = $result['message'];
+                    }
+                } else {
+                    $error = "Invalid email address for testing.";
+                }
                 break;
                 
             case 'change_password':
@@ -47,26 +103,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $db->prepare("UPDATE admins SET password_hash = ? WHERE id = ?");
                     $stmt->execute([$hashed, $_SESSION['admin_id']]);
                     $success = "Password changed successfully!";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, details, ip_address) VALUES (?, 'change_admin_password', 'Changed admin password', ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_SERVER['REMOTE_ADDR']]);
                 } else {
                     $error = "Passwords do not match!";
                 }
                 break;
                 
             case 'update_maintenance':
+                $oldMode = $currentSettings['maintenance_mode'] ?? 0;
                 $mode = isset($_POST['maintenance_mode']) ? 1 : 0;
                 $stmt = $db->prepare("UPDATE site_settings SET value = ? WHERE setting_key = 'maintenance_mode'");
                 $stmt->execute([$mode]);
                 $success = "Maintenance mode " . ($mode ? "enabled" : "disabled") . "!";
+                // Log Activity
+                $details = "Maintenance mode changed from " . ($oldMode ? 'On' : 'Off') . " to " . ($mode ? 'On' : 'Off');
+                $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, details, ip_address) VALUES (?, 'update_maintenance_mode', ?, ?)");
+                $stmt->execute([$_SESSION['admin_id'], $details, $_SERVER['REMOTE_ADDR']]);
                 break;
         }
     } elseif (isset($_POST['save_navbar'])) {
         try {
+            // Fetch current items for comparison
+            $currentItems = [];
+            $stmt = $db->query("SELECT * FROM navbar_items");
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $currentItems[$row['id']] = $row;
+            }
+
             $db->beginTransaction();
             if (isset($_POST['items']) && is_array($_POST['items'])) {
                 foreach ($_POST['items'] as $id => $item) {
                     $isActive = isset($item['is_active']) ? 1 : 0;
+                    $label = trim($item['label']);
+                    $url = trim($item['url']);
+                    $order = (int)$item['display_order'];
+
                     $stmt = $db->prepare("UPDATE navbar_items SET label = ?, url = ?, display_order = ?, is_active = ? WHERE id = ?");
-                    $stmt->execute([trim($item['label']), trim($item['url']), (int)$item['display_order'], $isActive, $id]);
+                    $stmt->execute([$label, $url, $order, $isActive, $id]);
+
+                    // Log individual changes
+                    if (isset($currentItems[$id])) {
+                        $old = $currentItems[$id];
+                        $changes = [];
+                        
+                        if ($old['label'] !== $label) $changes[] = "Label: '{$old['label']}' -> '{$label}'";
+                        if ($old['url'] !== $url) $changes[] = "URL: '{$old['url']}' -> '{$url}'";
+                        if ((int)$old['display_order'] !== $order) $changes[] = "Order: {$old['display_order']} -> {$order}";
+                        if ((int)$old['is_active'] !== $isActive) $changes[] = "Active: " . ($old['is_active'] ? 'Yes' : 'No') . " -> " . ($isActive ? 'Yes' : 'No');
+
+                        if (!empty($changes)) {
+                            $details = "Updated navbar item '{$label}': " . implode(', ', $changes);
+                            $logStmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'update_navbar_item', 'navbar_item', ?, ?, ?)");
+                            $logStmt->execute([$_SESSION['admin_id'], $id, $details, $_SERVER['REMOTE_ADDR']]);
+                        }
+                    }
                 }
             }
             $db->commit();
@@ -80,14 +172,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $db->prepare("INSERT INTO navbar_items (label, url, display_order, is_active) VALUES (?, ?, ?, 1)");
             $stmt->execute([trim($_POST['new_label']), trim($_POST['new_url']), (int)$_POST['new_order']]);
             $success = "New item added successfully.";
+            // Log Activity
+            $newId = $db->lastInsertId();
+            $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'add_navbar_item', 'navbar_item', ?, ?, ?)");
+            $stmt->execute([$_SESSION['admin_id'], $newId, "Added navbar item: " . trim($_POST['new_label']), $_SERVER['REMOTE_ADDR']]);
         } catch (Exception $e) {
             $error = "Error adding item: " . $e->getMessage();
         }
     } elseif (isset($_POST['delete_nav_item'])) {
         try {
+            $stmt = $db->prepare("SELECT label FROM navbar_items WHERE id = ?");
+            $stmt->execute([(int)$_POST['delete_id']]);
+            $label = $stmt->fetchColumn();
+
             $stmt = $db->prepare("DELETE FROM navbar_items WHERE id = ?");
             $stmt->execute([(int)$_POST['delete_id']]);
             $success = "Item deleted successfully.";
+            // Log Activity
+            $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'delete_navbar_item', 'navbar_item', ?, ?, ?)");
+            $stmt->execute([$_SESSION['admin_id'], (int)$_POST['delete_id'], "Deleted navbar item: " . ($label ?: 'Unknown'), $_SERVER['REMOTE_ADDR']]);
         } catch (Exception $e) {
             $error = "Error deleting item: " . $e->getMessage();
         }
@@ -110,6 +213,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $db->prepare("UPDATE navbar_items SET display_order = ? WHERE id = ?")->execute([$current['display_order'], $swap['id']]);
                     $db->commit();
                     $success = "Item reordered successfully.";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'reorder_navbar_item', 'navbar_item', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $id, "Moved item " . $dir, $_SERVER['REMOTE_ADDR']]);
                 }
             }
         } catch (Exception $e) {
@@ -249,10 +355,6 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <input type="url" name="settings[site_url]" value="<?php echo htmlspecialchars($settings['site_url'] ?? SITE_URL); ?>">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Support Email</label>
-                            <input type="email" name="settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@luckygenemdx.com'); ?>">
-                        </div>
-                        <div class="form-group">
                             <label class="form-label">Kit Price (USD)</label>
                             <input type="number" name="settings[kit_price]" step="0.01" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>">
                         </div>
@@ -276,6 +378,74 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <span>Enable Maintenance Mode (Admin only access)</span>
                         </label>
                         <button type="submit" class="btn btn-outline" style="margin-top: 1.5rem;">Update Status</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="email" class="tab-content">
+                <div class="card">
+                    <h2>Email Configuration</h2>
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update_email">
+                        
+                        <div class="form-group">
+                            <label class="form-label">From Email</label>
+                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@luckygenemdx.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">From Name</label>
+                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGeneMDx'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Support Email</label>
+                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@luckygenemdx.com'); ?>">
+                        </div>
+                        
+                        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
+                        <h3>SMTP Settings</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">SMTP Host</label>
+                            <input type="text" name="email_settings[smtp_host]" value="<?php echo htmlspecialchars($settings['smtp_host'] ?? 'smtp.gmail.com'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SMTP Port</label>
+                            <input type="number" name="email_settings[smtp_port]" value="<?php echo htmlspecialchars($settings['smtp_port'] ?? '587'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SMTP Security</label>
+                            <select name="email_settings[smtp_security]">
+                                <option value="tls" <?php echo ($settings['smtp_security'] ?? 'tls') === 'tls' ? 'selected' : ''; ?>>TLS</option>
+                                <option value="ssl" <?php echo ($settings['smtp_security'] ?? '') === 'ssl' ? 'selected' : ''; ?>>SSL</option>
+                                <option value="" <?php echo ($settings['smtp_security'] ?? '') === '' ? 'selected' : ''; ?>>None</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SMTP Username</label>
+                            <input type="text" name="email_settings[smtp_username]" value="<?php echo htmlspecialchars($settings['smtp_username'] ?? ''); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SMTP Password</label>
+                            <input type="password" name="email_settings[smtp_password]" value="<?php echo htmlspecialchars($settings['smtp_password'] ?? ''); ?>">
+                        </div>
+                        
+                        <button type="submit" class="btn">Save Email Settings</button>
+                    </form>
+                    
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
+                    
+                    <h3>Test Configuration</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Send a test email to verify your SMTP settings. <strong>Please save any changes above before testing.</strong>
+                    </p>
+                    
+                    <form method="POST" style="display: flex; gap: 1rem; align-items: end;">
+                        <input type="hidden" name="action" value="test_email">
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label class="form-label">Recipient Email</label>
+                            <input type="email" name="test_recipient" value="<?php echo htmlspecialchars($settings['support_email'] ?? ''); ?>" required placeholder="email@example.com">
+                        </div>
+                        <button type="submit" class="btn btn-outline">Send Test Email</button>
                     </form>
                 </div>
             </div>

@@ -52,9 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $is_published
                     ]);
                     $success = "Blog post added successfully!";
+                    // Log Activity
+                    $postId = $db->lastInsertId();
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'add_post', 'blog_post', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $postId, "Added blog post: " . $_POST['title'], $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'update':
+                    $stmt = $db->prepare("SELECT title, category, is_published FROM blog_posts WHERE post_id = ?");
+                    $stmt->execute([$_POST['post_id']]);
+                    $oldPost = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE blog_posts SET title = ?, slug = ?, excerpt = ?, content = ?, category = ?, published_at = ?, is_published = ?, updated_at = NOW() WHERE post_id = ?");
                     $stmt->execute([
                         $_POST['title'],
@@ -67,12 +75,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['post_id']
                     ]);
                     $success = "Blog post updated successfully!";
+                    // Log Activity
+                    $changes = [];
+                    if ($oldPost['title'] != $_POST['title']) $changes[] = "Title changed";
+                    if ($oldPost['category'] != $_POST['category']) $changes[] = "Category changed";
+                    if ($oldPost['is_published'] != $is_published) $changes[] = "Status changed to " . ($is_published ? 'Published' : 'Draft');
+                    
+                    $details = "Updated post '" . $_POST['title'] . "'. " . implode(', ', $changes);
+                    
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'update_post', 'blog_post', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['post_id'], $details, $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'delete':
+                    $stmt = $db->prepare("SELECT title FROM blog_posts WHERE post_id = ?");
+                    $stmt->execute([$_POST['post_id']]);
+                    $title = $stmt->fetchColumn();
+
                     $stmt = $db->prepare("DELETE FROM blog_posts WHERE post_id = ?");
                     $stmt->execute([$_POST['post_id']]);
                     $success = "Blog post deleted successfully!";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'delete_post', 'blog_post', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['post_id'], "Deleted blog post: " . ($title ?: 'Unknown'), $_SERVER['REMOTE_ADDR']]);
                     break;
             }
         } catch (Exception $e) {

@@ -7,3 +7,10 @@
 [22-Feb-2026 02:42:37 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
 [22-Feb-2026 04:58:56 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
 [22-Feb-2026 05:14:02 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 07:50:49 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 07:53:10 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 07:53:10 Europe/Berlin] Test Email Error: PHPMailer library not found. Please install via Composer or download to includes/phpmailer/.
+[22-Feb-2026 07:57:31 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 07:57:31 Europe/Berlin] Test Email Error: PHPMailer library not found. Please install via Composer or download to includes/phpmailer/.
+[22-Feb-2026 07:57:42 Europe/Berlin] PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/
+[22-Feb-2026 07:57:42 Europe/Berlin] Test Email Error: PHPMailer library not found. Please install via Composer or download to includes/phpmailer/.

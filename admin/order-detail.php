@@ -42,6 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
         $trackingNumber = trim($_POST['tracking_number'] ?? '');
         $notes = trim($_POST['notes'] ?? '');
         
+        // Get old status name
+        $stmt = $db->prepare("SELECT os.status_name FROM orders o JOIN order_status os ON o.status_id = os.status_id WHERE o.order_id = ?");
+        $stmt->execute([$orderId]);
+        $oldStatus = $stmt->fetchColumn();
+
         $result = $orderModel->updateOrderStatus($orderId, $newStatusId, $trackingNumber ?: null);
         
         if ($result['success']) {
@@ -58,13 +63,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
             
             // Log activity
             try {
+                $stmt = $db->prepare("SELECT status_name FROM order_status WHERE status_id = ?");
+                $stmt->execute([$newStatusId]);
+                $newStatusName = $stmt->fetchColumn();
+
                 $sql = "INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) 
                         VALUES (:admin_id, 'update_order_status', 'order', :order_id, :details, :ip)";
                 $stmt = $db->prepare($sql);
                 $stmt->execute([
                     ':admin_id' => $_SESSION['admin_id'],
                     ':order_id' => $orderId,
-                    ':details' => "Status updated to status_id: $newStatusId",
+                    ':details' => "Status changed from '$oldStatus' to '$newStatusName'",
                     ':ip' => $_SERVER['REMOTE_ADDR']
                 ]);
             } catch(PDOException $e) {

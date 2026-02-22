@@ -55,6 +55,10 @@
                     ]);
 
                     $success = "User added successfully!";
+                    // Log Activity
+                    $userId = $db->lastInsertId();
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'add_user', 'user', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $userId, "Added user: " . $email, $_SERVER['REMOTE_ADDR']]);
                     break;
 
                 case 'update':
@@ -68,6 +72,10 @@
                     if ($check->fetch()) {
                         throw new Exception('Email already exists for another user');
                     }
+
+                    $stmt = $db->prepare("SELECT * FROM users WHERE user_id = ?");
+                    $stmt->execute([$_POST['user_id']]);
+                    $oldUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     $stmt = $db->prepare("UPDATE users SET full_name = ?, email = ?, phone = ?, date_of_birth = ?, address = ?, city = ?, state = ?, zip_code = ?, is_active = ?, updated_at = NOW() WHERE user_id = ?");
                     $stmt->execute([
@@ -84,6 +92,15 @@
                     ]);
 
                     $success = "User updated successfully!";
+                    // Log Activity
+                    $changes = [];
+                    if ($oldUser['email'] != $email) $changes[] = "Email: '{$oldUser['email']}' -> '$email'";
+                    if ($oldUser['full_name'] != $_POST['full_name']) $changes[] = "Name changed";
+                    if ($oldUser['is_active'] != $_POST['is_active']) $changes[] = "Status changed";
+                    
+                    $details = empty($changes) ? "Updated user details" : "Updated user $email: " . implode(', ', $changes);
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'update_user', 'user', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['user_id'], $details, $_SERVER['REMOTE_ADDR']]);
                     break;
 
                 case 'reset_password':
@@ -94,13 +111,24 @@
                     $stmt->execute([$password_hash, $_POST['user_id']]);
 
                     $success = "Password reset! New password: <strong>" . $new_password . "</strong> (Save this - user will need it to login)";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'reset_user_password', 'user', ?, 'Reset password for user', ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['user_id'], $_SERVER['REMOTE_ADDR']]);
                     break;
 
                 case 'toggle_status':
+                    $stmt = $db->prepare("SELECT is_active, email FROM users WHERE user_id = ?");
+                    $stmt->execute([$_POST['user_id']]);
+                    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE users SET is_active = NOT is_active, updated_at = NOW() WHERE user_id = ?");
                     $stmt->execute([$_POST['user_id']]);
 
                     $success = "User status updated successfully!";
+                    // Log Activity
+                    $newStatus = $current['is_active'] ? 'Inactive' : 'Active';
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'toggle_user_status', 'user', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['user_id'], "Toggled status to $newStatus for " . $current['email'], $_SERVER['REMOTE_ADDR']]);
                     break;
 
                 case 'delete':
@@ -112,10 +140,17 @@
                         throw new Exception("Cannot delete user with existing orders. Deactivate instead.");
                     }
 
+                    $stmt = $db->prepare("SELECT email FROM users WHERE user_id = ?");
+                    $stmt->execute([$_POST['user_id']]);
+                    $email = $stmt->fetchColumn();
+
                     $stmt = $db->prepare("DELETE FROM users WHERE user_id = ?");
                     $stmt->execute([$_POST['user_id']]);
 
                     $success = "User deleted successfully!";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'delete_user', 'user', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['user_id'], "Deleted user: " . ($email ?: 'Unknown'), $_SERVER['REMOTE_ADDR']]);
                     break;
             }
         } catch (Exception $e) {

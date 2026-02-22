@@ -34,9 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['display_order'] ?? 0
                     ]);
                     $success = "Testimonial added successfully!";
+                    // Log Activity
+                    $id = $db->lastInsertId();
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'add_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $id, "Added testimonial from " . $_POST['name'], $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'update':
+                    $stmt = $db->prepare("SELECT name, quote, is_active FROM testimonials WHERE testimonial_id = ?");
+                    $stmt->execute([$_POST['testimonial_id']]);
+                    $oldTestimonial = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE testimonials SET name = ?, age = ?, location = ?, quote = ?, is_active = ?, display_order = ? WHERE testimonial_id = ?");
                     $stmt->execute([
                         $_POST['name'],
@@ -48,18 +56,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['testimonial_id']
                     ]);
                     $success = "Testimonial updated successfully!";
+                    // Log Activity
+                    $changes = [];
+                    if ($oldTestimonial['name'] != $_POST['name']) $changes[] = "Name changed";
+                    if ($oldTestimonial['quote'] != $_POST['quote']) $changes[] = "Quote updated";
+                    if ($oldTestimonial['is_active'] != $_POST['is_active']) $changes[] = "Status changed";
+
+                    $details = "Updated testimonial ID " . $_POST['testimonial_id'] . ". " . implode(', ', $changes);
+
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'update_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['testimonial_id'], $details, $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'delete':
+                    $stmt = $db->prepare("SELECT name FROM testimonials WHERE testimonial_id = ?");
+                    $stmt->execute([$_POST['testimonial_id']]);
+                    $name = $stmt->fetchColumn();
+
                     $stmt = $db->prepare("DELETE FROM testimonials WHERE testimonial_id = ?");
                     $stmt->execute([$_POST['testimonial_id']]);
                     $success = "Testimonial deleted successfully!";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'delete_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['testimonial_id'], "Deleted testimonial from: " . ($name ?: 'Unknown'), $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'toggle_status':
+                    $stmt = $db->prepare("SELECT is_active, name FROM testimonials WHERE testimonial_id = ?");
+                    $stmt->execute([$_POST['testimonial_id']]);
+                    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE testimonials SET is_active = NOT is_active WHERE testimonial_id = ?");
                     $stmt->execute([$_POST['testimonial_id']]);
                     $success = "Testimonial status updated successfully!";
+                    // Log Activity
+                    $newStatus = $current['is_active'] ? 'Inactive' : 'Active';
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'toggle_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['testimonial_id'], "Toggled status to $newStatus for " . $current['name'], $_SERVER['REMOTE_ADDR']]);
                     break;
             }
         } catch (Exception $e) {
