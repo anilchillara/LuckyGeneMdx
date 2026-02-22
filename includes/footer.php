@@ -219,9 +219,9 @@ body.dark-theme .footer-cta-btn {
 }
 
 body.dark-theme .footer-cta-btn:hover {
-    background: #B2B2B2;
+    background: #00B3A4;
     color: #3B3B3B !important;
-    border-color: #B2B2B2;
+    border-color: #00B3A4;
 }
 </style>
 

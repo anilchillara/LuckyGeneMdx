@@ -1017,7 +1017,7 @@ body.dark-theme {
     --color-dark-gray: #909090;
     --color-black: #B2B2B2;
     --color-purple-accent: #909090;
-    --color-medical-teal: #B2B2B2;
+    --color-medical-teal: #00B3A4;
 }
 
 body.dark-theme .page-header,
@@ -1112,15 +1112,15 @@ body.dark-theme .tab-btn.active {
 
 /* Fix Buttons in Dark Mode */
 body.dark-theme .btn-outline {
-    border-color: #B2B2B2;
-    color: #B2B2B2;
+    border-color: #00B3A4;
+    color: #00B3A4;
 }
 body.dark-theme .btn-outline:hover {
-    background: #B2B2B2;
+    background: #00B3A4;
     color: #3B3B3B;
 }
 body.dark-theme .btn-home {
-    background: #B2B2B2;
+    background: #00B3A4;
     color: #3B3B3B;
 }
 

@@ -219,17 +219,17 @@ if (!$useDbNav) {
         color: #909090;
     }
     body.dark-theme .nav-link:hover, body.dark-theme .nav-link.active {
-        color: #B2B2B2;
+        color: #00B3A4;
     }
     body.dark-theme .btn-nav-outline {
-        color: #B2B2B2;
+        color: #00B3A4;
         border-color: #606060;
     }
     body.dark-theme .mobile-toggle {
         color: #B2B2B2;
     }
     body.dark-theme .brand {
-        background: linear-gradient(135deg, #909090 0%, #B2B2B2 100%);
+        background: linear-gradient(135deg, #00B3A4 0%, #B2B2B2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }

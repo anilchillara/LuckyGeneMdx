@@ -47,9 +47,9 @@ body {
 }
 
 body.dark-theme {
-    --ms-blue:      #B2B2B2;
-    --ms-blue-dark: #D3D3D3;
-    --ms-blue-light: rgba(178, 178, 178, 0.2);
+    --ms-blue:      #00B3A4;
+    --ms-blue-dark: #008c7a;
+    --ms-blue-light: rgba(0, 179, 164, 0.15);
     --ms-red:       #e05d5d; /* Lighter red for dark mode */
     --bg-body:      #3B3B3B;
     --glass-panel:  #454545;
@@ -58,7 +58,7 @@ body.dark-theme {
     --text-primary: #B2B2B2;
     --text-secondary: #909090;
     --shadow-card:  0 4px 8px rgba(0,0,0,0.4);
-    --brand-gradient: linear-gradient(135deg, #909090 0%, #B2B2B2 100%);
+    --brand-gradient: linear-gradient(135deg, #00B3A4 0%, #B2B2B2 100%);
 }
 body.dark-theme .btn-outline:hover { background: #606060; }
 body.dark-theme input[type="text"],
