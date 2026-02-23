@@ -20,7 +20,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
         <a href="index.php" class="admin-nav-item <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>">📊 Dashboard</a>
         <a href="orders.php" class="admin-nav-item <?php echo $currentPage == 'orders.php' ? 'active' : ''; ?>">📦 Orders</a>
         <a href="upload-results.php" class="admin-nav-item <?php echo $currentPage == 'upload-results.php' ? 'active' : ''; ?>">📄 Upload Results</a>
-        <a href="users.php" class="admin-nav-item <?php echo $currentPage == 'users.php' ? 'active' : ''; ?>">👥 Users</a>
+        <a href="Users.php" class="admin-nav-item <?php echo $currentPage == 'users.php' ? 'active' : ''; ?>">👥 Users</a>
         <a href="interest-list.php" class="admin-nav-item <?php echo $currentPage == 'interest-list.php' ? 'active' : ''; ?>">📋 Interest List</a>
         <a href="testimonials.php" class="admin-nav-item <?php echo $currentPage == 'testimonials.php' ? 'active' : ''; ?>">💬 Testimonials</a>
         <a href="blog.php" class="admin-nav-item <?php echo $currentPage == 'blog.php' ? 'active' : ''; ?>">📰 Blog</a>

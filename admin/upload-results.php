@@ -195,7 +195,7 @@ $initials  = strtoupper(substr($adminName,0,2));
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
         <a href="orders.php" class="nav-link">Orders</a>
-        <a href="users.php" class="nav-link">Users</a>
+        <a href="Users.php" class="nav-link">Users</a>
         <a href="interest-list.php" class="nav-link">Interest List</a>
         <a href="upload-results.php" class="nav-link active">Upload Results</a>
         <a href="activity-log.php" class="nav-link">Activity Log</a>
