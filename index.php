@@ -63,12 +63,14 @@ setSecurityHeaders();
                 </p>
 
                 <div class="hero-btns">
+                    <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
                     <a href="request-kit.php" class="btn-primary-hero">
                         Request Screening Kit — $<?php echo number_format(KIT_PRICE, 0); ?>
                         <svg class="btn-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </a>
+                    <?php endif; ?>
                     <a href="about-genetic-screening.php" class="btn-ghost-hero">
                         Learn More
                     </a>
