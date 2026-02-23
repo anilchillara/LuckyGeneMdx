@@ -253,8 +253,8 @@ body.dark-theme .footer-cta-btn:hover {
                 <?php if ($isNavActive('resources.php')): ?>
                     <li><a href="<?php echo $baseUrl; ?>resources.php">Resources</a></li>
                 <?php endif; ?>
-                <?php if ($isNavActive('intrest-list.php')): ?>
-                    <li><a href="<?php echo $baseUrl; ?>intrest-list.php">Interest List</a></li>
+                <?php if ($isNavActive('interest-list.php')): ?>
+                    <li><a href="<?php echo $baseUrl; ?>interest-list.php">Interest List</a></li>
                 <?php endif; ?>
             </ul>
         </div>

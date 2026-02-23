@@ -44,7 +44,7 @@ if (!$useDbNav) {
         ['label' => 'Resources', 'url' => 'resources.php'],
         ['label' => 'Contact', 'url' => 'contact.php'],
         ['label' => 'Track Order', 'url' => 'track-order.php'],
-        ['label' => 'Interest List', 'url' => 'intrest-list.php']
+        ['label' => 'Interest List', 'url' => 'interest-list.php']
     ];
 }
 ?>

@@ -72,10 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <header>
     <div class="badge">Now Accepting Interest</div>
-    <h1>Be First in Line for <em>Affordable</em><br>Carrier Screening</h1>
+    <h1>Be First in Line for <em>AFFORDABLE</em><br>Carrier Screening</h1>
     <p class="subtitle">
-      We're building something that matters — making comprehensive genetic carrier screening
-      accessible and affordable for every family. Join our early interest list today.
+      Empower your family planning with clinical-grade genetic insights. We are making comprehensive 
+      carrier screening accessible to everyone. Sign up for exclusive early-bird pricing and launch updates.
     </p>
   </header>
 
@@ -83,12 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="partner-strip">
     <div class="partner-icon">🤝</div>
     <div class="partner-text">
-      <strong>Working With Leading Industry Partners</strong>
+      <strong>Partnering for Excellence & Affordability</strong>
       <p>
-        We are actively collaborating with multiple partners across the genetics and diagnostics field
-        to negotiate the best possible pricing for carrier screening — so you get world-class testing
-        without the world-class price tag. Our partnerships span accredited labs, clinical networks,
-        and genetic counseling services to deliver end-to-end care at scale.
+        We collaborate with top-tier CLIA-certified and CAP-accredited laboratories to bring you 
+        hospital-grade testing at a fraction of the cost. By negotiating directly with diagnostic 
+        leaders and clinical networks, we ensure you receive comprehensive results and genetic 
+        counseling support without the traditional markup.
       </p>
     </div>
   </div>
@@ -100,12 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="label">Conditions Screened</div>
     </div>
     <div class="stat-card">
-      <div class="num">10+</div>
-      <div class="label">Lab Partners</div>
+      <div class="num">CLIA</div>
+      <div class="label">Certified Labs</div>
     </div>
     <div class="stat-card">
       <div class="num">Up to 60%</div>
-      <div class="label">Projected Savings</div>
+      <div class="label">Lower Cost</div>
     </div>
   </div>
 
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="full">
           <label for="interest">What matters most to you? <span style="opacity:.5;font-style:italic;text-transform:none;letter-spacing:0">optional</span></label>
-          <textarea id="interest" name="interest" class="form-input" placeholder="e.g. Affordable pricing, specific conditions covered, counseling support…"><?= htmlspecialchars($_POST['interest'] ?? '') ?></textarea>
+          <textarea id="interest" name="interest" class="form-input" placeholder="e.g. Pricing, speed of results, specific genetic conditions, or access to genetic counselors..."><?= htmlspecialchars($_POST['interest'] ?? '') ?></textarea>
         </div>
 
         <div class="full" style="margin-top: 5px;">

@@ -18,7 +18,7 @@ INSERT INTO `navbar_items` (`label`, `url`, `display_order`, `is_active`, `secti
 ('Resources', 'resources.php', 4, 1, 'main', 0, ''),
 ('Contact', 'contact.php', 5, 1, 'main', 0, ''),
 ('Track Order', 'track-order.php', 6, 1, 'main', 0, ''),
-('Interest List', 'intrest-list.php', 7, 1, 'main', 0, ''),
+('Interest List', 'interest-list.php', 7, 1, 'main', 0, ''),
 ('Patient Login', 'user-portal/login.php', 10, 1, 'actions', 2, 'btn-nav btn-nav-outline'),
 ('Order Kit', 'request-kit.php', 11, 1, 'actions', 2, 'btn-nav btn-nav-primary'),
 ('Dashboard', 'user-portal/index.php', 10, 1, 'actions', 1, 'btn-nav btn-nav-outline'),
