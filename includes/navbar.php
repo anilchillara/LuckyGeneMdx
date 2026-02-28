@@ -237,7 +237,7 @@ if (!$useDbNav) {
 
 <nav class="navbar">
     <a href="index.php" class="brand">
-        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?>
+        <img src="assets/images/logo_icon.png" alt="Logo" style="height: 32px; width: auto;"><?php echo htmlspecialchars(SITE_NAME); ?>
     </a>
     <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
     <div class="nav-items" id="nav-items">
