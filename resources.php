@@ -28,7 +28,7 @@ $resources = [
         "url" => "https://rarediseases.info.nih.gov",
         "domain" => "nih.gov",
         "longDesc" => "The Genetic and Rare Diseases Information Center (GARD) provides the public with free, easy-to-understand information on rare and genetic conditions, translating complex scientific data into actionable resources for patients and families.",
-        "color" => "#aa00ff" // Soft Purple
+        "color" => "#9177C7" // Soft Purple
     ],
     [
         "name" => "NORD",
@@ -49,7 +49,7 @@ $resources = [
         "url" => "https://www.rarediseasesnetwork.org",
         "domain" => "nih.gov",
         "longDesc" => "The Rare Diseases Clinical Research Network (RDCRN) facilitates collaborative research through a network of 20+ consortia, focusing on natural history studies, clinical trial readiness, and the training of new investigators in the field.",
-        "color" => "#aa00ff" // Soft Purple
+        "color" => "#9177C7" // Soft Purple
     ]
 ];
 

@@ -33,7 +33,7 @@
     --shadow-card:  0 2px 8px rgba(10, 31, 68, 0.06);
     --shadow-hover: 0 8px 24px rgba(10, 31, 68, 0.12);
     --radius:       4px;
-    --brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
+    --brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -58,7 +58,7 @@ body.dark-theme {
     --text-primary: #B2B2B2;
     --text-secondary: #909090;
     --shadow-card:  0 4px 8px rgba(0,0,0,0.4);
-    --brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
+    --brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
 }
 body.dark-theme .btn-outline:hover { background: #606060; }
 body.dark-theme input[type="text"],

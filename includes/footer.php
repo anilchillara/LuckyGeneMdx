@@ -71,7 +71,7 @@ $isNavActive = function($url) use ($navStatus) {
     font-weight: 700;
     margin-bottom: 1.2rem;
     letter-spacing: -0.5px;
-    color: var(--primary-blue);
+    color: #555; /* A darker shade for better visibility on light backgrounds */
 }
 
 .footer-brand p {
@@ -148,7 +148,7 @@ $isNavActive = function($url) use ($navStatus) {
 }
 
 .footer-cta-btn {
-    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%));
+    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%));
     color: #FFFFFF !important;
     padding: 8px 15px;
     border-radius: 4px;
@@ -219,6 +219,10 @@ body.dark-theme .footer-brand h3,
 body.dark-theme .footer-column h4 {
     color: #B2B2B2;
 }
+body.dark-theme .footer-brand h3,
+body.dark-theme .footer-column h4 {
+    color: #B2B2B2;
+}
 
 body.dark-theme .footer-links a,
 body.dark-theme .footer-legal a {
@@ -234,7 +238,7 @@ body.dark-theme .footer-bottom {
 }
 
 body.dark-theme .footer-cta-btn {
-    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%));
+    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%));
     color: #FFFFFF !important;
 }
 </style>

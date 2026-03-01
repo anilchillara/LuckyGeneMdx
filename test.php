@@ -14,7 +14,7 @@ body {
 
 .rare-stats-section {
   padding: 20px 20px;
-  background: linear-gradient(145deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
+  background: linear-gradient(145deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
   color: #ffffff;
   text-align: center;
 }
@@ -110,7 +110,7 @@ h2 {
 
 .specialGlow {
   padding: 20px 20px;
-  background: linear-gradient(45deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
+  background: linear-gradient(45deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

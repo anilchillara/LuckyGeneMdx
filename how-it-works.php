@@ -74,10 +74,10 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 
                 <div class="row mt-4">
                     <div class="col col-3">
-                        <div class="glass-card process-card" style="border-top-color: #aa00ff;">
+                        <div class="glass-card process-card" style="border-top-color: #9177C7;">
                             <div class="process-header">
-                                <span class="process-number" style="background: #aa00ff;">3</span>
-                                <h3 class="process-title" style="color: #aa00ff;"><i class="fas fa-vial" style="margin-right: 8px;"></i> Collect Sample</h3>
+                                <span class="process-number" style="background: #9177C7;">3</span>
+                                <h3 class="process-title" style="color: #9177C7;"><i class="fas fa-vial" style="margin-right: 8px;"></i> Collect Sample</h3>
                             </div>
                             <p style="font-size: 0.9rem;">Simple saliva-based collection. No fasting, just 10 minutes of your time.</p>
                         </div>
