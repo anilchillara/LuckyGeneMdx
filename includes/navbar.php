@@ -136,7 +136,7 @@ if (!$useDbNav) {
     .btn-nav {
         display: inline-block;
         padding: 8px 18px;
-        border-radius: 4px;
+        border-radius: 30px;
         font-weight: 600;
         font-size: 0.9rem;
         text-decoration: none;
@@ -165,7 +165,7 @@ if (!$useDbNav) {
     }
     .btn-nav-primary:hover {
         filter: brightness(1.15);
-        box-shadow: 0 6px 25px rgba(0, 229, 255, 0.6);
+        box-shadow: 0 6px 25px  #9177C7;
         transform: translateY(-2px);
     }
 

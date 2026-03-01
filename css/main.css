@@ -73,7 +73,7 @@ ul { list-style: none; }
 .btn {
     display: inline-block;
     padding: 12px 28px;
-    border-radius: 50px;
+    border-radius: 25px;
     font-weight: 600;
     transition: all 0.3s ease;
     cursor: pointer;

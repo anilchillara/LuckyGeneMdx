@@ -109,7 +109,6 @@ $isNavActive = function($url) use ($navStatus) {
     opacity: 1;
     padding-left: 5px;
     color: #00b8cc;
-    text-decoration: underline;
 }
 
 .footer-bottom {
@@ -149,9 +148,9 @@ $isNavActive = function($url) use ($navStatus) {
 
 .footer-cta-btn {
     background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%));
-    color: #FFFFFF !important;
+    color: var(--white) !important;
     padding: 8px 15px;
-    border-radius: 4px;
+    border-radius: 30px;
     font-weight: bold;
     opacity: 1;
     transition: all 0.3s;
@@ -160,8 +159,7 @@ $isNavActive = function($url) use ($navStatus) {
 
 .footer-cta-btn:hover {
     filter: brightness(1.15);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.4);
+    transform: translateY(-2px);    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
 }
 
 /* Responsive */
@@ -239,7 +237,7 @@ body.dark-theme .footer-bottom {
 
 body.dark-theme .footer-cta-btn {
     background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%));
-    color: #FFFFFF !important;
+    color: var(--white) !important;
 }
 </style>
 
