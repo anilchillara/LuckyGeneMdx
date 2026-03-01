@@ -104,10 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="auth-card">
-        <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+        <a href="../index.php" class="back-link">← Back to Main Site</a>
 
-        <div style="text-align:center; margin-bottom: 2rem;">
-            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+        <div class="auth-header">
+            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
             <h1><?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span></h1>
             <p>Secure System Access</p>
         </div>
@@ -134,32 +134,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <div style="position: relative;">
+                <div class="relative">
                     <input 
                         type="password" 
                         id="password" 
                         name="password" 
                         required
                         autocomplete="current-password"
-                        style="padding-right: 40px;"
+                        class="pr-40"
                     >
-                    <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    <button type="button" onclick="togglePassword('password')" class="password-toggle" title="Show Password">👁️</button>
                 </div>
             </div>
             
-            <div class="form-group" style="margin-bottom: 1rem;">
-                <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
-                <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
+            <div class="form-group mb-1">
+                <input type="checkbox" name="remember" id="remember" class="form-checkbox">
+                <label for="remember" class="form-label-inline">Remember me</label>
             </div>
 
             <button type="submit" class="btn btn-full">
                 Sign In
             </button>
-            <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
+            <a href="password-reset.php" class="auth-link">Forgot Password?</a>
         </form>
         
-        <div style="text-align: center; margin-top: 2rem;">
-            <p style="font-size: 0.85rem; color: var(--text-secondary);">Authorized personnel only. All activities are logged.</p>
+        <div class="auth-footer">
+            <p class="fs-0-85 text-secondary">Authorized personnel only. All activities are logged.</p>
         </div>
     </div>
 

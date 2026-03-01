@@ -61,6 +61,7 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 <title>Patient Portal Login – LuckyGenesMDx</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
+<link rel="stylesheet" href="../css/custom.css">
 </head>
 <body class="auth-body">
 
@@ -69,10 +70,10 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 </div>
 
 <div class="auth-card">
-    <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+    <a href="../index.php" class="back-link">← Back to Main Site</a>
 
-    <div style="text-align:center; margin-bottom: 2rem;">
-        <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+    <div class="auth-header">
+        <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
         <h1 id="header-title">Patient Portal</h1>
         <p id="header-desc">Welcome back to <?php echo htmlspecialchars(SITE_NAME); ?></p>
     </div>
@@ -106,28 +107,28 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 
         <!-- STEP 2: Password -->
         <div class="step <?php echo $error ? 'active' : ''; ?>" id="step-2" style="<?php echo $error ? 'display:block' : 'display:none'; ?>">
-            <div style="background:#f3f2f1; padding:10px; border-radius:4px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
-                <span id="display-identifier" style="font-weight:600;"><?php echo $postedEmail ?: $postedOrder; ?></span>
-                <button type="button" onclick="goToStep1()" style="background:none; border:none; color:var(--ms-blue); cursor:pointer;">Edit</button>
+            <div class="identifier-display">
+                <span id="display-identifier" class="font-weight-600"><?php echo $postedEmail ?: $postedOrder; ?></span>
+                <button type="button" onclick="goToStep1()" class="btn-link">Edit</button>
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <div style="position: relative;">
-                    <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="current-password" style="padding-right: 40px;">
-                    <button type="button" onclick="togglePassword('password-input')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                <div class="relative">
+                    <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="current-password" class="pr-40">
+                    <button type="button" onclick="togglePassword('password-input')" class="password-toggle" title="Show Password">👁️</button>
                 </div>
             </div>
-            <div class="form-group" style="margin-bottom: 1rem;">
-                <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
-                <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
+            <div class="form-group mb-1">
+                <input type="checkbox" name="remember" id="remember" class="form-checkbox">
+                <label for="remember" class="form-label-inline">Remember me</label>
             </div>
             <button type="submit" class="btn btn-full">Sign In</button>
-            <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
-            <a href="forgot-username.php" style="display:block; text-align:center; margin-top:0.5rem; font-size:0.85rem; color:var(--text-secondary);">Forgot Email?</a>
+            <a href="password-reset.php" class="auth-link">Forgot Password?</a>
+            <a href="forgot-username.php" class="auth-link-secondary">Forgot Email?</a>
         </div>
     </form>
 
-    <div style="text-align:center; margin-top: 2rem;">
+    <div class="auth-footer">
         <p>Don't have an account?</p>
         <a href="register.php" class="btn btn-outline">Create Account</a>
     </div>

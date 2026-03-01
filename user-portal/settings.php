@@ -79,11 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/portal.css">
+    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
     <nav class="navbar">
       <a href="../index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
+        <img src="../assets/images/logo_small.png" alt="Logo" class="logo-sm"> <?php echo htmlspecialchars(SITE_NAME); ?>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -92,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
         <a href="settings.php" class="nav-link active">Settings</a>
       </div>
       <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <button id="theme-toggle" class="btn btn-outline btn-sm btn-icon">🌙</button>
         <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
         <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
       </div>
@@ -113,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 
             <div class="col-span-8">
                     
-                    <div class="card" style="margin-bottom: 1.5rem;">
-                        <div style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+                    <div class="card mb-1-5">
+                        <div class="card-header">
                             <h3>Personal Information</h3>
                             <p>Update your contact details.</p>
                         </div>
@@ -138,8 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                                 <label for="email">Email Address</label>
                                 <input type="email" id="email" 
                                     value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled 
-                                    style="background:#777777; color:#AAAAAA;">
-                                <small style="display:block; margin-top:4px; color:#605e5c;">Contact support to change email.</small>
+                                    class="input-disabled">
+                                <small class="form-text">Contact support to change email.</small>
                             </div>
                             
                             <button type="submit" class="btn">Save Changes</button>
@@ -147,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                     </div>
 
                     <div class="card">
-                        <div style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+                        <div class="card-header">
                             <h3>Security</h3>
                             <p>Update your password.</p>
                         </div>
@@ -163,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                                 <div class="form-group">
                                     <label for="new_password">New Password</label>
                                     <input type="password" id="new_password" name="new_password" required minlength="8">
-                                    <small style="display:block; margin-top:4px; color:#605e5c;">Min. 8 characters</small>
+                                    <small class="form-text">Min. 8 characters</small>
                                 </div>
                                 
                                 <div class="form-group">
@@ -179,27 +180,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             </div>
 
             <div class="col-span-4">
-                    <div class="card" style="position:sticky; top:5rem;">
-                        <h4 style="margin-bottom: 1rem;">Account Summary</h4>
-                        <ul style="list-style:none; padding:0; margin:0; font-size:0.9rem;">
-                            <li style="display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid rgba(0,0,0,0.05);">
-                                <span style="color:#909090;">Member Since</span>
-                                <span style="font-weight:600;"><?php echo date('Y', strtotime($user_data['created_at'] ?? '')); ?></span>
+                    <div class="card sticky-top">
+                        <h4 class="mb-1">Account Summary</h4>
+                        <ul class="list-unstyled">
+                            <li class="summary-item">
+                                <span class="text-muted">Member Since</span>
+                                <span class="font-weight-600"><?php echo date('Y', strtotime($user_data['created_at'] ?? '')); ?></span>
                             </li>
-                            <li style="display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid rgba(0,0,0,0.05);">
-                                <span style="color:#909090;">Last Login</span>
-                                <span style="font-weight:600;">
+                            <li class="summary-item">
+                                <span class="text-muted">Last Login</span>
+                                <span class="font-weight-600">
                                     <?php echo $user_data['last_login'] ? date('M j', strtotime($user_data['last_login'])) : 'N/A'; ?>
                                 </span>
                             </li>
                         </ul>
 
-                        <div style="margin-top: 2rem;">
-                            <h5 style="margin-bottom: 0.5rem;">Data Privacy</h5>
-                            <p style="font-size: 0.85rem; color: #909090; margin-bottom: 1rem;">
+                        <div class="mt-2">
+                            <h5 class="mb-0-5">Data Privacy</h5>
+                            <p class="privacy-text">
                                 Your genetic data is encrypted and stored securely. We do not sell your data.
                             </p>
-                            <a href="../privacy-policy.php" style="font-size: 0.85rem; text-decoration: underline;">Read Privacy Policy</a>
+                            <a href="../privacy-policy.php" class="link-underline">Read Privacy Policy</a>
                         </div>
                     </div>
             </div>

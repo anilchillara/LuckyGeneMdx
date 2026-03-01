@@ -2,254 +2,198 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Color Palette Preview</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>State of the Rare — 2026 | LuckyGenesMDx</title>
 
 <style>
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f4f7fa;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fa;
 }
 
-.rare-stats-section {
-  padding: 20px 20px;
-  background: linear-gradient(145deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
-  color: #ffffff;
-  text-align: center;
+.section {
+    padding: 60px 20px;
 }
 
 .container {
-  max-width: 1200px;
-  margin: auto;
+    max-width: 1100px;
+    margin: auto;
 }
 
 h1 {
-  font-size: 48px;
-  margin-bottom: 10px;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 10px;
 }
 
-h2 {
-  font-size: 38px;
-  margin-bottom: 5px;
+p {
+    max-width: 600px;
+    opacity: 0.9;
 }
 
-.subtitle {
-  font-size: 18px;
-  opacity: 0.85;
-  margin-bottom: 60px;
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: 0.3s ease;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
+.card {
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
 }
 
-.stat-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  padding: 35px 25px;
-  border-radius: 18px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* -------------------------------
+   1. Analogous Harmony
+--------------------------------*/
+.analogous {
+    background: #C1C8E4;
+    color: #1c1c1c;
+}
+.analogous h1 { color: #5680E9; }
+.analogous .btn { background: #5680E9; color: white; }
+.analogous .btn:hover { background: #5AB9EA; }
+.analogous .card {
+    background: #84CEEB;
 }
 
-.stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+/* -------------------------------
+   2. Complementary Contrast
+--------------------------------*/
+.complementary {
+    background: #C1C8E4;
+}
+.complementary h1 { color: #8860D0; }
+.complementary .btn { background: #8860D0; color: white; }
+.complementary .btn:hover { background: #5AB9EA; }
+.complementary .card {
+    background: #5AB9EA;
+    color: white;
 }
 
-.counter {
-  font-size: 46px;
-  font-weight: 700;
-  letter-spacing: 1px;
+/* -------------------------------
+   3. Triadic Energy
+--------------------------------*/
+.triadic {
+    background: #C1C8E4;
+}
+.triadic h1 { color: #5680E9; }
+.triadic .btn { background: #A382D9; color: white; } /* lightened purple */
+.triadic .btn:hover { background: #8FD0EE; } /* pastel cerulean */
+.triadic .card {
+    background: #5680E9;
+    color: white;
 }
 
-.suffix {
-  font-size: 22px;
-  margin-left: 4px;
+/* -------------------------------
+   4. Monochromatic
+--------------------------------*/
+.mono {
+    background: #C1C8E4;
+}
+.mono h1 { color: #5680E9; }
+.mono .btn { background: #2E5CCF; color: white; } /* darker */
+.mono .btn:hover { background: #7FA0F2; } /* lighter */
+.mono .card {
+    background: #7FA0F2;
+    color: white;
 }
 
-.stat-card p {
-  margin-top: 15px;
-  font-size: 15px;
-  opacity: 0.9;
+/* -------------------------------
+   5. Pastel Dream
+--------------------------------*/
+.pastel {
+    background: #FFFFFF;
+}
+.pastel h1 { color: #84CEEB; }
+.pastel .btn { background: #5AB9EA; color: white; }
+.pastel .btn:hover { background: #84CEEB; }
+.pastel .card {
+    background: #C1C8E4;
 }
 
-/* Glow effect for key stats */
-.highlight {
-  color:rgb(253, 253, 253);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+footer {
+    text-align: center;
+    padding: 30px;
+    background: #111;
+    color: white;
 }
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  h2 {
-    font-size: 28px;
-  }
-  h1 { font-size: 36px; }
-  .counter {
-    font-size: 34px;
-  }
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
-  text-decoration: none;
-  letter-spacing: 1px;
-}
-
-.logo img {
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0));
-}
-
-
-.specialGlow {
-  padding: 20px 20px;
-  background: linear-gradient(45deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
-}
-
-
-/* Apply this class to some text to add 3d text effect! */
-.text3d {
-  font-family:Garamond, serif;
-  line-height:1em;
-  color:#109de8;
-  font-weight:bold;
-  font-size:45px;
-  text-shadow:none;
-}
-
-
 </style>
 </head>
 
 <body>
 
-<div class="container" style="background:#f4f7fa; display: flex; justify-content: space-between; align-items: center;">
-      <span class="logo specialGlow"><img src="assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;">LuckyGenesMDx</span>
-      <!-- <span class="text3d">World Rare Disease Day</span> -->
-      <!-- <span class="logo specialGlow"> FEBRUARY 28</span> -->
-  </div>
-
-
-<section class="rare-stats-section">
-  
-  <div class="container">
-    <h1>Rare is not Scarce</h1>
-    <h2>2026 Global Impact</h2>
-    <p class="subtitle">Individually Rare. Collectively a Global Health Priority.</p>
-
-    <div class="stats-grid">
-
-      <div class="stat-card">
-        <div>
-          <span class="counter highlight" data-target="400">0</span>
-          <span class="suffix">Million+</span>
+<!-- 1 -->
+<section class="section analogous">
+    <div class="container">
+        <h1>Analogous Harmony</h1>
+        <p>A soft, harmonious palette using neighboring blues for a calm and unified look.</p>
+        <button class="btn">Primary Action</button>
+        <div class="card">
+            <h3>Feature Card</h3>
+            <p>This design feels gentle and cohesive — great for healthcare, wellness, or education platforms.</p>
         </div>
-        <p>People Worldwide Affected</p>
-      </div>
-
-      <div class="stat-card">
-        <div>
-          <span class="counter highlight" data-target="10000">0</span>
-          <span class="suffix">+</span>
-        </div>
-        <p>Identified Rare Diseases</p>
-      </div>
-
-      <div class="stat-card">
-        <div>
-          <span class="counter highlight" data-target="72">0</span>
-          <span class="suffix">%</span>
-        </div>
-        <p>Have Genetic Origin</p>
-      </div>
-
-      <div class="stat-card">
-        <div>
-          <span class="counter highlight" data-target="95">0</span>
-          <span class="suffix">%</span>
-        </div>
-        <p>Have No FDA-Approved Treatment</p>
-      </div>
-
-      <div class="stat-card">
-        <div>
-          <span class="counter highlight" data-target="4">0</span>
-          <span class="suffix"> Years+</span>
-        </div>
-        <p>Average Time to Diagnosis</p>
-      </div>
-
-      <div class="stat-card">
-        <div>
-          <span class="counter highlight" data-target="15">0</span>
-          <span class="suffix">x</span>
-        </div>
-        <p>Higher Medical Costs vs. Common Diseases</p>
-      </div>
-
-      
-
     </div>
-
-    <!-- Footer -->
-    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 12px; opacity: 0.8;">
-        <p>Sources: World Economic Forum 2026 | Rare Disease Day Global Report 2026 | FDA ARC Program | Global Genes Fact Sheet (Feb 2026)</p>
-      </div>
-  </div>
 </section>
 
-<script>
-// Counter animation
-const counters = document.querySelectorAll('.counter');
-let started = false;
+<!-- 2 -->
+<section class="section complementary">
+    <div class="container">
+        <h1>Complementary Contrast</h1>
+        <p>A bold contrast between purple and cerulean that grabs attention and feels energetic.</p>
+        <button class="btn">Primary Action</button>
+        <div class="card">
+            <h3>Feature Card</h3>
+            <p>This scheme is vibrant and high-impact — ideal for marketing or call-to-action focused pages.</p>
+        </div>
+    </div>
+</section>
 
-function animateCounters() {
-  counters.forEach(counter => {
-    const target = +counter.getAttribute('data-target');
-    const duration = 2000;
-    const stepTime = 20;
-    const totalSteps = duration / stepTime;
-    const increment = target / totalSteps;
+<!-- 3 -->
+<section class="section triadic">
+    <div class="container">
+        <h1>Triadic Energy</h1>
+        <p>A dynamic combination balanced carefully to avoid overwhelming the viewer.</p>
+        <button class="btn">Primary Action</button>
+        <div class="card">
+            <h3>Feature Card</h3>
+            <p>This palette feels modern, tech-forward, and innovative.</p>
+        </div>
+    </div>
+</section>
 
-    let current = 0;
+<!-- 4 -->
+<section class="section mono">
+    <div class="container">
+        <h1>Monochromatic Sophistication</h1>
+        <p>A clean and modern gradient of a single base color.</p>
+        <button class="btn">Primary Action</button>
+        <div class="card">
+            <h3>Feature Card</h3>
+            <p>This is perfect for premium, minimal, or SaaS-style websites.</p>
+        </div>
+    </div>
+</section>
 
-    const update = () => {
-      current += increment;
-      if (current < target) {
-        counter.innerText = Math.ceil(current);
-        setTimeout(update, stepTime);
-      } else {
-        counter.innerText = target;
-      }
-    };
+<!-- 5 -->
+<section class="section pastel">
+    <div class="container">
+        <h1>Pastel Dream</h1>
+        <p>Light, airy, and soft — focused on gentle pastel tones.</p>
+        <button class="btn">Primary Action</button>
+        <div class="card">
+            <h3>Feature Card</h3>
+            <p>Ideal for lifestyle brands, pediatric health platforms, or calming user experiences.</p>
+        </div>
+    </div>
+</section>
 
-    update();
-  });
-}
-
-// Trigger on scroll
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && !started) {
-      animateCounters();
-      started = true;
-    }
-  });
-});
-
-observer.observe(document.querySelector('.rare-stats-section'));
-</script>
+<footer>
+    Palette Demo Preview
+</footer>
 
 </body>
 </html>

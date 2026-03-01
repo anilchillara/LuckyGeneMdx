@@ -258,77 +258,11 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Settings - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
-    <style>
-        /* Page specific styles */
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--glass-border);
-        }
-        .tab-btn {
-            padding: 1rem 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-        .tab-btn:hover { color: var(--ms-blue); }
-        .tab-btn.active {
-            color: var(--ms-blue);
-            border-bottom-color: var(--ms-blue);
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* Table styling for System Info */
-        .info-table { width: 100%; border-collapse: collapse; }
-        .info-table td { padding: 1rem; border-bottom: 1px solid var(--glass-border); }
-        .info-table tr:last-child td { border-bottom: none; }
-        .info-table strong { color: var(--text-primary); }
-
-        /* Navbar Settings Styles */
-        .btn-xs { padding: 0 5px; font-size: 0.7rem; line-height: 1.2; border: 1px solid #ddd; background: #fff; cursor: pointer; }
-        .btn-xs:hover { background: #f0f0f0; }
-        .form-control-sm { padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
-
-        /* Responsive Forms */
-        .nav-item-form { display: grid; grid-template-columns: 1fr 2fr 2fr auto; gap: 10px; align-items: end; }
-        .test-email-form { display: flex; gap: 1rem; align-items: end; }
-        .table-responsive { overflow-x: auto; }
-
-        @media (max-width: 768px) {
-            .tabs { 
-                flex-wrap: nowrap; 
-                overflow-x: auto; 
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 2px;
-            }
-            .tab-btn { flex: 0 0 auto; white-space: nowrap; padding: 0.75rem 1rem; }
-            
-            .nav-item-form {
-                grid-template-columns: 1fr;
-                align-items: stretch;
-            }
-            .nav-item-form button {
-                margin-top: 0.5rem;
-            }
-            
-            .test-email-form {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" class="logo-sm"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -340,7 +274,7 @@ $initials  = strtoupper(substr($adminName,0,2));
         <a href="settings.php" class="nav-link active">Settings</a>
       </div>
       <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+        <button id="theme-toggle" class="btn btn-outline btn-sm btn-icon">🌙</button>
         <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
         <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
       </div>
@@ -371,7 +305,7 @@ $initials  = strtoupper(substr($adminName,0,2));
             </div>
 
             <div id="general" class="tab-content active">
-                <div class="card" style="margin-bottom: 2rem;">
+                <div class="card mb-2">
                     <h2>General Configuration</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_general">
@@ -392,7 +326,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <input type="number" name="settings[kit_price]" step="0.01" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:normal;">
+                            <label class="form-label flex-center-gap-10 cursor-pointer font-weight-normal">
                                 <input type="hidden" name="settings[show_cta]" value="0">
                                 <input type="checkbox" name="settings[show_cta]" value="1" <?php echo ($settings['show_cta'] ?? 1) ? 'checked' : ''; ?>>
                                 Show CTA Section on Pages
@@ -406,11 +340,11 @@ $initials  = strtoupper(substr($adminName,0,2));
                     <h2>Maintenance Mode</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_maintenance">
-                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                        <label class="flex-center-gap-0-75 cursor-pointer">
                             <input type="checkbox" name="maintenance_mode" <?php echo ($settings['maintenance_mode'] ?? 0) ? 'checked' : ''; ?>>
                             <span>Enable Maintenance Mode (Admin only access)</span>
                         </label>
-                        <button type="submit" class="btn btn-outline" style="margin-top: 1.5rem;">Update Status</button>
+                        <button type="submit" class="btn btn-outline mt-1-5">Update Status</button>
                     </form>
                 </div>
             </div>
@@ -434,7 +368,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@LuckyGenesMDx.com'); ?>">
                         </div>
                         
-                        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
+                        <hr class="hr">
                         <h3>SMTP Settings</h3>
                         
                         <div class="form-group">
@@ -465,16 +399,16 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <button type="submit" class="btn">Save Email Settings</button>
                     </form>
                     
-                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
+                    <hr class="hr">
                     
                     <h3>Test Configuration</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    <p class="fs-0-9 text-secondary mb-1">
                         Send a test email to verify your SMTP settings. <strong>Please save any changes above before testing.</strong>
                     </p>
                     
                     <form method="POST" class="test-email-form">
                         <input type="hidden" name="action" value="test_email">
-                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                        <div class="form-group flex-1 mb-0">
                             <label class="form-label">Recipient Email</label>
                             <input type="email" name="test_recipient" value="<?php echo htmlspecialchars($settings['support_email'] ?? ''); ?>" required placeholder="email@example.com">
                         </div>
@@ -484,11 +418,11 @@ $initials  = strtoupper(substr($adminName,0,2));
             </div>
 
             <div id="navbar" class="tab-content">
-                <div class="card" style="margin-bottom: 2rem;">
+                <div class="card mb-2">
                     <h2>Navigation Menu</h2>
                     <form method="POST">
                         <input type="hidden" name="save_navbar" value="1">
-                        <div style="overflow-x: auto; margin-bottom: 1rem;">
+                        <div class="overflow-x-auto mb-1">
                             <table class="info-table">
                                 <thead>
                                     <tr>
@@ -504,9 +438,9 @@ $initials  = strtoupper(substr($adminName,0,2));
                                     <?php foreach ($navItems as $item): ?>
                                     <tr>
                                         <td>
-                                            <div style="display:flex; align-items:center;">
-                                                <input type="number" name="items[<?php echo $item['id']; ?>][display_order]" value="<?php echo $item['display_order']; ?>" class="form-control-sm" style="width:50px; margin-right:5px;">
-                                                <div style="display:flex; flex-direction:column;">
+                                            <div class="flex-center">
+                                                <input type="number" name="items[<?php echo $item['id']; ?>][display_order]" value="<?php echo $item['display_order']; ?>" class="form-control-sm w-50 mr-5">
+                                                <div class="flex-column">
                                                     <button type="submit" name="move_nav_item" value="1" onclick="document.getElementById('move_id_input').value='<?php echo $item['id']; ?>'; document.getElementById('move_dir_input').value='up';" class="btn-xs" title="Move Up">▲</button>
                                                     <button type="submit" name="move_nav_item" value="1" onclick="document.getElementById('move_id_input').value='<?php echo $item['id']; ?>'; document.getElementById('move_dir_input').value='down';" class="btn-xs" title="Move Down">▼</button>
                                                 </div>
@@ -514,9 +448,9 @@ $initials  = strtoupper(substr($adminName,0,2));
                                         </td>
                                         <td>
                                             <?php if (isset($item['section']) && $item['section'] === 'actions'): ?>
-                                                <span style="background:#e2e3e5; padding:2px 6px; border-radius:4px; font-size:0.75rem;">Actions</span>
+                                                <span class="badge-grey">Actions</span>
                                             <?php else: ?>
-                                                <span style="background:#d1e7dd; padding:2px 6px; border-radius:4px; font-size:0.75rem;">Main</span>
+                                                <span class="badge-green">Main</span>
                                             <?php endif; ?>
                                         </td>
                                         <td><input type="text" name="items[<?php echo $item['id']; ?>][label]" value="<?php echo htmlspecialchars($item['label']); ?>" class="form-control-sm"></td>
@@ -525,7 +459,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                                             <input type="checkbox" name="items[<?php echo $item['id']; ?>][is_active]" value="1" <?php echo $item['is_active'] ? 'checked' : ''; ?>>
                                         </td>
                                         <td>
-                                            <button type="submit" name="delete_nav_item" value="1" onclick="document.getElementById('delete_id_input').value='<?php echo $item['id']; ?>'; return confirm('Are you sure?');" class="btn btn-outline btn-sm" style="color: #dc3545; border-color: #dc3545;">Delete</button>
+                                            <button type="submit" name="delete_nav_item" value="1" onclick="document.getElementById('delete_id_input').value='<?php echo $item['id']; ?>'; return confirm('Are you sure?');" class="btn btn-outline btn-sm btn-danger">Delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -538,7 +472,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <button type="submit" class="btn">Save Changes</button>
                     </form>
                     
-                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
+                    <hr class="hr">
                     
                     <h3>Add New Item</h3>
                     <form method="POST" class="nav-item-form">
@@ -546,7 +480,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <div class="form-group mb-0"><label class="font-sm">Order</label><input type="number" name="new_order" class="form-control-sm" value="<?php echo count($navItems) + 1; ?>" required></div>
                         <div class="form-group mb-0"><label class="font-sm">Label</label><input type="text" name="new_label" class="form-control-sm" placeholder="e.g. Blog" required></div>
                         <div class="form-group mb-0"><label class="font-sm">URL</label><input type="text" name="new_url" class="form-control-sm" placeholder="e.g. blog.php" required></div>
-                        <button type="submit" class="btn btn-primary btn-sm" style="height: 32px;">Add Item</button>
+                        <button type="submit" class="btn btn-primary btn-sm h-32">Add Item</button>
                     </form>
                 </div>
             </div>

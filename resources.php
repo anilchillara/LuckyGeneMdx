@@ -14,14 +14,14 @@ $resources = [
         "url" => "https://www.orpha.net",
         "domain" => "orpha.net",
         "longDesc" => "The definitive global resource for rare diseases and orphan drugs, offering a comprehensive nomenclature, an encyclopedia of conditions, and a directory of specialized care centers and diagnostic laboratories across 40 countries.",
-        "color" => "#00e5ff" // Medical Teal
+        "color" => "#5AB9EA" // Light Cerulean
     ],
     [
         "name" => "ClinicalTrials.gov",
         "url" => "https://clinicaltrials.gov",
         "domain" => "clinicaltrials.gov",
         "longDesc" => "A centralized registry and results database of publicly and privately funded clinical studies conducted around the world, managed by the U.S. National Library of Medicine to provide transparency in medical research.",
-        "color" => "#2979ff" // Deep Blue
+        "color" => "#5680E9" // Deep Blueberry
     ],
     [
         "name" => "GARD (NIH)",
@@ -29,20 +29,20 @@ $resources = [
         "domain" => "nih.gov",
         "longDesc" => "The Genetic and Rare Diseases Information Center (GARD) provides the public with free, easy-to-understand information on rare and genetic conditions, translating complex scientific data into actionable resources for patients and families.",
         "color" => "#9177C7" // Soft Purple
-    ],
+   ],
     [
         "name" => "NORD",
         "url" => "https://rarediseases.org",
         "domain" => "rarediseases.org",
         "longDesc" => "The National Organization for Rare Disorders (NORD) is a primary advocacy organization providing patient assistance programs, education, and research grants while lobbying for legislation that benefits the 30 million Americans with rare diseases.",
-        "color" => "#00e5ff" // Medical Teal
+        "color" => "#84CEEB" // Sky Blue
     ],
     [
         "name" => "Global Genes",
         "url" => "https://globalgenes.org",
         "domain" => "globalgenes.org",
         "longDesc" => "A leading international non-profit that builds and unites the rare disease community by equipping patient advocates with tools, training, and resources to accelerate research and widen the drug development pipeline.",
-        "color" => "#2979ff" // Deep Blue
+        "color" => "#84CEEB" // Sky Blue
     ],
     [
         "name" => "RDCRN",
@@ -50,7 +50,7 @@ $resources = [
         "domain" => "nih.gov",
         "longDesc" => "The Rare Diseases Clinical Research Network (RDCRN) facilitates collaborative research through a network of 20+ consortia, focusing on natural history studies, clinical trial readiness, and the training of new investigators in the field.",
         "color" => "#9177C7" // Soft Purple
-    ]
+   ]
 ];
 
 ?>

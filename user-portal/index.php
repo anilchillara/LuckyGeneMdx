@@ -42,13 +42,14 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patient Dashboard | LuckyGenesMDx</title>
 <link rel="stylesheet" href="../css/portal.css">
+<link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
 
 <!-- TOP NAV -->
 <nav class="navbar">
   <a href="../index.php" class="brand">
-    <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
+    <img src="../assets/images/logo_small.png" alt="Logo" class="logo-sm"> <?php echo htmlspecialchars(SITE_NAME); ?>
   </a>
   <div class="nav-items">
     <a href="index.php" class="nav-link active">Dashboard</a>
@@ -57,7 +58,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
     <a href="settings.php" class="nav-link">Settings</a>
   </div>
   <div class="user-menu">
-    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+    <button id="theme-toggle" class="btn btn-outline btn-sm btn-icon">🌙</button>
     <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
     <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
   </div>
@@ -91,7 +92,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
     </div>
 
     <!-- Main Content -->
-    <div class="grid" style="margin-top: 2rem;">
+    <div class="grid mt-2">
         
         <!-- Left Column: Recent Activity -->
         <div class="col-span-8">
@@ -102,8 +103,8 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                 </div>
 
                 <?php if (empty($orders)): ?>
-                    <div style="text-align:center; padding: 2rem;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">📦</div>
+                    <div class="text-center p-2">
+                        <div class="fs-2 mb-1">📦</div>
                         <p>No orders yet. Start your journey today.</p>
                         <a href="../request-kit.php" class="btn">Order Kit</a>
                     </div>
@@ -150,7 +151,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
             
             <!-- Quick Actions -->
             <div class="card">
-                <h3 style="margin-bottom: 1rem;">Quick Actions</h3>
+                <h3 class="mb-1">Quick Actions</h3>
                 <div class="action-grid">
                     <a href="../request-kit.php" class="action-btn">
                         <span class="action-icon">🛒</span>

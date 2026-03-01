@@ -47,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="auth-card">
-        <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
-        <div style="text-align:center; margin-bottom:2rem;">
-            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+        <a href="../index.php" class="back-link">← Back to Main Site</a>
+        <div class="auth-header">
+            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
             <h1 id="title">Account Recovery</h1>
             <p id="desc">Verify your identity to reset password</p>
         </div>
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="POST" id="resetForm">
-            <div id="step-1" class="step-content active" style="display:block;">
+            <div id="step-1" class="step-content active d-block">
                 <div class="form-group">
                     <label>Account Email</label>
                     <input type="email" name="email" id="email" placeholder="name@example.com" required>
@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="btn btn-full" onclick="showStep(2)">Verify Account →</button>
             </div>
 
-            <div id="step-2" class="step-content" style="display:none;">
-                <div class="form-row" style="margin-bottom: 1rem;">
+            <div id="step-2" class="step-content hidden">
+                <div class="form-row mb-1">
                     <div class="form-group">
                         <label>Date of Birth</label>
                         <input type="date" name="dob" id="dob">
@@ -83,17 +83,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-group">
                     <label>New Security Password</label>
-                    <div style="position: relative;">
-                        <input type="password" name="new_password" id="new_password" placeholder="••••••••" style="padding-right: 40px;">
-                        <button type="button" onclick="togglePassword('new_password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    <div class="relative">
+                        <input type="password" name="new_password" id="new_password" placeholder="••••••••" class="pr-40">
+                        <button type="button" onclick="togglePassword('new_password')" class="password-toggle" title="Show Password">👁️</button>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-full">Reset & Sign In</button>
-                <button type="button" onclick="showStep(1)" class="btn btn-outline btn-full" style="margin-top:10px;">← Back</button>
+                <button type="button" onclick="showStep(1)" class="btn btn-outline btn-full mt-10">← Back</button>
             </div>
         </form>
 
-        <div style="text-align: center; margin-top: 2rem;">
+        <div class="auth-footer">
             <a href="login.php" class="btn btn-outline">Return to Login</a>
         </div>
     </div>

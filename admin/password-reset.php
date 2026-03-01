@@ -62,10 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="auth-card">
-        <a href="login.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Login</a>
+        <a href="login.php" class="back-link">← Back to Login</a>
 
-        <div style="text-align:center; margin-bottom: 2rem;">
-            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+        <div class="auth-header">
+            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
             <h1>Admin Recovery</h1>
             <p>Reset your administrative access</p>
         </div>

@@ -58,6 +58,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
 <title>Join LuckyGenesMDx – Secure Registration</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
+    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body class="auth-body">
 
@@ -66,18 +67,18 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
 </div>
 
 <div class="auth-card">
-    <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+    <a href="../index.php" class="back-link">← Back to Main Site</a>
 
     <?php if ($showPending): ?>
         <!-- ── CHECK YOUR EMAIL SCREEN ── -->
-        <div style="text-align:center;">
-            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">📬</div>
+        <div class="text-center">
+            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
+            <div class="fs-4 mb-1">📬</div>
             <h2>Check Your Inbox</h2>
             <p>We've sent a verification link to<br>
-                <span style="font-weight:600; color:var(--ms-blue);"><?php echo $pendingEmail; ?></span>
+                <span class="font-weight-600 text-primary"><?php echo $pendingEmail; ?></span>
             </p>
-            <ul style="text-align:left; background:#f3f2f1; padding:1rem 1.5rem; border-radius:4px; margin:1.5rem 0; font-size:0.85rem;">
+            <ul class="info-box">
                 <li>Click the link in the email to activate your account</li>
                 <li>Link expires in 24 hours</li>
                 <li>Check spam/junk if you don't see it</li>
@@ -88,8 +89,8 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
     <?php else: ?>
         <!-- ── REGISTRATION FORM ── -->
 
-        <div style="text-align:center; margin-bottom: 1.5rem;">
-            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+        <div class="text-center mb-1-5">
+            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
             <h1 id="reg-title">Create Account</h1>
             <p id="reg-desc">Join the LuckyGenesMDx Patient Portal</p>
         </div>
@@ -102,13 +103,13 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
             <input type="hidden" name="registration_type" id="registration_type" value="new">
 
             <!-- ── STEP 1: Email ── -->
-            <div class="reg-step active" id="step-1" style="display:block;">
+            <div class="reg-step active d-block" id="step-1">
                 <div class="auth-toggle-group">
                     <button type="button" class="btn btn-outline btn-full active" onclick="setRegType('new', this)">New Patient</button>
                     <button type="button" class="btn btn-outline btn-full" onclick="setRegType('with_order', this)">Have Order #</button>
                 </div>
 
-                <div id="order-field" class="form-group" style="display:none">
+                <div id="order-field" class="form-group hidden">
                     <label>Order Number</label>
                     <input type="text" name="order_number" placeholder="LGM-2024-XXXXX">
                 </div>
@@ -122,12 +123,12 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
             </div>
 
             <!-- ── STEP 2: Password ── -->
-            <div class="reg-step" id="step-2" style="display:none;">
+            <div class="reg-step" id="step-2" class="hidden">
                 <div class="form-group">
                     <label>Create Password</label>
-                    <div style="position: relative;">
-                        <input type="password" name="password" id="reg-pw" placeholder="••••••••" autocomplete="new-password" style="padding-right: 40px;" oninput="checkStrength(this.value)">
-                        <button type="button" onclick="togglePw('reg-pw')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    <div class="relative">
+                        <input type="password" name="password" id="reg-pw" placeholder="••••••••" autocomplete="new-password" class="pr-40" oninput="checkStrength(this.value)">
+                        <button type="button" onclick="togglePw('reg-pw')" class="password-toggle" title="Show Password">👁️</button>
                     </div>
                     <div class="pw-strength">
                         <div class="pw-seg" id="seg1"></div>
@@ -139,24 +140,24 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <div style="position: relative;">
-                        <input type="password" name="confirm_password" id="reg-pw2" placeholder="••••••••" autocomplete="new-password" style="padding-right: 40px;">
-                        <button type="button" onclick="togglePw('reg-pw2')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                    <div class="relative">
+                        <input type="password" name="confirm_password" id="reg-pw2" placeholder="••••••••" autocomplete="new-password" class="pr-40">
+                        <button type="button" onclick="togglePw('reg-pw2')" class="password-toggle" title="Show Password">👁️</button>
                     </div>
                 </div>
                 <button type="button" class="btn btn-full" onclick="regNext(3)">Continue →</button>
-                <button type="button" class="btn btn-outline btn-full" style="margin-top:10px;" onclick="regNext(1)">← Back</button>
+                <button type="button" class="btn btn-outline btn-full mt-10" onclick="regNext(1)">← Back</button>
             </div>
 
             <!-- ── STEP 3: Personal details ── -->
-            <div class="reg-step" id="step-3" style="display:none;">
+            <div class="reg-step" id="step-3" class="hidden">
                 <div class="form-group">
                     <label>Full Legal Name</label>
                     <input type="text" name="full_name" id="reg-name" placeholder="John Doe" autocomplete="name" value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Phone <span style="font-weight:400;text-transform:none">(optional)</span></label>
+                        <label>Phone <span class="font-weight-400 text-transform-none">(optional)</span></label>
                         <input type="tel" name="phone" placeholder="(555) 000-0000" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
                     </div>
                     <div class="form-group">
@@ -165,17 +166,17 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
                     </div>
                 </div>
 
-                <label style="display:flex; gap:10px; align-items:start; font-size:0.8rem; margin: 1rem 0;">
+                <label class="terms-label">
                     <input type="checkbox" id="terms-chk" required>
                     <span>I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></span>
                 </label>
 
                 <button type="submit" class="btn btn-full">Create Account & Verify Email →</button>
-                <button type="button" class="btn btn-outline btn-full" style="margin-top:10px;" onclick="regNext(2)">← Back</button>
+                <button type="button" class="btn btn-outline btn-full mt-10" onclick="regNext(2)">← Back</button>
             </div>
         </form>
 
-        <div style="text-align:center; margin-top: 2rem;">
+        <div class="text-center mt-2">
             <a href="login.php" class="btn btn-outline">Already have an account? Sign In</a>
         </div>
 

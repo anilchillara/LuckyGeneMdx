@@ -29,14 +29,15 @@ $prefillEmail = htmlspecialchars($_GET['email'] ?? '');
 <title>Resend Verification – LuckyGenesMDx</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
+    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body class="auth-body">
 <div class="auth-bg-video">
     <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
 </div>
 <div class="auth-card">
-    <div style="text-align:center; margin-bottom:1.5rem;">
-        <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+    <div class="text-center mb-1-5">
+        <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
         <h1>Resend Verification</h1>
         <p>Enter your email to receive a new verification link</p>
     </div>
@@ -56,7 +57,7 @@ $prefillEmail = htmlspecialchars($_GET['email'] ?? '');
     </form>
     <?php endif; ?>
 
-    <a href="login.php" class="btn btn-outline btn-full" style="margin-top:1rem;">← Back to Login</a>
+    <a href="login.php" class="btn btn-outline btn-full mt-1">← Back to Login</a>
 </div>
 </body>
 </html>

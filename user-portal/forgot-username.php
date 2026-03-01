@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Recover Username - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/portal.css">
+    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body class="auth-body">
 
@@ -60,9 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="auth-card">
-        <a href="login.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Login</a>
-        <div style="text-align:center; margin-bottom:2rem;">
-            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+        <a href="login.php" class="back-link">← Back to Login</a>
+        <div class="auth-header">
+            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
             <h1 id="title">Recover Email</h1>
             <p id="desc">Find your account email address</p>
         </div>
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
         <?php if ($success): ?>
             <div class="msg msg-success">✓ <?php echo $success; ?></div>
-            <div style="text-align:center; margin-top:1.5rem;">
+            <div class="text-center mt-1-5">
                 <a href="login.php" class="btn btn-full">Sign In Now</a>
             </div>
         <?php else: ?>
@@ -92,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <div id="phone-group" style="display:none;">
+            <div id="phone-group" class="hidden">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Phone Number</label>

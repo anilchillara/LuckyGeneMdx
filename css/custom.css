@@ -1,0 +1,326 @@
+.back-link {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-logo {
+    height: clamp(48px, 10vw, 64px);
+    width: auto;
+    margin-bottom: 1rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.identifier-display {
+    background: #f3f2f1;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--ms-blue);
+    cursor: pointer;
+}
+
+.relative {
+    position: relative;
+}
+
+.pr-40 {
+    padding-right: 40px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.form-checkbox {
+    width: auto;
+    margin-right: 8px;
+}
+
+.form-label-inline {
+    display: inline;
+    font-weight: normal;
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+
+.auth-link-secondary {
+    display: block;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.d-block {
+    display: block;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.logo-sm {
+    height: 32px;
+    width: auto;
+}
+
+.btn-icon {
+    border: none;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    margin-right: 5px;
+    background: transparent;
+}
+
+.mb-1-5 {
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+}
+
+.input-disabled {
+    background: #777777;
+    color: #AAAAAA;
+}
+
+.form-text {
+    display: block;
+    margin-top: 4px;
+    color: #605e5c;
+}
+
+.sticky-top {
+    position: sticky;
+    top: 5rem;
+}
+
+.list-unstyled {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.text-muted {
+    color: #909090;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-0-5 {
+    margin-bottom: 0.5rem;
+}
+
+.privacy-text {
+    font-size: 0.85rem;
+    color: #909090;
+    margin-bottom: 1rem;
+}
+
+.link-underline {
+    font-size: 0.85rem;
+    text-decoration: underline;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1-5 {
+    margin-top: 1.5rem;
+}
+
+.p-2 {
+    padding: 2rem;
+}
+
+.fs-2 {
+    font-size: 2rem;
+}
+
+.p-4 {
+    padding: 4rem;
+}
+
+.fs-3 {
+    font-size: 3rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.flex-center-wrap {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.result-card {
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--ms-blue);
+}
+
+.flex-between-start {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.text-primary {
+    color: var(--ms-blue);
+}
+
+.fs-1-2 {
+    font-size: 1.2rem;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+
+.alert-warning {
+    background: #fff8f0;
+    border: 1px solid #ffeeba;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.ml-1-5 {
+    margin-left: 1.5rem;
+}
+
+.mt-0-5 {
+    margin-top: 0.5rem;
+}
+
+.flex-gap-1 {
+    display: flex;
+    gap: 1rem;
+}
+
+.mt-3 {
+    margin-top: 3rem;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.fs-4 {
+    font-size: 4rem;
+}
+
+.info-box {
+    text-align: left;
+    background: #f3f2f1;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    margin: 1.5rem 0;
+    font-size: 0.85rem;
+}
+
+.font-weight-400 {
+    font-weight: 400;
+}
+
+.text-transform-none {
+    text-transform: none;
+}
+
+.terms-label {
+    display: flex;
+    gap: 10px;
+    align-items: start;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+}
+
+.opacity-2 {
+    opacity: 0.2;
+}
+
+.max-width-500 {
+    max-width: 500px;
+}
+
+.m-auto-2 {
+    margin: 0 auto 2rem auto;
+}
+
+.flex-between-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-0 {
+    margin: 0;
+}
+
+.fs-0-9 {
+    font-size: 0.9rem;
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
