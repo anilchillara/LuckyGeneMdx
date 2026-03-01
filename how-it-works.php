@@ -1,6 +1,7 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
+require_once 'includes/Database.php';
 session_start();
 setSecurityHeaders();
 
@@ -41,62 +42,62 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 
                 <div class="row">
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
-                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</span>
-                                <h3 style="margin: 0;"><i class="fas fa-shopping-cart" style="color: var(--color-medical-teal); margin-right: 8px;"></i> Order Your Kit</h3>
+                        <div class="glass-card process-card" style="border-top-color: var(--color-medical-teal);">
+                            <div class="process-header">
+                                <span class="process-number" style="background: var(--color-medical-teal);">1</span>
+                                <h3 class="process-title"><i class="fas fa-shopping-cart" style="color: var(--color-medical-teal); margin-right: 8px;"></i> Order Your Kit</h3>
                             </div>
                             <p>Complete our secure online form. Your kit ships within 1-2 business days.</p>
                             <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
                                 <li>Payment information ($<?php echo number_format(KIT_PRICE, 0); ?>)</li>
                                 <li>Informed consent included</li>
                             </ul>
-                            <div style="margin-top: 1rem; font-weight: 600; color: var(--color-medical-teal);">⏱️ 5 minutes</div>
+                            <div class="process-meta" style="color: var(--color-medical-teal);">⏱️ 5 minutes</div>
                         </div>
                     </div>
                     
                     <div class="col col-2">
-                        <div class="glass-card" style="padding: 2rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
-                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</span>
-                                <h3 style="margin: 0;"><i class="fas fa-box-open" style="color: var(--color-medical-teal); margin-right: 8px;"></i> Receive Your Kit</h3>
+                        <div class="glass-card process-card" style="border-top-color: #2979ff;">
+                            <div class="process-header">
+                                <span class="process-number" style="background: #2979ff;">2</span>
+                                <h3 class="process-title"><i class="fas fa-box-open" style="color: #2979ff; margin-right: 8px;"></i> Receive Your Kit</h3>
                             </div>
                             <p>Everything needed for saliva collection—no needles or blood draws required.</p>
                             <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
                                 <li>Saliva collection tube</li>
                                 <li>Prepaid return label</li>
                             </ul>
-                            <div style="margin-top: 1rem; font-weight: 600; color: var(--color-medical-teal);">⏱️ 2-3 days shipping</div>
+                            <div class="process-meta" style="color: #2979ff;">⏱️ 2-3 days shipping</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row" style="margin-top: 2rem;">
+                <div class="row mt-4">
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
-                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; flex-shrink: 0;">3</span>
-                                <h4 style="margin: 0; color: var(--color-medical-teal);"><i class="fas fa-vial"></i> Collect Sample</h4>
+                        <div class="glass-card process-card" style="border-top-color: #aa00ff;">
+                            <div class="process-header">
+                                <span class="process-number" style="background: #aa00ff;">3</span>
+                                <h3 class="process-title" style="color: #aa00ff;"><i class="fas fa-vial" style="margin-right: 8px;"></i> Collect Sample</h3>
                             </div>
                             <p style="font-size: 0.9rem;">Simple saliva-based collection. No fasting, just 10 minutes of your time.</p>
                         </div>
                     </div>
                     
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
-                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; flex-shrink: 0;">4</span>
-                                <h4 style="margin: 0; color: var(--color-medical-teal);"><i class="fas fa-microscope"></i> Lab Analysis</h4>
+                        <div class="glass-card process-card" style="border-top-color: var(--color-medical-teal);">
+                            <div class="process-header">
+                                <span class="process-number" style="background: var(--color-medical-teal);">4</span>
+                                <h3 class="process-title" style="color: var(--color-medical-teal);"><i class="fas fa-microscope" style="margin-right: 8px;"></i> Lab Analysis</h3>
                             </div>
                             <p style="font-size: 0.9rem;">Samples processed in CLIA-certified, CAP-accredited laboratories.</p>
                         </div>
                     </div>
 
                     <div class="col col-3">
-                        <div class="glass-card" style="padding: 1.5rem; height: 100%; border-top: 4px solid var(--color-medical-teal);">
-                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
-                                <span style="background: var(--color-medical-teal); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; flex-shrink: 0;">5</span>
-                                <h4 style="margin: 0; color: var(--color-medical-teal);"><i class="fas fa-file-medical-alt"></i> Access Results</h4>
+                        <div class="glass-card process-card" style="border-top-color: #2979ff;">
+                            <div class="process-header">
+                                <span class="process-number" style="background: #2979ff;">5</span>
+                                <h3 class="process-title" style="color: #2979ff;"><i class="fas fa-file-medical-alt" style="margin-right: 8px;"></i> Access Results</h3>
                             </div>
                             <p style="font-size: 0.9rem;">View your comprehensive report through our secure, encrypted portal.</p>
                         </div>
@@ -130,43 +131,34 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
         <!-- CTA Section -->
 
         <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
-        <section class="section conversion-area" style="background: var(--color-light-gray); padding: 5rem 0;">
-            <div class="container">
-                <div class="sale-card" style="background: var(--color-white); border-radius: 24px; box-shadow: 0 20px 50px rgba(10, 31, 68, 0.12); padding: 4.5rem 2rem; text-align: center; border: 1px solid var(--color-medium-gray); max-width: 800px; margin: 0 auto;">
-                    
-                    <div style="display: inline-block; background: rgba(0, 179, 164, 0.1); color: var(--color-medical-teal); padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1.5px;">
-                        Begin Your Path to Clarity
+        <section class="sec-cta">
+            <div class="cta-box reveal">
+                <div class="cta-pill">Begin Your Path to Clarity</div>
+                <h2>Ready to Start Your Journey?</h2>
+                <p>Join thousands of families who have chosen proactive screening. Order your clinical-grade kit today.</p>
+                
+                <div class="cta-pricing">
+                    <span class="cta-price">$<?php echo number_format(KIT_PRICE, 0); ?></span>
+                    <span class="cta-strike">$249</span>
+                </div>
+                
+                <a href="request-kit.php" class="btn-cta-main">
+                    Request Your Kit Now
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+                
+                <div class="cta-meta">
+                    <div class="cta-meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+                        Results in 3 Weeks
                     </div>
-
-                    <h2 style="color: var(--color-primary-deep-blue); margin-bottom: 1.5rem; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
-                        Ready to Start Your Journey?
-                    </h2>
-                    
-                    <p style="font-size: 1.2rem; color: var(--color-dark-gray); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-                        Join thousands of families who have chosen proactive screening. Order your clinical-grade kit today.
-                    </p>
-
-                    <div style="margin-bottom: 2.5rem;">
-                        <span style="font-size: 4.5rem; font-weight: 800; color: var(--color-primary-deep-blue);">$<?php echo number_format(KIT_PRICE, 0); ?></span>
-                        <span style="font-size: 1.8rem; color: var(--color-dark-gray); text-decoration: line-through; opacity: 0.5; margin-left: 12px;">$249</span>
+                    <div class="cta-meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                        100% Secure & Private
                     </div>
-
-                    <div style="margin-bottom: 2rem;">
-                        <a href="request-kit.php" class="btn btn-primary btn-large btn-pulse ">
-                            Request Your Kit Now - $<?php echo number_format(KIT_PRICE, 0); ?>
-                        </a>
-                    </div>
-
-                    <div style="display: flex; justify-content: center; gap: 2rem; opacity: 0.9; flex-wrap: wrap; border-top: 1px solid var(--color-medium-gray); padding-top: 2rem;">
-                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
-                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Results in 3 Weeks
-                        </span>
-                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
-                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> 100% Secure & Private
-                        </span>
-                        <span style="font-size: 0.95rem; color: var(--color-primary-deep-blue); display: flex; align-items: center;">
-                            <span style="color: var(--color-medical-teal); margin-right: 8px;">✓</span> Physician Support
-                        </span>
+                    <div class="cta-meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>
+                        Physician Support
                     </div>
                 </div>
             </div>

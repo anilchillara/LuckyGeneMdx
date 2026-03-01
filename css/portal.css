@@ -1,13 +1,13 @@
 /*
- * LuckyGeneMDx — Patient Portal Theme
+ * LuckyGenesMDx — Patient Portal Theme
  * Microsoft Fluent Design System
  */
 
 :root {
     /* Brand Palette */
     --color-primary-deep-blue: #0A1F44;
-    --color-medical-teal: #00B3A4;
-    --teal-ice: #4ef0e6;
+    --color-medical-teal: #00e5ff;
+    --teal-ice: #80f3ff;
     --color-white: #FFFFFF;
     --color-light-gray: #F8F9FA;
     --color-medium-gray: #E9ECEF;
@@ -16,8 +16,8 @@
 
     /* Theme Mapping */
     --ms-blue:      var(--color-medical-teal);
-    --ms-blue-dark: #008c7a; /* Slightly darker teal for hover */
-    --ms-blue-light: rgba(0, 179, 164, 0.1);
+    --ms-blue-dark: #00b8cc; /* Slightly darker teal for hover */
+    --ms-blue-light: rgba(0, 229, 255, 0.1);
     --bg-body:      var(--color-light-gray);
     --glass-panel:  var(--color-white);
     --glass-border: var(--color-medium-gray);
@@ -32,7 +32,7 @@
     --shadow-card:  0 2px 8px rgba(10, 31, 68, 0.06);
     --shadow-hover: 0 8px 24px rgba(10, 31, 68, 0.12);
     --radius:       4px;
-    --brand-gradient: linear-gradient(135deg, #0A1F44 0%, #00B3A4 100%);
+    --brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,9 +46,9 @@ body {
 }
 
 body.dark-theme {
-    --ms-blue:      #00B3A4;
-    --ms-blue-dark: #008c7a;
-    --ms-blue-light: rgba(0, 179, 164, 0.15);
+    --ms-blue:      #00e5ff;
+    --ms-blue-dark: #00b8cc;
+    --ms-blue-light: rgba(0, 229, 255, 0.15);
     --bg-body:      #3B3B3B;
     --glass-panel:  #454545;
     --glass-border: #606060;
@@ -56,7 +56,7 @@ body.dark-theme {
     --text-primary: #B2B2B2;
     --text-secondary: #909090;
     --shadow-card:  0 4px 8px rgba(0,0,0,0.4);
-    --brand-gradient: linear-gradient(135deg, #00B3A4 0%, #B2B2B2 100%);
+    --brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
 }
 body.dark-theme .btn-outline:hover { background: #606060; }
 body.dark-theme input[type="text"],
@@ -82,17 +82,18 @@ a:hover { color: var(--ms-blue-dark); text-decoration: underline; }
 .col-span-4 { grid-column: span 4; }
 
 /* Auth Layout */
-.auth-body { display: flex; align-items: center; justify-content: center; background: #f0f2f5; }
+.auth-body { display: flex; flex-direction: column; background: #f0f2f5; padding: 1rem; min-height: 100vh; }
 .auth-card {
     background: var(--glass-panel);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
     padding: 2.5rem;
     width: 100%; max-width: 440px;
+    margin: auto;
     box-shadow: 0 16px 32px rgba(0,0,0,0.08);
     position: relative; z-index: 10;
 }
-.auth-bg-video { position: fixed; inset: 0; z-index: 0; opacity: 0.1; pointer-events: none; }
+.auth-bg-video { position: fixed; inset: 0; z-index: 0; opacity: 0.15; pointer-events: none; }
 .auth-bg-video video { width: 100%; height: 100%; object-fit: cover; }
 
 /* Navigation */
@@ -144,6 +145,7 @@ p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
 
 /* Forms */
 .form-group { margin-bottom: 1.2rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-secondary); }
 input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="tel"], select {
     width: 100%; padding: 10px 12px;
@@ -242,9 +244,42 @@ body.dark-theme .pw-seg { background:rgba(255,255,255,0.1); }
 .pw-seg.good { background:var(--success); }
 .pw-label { font-size:.7rem; margin-top:4px; text-align:right; transition:.3s; color: var(--text-secondary); }
 
+/* Responsive Utilities */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.info-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    background: var(--glass-hover);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin: 1rem 0;
+}
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+}
+.flex-wrap { flex-wrap: wrap; }
+.auth-toggle-group { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+
 /* Responsive */
 @media (max-width: 768px) {
     .grid { display: flex; flex-direction: column; }
     .navbar { flex-direction: column; gap: 1rem; }
     .nav-items { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .form-row { grid-template-columns: 1fr; }
+    .info-grid, .info-panel { grid-template-columns: 1fr; }
+    .card-header-flex { flex-direction: column; gap: 0.5rem; }
+    .list-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .list-item > div { width: 100%; }
+    .auth-card { padding: 1.5rem; }
+    .auth-toggle-group { flex-direction: column; gap: 0.5rem; }
 }

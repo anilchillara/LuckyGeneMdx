@@ -1,8 +1,8 @@
-# 🎯 LuckyGeneMdx Refactoring Summary
+# 🎯 LuckyGenesMDx Refactoring Summary
 
 ## 📋 Executive Summary
 
-**Project:** LuckyGeneMdx Genetic Carrier Screening Platform
+**Project:** LuckyGenesMDx Genetic Carrier Screening Platform
 **Analysis Date:** February 15, 2026
 **Total Files Analyzed:** 40+ PHP files
 **Total Lines of Code:** ~7,800 lines
@@ -328,8 +328,8 @@ FROM orders WHERE user_id = ?  // Returns only 4 needed columns
 
 1. **Backup Everything**
    ```bash
-   mysqldump luckygenemdx_db > backup.sql
-   tar -czf code_backup.tar.gz /var/www/luckygenemdx/
+   mysqldump LuckyGenesMDx_db > backup.sql
+   tar -czf code_backup.tar.gz /var/www/LuckyGenesMDx/
    ```
 
 2. **Deploy to Staging**

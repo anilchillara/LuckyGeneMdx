@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 require_once 'includes/Order.php';
@@ -63,10 +63,9 @@ $allStatuses = $stmt->fetchAll();
                                 type="text" 
                                 id="order_number" 
                                 name="order_number" 
-                                class="form-input" 
+                                class="form-input track-order-input" 
                                 placeholder="LGM240214ABC123"
                                 required
-                                class="track-order-input"
                                 value="<?php echo htmlspecialchars($orderNumber); ?>"
                             >
                             <button type="submit" class="btn btn-primary track-order-btn">

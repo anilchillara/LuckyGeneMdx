@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recover Username - LuckyGeneMDx</title>
+    <title>Recover Username - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/portal.css">
 </head>
@@ -60,11 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="auth-card">
-        <div style="margin-bottom: 20px;">
-            <a href="login.php" style="color: var(--text-secondary); text-decoration: none; font-size: 0.8rem;">← Back to Login</a>
-        </div>
+        <a href="login.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Login</a>
         <div style="text-align:center; margin-bottom:2rem;">
-            <div style="font-size:3rem;">📧</div>
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
             <h1 id="title">Recover Email</h1>
             <p id="desc">Find your account email address</p>
         </div>
@@ -79,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php else: ?>
 
-        <div style="display:flex; gap:10px; margin-bottom: 1.5rem;">
+        <div class="auth-toggle-group">
             <button type="button" class="btn btn-outline btn-full active" id="btn-order" onclick="switchMethod('order')">By Order #</button>
             <button type="button" class="btn btn-outline btn-full" id="btn-phone" onclick="switchMethod('phone')">By Phone</button>
         </div>
@@ -95,13 +93,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div id="phone-group" style="display:none;">
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" name="phone" placeholder="(555) 000-0000">
-                </div>
-                <div class="form-group">
-                    <label>Date of Birth</label>
-                    <input type="date" name="dob">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="(555) 000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" name="dob">
+                    </div>
                 </div>
             </div>
 

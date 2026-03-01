@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 require_once 'includes/User.php';
@@ -141,11 +141,9 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
     <!-- Navigation -->
     <?php include 'includes/navbar.php'; ?>
     
-    <main d="main-content" >
-    <!-- <main d="main-content" style="padding-top: 40px; min-height: 100vh; background: var(--color-light-gray);"> -->
-        <div class="container">
-            
-            <?php if ($success): ?>
+    <main id="main-content">
+        <?php if ($success): ?>
+            <div class="container">
                 <!-- Success Message -->
                 <div class="glass-card success-container">
                     <div class="icon-box-lg mb-2">✅</div>
@@ -180,31 +178,25 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                         <a href="user-portal/" class="btn btn-outline btn-large ml-2">Go to Patient Portal</a>
                     </div>
                 </div>
-                
-            <?php else: ?>
-                <!-- Order Form -->
-                <section class="page-header">
-                    <div class="container">
-                        <h1>
-                            <?php echo $isLoggedIn ? 'Order Another Screening Kit' : 'Request Your Screening Kit'; ?>
-                        </h1>
+            </div>
+        <?php else: ?>
+            <!-- Order Form -->
+            <section class="page-header">
+                <div class="container">
+                    <h1>
+                        <?php echo $isLoggedIn ? 'Order Another Screening Kit' : 'Request Your Screening Kit'; ?>
+                    </h1>
+                    <p>
+                        <?php if ($isLoggedIn): ?>
+                            Welcome back, <strong><?php echo htmlspecialchars($user['full_name']); ?></strong>! Complete your shipping information to place your order.
+                        <?php else: ?>
+                            Complete your order below. Your kit will ship within 3-5 business days, and results will be available in 14-21 days.
+                        <?php endif; ?>
+                    </p>
+                </div>
+            </section>
 
-
-                        <p>
-                        
-                            <?php if ($isLoggedIn): ?>
-                                Welcome back, <strong><?php echo htmlspecialchars($user['full_name']); ?></strong>! Complete your shipping information to place your order.
-                            <?php else: ?>
-                                Complete your order below. Your kit will ship within 3-5 business days, and results will be available in 14-21 days.
-                            <?php endif; ?>
-
-
-
-                        </p>
-                    </div>
-                </section>
-
-                
+            <div class="container">
                 <?php if ($error): ?>
                     <div class="glass-card glass-card-error p-3 mb-4">
                         <strong class="text-error">Error:</strong> <?php echo htmlspecialchars($error); ?>
@@ -284,18 +276,14 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                         <input type="text" id="full_name" name="full_name" class="form-input" required value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
                                     </div>
                                     
-                                    <div class="row">
-                                        <div class="col col-2">
-                                            <div class="form-group">
-                                                <label for="email" class="form-label required">Email Address</label>
-                                                <input type="email" id="email" name="email" class="form-input" required data-validate="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
-                                            </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="email" class="form-label required">Email Address</label>
+                                            <input type="email" id="email" name="email" class="form-input" required data-validate="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                                         </div>
-                                        <div class="col col-2">
-                                            <div class="form-group">
-                                                <label for="phone" class="form-label required">Phone Number</label>
-                                                <input type="tel" id="phone" name="phone" class="form-input" required data-validate="phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="phone" class="form-label required">Phone Number</label>
+                                            <input type="tel" id="phone" name="phone" class="form-input" required data-validate="phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
                                         </div>
                                     </div>
                                     
@@ -364,31 +352,25 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     <input type="text" id="address_line2" name="address_line2" class="form-input" value="<?php echo htmlspecialchars($_POST['address_line2'] ?? ''); ?>">
                                 </div>
                                 
-                                <div class="row">
-                                    <div class="col col-2">
-                                        <div class="form-group">
-                                            <label for="city" class="form-label required">City</label>
-                                            <input type="text" id="city" name="city" class="form-input" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
-                                        </div>
+                                <div class="address-grid">
+                                    <div class="form-group">
+                                        <label for="city" class="form-label required">City</label>
+                                        <input type="text" id="city" name="city" class="form-input" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
                                     </div>
-                                    <div class="col col-4">
-                                        <div class="form-group">
-                                            <label for="state" class="form-label required">State</label>
-                                            <select id="state" name="state" class="form-select" required>
-                                                <option value="">Select State</option>
-                                                <?php foreach($usStates as $code => $name): ?>
-                                                    <option value="<?php echo $code; ?>" <?php echo (($_POST['state'] ?? '') === $code) ? 'selected' : ''; ?>>
-                                                        <?php echo $name; ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="state" class="form-label required">State</label>
+                                        <select id="state" name="state" class="form-select" required>
+                                            <option value="">Select State</option>
+                                            <?php foreach($usStates as $code => $name): ?>
+                                                <option value="<?php echo $code; ?>" <?php echo (($_POST['state'] ?? '') === $code) ? 'selected' : ''; ?>>
+                                                    <?php echo $name; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
-                                    <div class="col col-4">
-                                        <div class="form-group">
-                                            <label for="zip" class="form-label required">ZIP Code</label>
-                                            <input type="text" id="zip" name="zip" class="form-input" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="zip" class="form-label required">ZIP Code</label>
+                                        <input type="text" id="zip" name="zip" class="form-input" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
                                     </div>
                                 </div>
                                 
@@ -412,8 +394,8 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                         </div>
                     </div>
                 </div>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     </main>
     
     <!-- Footer -->

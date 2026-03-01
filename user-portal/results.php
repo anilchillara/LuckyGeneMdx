@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -43,7 +43,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Results - LuckyGeneMDx</title>
+    <title>My Results - LuckyGenesMDx</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -51,7 +51,9 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 </head>
 <body>
     <nav class="navbar">
-      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
+      <a href="../index.php" class="brand">
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
+      </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
         <a href="orders.php" class="nav-link">My Orders</a>
@@ -96,7 +98,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                             </div>
                         </div>
 
-                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; background: #f8f9fa; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
+                        <div class="info-panel">
                             <div>
                                 <div class="stat-lbl">Result Date</div>
                                 <div style="font-weight:600;"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
@@ -119,14 +121,14 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                             </ul>
                         </div>
 
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 1rem;" class="flex-wrap">
                             <a href="view-result.php?id=<?php echo $result['result_id']; ?>" target="_blank" class="btn">
                                 View PDF Report
                             </a>
                             <a href="download-result.php?id=<?php echo $result['result_id']; ?>" class="btn btn-outline" download>
                                 Download
                             </a>
-                            <a href="mailto:counseling@luckygenemdx.com" class="btn btn-outline">
+                            <a href="mailto:counseling@LuckyGenesMDx.com" class="btn btn-outline">
                                 Request Counselor Call
                             </a>
                         </div>

@@ -1,9 +1,9 @@
 <?php
 /**
- * Global Footer Template - LuckyGeneMDx
+ * Global Footer Template - LuckyGenesMDx
  * Refactored: No zoom, correct paths, unified styling
  */
-if (!defined('luckygenemdx')) exit;
+if (!defined('LuckyGenesMDx')) exit;
 
 // Determine base URL if not already set (e.g. if header wasn't included)
 if (!isset($baseUrl)) {
@@ -44,11 +44,9 @@ $isNavActive = function($url) use ($navStatus) {
 /* Footer-specific styles (rest comes from main.css) */
 
 .site-footer {
-    background: linear-gradient(-45deg, #0A1F44, #008c7a, #0A1F44 );
-    /* background: linear-gradient(-45deg, #2F377D ,rgb(2, 150, 138), #2F538B, rgb(45, 150, 137)); */
-    background-size: 400% 400%;
-    animation: footerFlow 30s ease infinite;
-    color: #FFFFFF;
+    background: var(--white);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-gray);
     padding: 5rem 0 2rem;
     font-family: var(--font-body);
 }
@@ -73,7 +71,7 @@ $isNavActive = function($url) use ($navStatus) {
     font-weight: 700;
     margin-bottom: 1.2rem;
     letter-spacing: -0.5px;
-    color: #FFFFFF;
+    color: var(--primary-blue);
 }
 
 .footer-brand p {
@@ -87,7 +85,7 @@ $isNavActive = function($url) use ($navStatus) {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 1.5rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--primary-blue);
 }
 
 .footer-links {
@@ -100,24 +98,25 @@ $isNavActive = function($url) use ($navStatus) {
 }
 
 .footer-links a {
-    color: #FFFFFF;
+    color: var(--text-gray);
     text-decoration: none;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .footer-links a:hover {
     opacity: 1;
     padding-left: 5px;
-    color: #4ef0e6;
+    color: #00b8cc;
+    text-decoration: underline;
 }
 
 .footer-bottom {
     max-width: 1200px;
     margin: 4rem auto 0;
     padding: 2rem 1.5rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid var(--border-color);
     text-align: center;
 }
 
@@ -136,7 +135,7 @@ $isNavActive = function($url) use ($navStatus) {
 }
 
 .footer-legal a {
-    color: #FFFFFF;
+    color: var(--text-gray);
     margin: 0 1rem;
     text-decoration: none;
     opacity: 0.7;
@@ -145,23 +144,24 @@ $isNavActive = function($url) use ($navStatus) {
 
 .footer-legal a:hover {
     opacity: 1;
+    text-decoration: underline;
 }
 
 .footer-cta-btn {
-    background: #FFFFFF;
-    color: #0A1F44 !important;
+    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%));
+    color: #FFFFFF !important;
     padding: 8px 15px;
     border-radius: 4px;
     font-weight: bold;
     opacity: 1;
     transition: all 0.3s;
+    border: 1px solid transparent;
 }
 
 .footer-cta-btn:hover {
-    background: #4ef0e6;
-    color: #0A1F44;
+    filter: brightness(1.15);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.4);
 }
 
 /* Responsive */
@@ -210,19 +210,32 @@ $isNavActive = function($url) use ($navStatus) {
 
 /* Dark Mode Overrides */
 body.dark-theme .site-footer {
-    background: linear-gradient(-45deg, #3B3B3B, #454545, #3B3B3B);
+    background: #3B3B3B;
+    border-top-color: #606060;
+    color: #B2B2B2;
+}
+
+body.dark-theme .footer-brand h3,
+body.dark-theme .footer-column h4 {
+    color: #B2B2B2;
+}
+
+body.dark-theme .footer-links a,
+body.dark-theme .footer-legal a {
+    color: #909090;
+}
+
+body.dark-theme .footer-links a:hover {
+    color: #00e5ff;
+}
+
+body.dark-theme .footer-bottom {
+    border-top-color: #606060;
 }
 
 body.dark-theme .footer-cta-btn {
-    background: #454545;
-    color: #B2B2B2 !important;
-    border: 1px solid #606060;
-}
-
-body.dark-theme .footer-cta-btn:hover {
-    background: #00B3A4;
-    color: #3B3B3B !important;
-    border-color: #00B3A4;
+    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%));
+    color: #FFFFFF !important;
 }
 </style>
 
@@ -230,7 +243,10 @@ body.dark-theme .footer-cta-btn:hover {
     <div class="footer-grid">
         <!-- Brand Column -->
         <div class="footer-brand">
-            <h3>🧬 <?php echo htmlspecialchars(SITE_NAME); ?></h3>
+            <a href="<?php echo $baseUrl; ?>index.php" style="text-decoration: none; display: block; margin-bottom: 1rem;">
+                <img src="<?php echo $baseUrl; ?>assets/images/logo_small.png" alt="<?php echo htmlspecialchars(SITE_NAME); ?>" style="height: 40px; width: auto;">
+            </a>
+            <!-- <h3><?php echo htmlspecialchars(SITE_NAME); ?></h3> -->
             <p>
                 Advancing family health through clinical-grade genetic carrier screening. 
                 We provide the clarity needed to make informed decisions about your genetic future.

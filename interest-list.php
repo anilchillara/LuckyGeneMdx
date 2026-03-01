@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 require_once 'includes/User.php';
@@ -176,10 +176,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="full" style="margin-top: 5px;">
-          <label style="display:flex; align-items:center; gap:12px; text-transform:none; letter-spacing:0; font-weight:400; font-size:0.9rem; cursor:pointer; color: inherit;">
-            <input type="checkbox" name="newsletter" value="1" <?= (!isset($_POST['newsletter']) && $_SERVER['REQUEST_METHOD'] === 'POST') ? '' : 'checked' ?> style="width:auto; margin:0; cursor:pointer;">
-            <span>Subscribe to our newsletter for updates</span>
-          </label>
+            <div class="form-checkbox">
+                <input type="checkbox" id="newsletter" name="newsletter" value="1" <?= (!isset($_POST['newsletter']) && $_SERVER['REQUEST_METHOD'] === 'POST') ? '' : 'checked' ?>>
+                <label for="newsletter" style="text-transform:none; letter-spacing:0; font-weight:400; font-size:0.9rem; color: inherit;">Subscribe to our newsletter for updates</label>
+            </div>
         </div>
 
       </div>

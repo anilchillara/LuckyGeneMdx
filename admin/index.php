@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -51,14 +51,14 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard | LuckyGeneMDx</title>
+<title>Admin Dashboard | LuckyGenesMDx</title>
 <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
 
 <nav class="navbar">
   <a href="index.php" class="brand">
-    <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+    <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
   </a>
   <div class="nav-items">
     <a href="index.php" class="nav-link active">Dashboard</a>
@@ -117,7 +117,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 <div class="header-section">
                     <h3>Order Trends (Last 30 Days)</h3>
                 </div>
-                <div style="position: relative; height: 250px; width: 100%;">
+                <div class="chart-container">
                     <canvas id="orderTrendsChart"></canvas>
                 </div>
             </div>
@@ -129,7 +129,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 <div class="header-section">
                     <h3>Recent Orders</h3>
                 </div>
-                <div style="overflow-x:auto">
+                <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -224,8 +224,8 @@ $initials  = strtoupper(substr($adminName,0,2));
             datasets: [{
                 label: 'Orders',
                 data: dataPoints,
-                borderColor: '#0078D4',
-                backgroundColor: 'rgba(0, 120, 212, 0.1)',
+                borderColor: '#2979ff',
+                backgroundColor: 'rgba(41, 121, 255, 0.1)',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.4

@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -151,7 +151,7 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title>Upload Results - LuckyGeneMDx Admin</title>
+    <title>Upload Results - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
     <style>
         /* Page specific styles */
@@ -185,12 +185,20 @@ $initials  = strtoupper(substr($adminName,0,2));
             border-radius: var(--radius);
             margin-bottom: 2rem;
         }
+        
+        @media (max-width: 768px) {
+            .search-form { flex-direction: column; align-items: stretch !important; }
+            .search-form .btn { width: 100%; }
+            .file-upload-area { padding: 2rem 1rem; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; text-align: center; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -237,7 +245,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 <h2 style="margin-bottom: 1.5rem;">Find Order</h2>
                 
                 <form method="GET" action="">
-                    <div style="display: flex; gap: 1rem; align-items: end;">
+                    <div class="search-form" style="display: flex; gap: 1rem; align-items: end;">
                         <div class="form-group" style="flex: 1; margin-bottom: 0;">
                             <label for="order">Order Number</label>
                             <input 
@@ -326,7 +334,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <strong>Size:</strong> <span id="fileSize"></span>
                         </div>
                         
-                        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                        <div class="form-actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
                             <button type="submit" class="btn" id="uploadButton" disabled>
                                 📤 Upload Results
                             </button>

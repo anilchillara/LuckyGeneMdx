@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -55,7 +55,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join LuckyGeneMDx – Secure Registration</title>
+<title>Join LuckyGenesMDx – Secure Registration</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
 </head>
@@ -71,6 +71,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
     <?php if ($showPending): ?>
         <!-- ── CHECK YOUR EMAIL SCREEN ── -->
         <div style="text-align:center;">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
             <div style="font-size: 4rem; margin-bottom: 1rem;">📬</div>
             <h2>Check Your Inbox</h2>
             <p>We've sent a verification link to<br>
@@ -88,13 +89,13 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
         <!-- ── REGISTRATION FORM ── -->
 
         <div style="text-align:center; margin-bottom: 1.5rem;">
-            <div style="font-size: 3rem;">🧬</div>
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
             <h1 id="reg-title">Create Account</h1>
-            <p id="reg-desc">Join the LuckyGeneMDx Patient Portal</p>
+            <p id="reg-desc">Join the LuckyGenesMDx Patient Portal</p>
         </div>
 
         <?php if ($error): ?>
-        <div class="msg msg-error">⚠ <?php echo $error; ?></div>
+        <div class="msg msg-error">⚠ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 
         <form method="POST" id="regForm">
@@ -102,7 +103,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
 
             <!-- ── STEP 1: Email ── -->
             <div class="reg-step active" id="step-1" style="display:block;">
-                <div style="display:flex; gap:10px; margin-bottom: 1.5rem;">
+                <div class="auth-toggle-group">
                     <button type="button" class="btn btn-outline btn-full active" onclick="setRegType('new', this)">New Patient</button>
                     <button type="button" class="btn btn-outline btn-full" onclick="setRegType('with_order', this)">Have Order #</button>
                 </div>
@@ -153,7 +154,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
                     <label>Full Legal Name</label>
                     <input type="text" name="full_name" id="reg-name" placeholder="John Doe" autocomplete="name" value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>" required>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="form-row">
                     <div class="form-group">
                         <label>Phone <span style="font-weight:400;text-transform:none">(optional)</span></label>
                         <input type="tel" name="phone" placeholder="(555) 000-0000" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">

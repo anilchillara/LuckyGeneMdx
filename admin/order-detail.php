@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -120,13 +120,20 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title>Order #<?php echo htmlspecialchars($order['order_number']); ?> - LuckyGeneMDx Admin</title>
+    <title>Order #<?php echo htmlspecialchars($order['order_number']); ?> - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        .order-header-flex { display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem; }
+        @media (max-width: 768px) {
+            .order-header-flex { flex-direction: column; gap: 1rem; }
+            .result-flex { flex-direction: column; align-items: flex-start !important; gap: 1rem; }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -165,7 +172,7 @@ $initials  = strtoupper(substr($adminName,0,2));
             
             <!-- Order Header -->
             <div class="card" style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                <div class="order-header-flex">
                     <div>
                         <h1 style="margin-bottom: 0.5rem;">Order #<?php echo htmlspecialchars($order['order_number']); ?></h1>
                         <p style="color: var(--text-secondary); margin: 0;">
@@ -216,7 +223,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     </div>
                     <div class="col-span-6">
                         <div class="stat-lbl">Email Address</div>
-                        <div style="font-size: 1.1rem;">
+                        <div style="font-size: 1.1rem; word-break: break-all;">
                             <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>">
                                 <?php echo htmlspecialchars($order['email']); ?>
                             </a>
@@ -297,7 +304,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 
                 <?php if ($result): ?>
                     <div style="padding: 1.5rem; background: var(--glass-hover); border-radius: var(--radius); margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="result-flex" style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <div style="font-weight: 600; margin-bottom: 0.5rem;">
                                     ✅ Results Available

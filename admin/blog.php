@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 // require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -154,42 +154,11 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Management | LuckyGeneMDx Admin</title>
+    <title>Blog Management | LuckyGenesMDx Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
     <style>
-        /* Shared Styles from Testimonials */
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-            text-decoration: none;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main { flex: 1; margin-left: 260px; padding: 2rem; background: var(--color-light-gray); }
         .admin-header {
             background: white;
             padding: 1.5rem 2rem;
@@ -216,7 +185,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
             display: flex; gap: 1rem; flex-wrap: wrap; align-items: end;
         }
         .filter-group { flex: 1; min-width: 200px; }
-        .table-container { background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+        .table-container { background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; overflow-x: auto; }
         .table { width: 100%; border-collapse: collapse; }
         .table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--color-medium-gray); }
         .table th { font-weight: 600; color: var(--color-primary-deep-blue); background: var(--color-light-gray); }
@@ -225,6 +194,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
         .badge-warning { background: #fff3cd; color: #856404; }
         .btn { padding: 0.5rem 1rem; border: none; border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-primary { background: var(--color-medical-teal); color: white; }
+        .btn-primary:hover { background: #00b8cc; }
         .btn-secondary { background: var(--color-dark-gray); color: white; }
         .btn-danger { background: #dc3545; color: white; }
         .btn-info { background: #17a2b8; color: white; }
@@ -236,6 +206,16 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
         .alert { padding: 1rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem; }
         .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+                width: auto;
+                max-height: 85vh;
+            }
+            .form-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>

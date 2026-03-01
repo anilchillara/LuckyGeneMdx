@@ -1,4 +1,4 @@
-# LuckyGeneMDx — Email Setup Guide
+# LuckyGenesMDx — Email Setup Guide
 > How to configure PHPMailer for development (Gmail) and switch to a production provider when ready.
 
 ---
@@ -70,7 +70,7 @@ This creates a `vendor/` folder. Make sure your project root has a `composer.jso
 3. Under "How you sign in to Google", click **2-Step Verification** and make sure it's **On**
 4. Go back to Security and click **App passwords** (search for it if you don't see it)
 5. Under "Select app", choose **Mail**
-6. Under "Select device", choose **Other (custom name)** → type `LuckyGeneMDx`
+6. Under "Select device", choose **Other (custom name)** → type `LuckyGenesMDx`
 7. Click **Generate**
 8. Copy the **16-character password** shown (it looks like: `xxxx xxxx xxxx xxxx`)
 
@@ -90,11 +90,11 @@ define('MAIL_PORT',      587);
 define('MAIL_USERNAME',  'yourgmail@gmail.com');       // Your Gmail address
 define('MAIL_PASSWORD',  'xxxx xxxx xxxx xxxx');       // App Password from Step 2
 define('MAIL_FROM',      'yourgmail@gmail.com');       // Must match MAIL_USERNAME for Gmail
-define('MAIL_FROM_NAME', 'LuckyGeneMDx');
+define('MAIL_FROM_NAME', 'LuckyGenesMDx');
 
 // ── Base URL (used to build the verification link in emails) ─────
 // Local dev example:
-define('BASE_URL', 'http://localhost/luckygenemdx');
+define('BASE_URL', 'http://localhost/LuckyGenesMDx');
 // Live server example:
 // define('BASE_URL', 'https://yourdomain.com');
 ```
@@ -160,7 +160,7 @@ try {
 
     $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
     $mail->addAddress(MAIL_USERNAME); // send to yourself
-    $mail->Subject = 'LuckyGeneMDx SMTP Test';
+    $mail->Subject = 'LuckyGenesMDx SMTP Test';
     $mail->Body    = '<h2>✅ SMTP is working!</h2><p>PHPMailer + Gmail is configured correctly.</p>';
     $mail->isHTML(true);
     $mail->send();
@@ -170,7 +170,7 @@ try {
 }
 ```
 
-Run it by visiting `http://localhost/luckygenemdx/test-mail.php`. Delete it after testing.
+Run it by visiting `http://localhost/LuckyGenesMDx/test-mail.php`. Delete it after testing.
 
 ---
 

@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -44,7 +44,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders - LuckyGeneMDx</title>
+    <title>My Orders - LuckyGenesMDx</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -53,7 +53,9 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <body>
     <!-- Portal Navbar -->
     <nav class="navbar">
-      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
+      <a href="../index.php" class="brand">
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
+      </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
         <a href="orders.php" class="nav-link active">My Orders</a>
@@ -119,7 +121,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                     }
                 ?>
                 <div class="card">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid var(--glass-border); padding-bottom:1rem;">
+                    <div class="card-header-flex">
                         <div>
                             <h4 style="margin: 0;">
                                 Order #<?php echo htmlspecialchars($order['order_number']); ?>
@@ -131,7 +133,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         <span class="badge badge-<?php echo $badgeClass; ?>"><?php echo $statusText; ?></span>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; margin-bottom:1.5rem;">
+                    <div class="info-grid">
                         <div>
                             <div class="stat-lbl">Total Amount</div>
                             <div style="font-weight:600;">$<?php echo number_format($order['price'], 2); ?></div>
@@ -146,7 +148,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         </div>
                     </div>
 
-                    <div style="display:flex; gap:1rem;">
+                    <div style="display:flex; gap:1rem;" class="flex-wrap">
                         <a href="../track-order.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-outline">
                             Track Status
                         </a>

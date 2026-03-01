@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Settings - LuckyGeneMDx</title>
+    <title>Account Settings - LuckyGenesMDx</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -82,7 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 </head>
 <body>
     <nav class="navbar">
-      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
+      <a href="../index.php" class="brand">
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
+      </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
         <a href="orders.php" class="nav-link">My Orders</a>
@@ -119,10 +121,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                         <form method="POST" action="">
                             <input type="hidden" name="update_profile" value="1">
                             
-                            <div class="form-group">
-                                <label for="full_name">Full Name</label>
-                                <input type="text" id="full_name" name="full_name" 
-                                    value="<?php echo htmlspecialchars($user_data['full_name']); ?>" required>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="full_name">Full Name</label>
+                                    <input type="text" id="full_name" name="full_name" 
+                                        value="<?php echo htmlspecialchars($user_data['full_name']); ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" 
+                                        value="<?php echo htmlspecialchars($user_data['phone'] ?? ''); ?>" required>
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -131,12 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                                     value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled 
                                     style="background:#777777; color:#AAAAAA;">
                                 <small style="display:block; margin-top:4px; color:#605e5c;">Contact support to change email.</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" 
-                                    value="<?php echo htmlspecialchars($user_data['phone'] ?? ''); ?>" required>
                             </div>
                             
                             <button type="submit" class="btn">Save Changes</button>
@@ -156,15 +159,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                                 <input type="password" id="current_password" name="current_password" required>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="new_password">New Password</label>
-                                <input type="password" id="new_password" name="new_password" required minlength="8">
-                                <small style="display:block; margin-top:4px; color:#605e5c;">Min. 8 characters</small>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="confirm_password">Confirm New Password</label>
-                                <input type="password" id="confirm_password" name="confirm_password" required>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new_password">New Password</label>
+                                    <input type="password" id="new_password" name="new_password" required minlength="8">
+                                    <small style="display:block; margin-top:4px; color:#605e5c;">Min. 8 characters</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirm New Password</label>
+                                    <input type="password" id="confirm_password" name="confirm_password" required>
+                                </div>
                             </div>
                             
                             <button type="submit" class="btn btn-outline">Update Password</button>

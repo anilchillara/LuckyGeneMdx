@@ -1,445 +1,255 @@
-<?php
-$success = false;
-$errors = [];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name     = trim($_POST['name'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
-    $phone    = trim($_POST['phone'] ?? '');
-    $role     = trim($_POST['role'] ?? '');
-    $interest = trim($_POST['interest'] ?? '');
-
-    if (empty($name))  $errors[] = 'Full name is required.';
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'A valid email address is required.';
-    if (empty($role))  $errors[] = 'Please select your role.';
-
-    if (empty($errors)) {
-        // TODO: save to DB / send notification email
-        $success = true;
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interest List — Carrier Screening</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css">
+<title>State of the Rare — 2026 | LuckyGenesMDx</title>
+
 <style>
-  /* Overrides for this specific landing page */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f7fa;
+}
 
-  :root {
-    --cream:   var(--color-light-gray);
-    --parchment: #eef2f6;
-    --espresso: var(--color-primary-deep-blue);
-    --moss:    var(--color-medical-teal);
-    --sage:    #4dccc2;
-    --gold:    var(--color-purple-accent);
-    --warm-white: var(--color-white);
-    --text-muted: var(--color-dark-gray);
-  }
+.rare-stats-section {
+  padding: 20px 20px;
+  background: linear-gradient(145deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
+  color: #ffffff;
+  text-align: center;
+}
 
-  html { scroll-behavior: smooth; }
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--cream);
-    color: var(--espresso);
-    min-height: 100vh;
-  }
+h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
 
-  /* ── BACKGROUND TEXTURE ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 179, 164, 0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 85% 80%, rgba(10, 31, 68, 0.05) 0%, transparent 55%);
-    pointer-events: none;
-    z-index: 0;
-  }
+h2 {
+  font-size: 38px;
+  margin-bottom: 5px;
+}
 
-  .page-wrap { position: relative; z-index: 1; }
+.subtitle {
+  font-size: 18px;
+  opacity: 0.85;
+  margin-bottom: 60px;
+}
 
-  /* ── HEADER ── */
-  header {
-    text-align: center;
-    padding: 72px 24px 0;
-    animation: fadeUp .9s ease both;
-  }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
 
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--moss);
-    color: var(--white);
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    padding: 6px 18px; border-radius: 100px;
-    font-family: 'Inter', sans-serif; font-weight: 600;
-    margin-bottom: 28px;
-  }
-  .badge::before {
-    content: '';
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
-    animation: pulse 2s ease infinite;
-  }
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  padding: 35px 25px;
+  border-radius: 18px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-  h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    font-weight: 300;
-    line-height: 1.12;
-    letter-spacing: -.01em;
-    color: var(--espresso);
-    max-width: 720px;
-    margin: 0 auto 20px;
-  }
-  h1 em { font-style: italic; color: var(--moss); }
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
 
-  .subtitle {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    max-width: 560px;
-    margin: 0 auto;
-    line-height: 1.7;
-    font-weight: 400;
-  }
+.counter {
+  font-size: 46px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
 
-  /* ── PARTNER STRIP ── */
-  .partner-strip {
-    max-width: 820px;
-    margin: 52px auto 0;
-    background: var(--warm-white);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 28px 36px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 20px;
-    align-items: start;
-    animation: fadeUp .9s .15s ease both;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-  }
+.suffix {
+  font-size: 22px;
+  margin-left: 4px;
+}
 
-  .partner-icon {
-    width: 48px; height: 48px;
-    background: linear-gradient(135deg, var(--moss), #008c7a);
-    border-radius: 12px;
-    display: grid; place-items: center;
-    font-size: 22px;
-    flex-shrink: 0;
-    color: white;
-  }
+.stat-card p {
+  margin-top: 15px;
+  font-size: 15px;
+  opacity: 0.9;
+}
 
-  .partner-text strong {
-    display: block;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem; font-weight: 600;
-    color: var(--espresso);
-    margin-bottom: 4px;
-  }
-  .partner-text p {
-    font-size: .9rem; color: var(--text-muted); line-height: 1.65;
-  }
+/* Glow effect for key stats */
+.highlight {
+  color:rgb(253, 253, 253);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
 
-  /* ── STATS ROW ── */
-  .stats {
-    max-width: 820px;
-    margin: 32px auto 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    animation: fadeUp .9s .25s ease both;
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 28px;
   }
+  h1 { font-size: 36px; }
+  .counter {
+    font-size: 34px;
+  }
+}
 
-  .stat-card {
-    background: var(--warm-white);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 22px 20px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-  }
-  .stat-card .num {
-    font-family: 'Poppins', sans-serif;
-    font-size: 2.4rem; font-weight: 600;
-    color: var(--moss);
-    line-height: 1;
-  }
-  .stat-card .label {
-    font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--text-muted); margin-top: 6px;
-  }
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
 
-  /* ── DIVIDER ── */
-  .divider {
-    max-width: 820px;
-    margin: 56px auto 0;
-    display: flex; align-items: center; gap: 20px;
-  }
-  .divider::before, .divider::after {
-    content: ''; flex: 1; height: 1px;
-    background: linear-gradient(to right, transparent, rgba(10,31,68,.15));
-  }
-  .divider::after { background: linear-gradient(to left, transparent, rgba(10,31,68,.15)); }
-  .divider span {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem; font-style: italic;
-    color: var(--text-muted); white-space: nowrap;
-  }
+.logo img {
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0));
+}
 
-  /* ── FORM CARD ── */
-  .form-card {
-    max-width: 820px;
-    margin: 40px auto 80px;
-    background: var(--warm-white);
-    border: 1px solid var(--border-color);
-    border-radius: 28px;
-    padding: clamp(32px, 6vw, 56px);
-    box-shadow: 0 8px 64px rgba(10,31,68,.06), 0 2px 8px rgba(10,31,68,.04);
-    animation: fadeUp .9s .35s ease both;
-  }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .form-grid .full { grid-column: 1 / -1; }
+.specialGlow {
+  padding: 20px 20px;
+  background: linear-gradient(45deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
 
-  label {
-    display: block;
-    font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--espresso); font-weight: 600;
-    margin-bottom: 8px;
-  }
 
-  input, select, textarea {
-    width: 100%;
-    background: var(--light-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-family: 'Inter', sans-serif;
-    font-size: .95rem;
-    color: var(--espresso);
-    outline: none;
-    transition: border-color .2s, box-shadow .2s, background .2s;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--medical-teal);
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(0, 179, 164, 0.1);
-  }
-  textarea { resize: vertical; min-height: 100px; }
-  select { appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b8f6e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 16px center;
-    padding-right: 44px;
-  }
+/* Apply this class to some text to add 3d text effect! */
+.text3d {
+  font-family:Garamond, serif;
+  line-height:1em;
+  color:#109de8;
+  font-weight:bold;
+  font-size:45px;
+  text-shadow:none;
+}
 
-  .errors {
-    background: #fdf3f3; border: 1px solid #f5c6c6;
-    border-radius: 12px; padding: 16px 20px;
-    margin-bottom: 24px;
-    font-size: .875rem; color: #b94a4a; line-height: 1.6;
-  }
 
-  .submit-btn {
-    width: 100%; margin-top: 12px;
-    background: var(--moss);
-    color: #fff;
-    border: 1px solid var(--moss);
-    border-radius: 14px;
-    padding: 18px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem; font-weight: 600;
-    letter-spacing: .02em;
-    cursor: pointer;
-    transition: background .25s, transform .15s, box-shadow .25s;
-    position: relative; overflow: hidden;
-  }
-  .submit-btn::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.12));
-  }
-  .submit-btn:hover {
-    background: #008c7a;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(0, 179, 164, 0.25);
-  }
-  .submit-btn:active { transform: translateY(0); }
-
-  .privacy-note {
-    text-align: center; margin-top: 16px;
-    font-size: .78rem; color: var(--text-muted);
-  }
-  .privacy-note svg { vertical-align: middle; margin-right: 4px; }
-
-  /* ── SUCCESS ── */
-  .success-state {
-    text-align: center; padding: 20px 0;
-  }
-  .success-icon {
-    width: 80px; height: 80px;
-    background: linear-gradient(135deg, var(--moss), #008c7a);
-    border-radius: 50%;
-    margin: 0 auto 28px;
-    display: grid; place-items: center;
-    font-size: 36px;
-    color: white;
-    box-shadow: 0 8px 32px rgba(0, 179, 164, 0.3);
-    animation: popIn .5s cubic-bezier(.175,.885,.32,1.275) both;
-  }
-  .success-state h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 2.2rem; font-weight: 400;
-    margin-bottom: 12px;
-  }
-  .success-state p { color: var(--text-muted); line-height: 1.7; max-width: 400px; margin: 0 auto; }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
-    50%       { box-shadow: 0 0 0 6px rgba(255,255,255,0.1); }
-  }
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(.5); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: 1fr; }
-    .partner-strip { grid-template-columns: 1fr; }
-  }
 </style>
 </head>
+
 <body>
-<div class="page-wrap">
 
-  <header>
-    <div class="badge">Now Accepting Interest</div>
-    <h1>Be First in Line for <em>Affordable</em><br>Carrier Screening</h1>
-    <p class="subtitle">
-      We're building something that matters — making comprehensive genetic carrier screening
-      accessible and affordable for every family. Join our early interest list today.
-    </p>
-  </header>
-
-  <!-- Partner Strip -->
-  <div class="partner-strip">
-    <div class="partner-icon">🤝</div>
-    <div class="partner-text">
-      <strong>Working With Leading Industry Partners</strong>
-      <p>
-        We are actively collaborating with multiple partners across the genetics and diagnostics field
-        to negotiate the best possible pricing for carrier screening — so you get world-class testing
-        without the world-class price tag. Our partnerships span accredited labs, clinical networks,
-        and genetic counseling services to deliver end-to-end care at scale.
-      </p>
-    </div>
+<div class="container" style="background:#f4f7fa; display: flex; justify-content: space-between; align-items: center;">
+      <span class="logo specialGlow"><img src="assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;">LuckyGenesMDx</span>
+      <!-- <span class="text3d">World Rare Disease Day</span> -->
+      <!-- <span class="logo specialGlow"> FEBRUARY 28</span> -->
   </div>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat-card">
-      <div class="num">300+</div>
-      <div class="label">Conditions Screened</div>
-    </div>
-    <div class="stat-card">
-      <div class="num">10+</div>
-      <div class="label">Lab Partners</div>
-    </div>
-    <div class="stat-card">
-      <div class="num">Up to 60%</div>
-      <div class="label">Projected Savings</div>
-    </div>
-  </div>
 
-  <div class="divider"><span>Join the Interest List</span></div>
+<section class="rare-stats-section">
+  
+  <div class="container">
+    <h1>Rare is not Scarce</h1>
+    <h2>2026 Global Impact</h2>
+    <p class="subtitle">Individually Rare. Collectively a Global Health Priority.</p>
 
-  <!-- Form Card -->
-  <div class="form-card">
+    <div class="stats-grid">
 
-    <?php if ($success): ?>
-    <div class="success-state">
-      <div class="success-icon">✓</div>
-      <h2>You're on the list!</h2>
-      <p>Thank you for your interest. We'll be in touch as soon as we're ready to launch, with exclusive early-access pricing just for you.</p>
-    </div>
-
-    <?php else: ?>
-
-    <?php if (!empty($errors)): ?>
-      <div class="errors">
-        <?php foreach ($errors as $e) echo htmlspecialchars($e) . '<br>'; ?>
-      </div>
-    <?php endif; ?>
-
-    <form method="POST" action="#form" id="form" novalidate>
-      <div class="form-grid">
-
+      <div class="stat-card">
         <div>
-          <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" placeholder="Jane Smith"
-            value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
+          <span class="counter highlight" data-target="400">0</span>
+          <span class="suffix">Million+</span>
         </div>
-
-        <div>
-          <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" placeholder="jane@example.com"
-            value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
-        </div>
-
-        <div>
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000"
-            value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
-        </div>
-
-        <div>
-          <label for="role">I am a *</label>
-          <select id="role" name="role" required>
-            <option value="" disabled <?= empty($_POST['role']) ? 'selected' : '' ?>>Select your role</option>
-            <option value="patient" <?= ($_POST['role'] ?? '') === 'patient' ? 'selected' : '' ?>>Patient / Individual</option>
-            <option value="couple" <?= ($_POST['role'] ?? '') === 'couple' ? 'selected' : '' ?>>Couple / Family</option>
-            <option value="provider" <?= ($_POST['role'] ?? '') === 'provider' ? 'selected' : '' ?>>Healthcare Provider</option>
-            <option value="ob-gyn" <?= ($_POST['role'] ?? '') === 'ob-gyn' ? 'selected' : '' ?>>OB-GYN / Midwife</option>
-            <option value="genetic-counselor" <?= ($_POST['role'] ?? '') === 'genetic-counselor' ? 'selected' : '' ?>>Genetic Counselor</option>
-            <option value="clinic" <?= ($_POST['role'] ?? '') === 'clinic' ? 'selected' : '' ?>>Clinic / Health System</option>
-            <option value="other" <?= ($_POST['role'] ?? '') === 'other' ? 'selected' : '' ?>>Other</option>
-          </select>
-        </div>
-
-        <div class="full">
-          <label for="interest">What matters most to you? <span style="opacity:.5;font-style:italic;text-transform:none;letter-spacing:0">optional</span></label>
-          <textarea id="interest" name="interest" placeholder="e.g. Affordable pricing, specific conditions covered, counseling support…"><?= htmlspecialchars($_POST['interest'] ?? '') ?></textarea>
-        </div>
-
+        <p>People Worldwide Affected</p>
       </div>
 
-      <button type="submit" class="submit-btn">Reserve My Spot — It's Free</button>
+      <div class="stat-card">
+        <div>
+          <span class="counter highlight" data-target="10000">0</span>
+          <span class="suffix">+</span>
+        </div>
+        <p>Identified Rare Diseases</p>
+      </div>
 
-      <p class="privacy-note">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        No spam, ever. Your information is private and secure.
-      </p>
-    </form>
+      <div class="stat-card">
+        <div>
+          <span class="counter highlight" data-target="72">0</span>
+          <span class="suffix">%</span>
+        </div>
+        <p>Have Genetic Origin</p>
+      </div>
 
-    <?php endif; ?>
+      <div class="stat-card">
+        <div>
+          <span class="counter highlight" data-target="95">0</span>
+          <span class="suffix">%</span>
+        </div>
+        <p>Have No FDA-Approved Treatment</p>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <span class="counter highlight" data-target="4">0</span>
+          <span class="suffix"> Years+</span>
+        </div>
+        <p>Average Time to Diagnosis</p>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <span class="counter highlight" data-target="15">0</span>
+          <span class="suffix">x</span>
+        </div>
+        <p>Higher Medical Costs vs. Common Diseases</p>
+      </div>
+
+      
+
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 12px; opacity: 0.8;">
+        <p>Sources: World Economic Forum 2026 | Rare Disease Day Global Report 2026 | FDA ARC Program | Global Genes Fact Sheet (Feb 2026)</p>
+      </div>
   </div>
+</section>
 
-</div>
+<script>
+// Counter animation
+const counters = document.querySelectorAll('.counter');
+let started = false;
+
+function animateCounters() {
+  counters.forEach(counter => {
+    const target = +counter.getAttribute('data-target');
+    const duration = 2000;
+    const stepTime = 20;
+    const totalSteps = duration / stepTime;
+    const increment = target / totalSteps;
+
+    let current = 0;
+
+    const update = () => {
+      current += increment;
+      if (current < target) {
+        counter.innerText = Math.ceil(current);
+        setTimeout(update, stepTime);
+      } else {
+        counter.innerText = target;
+      }
+    };
+
+    update();
+  });
+}
+
+// Trigger on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !started) {
+      animateCounters();
+      started = true;
+    }
+  });
+});
+
+observer.observe(document.querySelector('.rare-stats-section'));
+</script>
+
 </body>
 </html>

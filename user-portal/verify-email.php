@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -18,7 +18,7 @@ $expired = $result['expired'] ?? false;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo $success ? 'Email Verified' : 'Verification Failed'; ?> – LuckyGeneMDx</title>
+<title><?php echo $success ? 'Email Verified' : 'Verification Failed'; ?> – LuckyGenesMDx</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
 </head>
@@ -28,17 +28,19 @@ $expired = $result['expired'] ?? false;
 </div>
 
 <div class="auth-card" style="text-align:center;">
+    <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
+
     <?php if ($success): ?>
         <div style="font-size:4rem; margin-bottom:1rem;">✅</div>
         <h1>Email Verified!</h1>
-        <p>Your account is now active. You can log in to the LuckyGeneMDx Patient Portal.</p>
+        <div class="msg msg-success"><?php echo htmlspecialchars($message); ?></div>
         <a href="login.php" class="btn btn-full">Sign In to Your Account</a>
 
     <?php elseif ($expired): ?>
         <div style="font-size:4rem; margin-bottom:1rem;">⏰</div>
         <h1>Link Expired</h1>
         <p>Your verification link has expired. Request a new one below — it's free and takes a second.</p>
-        <div class="msg msg-error"><?php echo $message; ?></div>
+        <div class="msg msg-error"><?php echo htmlspecialchars($message); ?></div>
         <a href="resend-verification.php" class="btn btn-full">Request New Link</a>
         <br>
         <a href="register.php" class="btn btn-outline btn-full" style="margin-top:10px;">Start Over</a>
@@ -47,7 +49,7 @@ $expired = $result['expired'] ?? false;
         <div style="font-size:4rem; margin-bottom:1rem;">❌</div>
         <h1>Verification Failed</h1>
         <p>This link is invalid or has already been used.</p>
-        <div class="msg msg-error"><?php echo $message; ?></div>
+        <div class="msg msg-error"><?php echo htmlspecialchars($message); ?></div>
         <a href="login.php" class="btn btn-full">Go to Login</a>
         <br>
         <a href="resend-verification.php" class="btn btn-outline btn-full" style="margin-top:10px;">Resend Verification Email</a>

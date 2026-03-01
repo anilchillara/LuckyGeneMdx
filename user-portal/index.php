@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -40,7 +40,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patient Dashboard | LuckyGeneMDx</title>
+<title>Patient Dashboard | LuckyGenesMDx</title>
 <link rel="stylesheet" href="../css/portal.css">
 </head>
 <body>
@@ -48,7 +48,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <!-- TOP NAV -->
 <nav class="navbar">
   <a href="../index.php" class="brand">
-    <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?>
+    <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
   </a>
   <div class="nav-items">
     <a href="index.php" class="nav-link active">Dashboard</a>

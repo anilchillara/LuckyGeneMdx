@@ -1,6 +1,7 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
+require_once 'includes/Database.php';
 session_start();
 setSecurityHeaders();
 $page_title = 'Contact Us';
@@ -29,13 +30,13 @@ $page_title = 'Contact Us';
                 <span class="triage-icon">👋</span>
                 <h3>For Patients</h3>
                 <p>Track your screening status, manage your results, or update your personal health profile.</p>
-                <a href="user-portal/login.php" style="color: var(--medical-teal); font-weight: 600; text-decoration: none;">Go to Patient Portal →</a>
+                <a href="user-portal/login.php" style="color: #2979ff; font-weight: 600; text-decoration: none;">Go to Patient Portal →</a>
             </div>
             <div class="triage-card">
                 <span class="triage-icon">🩺</span>
                 <h3>For Clinicians</h3>
                 <p>Request clinical consultation with our geneticists or inquire about institutional screening programs.</p>
-                <a href="#form" style="color: var(--medical-teal); font-weight: 600; text-decoration: none;">Connect with MDx Team →</a>
+                <a href="#form" style="color: #2979ff; font-weight: 600; text-decoration: none;">Connect with MDx Team →</a>
             </div>
         </div>
 
@@ -66,7 +67,7 @@ $page_title = 'Contact Us';
                     <div>
                         <strong>Email Us</strong>
                         <?php echo htmlspecialchars(SUPPORT_EMAIL); ?><br>
-                        providers@luckygenemdx.com
+                        providers@LuckyGenesMDx.com
                     </div>
                 </div>
 
@@ -79,7 +80,7 @@ $page_title = 'Contact Us';
 
             <div class="contact-form-wrapper">
                 <form action="process-contact.php" method="POST">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-row">
                         <div class="form-group">
                             <label>First Name</label>
                             <input type="text" name="fname" class="form-control" placeholder="Jane" required>

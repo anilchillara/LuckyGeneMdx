@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -58,7 +58,7 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patient Portal Login – LuckyGeneMDx</title>
+<title>Patient Portal Login – LuckyGenesMDx</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
 </head>
@@ -72,13 +72,13 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
     <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
 
     <div style="text-align:center; margin-bottom: 2rem;">
-        <div style="font-size: 3rem;">🧬</div>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
         <h1 id="header-title">Patient Portal</h1>
         <p id="header-desc">Welcome back to <?php echo htmlspecialchars(SITE_NAME); ?></p>
     </div>
 
     <?php if ($error): ?>
-    <div class="msg msg-error">⚠ <?php echo $error; ?></div>
+    <div class="msg msg-error">⚠ <?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
     <form method="POST" id="auth-form">
@@ -86,7 +86,7 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 
         <!-- STEP 1: Identifier -->
         <div class="step <?php echo $error ? '' : 'active'; ?>" id="step-1" style="<?php echo $error ? 'display:none' : 'display:block'; ?>">
-            <div style="display:flex; gap:10px; margin-bottom: 1.5rem;">
+            <div class="auth-toggle-group">
                 <button type="button" class="btn btn-outline btn-full <?php echo $loginType !== 'order' ? 'active' : ''; ?>" onclick="switchTab('email', this)">Email Login</button>
                 <button type="button" class="btn btn-outline btn-full <?php echo $loginType === 'order' ? 'active' : ''; ?>" onclick="switchTab('order', this)">Order Login</button>
             </div>

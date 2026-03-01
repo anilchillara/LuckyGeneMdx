@@ -43,7 +43,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo htmlspecialchars($page_description); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGeneMDx</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGenesMDx</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -53,7 +53,7 @@ try {
         <div class="nav-container">
             <a href="../index.php" class="logo">
                 <span class="dna-icon">🧬</span>
-                <span>LuckyGeneMDx</span>
+                <span>LuckyGenesMDx</span>
             </a>
             <ul class="nav-menu">
                 <li><a href="../index.php">Home</a></li>

@@ -1,8 +1,8 @@
-# 🧬 LuckyGeneMdx - Refactored Version 2.0
+# 🧬 LuckyGenesMDx - Refactored Version 2.0
 
 ## ✨ What's New in This Refactored Version
 
-This is a completely refactored version of LuckyGeneMdx with critical security, performance, and code quality improvements.
+This is a completely refactored version of LuckyGenesMDx with critical security, performance, and code quality improvements.
 
 ### 🔒 Security Enhancements
 - ✅ **Secure Session Management** - SessionManager class with hijacking protection
@@ -71,8 +71,8 @@ This is a completely refactored version of LuckyGeneMdx with critical security, 
 
 ```bash
 # 1. Extract the project
-unzip LuckyGeneMdx-Refactored-v2.0.zip
-cd LuckyGeneMdx-Refactored-v2.0
+unzip LuckyGenesMDx-Refactored-v2.0.zip
+cd LuckyGenesMDx-Refactored-v2.0
 
 # 2. Create .env file from example
 cp .env.example .env
@@ -91,10 +91,10 @@ chmod 755 uploads logs
 chmod 644 .env
 
 # 5. Import database
-mysql -u your_user -p luckygenemdx_db < database_schema.sql
+mysql -u your_user -p LuckyGenesMDx_db < database_schema.sql
 
 # 6. Optional: Import test data
-mysql -u your_user -p luckygenemdx_db < DB/test_data.sql
+mysql -u your_user -p LuckyGenesMDx_db < DB/test_data.sql
 
 # 7. Update Apache/Nginx config to point to project root
 
@@ -122,7 +122,7 @@ ENCRYPTION_KEY=your_generated_key_here
 ENVIRONMENT=production
 SITE_URL=https://your-domain.com
 DB_HOST=localhost
-DB_NAME=luckygenemdx_db
+DB_NAME=LuckyGenesMDx_db
 DB_USER=your_db_user
 DB_PASS=your_secure_password
 ENCRYPTION_KEY=64_character_hex_string
@@ -240,7 +240,7 @@ if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
 ## 📁 Project Structure
 
 ```
-LuckyGeneMdx-Refactored-v2.0/
+LuckyGenesMDx-Refactored-v2.0/
 ├── .env.example                 # Environment template
 ├── .htaccess                    # Apache rewrite rules
 ├── REFACTORED_README.md         # This file
@@ -425,7 +425,7 @@ session.save_path = "tcp://127.0.0.1:6379"
    ```sql
    -- Create dedicated user with limited privileges
    CREATE USER 'luckygene_app'@'localhost' IDENTIFIED BY 'strong_password';
-   GRANT SELECT, INSERT, UPDATE, DELETE ON luckygenemdx_db.* TO 'luckygene_app'@'localhost';
+   GRANT SELECT, INSERT, UPDATE, DELETE ON LuckyGenesMDx_db.* TO 'luckygene_app'@'localhost';
    FLUSH PRIVILEGES;
    ```
 
@@ -518,7 +518,7 @@ Same license as original project.
 
 ## 🙏 Credits
 
-**Original Project:** LuckyGeneMdx  
+**Original Project:** LuckyGenesMDx  
 **Refactoring:** Code Analysis & Security Audit (February 2026)  
 **Version:** 2.0 Refactored
 

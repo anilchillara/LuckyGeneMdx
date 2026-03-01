@@ -61,13 +61,13 @@ if (ENVIRONMENT === 'development') {
 // -----------------------------------
 
 // Prevent direct access
-if (!defined('luckygenemdx')) {
+if (!defined('LuckyGenesMDx')) {
     die('Direct access not permitted');
 }
 
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'luckygenemdx_db');
+define('DB_NAME', getenv('DB_NAME') ?: 'LuckyGenesMDx_db');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
@@ -85,19 +85,19 @@ try {
 
 // Application Constants
 // Auto-detect URL for development if not set in DB
-$detectedUrl = 'https://luckygenemdx.com';
+$detectedUrl = 'https://LuckyGenesMDx.com';
 if (isset($_SERVER['HTTP_HOST'])) {
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
     if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false) {
         // If running on a port (e.g. :8000), use root. Otherwise assume folder structure.
         $isPort = strpos($_SERVER['HTTP_HOST'], ':') !== false;
-        $detectedUrl = $isPort ? "$protocol://{$_SERVER['HTTP_HOST']}" : "$protocol://{$_SERVER['HTTP_HOST']}/LuckyGeneMdx";
+        $detectedUrl = $isPort ? "$protocol://{$_SERVER['HTTP_HOST']}" : "$protocol://{$_SERVER['HTTP_HOST']}/LuckyGenesMDx";
     }
 }
 
 define('SITE_URL', $dbSettings['site_url'] ?? (getenv('SITE_URL') ?: $detectedUrl));
-define('SITE_NAME', $dbSettings['site_name'] ?? (getenv('SITE_NAME') ?: 'LuckyGeneMDx'));
-define('SUPPORT_EMAIL', $dbSettings['support_email'] ?? 'support@luckygenemdx.com');
+define('SITE_NAME', $dbSettings['site_name'] ?? (getenv('SITE_NAME') ?: 'LuckyGenesMDx'));
+define('SUPPORT_EMAIL', $dbSettings['support_email'] ?? 'support@LuckyGenesMDx.com');
 
 // --- ACCESS CONTROL SYSTEM ---
 $currentScript = $_SERVER['PHP_SELF'];
@@ -163,7 +163,7 @@ define('MAIL_ENCRYPTION', $dbSettings['smtp_security'] ?? (getenv('SMTP_SECURITY
 define('MAIL_USERNAME', $dbSettings['smtp_username'] ?? (getenv('SMTP_USER') ?: ''));
 define('MAIL_PASSWORD', $dbSettings['smtp_password'] ?? (getenv('SMTP_PASS') ?: ''));
 define('MAIL_FROM', $dbSettings['from_email'] ?? (getenv('EMAIL_FROM') ?: ''));
-define('MAIL_FROM_NAME', $dbSettings['from_name'] ?? (getenv('EMAIL_FROM_NAME') ?: 'LuckyGeneMDx'));
+define('MAIL_FROM_NAME', $dbSettings['from_name'] ?? (getenv('EMAIL_FROM_NAME') ?: 'LuckyGenesMDx'));
 
 define('BASE_URL', $dbSettings['base_url'] ?? (getenv('BASE_URL') ?: SITE_URL));
 

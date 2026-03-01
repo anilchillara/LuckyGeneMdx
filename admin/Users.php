@@ -1,5 +1,5 @@
 <?php
-    define('luckygenemdx', true);
+    define('LuckyGenesMDx', true);
     require_once '../includes/config.php';
     require_once '../includes/Database.php';
 
@@ -194,7 +194,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - LuckyGeneMDx Admin</title>
+    <title>User Management - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
     <style>
         /* Page specific styles */
@@ -240,12 +240,33 @@
             padding: 1.5rem;
             border-top: 1px solid var(--glass-border);
         }
+        
+        .filters-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .filters-form { flex-direction: column; align-items: stretch; }
+            .filters-form .btn { width: 100%; margin-top: 0.5rem; }
+            .filters-form .form-group { min-width: 100%; margin-bottom: 0.5rem !important; }
+            .filters-form > a.btn { margin-top: 0.5rem; text-align: center; }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+                width: auto;
+                max-height: 85vh;
+            }
+            .form-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -301,7 +322,7 @@
 
         <!-- Filters -->
         <div class="card" style="margin-bottom: 2rem;">
-            <form method="GET" action="" style="display:flex; gap:1rem; align-items:end; flex-wrap:wrap;">
+            <form method="GET" action="" class="filters-form">
                 <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                     <label>Search</label>
                     <input
@@ -345,7 +366,7 @@
                         </p>
                     </div>
                 <?php else: ?>
-                    <div style="overflow-x: auto;">
+                    <div class="table-responsive">
                     <table class="data-table">
                             <thead>
                                 <tr>

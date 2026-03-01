@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Security Credentials - LuckyGeneMDx</title>
+    <title>Reset Security Credentials - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/portal.css">
 </head>
@@ -47,11 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="auth-card">
-        <div style="margin-bottom: 20px;">
-            <a href="../index.php" style="color: var(--text-secondary); text-decoration: none; font-size: 0.8rem;">✕ Close and Exit</a>
-        </div>
+        <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
         <div style="text-align:center; margin-bottom:2rem;">
-            <div style="font-size:3rem;">🔑</div>
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
             <h1 id="title">Account Recovery</h1>
             <p id="desc">Verify your identity to reset password</p>
         </div>
@@ -73,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div id="step-2" class="step-content" style="display:none;">
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 1rem;">
+                <div class="form-row" style="margin-bottom: 1rem;">
                     <div class="form-group">
                         <label>Date of Birth</label>
                         <input type="date" name="dob" id="dob">

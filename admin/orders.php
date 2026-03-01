@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -102,14 +102,27 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Management - LuckyGeneMDx Admin</title>
+    <title>Order Management - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        .filters-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .filters-form { flex-direction: column; align-items: stretch; }
+            .filters-form .btn { width: 100%; margin-top: 0.5rem; }
+            .filters-form .form-group { min-width: 100%; margin-bottom: 0.5rem !important; }
+        }
+    </style>
 </head>
 <body>
 
 <nav class="navbar">
   <a href="index.php" class="brand">
-    <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+    <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
   </a>
   <div class="nav-items">
     <a href="index.php" class="nav-link">Dashboard</a>
@@ -138,7 +151,7 @@ $initials  = strtoupper(substr($adminName,0,2));
 
     <!-- Filters -->
     <div class="card" style="margin-bottom: 2rem;">
-        <form method="GET" action="" style="display:flex; gap:1rem; align-items:end; flex-wrap:wrap;">
+        <form method="GET" action="" class="filters-form">
             <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                 <label>Search</label>
                     <input 
@@ -184,7 +197,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         </p>
                     </div>
                 <?php else: ?>
-                    <div style="overflow-x: auto;">
+                    <div class="table-responsive">
                 <table class="data-table">
                             <thead>
                                 <tr>
@@ -238,7 +251,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     
                     <!-- Pagination -->
                     <?php if ($totalPages > 1): ?>
-            <div style="padding:1rem; display:flex; justify-content:center; gap:0.5rem; border-top:1px solid var(--glass-border);">
+            <div class="pagination">
                         <?php
                         $queryParams = [];
                         if ($searchQuery) $queryParams['search'] = $searchQuery;

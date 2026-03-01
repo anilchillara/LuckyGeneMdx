@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Password Reset - LuckyGeneMDx</title>
+    <title>Admin Password Reset - LuckyGenesMDx</title>
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body class="auth-body">
@@ -65,16 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="login.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Login</a>
 
         <div style="text-align:center; margin-bottom: 2rem;">
-            <div style="font-size: 3rem;">🔐</div>
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
             <h1>Admin Recovery</h1>
             <p>Reset your administrative access</p>
         </div>
             
         <?php if ($error): ?>
-            <div class="msg msg-error" role="alert"><?php echo htmlspecialchars($error); ?></div>
+            <div class="msg msg-error" role="alert">⚠ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <?php if ($success): ?>
-            <div class="msg msg-success" role="alert"><?php echo htmlspecialchars($success); ?></div>
+            <div class="msg msg-success" role="alert">✓ <?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
         
         <form method="POST" action="">
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="confirm_password" name="confirm_password" required>
             </div>
             
-            <button type="submit" class="btn btn-full" style="margin-top: 1.5rem;">Reset Password</button>
+            <button type="submit" class="btn btn-full">Reset Password</button>
         </form>
     </div>
 </body>

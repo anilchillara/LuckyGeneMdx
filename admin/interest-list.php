@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -114,13 +114,26 @@ $initials = strtoupper(substr($adminName, 0, 2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interest List - LuckyGeneMDx Admin</title>
+    <title>Interest List - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        .filters-form {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .filters-form { flex-direction: column; align-items: stretch; }
+            .filters-form .btn { width: 100%; margin-top: 0.5rem; }
+            .filters-form a.btn { text-align: center; }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -152,7 +165,7 @@ $initials = strtoupper(substr($adminName, 0, 2));
 
         <!-- Search -->
         <div class="card" style="margin-bottom: 2rem;">
-            <form method="GET" style="display:flex; gap:1rem; align-items:center;">
+            <form method="GET" class="filters-form">
                 <div class="form-group" style="flex:1; margin-bottom:0;">
                     <input type="text" name="search" placeholder="Search by name, email, phone, or role..." value="<?php echo htmlspecialchars($search); ?>">
                 </div>
@@ -172,12 +185,12 @@ $initials = strtoupper(substr($adminName, 0, 2));
                     <p style="color:var(--text-secondary);">People who join the interest list will appear here.</p>
                 </div>
             <?php else: ?>
-                <div style="padding: 1rem; border-bottom: 1px solid var(--glass-border); background: var(--glass-hover); display: flex; gap: 1rem; align-items: center;">
+                <div style="padding: 1rem; border-bottom: 1px solid var(--glass-border); background: var(--glass-hover); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
                     <button type="submit" name="bulk_delete" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete the selected subscribers?');">Delete Selected</button>
                     <span style="font-size: 0.85rem; color: var(--text-secondary);">Select items below to perform bulk actions</span>
                 </div>
 
-                <div style="overflow-x: auto;">
+                <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -220,7 +233,7 @@ $initials = strtoupper(substr($adminName, 0, 2));
 
                 <!-- Pagination -->
                 <?php if ($totalPages > 1): ?>
-                <div style="padding:1rem; display:flex; justify-content:center; gap:0.5rem; border-top:1px solid var(--glass-border);">
+                <div class="pagination">
                     <?php $qs = $search ? '&search=' . urlencode($search) : ''; ?>
                     
                     <?php if ($page > 1): ?>

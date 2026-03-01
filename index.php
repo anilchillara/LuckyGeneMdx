@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 session_start();
@@ -10,7 +10,7 @@ setSecurityHeaders();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGeneMDx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
+    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenesMDx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title><?php echo htmlspecialchars(SITE_NAME); ?> - Comprehensive Genetic Carrier Screening | $<?php echo number_format(KIT_PRICE, 0); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,6 @@ setSecurityHeaders();
             </div>
             <div class="hero-overlay" aria-hidden="true"></div>
             <div class="hero-scan"    aria-hidden="true"></div>
-            <div class="hero-orb"     aria-hidden="true"></div>
             <div class="hero-fade-bottom" aria-hidden="true"></div>
 
             <div class="hero-content">
@@ -162,9 +161,30 @@ setSecurityHeaders();
                 <h2>Aligned with Medical Genetics Standards</h2>
                 <p>Our comprehensive carrier screening follows guidelines from leading medical organizations, ensuring you receive accurate, reliable genetic information.</p>
                 <div class="standards-grid">
-                    <div class="std-card reveal reveal-d1"><div class="std-num">300+</div><p>Genetic Conditions Screened</p></div>
-                    <div class="std-card reveal reveal-d2"><div class="std-num">ACMG</div><p>Standards Alignment</p></div>
-                    <div class="std-card reveal reveal-d3"><div class="std-num">$<?php echo number_format(KIT_PRICE, 0); ?></div><p>Affordable, Transparent Pricing</p></div>
+                    <div class="std-card reveal reveal-d1">
+                        <div class="std-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                        </div>
+                        <div class="std-num">300+</div>
+                        <h3>Conditions Screened</h3>
+                        <p>Comprehensive panel covering Cystic Fibrosis, SMA, Sickle Cell, and hundreds more.</p>
+                    </div>
+                    <div class="std-card reveal reveal-d2">
+                        <div class="std-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-2 5l9-9l-9 1l2-5l-9 9l9-1z"/></svg>
+                        </div>
+                        <div class="std-num">ACMG</div>
+                        <h3>Standards Alignment</h3>
+                        <p>Testing protocols aligned with American College of Medical Genetics guidelines.</p>
+                    </div>
+                    <div class="std-card reveal reveal-d3">
+                        <div class="std-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <div class="std-num">$<?php echo number_format(KIT_PRICE, 0); ?></div>
+                        <h3>Transparent Pricing</h3>
+                        <p>One flat rate. No hidden fees, insurance battles, or surprise bills.</p>
+                    </div>
                 </div>
                 <p class="std-disclaimer"><em><?php echo htmlspecialchars(SITE_NAME); ?> is not affiliated with ACMG or CDC. Our testing aligns with standards established by these organizations.</em></p>
             </div>
@@ -277,15 +297,6 @@ setSecurityHeaders();
     <?php include 'includes/footer.php'; ?>
     <script src="js/main.js"></script>
     <script>
-    // ── Universal Intersection Observer ─────────────────
-    const io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
-        });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal, .tl-row').forEach(el => io.observe(el));
-
     // ── Stats counter animation ──────────────────────────
     const counterIO = new IntersectionObserver(entries => {
         entries.forEach(e => {

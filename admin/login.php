@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -15,7 +15,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once '../includes/Database.php';
     
-    $username = htmlspecialchars(trim($_POST['username'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     
     if ($username && $password) {
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - LuckyGeneMDx</title>
+    <title>Admin Login - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/admin.css">
 </head>
@@ -107,14 +107,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
 
         <div style="text-align:center; margin-bottom: 2rem;">
-            <div style="font-size: 3rem;">🧬</div>
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
             <h1><?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span></h1>
             <p>Secure System Access</p>
         </div>
             
         <?php if ($error): ?>
             <div class="msg msg-error" role="alert">
-                <?php echo htmlspecialchars($error); ?>
+                ⚠ <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
         
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
             </div>
 
-            <button type="submit" class="btn btn-full" style="margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-full">
                 Sign In
             </button>
             <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>

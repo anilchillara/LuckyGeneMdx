@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -26,7 +26,7 @@ $prefillEmail = htmlspecialchars($_GET['email'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resend Verification – LuckyGeneMDx</title>
+<title>Resend Verification – LuckyGenesMDx</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/portal.css">
 </head>
@@ -36,13 +36,13 @@ $prefillEmail = htmlspecialchars($_GET['email'] ?? '');
 </div>
 <div class="auth-card">
     <div style="text-align:center; margin-bottom:1.5rem;">
-        <div style="font-size:3rem;">📧</div>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: clamp(48px, 10vw, 64px); width: auto; margin-bottom: 1rem;">
         <h1>Resend Verification</h1>
         <p>Enter your email to receive a new verification link</p>
     </div>
 
     <?php if ($message): ?>
-    <div class="msg <?php echo $isError ? 'msg-error' : 'msg-success'; ?>"><?php echo $message; ?></div>
+    <div class="msg <?php echo $isError ? 'msg-error' : 'msg-success'; ?>"><?php echo htmlspecialchars($message); ?></div>
     <?php endif; ?>
 
     <?php if (!$done): ?>

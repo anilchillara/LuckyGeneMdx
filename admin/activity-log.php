@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -54,13 +54,13 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Log - LuckyGeneMDx Admin</title>
+    <title>Activity Log - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -95,7 +95,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     <p style="color:var(--text-secondary);">System events will appear here.</p>
                 </div>
             <?php else: ?>
-                <div style="overflow-x: auto;">
+                <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>

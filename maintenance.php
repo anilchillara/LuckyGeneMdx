@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
 
 // Redirect to home if maintenance mode is disabled
@@ -54,7 +54,7 @@ http_response_code(503);
         <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-medium-gray);">
             <div style="text-align: left;">
                 <div style="font-size: 0.85rem; color: var(--color-dark-gray); text-transform: uppercase; letter-spacing: 1px;">Contact Support</div>
-                <a href="mailto:<?php echo htmlspecialchars(SUPPORT_EMAIL); ?>" style="color: var(--color-medical-teal); font-weight: 600; text-decoration: none;"><?php echo htmlspecialchars(SUPPORT_EMAIL); ?></a>
+                <a href="mailto:<?php echo htmlspecialchars(SUPPORT_EMAIL); ?>" style="color: #2979ff; font-weight: 600; text-decoration: none;"><?php echo htmlspecialchars(SUPPORT_EMAIL); ?></a>
             </div>
         </div>
     </div>

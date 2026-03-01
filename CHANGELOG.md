@@ -1,4 +1,4 @@
-# Changelog - LuckyGeneMdx Refactored v2.0
+# Changelog - LuckyGenesMDx Refactored v2.0
 
 ## [2.0.0] - 2026-02-15
 

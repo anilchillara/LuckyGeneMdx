@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -256,7 +256,7 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings - LuckyGeneMDx Admin</title>
+    <title>System Settings - LuckyGenesMDx Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
     <style>
         /* Page specific styles */
@@ -295,12 +295,40 @@ $initials  = strtoupper(substr($adminName,0,2));
         .btn-xs { padding: 0 5px; font-size: 0.7rem; line-height: 1.2; border: 1px solid #ddd; background: #fff; cursor: pointer; }
         .btn-xs:hover { background: #f0f0f0; }
         .form-control-sm { padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
+
+        /* Responsive Forms */
+        .nav-item-form { display: grid; grid-template-columns: 1fr 2fr 2fr auto; gap: 10px; align-items: end; }
+        .test-email-form { display: flex; gap: 1rem; align-items: end; }
+        .table-responsive { overflow-x: auto; }
+
+        @media (max-width: 768px) {
+            .tabs { 
+                flex-wrap: nowrap; 
+                overflow-x: auto; 
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 2px;
+            }
+            .tab-btn { flex: 0 0 auto; white-space: nowrap; padding: 0.75rem 1rem; }
+            
+            .nav-item-form {
+                grid-template-columns: 1fr;
+                align-items: stretch;
+            }
+            .nav-item-form button {
+                margin-top: 0.5rem;
+            }
+            
+            .test-email-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
       <a href="index.php" class="brand">
-        <span>🧬</span> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
       </a>
       <div class="nav-items">
         <a href="index.php" class="nav-link">Dashboard</a>
@@ -349,7 +377,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <input type="hidden" name="action" value="update_general">
                         <div class="form-group">
                             <label class="form-label">Site Name</label>
-                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGeneMDx'); ?>">
+                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGenesMDx'); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Site URL</label>
@@ -395,15 +423,15 @@ $initials  = strtoupper(substr($adminName,0,2));
                         
                         <div class="form-group">
                             <label class="form-label">From Email</label>
-                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@luckygenemdx.com">
+                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@LuckyGenesMDx.com">
                         </div>
                         <div class="form-group">
                             <label class="form-label">From Name</label>
-                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGeneMDx'); ?>">
+                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGenesMDx'); ?>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Support Email</label>
-                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@luckygenemdx.com'); ?>">
+                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@LuckyGenesMDx.com'); ?>">
                         </div>
                         
                         <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
@@ -444,7 +472,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         Send a test email to verify your SMTP settings. <strong>Please save any changes above before testing.</strong>
                     </p>
                     
-                    <form method="POST" style="display: flex; gap: 1rem; align-items: end;">
+                    <form method="POST" class="test-email-form">
                         <input type="hidden" name="action" value="test_email">
                         <div class="form-group" style="flex: 1; margin-bottom: 0;">
                             <label class="form-label">Recipient Email</label>
@@ -513,7 +541,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--glass-border);">
                     
                     <h3>Add New Item</h3>
-                    <form method="POST" style="display: grid; grid-template-columns: 1fr 2fr 2fr auto; gap: 10px; align-items: end;">
+                    <form method="POST" class="nav-item-form">
                         <input type="hidden" name="add_nav_item" value="1">
                         <div class="form-group mb-0"><label class="font-sm">Order</label><input type="number" name="new_order" class="form-control-sm" value="<?php echo count($navItems) + 1; ?>" required></div>
                         <div class="form-group mb-0"><label class="font-sm">Label</label><input type="text" name="new_label" class="form-control-sm" placeholder="e.g. Blog" required></div>
@@ -526,14 +554,16 @@ $initials  = strtoupper(substr($adminName,0,2));
             <div id="system" class="tab-content">
                 <div class="card">
                     <h2>Server Information</h2>
-                    <table class="info-table">
-                        <?php foreach ($system_info as $key => $val): ?>
-                            <tr>
-                                <td><strong><?php echo ucwords(str_replace('_', ' ', $key)); ?></strong></td>
-                                <td><?php echo htmlspecialchars($val); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="info-table">
+                            <?php foreach ($system_info as $key => $val): ?>
+                                <tr>
+                                    <td><strong><?php echo ucwords(str_replace('_', ' ', $key)); ?></strong></td>
+                                    <td><?php echo htmlspecialchars($val); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
                 </div>
             </div>
     </div>

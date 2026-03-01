@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/SessionManager.php';
@@ -89,6 +89,7 @@ try {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navbar Settings | Admin Panel</title>
     <link rel="stylesheet" href="../css/main.css">
     <style>
@@ -105,6 +106,12 @@ try {
         .alert-danger { background: #f8d7da; color: #721c24; }
         .btn-xs { padding: 0 5px; font-size: 0.7rem; line-height: 1.2; border: 1px solid #ddd; background: #fff; cursor: pointer; }
         .btn-xs:hover { background: #f0f0f0; }
+        
+        .add-item-form { display: grid; grid-template-columns: 1fr 2fr 2fr auto; gap: 10px; align-items: end; }
+        @media (max-width: 768px) {
+            .add-item-form { grid-template-columns: 1fr; align-items: stretch; }
+            .add-item-form button { margin-top: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -172,7 +179,7 @@ try {
             <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
 
             <h3>Add New Item</h3>
-            <form method="POST" style="display: grid; grid-template-columns: 1fr 2fr 2fr auto; gap: 10px; align-items: end;">
+            <form method="POST" class="add-item-form">
                 <div class="form-group mb-0"><label class="font-sm">Order</label><input type="number" name="new_order" class="form-control-sm" value="<?php echo count($navItems) + 1; ?>" required></div>
                 <div class="form-group mb-0"><label class="font-sm">Label</label><input type="text" name="new_label" class="form-control-sm" placeholder="e.g. Blog" required></div>
                 <div class="form-group mb-0"><label class="font-sm">URL</label><input type="text" name="new_url" class="form-control-sm" placeholder="e.g. blog.php" required></div>

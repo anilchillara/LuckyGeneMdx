@@ -52,13 +52,13 @@ if (!$useDbNav) {
     :root {
         /* Brand Palette */
         --nav-deep-blue: #0A1F44;
-        --nav-teal: #00B3A4;
-        --nav-teal-dark: #008c7a;
+        --nav-teal: #00e5ff;
+        --nav-teal-dark: #00b8cc;
         --nav-white: #FFFFFF;
         --nav-gray: #6C757D;
         --nav-light-gray: #F8F9FA;
         --nav-border: #E9ECEF;
-        --nav-brand-gradient: linear-gradient(135deg, #0A1F44 0%, #00B3A4 100%);
+        --nav-brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #aa00ff 100%);
     }
 
     /* Navigation Container */
@@ -112,7 +112,7 @@ if (!$useDbNav) {
     }
 
     .nav-link:hover, .nav-link.active {
-        color: var(--nav-teal);
+        color: var(--nav-teal-dark);
     }
 
     .nav-link.active::after {
@@ -140,7 +140,7 @@ if (!$useDbNav) {
         font-weight: 600;
         font-size: 0.9rem;
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
     }
 
     .btn-nav-outline {
@@ -150,17 +150,23 @@ if (!$useDbNav) {
     }
     .btn-nav-outline:hover {
         border-color: var(--nav-teal);
-        color: var(--nav-teal);
+        background: var(--nav-teal);
+        color: var(--nav-deep-blue);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        transform: translateY(-2px);
     }
 
     .btn-nav-primary {
-        background: var(--nav-teal);
+        background: var(--nav-brand-gradient);
         color: white;
-        border: 1px solid var(--nav-teal);
+        border: 1px solid transparent;
+        box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+        transition: all 0.3s ease;
     }
     .btn-nav-primary:hover {
-        background: var(--nav-teal-dark);
-        border-color: var(--nav-teal-dark);
+        filter: brightness(1.15);
+        box-shadow: 0 6px 25px rgba(0, 229, 255, 0.6);
+        transform: translateY(-2px);
     }
 
     /* Mobile Toggle */
@@ -170,7 +176,9 @@ if (!$useDbNav) {
         border: none;
         font-size: 1.5rem;
         cursor: pointer;
-        color: var(--nav-deep-blue);
+        background: var(--nav-brand-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         padding: 0.5rem;
     }
 
@@ -188,9 +196,11 @@ if (!$useDbNav) {
             display: none;
             width: 100%;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
             gap: 0;
             margin-top: 1rem;
+            background: var(--nav-white);
+            border-radius: 8px;
         }
         
         .nav-items.active, .nav-actions.active {
@@ -206,7 +216,12 @@ if (!$useDbNav) {
         .nav-actions {
             border-top: 1px solid var(--nav-border);
             padding-top: 1rem;
-            gap: 1rem;
+            gap: 0.75rem;
+        }
+
+        .btn-nav {
+            width: 100%;
+            text-align: center;
         }
     }
 
@@ -216,20 +231,14 @@ if (!$useDbNav) {
         border-bottom-color: #606060;
     }
     body.dark-theme .nav-link {
-        color: #909090;
-    }
-    body.dark-theme .nav-link:hover, body.dark-theme .nav-link.active {
-        color: #00B3A4;
-    }
-    body.dark-theme .btn-nav-outline {
-        color: #00B3A4;
-        border-color: #606060;
-    }
-    body.dark-theme .mobile-toggle {
         color: #B2B2B2;
     }
+    body.dark-theme .btn-nav-outline {
+        color: var(--nav-teal);
+        border-color: #606060;
+    }
     body.dark-theme .brand {
-        background: linear-gradient(135deg, #00B3A4 0%, #B2B2B2 100%);
+        background: var(--nav-brand-gradient);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -237,7 +246,7 @@ if (!$useDbNav) {
 
 <nav class="navbar">
     <a href="index.php" class="brand">
-        <img src="assets/images/logo_icon.png" alt="Logo" style="height: 32px; width: auto;"><?php echo htmlspecialchars(SITE_NAME); ?>
+        <img src="assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"><?php echo htmlspecialchars(SITE_NAME); ?>
     </a>
     <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
     <div class="nav-items" id="nav-items">
@@ -263,11 +272,11 @@ if (!$useDbNav) {
         <?php else: ?>
             <?php if ($isLoggedIn): ?>
             <!-- Fallback if DB empty -->
-            <a href="user-portal/index.php" class="btn-nav btn-nav-outline">Dashboard</a>
-            <a href="user-portal/logout.php" class="btn-nav btn-nav-primary">Sign Out</a>
+            <a href="user-portal/index.php" class="btn-nav btn-nav-primary">Dashboard</a>
+            <a href="user-portal/logout.php" class="btn-nav btn-nav-outline">Sign Out</a>
             <?php else: ?>
-            <a href="user-portal/login.php" class="btn-nav btn-nav-outline">Patient Login</a>
-            <a href="request-kit.php" class="btn-nav btn-nav-primary">Order Kit</a>
+            <a href="user-portal/login.php" class="btn-nav btn-nav-primary">Patient Login</a>
+            <a href="request-kit.php" class="btn-nav btn-nav-outline">Order Kit</a>
             <?php endif; ?>
         <?php endif; ?>
     </div>

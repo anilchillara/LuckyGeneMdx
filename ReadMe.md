@@ -1,4 +1,4 @@
-# 🧬 LuckyGeneMDx - macOS Setup Guide
+# 🧬 LuckyGenesMDx - macOS Setup Guide
 
 
 ### 1. Start Development Server
@@ -90,7 +90,7 @@ You have three options on Mac:
 #### **Option A: Built-in PHP Server (Easiest - Recommended for Development)**
 ```bash
 # Navigate to project directory
-cd /path/to/luckygenemdx
+cd /path/to/LuckyGenesMDx
 
 # Start PHP built-in server
 php -S localhost:8000
@@ -103,9 +103,9 @@ http://localhost:8000
 ```bash
 # Download MAMP from: https://www.mamp.info/en/downloads/
 # Install MAMP
-# Place project in: /Applications/MAMP/htdocs/luckygenemdx
+# Place project in: /Applications/MAMP/htdocs/LuckyGenesMDx
 # Start MAMP servers
-# Access at: http://localhost:8888/luckygenemdx
+# Access at: http://localhost:8888/LuckyGenesMDx
 ```
 
 #### **Option C: Apache (Built into macOS)**
@@ -114,9 +114,9 @@ http://localhost:8000
 sudo apachectl start
 
 # Copy project to web root
-sudo cp -r luckygenemdx /Library/WebServer/Documents/
+sudo cp -r LuckyGenesMDx /Library/WebServer/Documents/
 
-# Access at: http://localhost/luckygenemdx
+# Access at: http://localhost/LuckyGenesMDx
 ```
 
 ---
@@ -132,13 +132,13 @@ mysql -u root -p
 
 ```sql
 -- Create database
-CREATE DATABASE luckygenemdx_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE LuckyGenesMDx_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Create dedicated user (recommended)
-CREATE USER 'luckygenemdx'@'localhost' IDENTIFIED BY 'your_secure_password';
+CREATE USER 'LuckyGenesMDx'@'localhost' IDENTIFIED BY 'your_secure_password';
 
 -- Grant privileges
-GRANT ALL PRIVILEGES ON luckygenemdx_db.* TO 'luckygenemdx'@'localhost';
+GRANT ALL PRIVILEGES ON LuckyGenesMDx_db.* TO 'LuckyGenesMDx'@'localhost';
 
 -- Flush privileges
 FLUSH PRIVILEGES;
@@ -150,17 +150,17 @@ EXIT;
 ### Step 2: Import Schema
 ```bash
 # Navigate to project directory
-cd /path/to/luckygenemdx
+cd /path/to/LuckyGenesMDx
 
 # Import database schema
-mysql -u luckygenemdx -p luckygenemdx_db < database_schema.sql
+mysql -u LuckyGenesMDx -p LuckyGenesMDx_db < database_schema.sql
 # Enter the password you created above
 ```
 
 ### Step 3: Verify Import
 ```bash
 # Login to MySQL
-mysql -u luckygenemdx -p luckygenemdx_db
+mysql -u LuckyGenesMDx -p LuckyGenesMDx_db
 
 # Check tables
 SHOW TABLES;
@@ -188,8 +188,8 @@ open -a "TextEdit" includes/config.php
 ```php
 // Database Configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'luckygenemdx_db');
-define('DB_USER', 'luckygenemdx');  // Or your MySQL username
+define('DB_NAME', 'LuckyGenesMDx_db');
+define('DB_USER', 'LuckyGenesMDx');  // Or your MySQL username
 define('DB_PASS', 'your_secure_password');  // Your MySQL password
 define('DB_CHARSET', 'utf8mb4');
 ```
@@ -213,10 +213,10 @@ define('ENCRYPTION_KEY', 'paste_your_generated_key_here');
 define('SITE_URL', 'http://localhost:8000');
 
 // If using MAMP:
-define('SITE_URL', 'http://localhost:8888/luckygenemdx');
+define('SITE_URL', 'http://localhost:8888/LuckyGenesMDx');
 
 // If using Apache:
-define('SITE_URL', 'http://localhost/luckygenemdx');
+define('SITE_URL', 'http://localhost/LuckyGenesMDx');
 ```
 
 ---
@@ -226,7 +226,7 @@ define('SITE_URL', 'http://localhost/luckygenemdx');
 ### Step 1: Create Required Directories
 ```bash
 # Navigate to project root
-cd /path/to/luckygenemdx
+cd /path/to/LuckyGenesMDx
 
 # Create directories
 mkdir -p uploads/results
@@ -258,7 +258,7 @@ ls -la
 
 **Using Built-in PHP Server**:
 ```bash
-cd /path/to/luckygenemdx
+cd /path/to/LuckyGenesMDx
 php -S localhost:8000
 ```
 
@@ -271,8 +271,8 @@ php -S localhost:8000
 ```bash
 # Open in browser:
 http://localhost:8000              # Built-in server
-http://localhost:8888/luckygenemdx # MAMP
-http://localhost/luckygenemdx      # Apache
+http://localhost:8888/LuckyGenesMDx # MAMP
+http://localhost/LuckyGenesMDx      # Apache
 ```
 
 **You should see**:
@@ -404,7 +404,7 @@ php -S localhost:8000 -c php.ini
 php -r "echo password_hash('YourNewSecurePassword', PASSWORD_DEFAULT);"
 
 # Copy the output, then update in MySQL:
-mysql -u luckygenemdx -p luckygenemdx_db
+mysql -u LuckyGenesMDx -p LuckyGenesMDx_db
 
 UPDATE admins 
 SET password_hash = 'paste_your_hash_here' 
@@ -433,7 +433,7 @@ brew install mkcert
 mkcert -install
 
 # Generate certificate
-cd /path/to/luckygenemdx
+cd /path/to/LuckyGenesMDx
 mkcert localhost
 
 # Start PHP server with HTTPS (requires PHP 8.2+)
@@ -522,18 +522,18 @@ brew services start php
 brew services start mysql
 
 # Navigate to project
-cd ~/Desktop/luckygenemdx  # Adjust path as needed
+cd ~/Desktop/LuckyGenesMDx  # Adjust path as needed
 
 # Create database and user
 mysql -u root -p << EOF
-CREATE DATABASE luckygenemdx_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'luckygenemdx'@'localhost' IDENTIFIED BY 'secure_password_here';
-GRANT ALL PRIVILEGES ON luckygenemdx_db.* TO 'luckygenemdx'@'localhost';
+CREATE DATABASE LuckyGenesMDx_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'LuckyGenesMDx'@'localhost' IDENTIFIED BY 'secure_password_here';
+GRANT ALL PRIVILEGES ON LuckyGenesMDx_db.* TO 'LuckyGenesMDx'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
 # Import schema
-mysql -u luckygenemdx -p luckygenemdx_db < database_schema.sql
+mysql -u LuckyGenesMDx -p LuckyGenesMDx_db < database_schema.sql
 
 # Create directories
 mkdir -p uploads/results logs
@@ -554,7 +554,7 @@ php -S localhost:8000
 brew services start mysql
 
 # Navigate to project
-cd ~/Desktop/luckygenemdx
+cd ~/Desktop/LuckyGenesMDx
 
 # Start development server
 php -S localhost:8000
@@ -570,7 +570,7 @@ open http://localhost:8000
 ### 1. Use Terminal Aliases
 Add to `~/.zshrc` or `~/.bash_profile`:
 ```bash
-alias luckygene='cd ~/Desktop/luckygenemdx && php -S localhost:8000'
+alias luckygene='cd ~/Desktop/LuckyGenesMDx && php -S localhost:8000'
 alias mysqlstart='brew services start mysql'
 alias mysqlstop='brew services stop mysql'
 ```
@@ -608,7 +608,7 @@ touch logs/php-errors.log
 - [ ] Homebrew installed
 - [ ] PHP 7.4+ installed and verified
 - [ ] MySQL 8.0+ installed and running
-- [ ] Database `luckygenemdx_db` created
+- [ ] Database `LuckyGenesMDx_db` created
 - [ ] Database schema imported successfully
 - [ ] `includes/config.php` updated with DB credentials
 - [ ] Encryption key generated and configured
@@ -624,7 +624,7 @@ touch logs/php-errors.log
 
 ## 🎯 Ready to Code!
 
-Your Mac is now set up for LuckyGeneMDx development. You can:
+Your Mac is now set up for LuckyGenesMDx development. You can:
 
 ✅ Start/stop the dev server easily  
 ✅ Edit code in your favorite editor  

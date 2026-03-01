@@ -5,7 +5,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
 
 <aside class="admin-sidebar">
     <div class="admin-sidebar-header">
-        <h2> 🧬 <?php echo htmlspecialchars(SITE_NAME); ?></h2>
+        <h2><img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto; vertical-align: middle;"> <?php echo htmlspecialchars(SITE_NAME); ?></h2>
         <div class="admin-sidebar-user" style="text-transform: uppercase;">
             <?php echo htmlspecialchars($adminName); ?><br>
             <small><?php echo htmlspecialchars($adminRole); ?></small>

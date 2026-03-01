@@ -1,9 +1,9 @@
--- LuckyGeneMDx Test Data
+-- LuckyGenesMDx Test Data
 -- Version 1.0
 -- This file populates the database with realistic test data
 
--- LuckyGeneMDx Resolved Load Script
-USE luckygenemdx_db;
+-- LuckyGenesMDx Resolved Load Script
+USE LuckyGenesMDx_db;
 
 -- 1. CLEANUP: Temporarily disable checks and clear tables to reset IDs
 SET FOREIGN_KEY_CHECKS = 0;
@@ -115,10 +115,10 @@ INSERT INTO results (order_id, file_path, encrypted_filename, upload_date, uploa
 -- ADDITIONAL ADMINS (lab techs and support)
 -- ============================================
 INSERT INTO admins (username, password_hash, email, role, is_active, created_at, last_login, created_by) VALUES
-('lab_tech1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'labtech1@luckygenemdx.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-14 08:30:00', 1),
-('lab_tech2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'labtech2@luckygenemdx.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-13 14:15:00', 1),
-('support1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'support1@luckygenemdx.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 16:45:00', 1),
-('support2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'support2@luckygenemdx.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 11:20:00', 1);
+('lab_tech1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'labtech1@LuckyGenesMDx.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-14 08:30:00', 1),
+('lab_tech2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'labtech2@LuckyGenesMDx.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-13 14:15:00', 1),
+('support1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'support1@LuckyGenesMDx.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 16:45:00', 1),
+('support2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'support2@LuckyGenesMDx.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 11:20:00', 1);
 
 -- ============================================
 -- BLOG POSTS (10 posts)
@@ -183,12 +183,12 @@ INSERT INTO educational_resources (title, slug, content, excerpt, category, read
 -- LOGIN ATTEMPTS (sample security data)
 -- ============================================
 INSERT INTO login_attempts (email, ip_address, attempted_at, success) VALUES
-('admin@luckygenemdx.com', '192.168.1.100', '2024-02-14 08:00:00', TRUE),
-('labtech1@luckygenemdx.com', '192.168.1.105', '2024-02-14 08:30:00', TRUE),
+('admin@LuckyGenesMDx.com', '192.168.1.100', '2024-02-14 08:00:00', TRUE),
+('labtech1@LuckyGenesMDx.com', '192.168.1.105', '2024-02-14 08:30:00', TRUE),
 ('wrong@email.com', '203.0.113.45', '2024-02-14 09:15:00', FALSE),
 ('wrong@email.com', '203.0.113.45', '2024-02-14 09:16:00', FALSE),
 ('wrong@email.com', '203.0.113.45', '2024-02-14 09:17:00', FALSE),
-('support1@luckygenemdx.com', '192.168.1.110', '2024-02-14 10:00:00', TRUE),
+('support1@LuckyGenesMDx.com', '192.168.1.110', '2024-02-14 10:00:00', TRUE),
 ('john.doe@email.com', '198.51.100.25', '2024-02-14 14:20:00', TRUE),
 ('sarah.johnson@email.com', '198.51.100.30', '2024-02-14 16:45:00', TRUE);
 
@@ -198,18 +198,18 @@ INSERT INTO login_attempts (email, ip_address, attempted_at, success) VALUES
 INSERT INTO email_queue (recipient_email, subject, body, template, priority, status, attempts, created_at, sent_at) VALUES
 ('john.doe@email.com', 'Your Results Are Ready', 'Your carrier screening results are now available for viewing in your patient portal.', 'results_ready', 1, 'sent', 1, '2024-01-24 14:30:00', '2024-01-24 14:31:00'),
 ('sarah.johnson@email.com', 'Your Results Are Ready', 'Your carrier screening results are now available for viewing in your patient portal.', 'results_ready', 1, 'sent', 1, '2024-01-26 16:45:00', '2024-01-26 16:46:00'),
-('michael.chen@email.com', 'Your Kit Has Shipped', 'Your LuckyGeneMDx carrier screening kit has been shipped. Tracking: 1Z999AA10123456786', 'kit_shipped', 3, 'sent', 1, '2024-01-17 10:00:00', '2024-01-17 10:01:00'),
+('michael.chen@email.com', 'Your Kit Has Shipped', 'Your LuckyGenesMDx carrier screening kit has been shipped. Tracking: 1Z999AA10123456786', 'kit_shipped', 3, 'sent', 1, '2024-01-17 10:00:00', '2024-01-17 10:01:00'),
 ('emily.williams@email.com', 'Order Confirmation', 'Thank you for your order! Order number: LGM-2024-00004', 'order_confirmation', 2, 'sent', 1, '2024-02-01 14:50:00', '2024-02-01 14:51:00'),
 ('brian.hall@email.com', 'Payment Reminder', 'Your payment for order LGM-2024-00026 is pending.', 'payment_reminder', 1, 'pending', 0, '2024-02-14 15:00:00', NULL),
-('nicole.allen@email.com', 'Welcome to LuckyGeneMDx', 'Thank you for registering with LuckyGeneMDx!', 'welcome', 5, 'sent', 1, '2024-02-14 10:01:00', '2024-02-14 10:02:00');
+('nicole.allen@email.com', 'Welcome to LuckyGenesMDx', 'Thank you for registering with LuckyGenesMDx!', 'welcome', 5, 'sent', 1, '2024-02-14 10:01:00', '2024-02-14 10:02:00');
 
 -- ============================================
 -- Populate default settings used in settings.php
 -- ============================================
 INSERT IGNORE INTO site_settings (setting_key, value) VALUES
-('site_name', 'LuckyGeneMDx'),
-('site_url', 'https://luckygenemdx.com'),
-('support_email', 'support@luckygenemdx.com'),
+('site_name', 'LuckyGenesMDx'),
+('site_url', 'https://LuckyGenesMDx.com'),
+('support_email', 'support@LuckyGenesMDx.com'),
 ('support_phone', '1-800-GENE-TEST'),
 ('processing_time', '14'),
 ('kit_price', '99.00'),
@@ -219,8 +219,8 @@ INSERT IGNORE INTO site_settings (setting_key, value) VALUES
 ('smtp_security', 'tls'),
 ('smtp_username', ''),
 ('smtp_password', ''),
-('from_email', 'noreply@luckygenemdx.com'),
-('from_name', 'LuckyGeneMDx'),
+('from_email', 'noreply@LuckyGenesMDx.com'),
+('from_name', 'LuckyGenesMDx'),
 ('session_timeout', '30'),
 ('force_https', '1'),
 ('enable_2fa', '0');

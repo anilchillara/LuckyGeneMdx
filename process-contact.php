@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenesMDx', true);
 require_once 'includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -30,11 +30,11 @@ if (!empty($errors)) {
 
 // 3. Determine Routing (MDx Triage Logic)
 // In a clinical environment, Provider emails often go to a different team than Patients.
-$to_email = "support@luckygenemdx.com"; // Default
+$to_email = "support@LuckyGenesMDx.com"; // Default
 if ($role === 'provider') {
-    $to_email = "providers@luckygenemdx.com";
+    $to_email = "providers@LuckyGenesMDx.com";
 } elseif ($role === 'partner') {
-    $to_email = "partnerships@luckygenemdx.com";
+    $to_email = "partnerships@LuckyGenesMDx.com";
 }
 
 // 4. Construct the Professional Email Header
@@ -52,7 +52,7 @@ $email_body = "
 </head>
 <body>
     <div class='header'>
-        <h2>LuckyGeneMDx Incoming Inquiry</h2>
+        <h2>LuckyGenesMDx Incoming Inquiry</h2>
     </div>
     <div class='content'>
         <p><strong>From:</strong> $full_name ($email)</p>
@@ -62,7 +62,7 @@ $email_body = "
         <p><strong>Message:</strong><br>$message</p>
         
         <div class='meta'>
-            Sent via LuckyGeneMDx Contact Portal<br>
+            Sent via LuckyGenesMDx Contact Portal<br>
             Timestamp: " . date('Y-m-d H:i:s') . "
         </div>
     </div>
@@ -73,7 +73,7 @@ $email_body = "
 // Headers for HTML Email
 $headers = "MIME-Version: 1.0" . "\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-$headers .= "From: LuckyGeneMDx Portal <noreply@luckygenemdx.com>" . "\r\n";
+$headers .= "From: LuckyGenesMDx Portal <noreply@LuckyGenesMDx.com>" . "\r\n";
 $headers .= "Reply-To: $email" . "\r\n";
 
 // 5. Send Email (Note: mail() requires a configured SMTP server)
@@ -85,7 +85,7 @@ $success = mail($to_email, $email_subject, $email_body, $headers);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Inquiry Received | LuckyGeneMDx</title>
+    <title>Inquiry Received | LuckyGenesMDx</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
