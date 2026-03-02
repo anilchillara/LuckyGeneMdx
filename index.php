@@ -157,7 +157,7 @@ setSecurityHeaders();
         <!-- ══ STANDARDS ════════════════════════════════════ -->
         <section class="sec-standards">
             <div class="standards-inner">
-                <span class="sec-tag" style="color:var(--ice);">Our Standards</span>
+                <span class="sec-tag">Our Standards</span>
                 <h2>Aligned with Medical Genetics Standards</h2>
                 <p>Our comprehensive carrier screening follows guidelines from leading medical organizations, ensuring you receive accurate, reliable genetic information.</p>
                 <div class="standards-grid">
