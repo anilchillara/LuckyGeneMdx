@@ -1,6 +1,6 @@
 <?php
 define('LuckyGenesMDx', true);
-// require_once '../includes/config.php';
+require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
 session_start();
@@ -157,7 +157,6 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
     <title>Blog Management | LuckyGenesMDx Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/admin.css">
     <style>
         .admin-header {
             background: white;
@@ -219,11 +218,9 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
     </style>
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <?php include 'sidenav.php'; ?>
+    <?php include 'navbar.php'; ?>
 
-        <main class="admin-main">
+    <div class="admin-container">
             <div class="admin-header">
                 <h1 style="margin-bottom: 0.25rem;">Blog Management</h1>
                 <p style="color: var(--color-dark-gray); margin: 0;">Manage your articles and announcements</p>
@@ -312,7 +309,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
                     </tbody>
                 </table>
             </div>
-        </main>
+        </div>
     </div>
 
     <div id="postModal" class="modal">

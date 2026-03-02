@@ -257,31 +257,21 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Settings - LuckyGenesMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .tab-container { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-xs { padding: 2px 6px; font-size: 0.7rem; line-height: 1; }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-      <a href="index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" class="logo-sm"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">Orders</a>
-        <a href="Users.php" class="nav-link">Users</a>
-        <a href="interest-list.php" class="nav-link">Interest List</a>
-        <a href="upload-results.php" class="nav-link">Upload Results</a>
-        <a href="activity-log.php" class="nav-link">Activity Log</a>
-        <a href="settings.php" class="nav-link active">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm btn-icon">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
-    <div class="container">
-        <div class="header-section">
+    <div class="admin-container">
+        <div class="admin-header">
             <div>
                 <h1>System Settings</h1>
                 <p>Configure site behavior and security</p>
@@ -289,14 +279,14 @@ $initials  = strtoupper(substr($adminName,0,2));
         </div>
 
             <?php if (isset($success)): ?>
-                <div class="msg msg-success"><?php echo $success; ?></div>
+                <div class="glass-card-teal-left p-3 mb-3 text-teal"><?php echo $success; ?></div>
             <?php endif; ?>
             
             <?php if (isset($error)): ?>
-                <div class="msg msg-error"><?php echo $error; ?></div>
+                <div class="glass-card-error p-3 mb-3 text-error"><?php echo $error; ?></div>
             <?php endif; ?>
 
-            <div class="tabs">
+            <div class="tab-container">
                 <button class="tab-btn active" onclick="openTab(event, 'general')">General</button>
                 <button class="tab-btn" onclick="openTab(event, 'email')">Email</button>
                 <button class="tab-btn" onclick="openTab(event, 'security')">Security</button>
@@ -305,112 +295,112 @@ $initials  = strtoupper(substr($adminName,0,2));
             </div>
 
             <div id="general" class="tab-content active">
-                <div class="card mb-2">
-                    <h2>General Configuration</h2>
+                <div class="admin-card mb-4">
+                    <h2 class="mb-3">General Configuration</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_general">
                         <div class="form-group">
-                            <label class="form-label">Site Name</label>
-                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGenesMDx'); ?>">
+                            <label>Site Name</label>
+                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGenesMDx'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Site URL</label>
-                            <input type="url" name="settings[site_url]" value="<?php echo htmlspecialchars($settings['site_url'] ?? SITE_URL); ?>">
+                            <label>Site URL</label>
+                            <input type="url" name="settings[site_url]" value="<?php echo htmlspecialchars($settings['site_url'] ?? SITE_URL); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Base URL</label>
-                            <input type="url" name="settings[base_url]" value="<?php echo htmlspecialchars($settings['base_url'] ?? BASE_URL); ?>">
+                            <label>Base URL</label>
+                            <input type="url" name="settings[base_url]" value="<?php echo htmlspecialchars($settings['base_url'] ?? BASE_URL); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Kit Price (USD)</label>
-                            <input type="number" name="settings[kit_price]" step="0.01" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>">
+                            <label>Kit Price (USD)</label>
+                            <input type="number" name="settings[kit_price]" step="0.01" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label flex-center-gap-10 cursor-pointer font-weight-normal">
+                            <div class="form-checkbox">
                                 <input type="hidden" name="settings[show_cta]" value="0">
-                                <input type="checkbox" name="settings[show_cta]" value="1" <?php echo ($settings['show_cta'] ?? 1) ? 'checked' : ''; ?>>
-                                Show CTA Section on Pages
-                            </label>
+                                <input type="checkbox" id="show_cta" name="settings[show_cta]" value="1" <?php echo ($settings['show_cta'] ?? 1) ? 'checked' : ''; ?>>
+                                <label for="show_cta">Show CTA Section on Pages</label>
+                            </div>
                         </div>
-                        <button type="submit" class="btn">Save Changes</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
                 </div>
 
-                <div class="card">
-                    <h2>Maintenance Mode</h2>
+                <div class="admin-card">
+                    <h2 class="mb-3">Maintenance Mode</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_maintenance">
-                        <label class="flex-center-gap-0-75 cursor-pointer">
-                            <input type="checkbox" name="maintenance_mode" <?php echo ($settings['maintenance_mode'] ?? 0) ? 'checked' : ''; ?>>
-                            <span>Enable Maintenance Mode (Admin only access)</span>
-                        </label>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="maintenance_mode" name="maintenance_mode" <?php echo ($settings['maintenance_mode'] ?? 0) ? 'checked' : ''; ?>>
+                            <label for="maintenance_mode">Enable Maintenance Mode (Admin only access)</label>
+                        </div>
                         <button type="submit" class="btn btn-outline mt-1-5">Update Status</button>
                     </form>
                 </div>
             </div>
 
             <div id="email" class="tab-content">
-                <div class="card">
-                    <h2>Email Configuration</h2>
+                <div class="admin-card">
+                    <h2 class="mb-3">Email Configuration</h2>
                     <form method="POST">
                         <input type="hidden" name="action" value="update_email">
                         
                         <div class="form-group">
-                            <label class="form-label">From Email</label>
-                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@LuckyGenesMDx.com">
+                            <label>From Email</label>
+                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@LuckyGenesMDx.com" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">From Name</label>
-                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGenesMDx'); ?>">
+                            <label>From Name</label>
+                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGenesMDx'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Support Email</label>
-                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@LuckyGenesMDx.com'); ?>">
+                            <label>Support Email</label>
+                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@LuckyGenesMDx.com'); ?>" class="form-control">
                         </div>
                         
-                        <hr class="hr">
-                        <h3>SMTP Settings</h3>
+                        <hr style="border: 0; border-top: 1px solid var(--color-border); margin: 2rem 0;">
+                        <h3 class="mb-3">SMTP Settings</h3>
                         
                         <div class="form-group">
-                            <label class="form-label">SMTP Host</label>
-                            <input type="text" name="email_settings[smtp_host]" value="<?php echo htmlspecialchars($settings['smtp_host'] ?? 'smtp.gmail.com'); ?>">
+                            <label>SMTP Host</label>
+                            <input type="text" name="email_settings[smtp_host]" value="<?php echo htmlspecialchars($settings['smtp_host'] ?? 'smtp.gmail.com'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">SMTP Port</label>
-                            <input type="number" name="email_settings[smtp_port]" value="<?php echo htmlspecialchars($settings['smtp_port'] ?? '587'); ?>">
+                            <label>SMTP Port</label>
+                            <input type="number" name="email_settings[smtp_port]" value="<?php echo htmlspecialchars($settings['smtp_port'] ?? '587'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">SMTP Security</label>
-                            <select name="email_settings[smtp_security]">
+                            <label>SMTP Security</label>
+                            <select name="email_settings[smtp_security]" class="form-select">
                                 <option value="tls" <?php echo ($settings['smtp_security'] ?? 'tls') === 'tls' ? 'selected' : ''; ?>>TLS</option>
                                 <option value="ssl" <?php echo ($settings['smtp_security'] ?? '') === 'ssl' ? 'selected' : ''; ?>>SSL</option>
                                 <option value="" <?php echo ($settings['smtp_security'] ?? '') === '' ? 'selected' : ''; ?>>None</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">SMTP Username</label>
-                            <input type="text" name="email_settings[smtp_username]" value="<?php echo htmlspecialchars($settings['smtp_username'] ?? ''); ?>">
+                            <label>SMTP Username</label>
+                            <input type="text" name="email_settings[smtp_username]" value="<?php echo htmlspecialchars($settings['smtp_username'] ?? ''); ?>" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">SMTP Password</label>
-                            <input type="password" name="email_settings[smtp_password]" value="<?php echo htmlspecialchars($settings['smtp_password'] ?? ''); ?>">
+                            <label>SMTP Password</label>
+                            <input type="password" name="email_settings[smtp_password]" value="<?php echo htmlspecialchars($settings['smtp_password'] ?? ''); ?>" class="form-control">
                         </div>
                         
-                        <button type="submit" class="btn">Save Email Settings</button>
+                        <button type="submit" class="btn btn-primary">Save Email Settings</button>
                     </form>
                     
-                    <hr class="hr">
+                    <hr style="border: 0; border-top: 1px solid var(--color-border); margin: 2rem 0;">
                     
-                    <h3>Test Configuration</h3>
-                    <p class="fs-0-9 text-secondary mb-1">
+                    <h3 class="mb-3">Test Configuration</h3>
+                    <p class="font-sm text-dark-gray mb-3">
                         Send a test email to verify your SMTP settings. <strong>Please save any changes above before testing.</strong>
                     </p>
                     
                     <form method="POST" class="test-email-form">
                         <input type="hidden" name="action" value="test_email">
                         <div class="form-group flex-1 mb-0">
-                            <label class="form-label">Recipient Email</label>
-                            <input type="email" name="test_recipient" value="<?php echo htmlspecialchars($settings['support_email'] ?? ''); ?>" required placeholder="email@example.com">
+                            <label>Recipient Email</label>
+                            <input type="email" name="test_recipient" value="<?php echo htmlspecialchars($settings['support_email'] ?? ''); ?>" required placeholder="email@example.com" class="form-control mb-3">
                         </div>
                         <button type="submit" class="btn btn-outline">Send Test Email</button>
                     </form>
@@ -418,12 +408,12 @@ $initials  = strtoupper(substr($adminName,0,2));
             </div>
 
             <div id="navbar" class="tab-content">
-                <div class="card mb-2">
-                    <h2>Navigation Menu</h2>
+                <div class="admin-card mb-4">
+                    <h2 class="mb-3">Navigation Menu</h2>
                     <form method="POST">
                         <input type="hidden" name="save_navbar" value="1">
-                        <div class="overflow-x-auto mb-1">
-                            <table class="info-table">
+                        <div class="table-responsive mb-3">
+                            <table class="admin-table">
                                 <thead>
                                     <tr>
                                         <th width="100">Order</th>
@@ -438,11 +428,11 @@ $initials  = strtoupper(substr($adminName,0,2));
                                     <?php foreach ($navItems as $item): ?>
                                     <tr>
                                         <td>
-                                            <div class="flex-center">
-                                                <input type="number" name="items[<?php echo $item['id']; ?>][display_order]" value="<?php echo $item['display_order']; ?>" class="form-control-sm w-50 mr-5">
-                                                <div class="flex-column">
-                                                    <button type="submit" name="move_nav_item" value="1" onclick="document.getElementById('move_id_input').value='<?php echo $item['id']; ?>'; document.getElementById('move_dir_input').value='up';" class="btn-xs" title="Move Up">▲</button>
-                                                    <button type="submit" name="move_nav_item" value="1" onclick="document.getElementById('move_id_input').value='<?php echo $item['id']; ?>'; document.getElementById('move_dir_input').value='down';" class="btn-xs" title="Move Down">▼</button>
+                                            <div style="display:flex; align-items:center; gap:5px;">
+                                                <input type="number" name="items[<?php echo $item['id']; ?>][display_order]" value="<?php echo $item['display_order']; ?>" class="form-control" style="width:60px; padding:4px;">
+                                                <div style="display:flex; flex-direction:column;">
+                                                    <button type="submit" name="move_nav_item" value="1" onclick="document.getElementById('move_id_input').value='<?php echo $item['id']; ?>'; document.getElementById('move_dir_input').value='up';" class="btn btn-outline btn-xs" title="Move Up">▲</button>
+                                                    <button type="submit" name="move_nav_item" value="1" onclick="document.getElementById('move_id_input').value='<?php echo $item['id']; ?>'; document.getElementById('move_dir_input').value='down';" class="btn btn-outline btn-xs" title="Move Down">▼</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -453,13 +443,13 @@ $initials  = strtoupper(substr($adminName,0,2));
                                                 <span class="badge-green">Main</span>
                                             <?php endif; ?>
                                         </td>
-                                        <td><input type="text" name="items[<?php echo $item['id']; ?>][label]" value="<?php echo htmlspecialchars($item['label']); ?>" class="form-control-sm"></td>
-                                        <td><input type="text" name="items[<?php echo $item['id']; ?>][url]" value="<?php echo htmlspecialchars($item['url']); ?>" class="form-control-sm"></td>
+                                        <td><input type="text" name="items[<?php echo $item['id']; ?>][label]" value="<?php echo htmlspecialchars($item['label']); ?>" class="form-control" style="padding:6px;"></td>
+                                        <td><input type="text" name="items[<?php echo $item['id']; ?>][url]" value="<?php echo htmlspecialchars($item['url']); ?>" class="form-control" style="padding:6px;"></td>
                                         <td class="text-center">
                                             <input type="checkbox" name="items[<?php echo $item['id']; ?>][is_active]" value="1" <?php echo $item['is_active'] ? 'checked' : ''; ?>>
                                         </td>
                                         <td>
-                                            <button type="submit" name="delete_nav_item" value="1" onclick="document.getElementById('delete_id_input').value='<?php echo $item['id']; ?>'; return confirm('Are you sure?');" class="btn btn-outline btn-sm btn-danger">Delete</button>
+                                            <button type="submit" name="delete_nav_item" value="1" onclick="document.getElementById('delete_id_input').value='<?php echo $item['id']; ?>'; return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -469,27 +459,27 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <input type="hidden" name="delete_id" id="delete_id_input" value="">
                         <input type="hidden" name="move_id" id="move_id_input" value="">
                         <input type="hidden" name="move_dir" id="move_dir_input" value="">
-                        <button type="submit" class="btn">Save Changes</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
                     
-                    <hr class="hr">
+                    <hr style="border: 0; border-top: 1px solid var(--color-border); margin: 2rem 0;">
                     
-                    <h3>Add New Item</h3>
+                    <h3 class="mb-3">Add New Item</h3>
                     <form method="POST" class="nav-item-form">
                         <input type="hidden" name="add_nav_item" value="1">
-                        <div class="form-group mb-0"><label class="font-sm">Order</label><input type="number" name="new_order" class="form-control-sm" value="<?php echo count($navItems) + 1; ?>" required></div>
-                        <div class="form-group mb-0"><label class="font-sm">Label</label><input type="text" name="new_label" class="form-control-sm" placeholder="e.g. Blog" required></div>
-                        <div class="form-group mb-0"><label class="font-sm">URL</label><input type="text" name="new_url" class="form-control-sm" placeholder="e.g. blog.php" required></div>
-                        <button type="submit" class="btn btn-primary btn-sm h-32">Add Item</button>
+                        <div class="form-group mb-2"><label class="font-sm">Order</label><input type="number" name="new_order" class="form-control" value="<?php echo count($navItems) + 1; ?>" required></div>
+                        <div class="form-group mb-2"><label class="font-sm">Label</label><input type="text" name="new_label" class="form-control" placeholder="e.g. Blog" required></div>
+                        <div class="form-group mb-3"><label class="font-sm">URL</label><input type="text" name="new_url" class="form-control" placeholder="e.g. blog.php" required></div>
+                        <button type="submit" class="btn btn-primary btn-sm">Add Item</button>
                     </form>
                 </div>
             </div>
 
             <div id="system" class="tab-content">
-                <div class="card">
-                    <h2>Server Information</h2>
+                <div class="admin-card">
+                    <h2 class="mb-3">Server Information</h2>
                     <div class="table-responsive">
-                        <table class="info-table">
+                        <table class="admin-table">
                             <?php foreach ($system_info as $key => $val): ?>
                                 <tr>
                                     <td><strong><?php echo ucwords(str_replace('_', ' ', $key)); ?></strong></td>

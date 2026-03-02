@@ -54,48 +54,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Password Reset - LuckyGenesMDx</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
-<body class="auth-body">
-    <div class="auth-bg-video">
-        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-    </div>
+<body class="admin-login-body">
 
-    <div class="auth-card">
-        <a href="login.php" class="back-link">← Back to Login</a>
+    <div class="admin-login-card">
+        <div class="text-center mb-4">
+            <a href="login.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Login</a>
+        </div>
 
-        <div class="auth-header">
-            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
-            <h1>Admin Recovery</h1>
-            <p>Reset your administrative access</p>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2">Admin Recovery</h1>
+            <p class="admin-login-title">Reset your administrative access</p>
         </div>
             
         <?php if ($error): ?>
-            <div class="msg msg-error" role="alert">⚠ <?php echo htmlspecialchars($error); ?></div>
+            <div class="glass-card-error p-3 mb-3 text-error" role="alert">⚠ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <?php if ($success): ?>
-            <div class="msg msg-success" role="alert">✓ <?php echo htmlspecialchars($success); ?></div>
+            <div class="glass-card-teal-left p-3 mb-3 text-teal" role="alert">✓ <?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
         
         <form method="POST" action="">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" required class="form-control">
             </div>
             <div class="form-group">
                 <label for="secret_key">Recovery Key</label>
-                <input type="password" id="secret_key" name="secret_key" required placeholder="Enter system recovery key">
+                <input type="password" id="secret_key" name="secret_key" required placeholder="Enter system recovery key" class="form-control">
             </div>
             <div class="form-group">
                 <label for="new_password">New Password</label>
-                <input type="password" id="new_password" name="new_password" required minlength="8">
+                <input type="password" id="new_password" name="new_password" required minlength="8" class="form-control">
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
+                <input type="password" id="confirm_password" name="confirm_password" required class="form-control">
             </div>
             
-            <button type="submit" class="btn btn-full">Reset Password</button>
+            <button type="submit" class="btn btn-primary w-100">Reset Password</button>
         </form>
     </div>
 </body>

@@ -152,37 +152,38 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title>Upload Results - LuckyGenesMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
     <style>
         /* Page specific styles */
         .file-upload-area {
-            border: 2px dashed var(--glass-border);
-            border-radius: var(--radius);
+            border: 2px dashed var(--color-border);
+            border-radius: 12px;
             padding: 3rem 2rem;
             text-align: center;
             transition: all 0.2s;
             cursor: pointer;
-            background: var(--glass-hover);
+            background: var(--color-off-white);
         }
         .file-upload-area:hover {
-            border-color: var(--ms-blue);
-            background: var(--glass-panel);
+            border-color: var(--color-medical-teal);
+            background: rgba(0, 229, 255, 0.05);
         }
         .file-upload-area.dragover {
-            border-color: var(--ms-blue);
-            background: var(--ms-blue-light);
+            border-color: var(--color-medical-teal);
+            background: rgba(0, 229, 255, 0.1);
         }
         .file-info {
             margin-top: 1rem;
             padding: 1rem;
-            background: var(--glass-hover);
-            border-radius: var(--radius);
+            background: var(--color-off-white);
+            border-radius: 12px;
             display: none;
         }
         .order-info {
             padding: 1.5rem;
-            background: var(--glass-hover);
-            border-radius: var(--radius);
+            background: var(--color-off-white);
+            border-radius: 12px;
             margin-bottom: 2rem;
         }
         
@@ -196,28 +197,10 @@ $initials  = strtoupper(substr($adminName,0,2));
     </style>
 </head>
 <body>
-    <nav class="navbar">
-      <a href="index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">Orders</a>
-        <a href="Users.php" class="nav-link">Users</a>
-        <a href="interest-list.php" class="nav-link">Interest List</a>
-        <a href="upload-results.php" class="nav-link active">Upload Results</a>
-        <a href="activity-log.php" class="nav-link">Activity Log</a>
-        <a href="settings.php" class="nav-link">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
-    <div class="container">
-        <div class="header-section">
+    <div class="admin-container">
+        <div class="admin-header">
             <div>
                 <h1>Upload Test Results</h1>
                 <p>Upload PDF result files for customer orders. Files are encrypted and stored securely.</p>
@@ -225,24 +208,24 @@ $initials  = strtoupper(substr($adminName,0,2));
         </div>
             
             <?php if ($success): ?>
-                <div class="msg msg-success">
+                <div class="glass-card-teal-left p-3 mb-3 text-teal">
                     <strong>✅ Success!</strong> <?php echo htmlspecialchars($success); ?>
                     <div style="margin-top: 1rem;">
-                        <a href="upload-results.php" class="btn">Upload Another</a>
+                        <a href="upload-results.php" class="btn btn-primary">Upload Another</a>
                         <a href="orders.php" class="btn btn-outline" style="margin-left: 1rem;">View Orders</a>
                     </div>
                 </div>
             <?php endif; ?>
             
             <?php if ($error): ?>
-                <div class="msg msg-error">
+                <div class="glass-card-error p-3 mb-3 text-error">
                     <strong>❌ Error:</strong> <?php echo htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
             
             <!-- Search for Order -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h2 style="margin-bottom: 1.5rem;">Find Order</h2>
+            <div class="admin-card" style="margin-bottom: 2rem;">
+                <h2 class="mb-3">Find Order</h2>
                 
                 <form method="GET" action="">
                     <div class="search-form" style="display: flex; gap: 1rem; align-items: end;">
@@ -255,9 +238,10 @@ $initials  = strtoupper(substr($adminName,0,2));
                                 placeholder="LGM240214ABC123"
                                 value="<?php echo htmlspecialchars($searchQuery); ?>"
                                 required
+                                class="form-control"
                             >
                         </div>
-                        <button type="submit" class="btn">
+                        <button type="submit" class="btn btn-primary">
                             🔍 Search
                         </button>
                     </div>
@@ -267,22 +251,22 @@ $initials  = strtoupper(substr($adminName,0,2));
             <?php if ($order): ?>
                 <!-- Order Information -->
                 <div class="order-info">
-                    <h3 style="margin-bottom: 1rem;">Order Information</h3>
+                    <h3 class="mb-3">Order Information</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Order Number</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Order Number</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['order_number']); ?></div>
                         </div>
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Customer</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Customer</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['full_name']); ?></div>
                         </div>
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Email</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Email</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['email']); ?></div>
                         </div>
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Current Status</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Current Status</div>
                             <div style="font-weight: 600;"><?php echo htmlspecialchars($order['status_name']); ?></div>
                         </div>
                     </div>
@@ -296,7 +280,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 
                 if ($existingResult):
                 ?>
-                    <div class="msg" style="background:#fff3cd; color:#856404; border:1px solid #ffeaa7;">
+                    <div class="glass-card-error p-3 mb-3" style="background:rgba(251, 188, 5, 0.1); border-color:var(--color-warning-amber); color:var(--color-navy);">
                         <strong>⚠️ Notice:</strong> Results have already been uploaded for this order on 
                         <?php echo date('F j, Y', strtotime($existingResult['upload_date'])); ?>.
                         Uploading a new file will replace the existing one.
@@ -304,8 +288,8 @@ $initials  = strtoupper(substr($adminName,0,2));
                 <?php endif; ?>
                 
                 <!-- Upload Form -->
-                <div class="card" style="margin-bottom: 2rem;">
-                    <h2 style="margin-bottom: 1.5rem;">Upload PDF Results</h2>
+                <div class="admin-card" style="margin-bottom: 2rem;">
+                    <h2 class="mb-3">Upload PDF Results</h2>
                     
                     <form method="POST" action="" enctype="multipart/form-data" id="uploadForm">
                         <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
@@ -316,7 +300,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">
                                 Drop PDF file here or click to browse
                             </div>
-                            <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                            <div style="font-size: 0.9rem; color: var(--color-text-gray);">
                                 Maximum file size: 5MB | PDF files only
                             </div>
                             <input 
@@ -335,7 +319,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         </div>
                         
                         <div class="form-actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
-                            <button type="submit" class="btn" id="uploadButton" disabled>
+                            <button type="submit" class="btn btn-primary" id="uploadButton" disabled>
                                 📤 Upload Results
                             </button>
                             <a href="upload-results.php" class="btn btn-outline">
@@ -347,8 +331,8 @@ $initials  = strtoupper(substr($adminName,0,2));
             <?php endif; ?>
             
             <!-- Instructions -->
-            <div class="card" style="background: var(--glass-hover);">
-                <h3 style="margin-bottom: 1rem;">📋 Upload Instructions</h3>
+            <div class="admin-card" style="background: var(--color-off-white);">
+                <h3 class="mb-3">📋 Upload Instructions</h3>
                 <ol style="line-height: 1.8;">
                     <li>Search for the order using the order number</li>
                     <li>Verify the customer information is correct</li>
@@ -363,7 +347,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     </li>
                 </ol>
                 
-                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--glass-panel); border-radius: var(--radius); border-left: 4px solid var(--ms-blue);">
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--color-white); border-radius: 12px; border-left: 4px solid var(--color-medical-teal);">
                     <strong>Security Note:</strong> All uploaded files are encrypted and stored outside the web root for maximum security.
                 </div>
             </div>

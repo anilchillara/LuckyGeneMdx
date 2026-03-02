@@ -121,7 +121,8 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title>Order #<?php echo htmlspecialchars($order['order_number']); ?> - LuckyGenesMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
     <style>
         .order-header-flex { display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem; }
         @media (max-width: 768px) {
@@ -131,51 +132,33 @@ $initials  = strtoupper(substr($adminName,0,2));
     </style>
 </head>
 <body>
-    <nav class="navbar">
-      <a href="index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link active">Orders</a>
-        <a href="Users.php" class="nav-link">Users</a>
-        <a href="interest-list.php" class="nav-link">Interest List</a>
-        <a href="upload-results.php" class="nav-link">Upload Results</a>
-        <a href="activity-log.php" class="nav-link">Activity Log</a>
-        <a href="settings.php" class="nav-link">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
-    <div class="container">
-        <div class="header-section">
-            <div style="font-size: 0.9rem;">
-                <a href="index.php">Dashboard</a>
+    <div class="admin-container">
+        <div class="admin-header">
+            <div style="font-size: 0.9rem; color: var(--color-text-gray);">
+                <a href="index.php" class="text-dark-gray">Dashboard</a>
                 <span>/</span>
-                <a href="orders.php">Orders</a>
+                <a href="orders.php" class="text-dark-gray">Orders</a>
                 <span>/</span>
                 <span><?php echo htmlspecialchars($order['order_number']); ?></span>
             </div>
         </div>
             
             <?php if ($success): ?>
-                <div class="msg msg-success"><?php echo htmlspecialchars($success); ?></div>
+                <div class="glass-card-teal-left p-3 mb-3 text-teal"><?php echo htmlspecialchars($success); ?></div>
             <?php endif; ?>
             
             <?php if ($error): ?>
-                <div class="msg msg-error"><?php echo htmlspecialchars($error); ?></div>
+                <div class="glass-card-error p-3 mb-3 text-error"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
             
             <!-- Order Header -->
-            <div class="card" style="margin-bottom: 2rem;">
+            <div class="admin-card" style="margin-bottom: 2rem;">
                 <div class="order-header-flex">
                     <div>
                         <h1 style="margin-bottom: 0.5rem;">Order #<?php echo htmlspecialchars($order['order_number']); ?></h1>
-                        <p style="color: var(--text-secondary); margin: 0;">
+                        <p style="color: var(--color-text-gray); margin: 0;">
                             Placed on <?php echo date('F j, Y \a\t g:i A', strtotime($order['order_date'])); ?>
                         </p>
                     </div>
@@ -192,7 +175,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     </div>
                 </div>
                 
-                <div class="grid">
+                <div class="admin-grid">
                     <div class="col-span-4">
                         <div class="stat-lbl">Order Total</div>
                         <div style="font-size:1.2rem; font-weight:600;">$<?php echo number_format($order['price'], 2); ?></div>
@@ -204,7 +187,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     <?php if ($order['tracking_number']): ?>
                     <div class="col-span-4">
                         <div class="stat-lbl">Tracking Number</div>
-                        <div style="font-family: monospace; font-size: 1.1rem; font-weight:600;">
+                        <div style="font-family: monospace; font-size: 1.1rem; font-weight:600; color: var(--color-navy);">
                             <?php echo htmlspecialchars($order['tracking_number']); ?>
                         </div>
                     </div>
@@ -213,18 +196,18 @@ $initials  = strtoupper(substr($adminName,0,2));
             </div>
             
             <!-- Customer Information -->
-            <div class="card" style="margin-bottom: 2rem;">
+            <div class="admin-card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Customer Information</h2>
                 
-                <div class="grid">
+                <div class="admin-grid">
                     <div class="col-span-6">
                         <div class="stat-lbl">Full Name</div>
                         <div style="font-size:1.2rem; font-weight:600;"><?php echo htmlspecialchars($order['full_name']); ?></div>
                     </div>
                     <div class="col-span-6">
                         <div class="stat-lbl">Email Address</div>
-                        <div style="font-size: 1.1rem; word-break: break-all;">
-                            <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>">
+                        <div style="font-size: 1.1rem; word-break: break-all; color: var(--color-medical-teal);">
+                            <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>" class="text-teal">
                                 <?php echo htmlspecialchars($order['email']); ?>
                             </a>
                         </div>
@@ -232,7 +215,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 </div>
                 
                 <h3 style="margin: 2rem 0 1rem;">Shipping Address</h3>
-                <div style="background:var(--glass-hover); padding:1rem; border-radius:var(--radius);">
+                <div style="background:var(--color-off-white); padding:1rem; border-radius:12px; border: 1px solid var(--color-border);">
                     <p style="margin:0; line-height:1.7;">
                         <?php echo htmlspecialchars($order['shipping_address_line1']); ?><br>
                         <?php if ($order['shipping_address_line2']): ?>
@@ -246,18 +229,18 @@ $initials  = strtoupper(substr($adminName,0,2));
             </div>
             
             <!-- Update Order Status -->
-            <div class="card" style="margin-bottom: 2rem;">
+            <div class="admin-card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Update Order</h2>
                 
                 <form method="POST" action="">
                     <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                     <input type="hidden" name="update_status" value="1">
                     
-                    <div class="grid">
+                    <div class="admin-grid">
                         <div class="col-span-6">
                             <div class="form-group">
                                 <label for="status_id">Order Status</label>
-                                <select id="status_id" name="status_id" required>
+                                <select id="status_id" name="status_id" required class="form-select">
                                     <?php foreach($statuses as $status): ?>
                                         <option value="<?php echo $status['status_id']; ?>" 
                                                 <?php echo $order['status_id'] == $status['status_id'] ? 'selected' : ''; ?>>
@@ -277,6 +260,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                                     name="tracking_number" 
                                     value="<?php echo htmlspecialchars($order['tracking_number'] ?? ''); ?>"
                                     placeholder="e.g., 1Z999AA10123456784"
+                                    class="form-control"
                                 >
                             </div>
                         </div>
@@ -289,36 +273,37 @@ $initials  = strtoupper(substr($adminName,0,2));
                             name="notes" 
                             rows="4"
                             placeholder="Add any internal notes about this order..."
+                            class="form-control"
                         ><?php echo htmlspecialchars($order['notes'] ?? ''); ?></textarea>
                     </div>
                     
-                    <button type="submit" class="btn">
+                    <button type="submit" class="btn btn-primary">
                         💾 Update Order
                     </button>
                 </form>
             </div>
             
             <!-- Results Section -->
-            <div class="card" style="margin-bottom: 2rem;">
+            <div class="admin-card" style="margin-bottom: 2rem;">
                 <h2 style="margin-bottom: 1.5rem;">Test Results</h2>
                 
                 <?php if ($result): ?>
-                    <div style="padding: 1.5rem; background: var(--glass-hover); border-radius: var(--radius); margin-bottom: 1rem;">
+                    <div style="padding: 1.5rem; background: var(--color-off-white); border-radius: 12px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
                         <div class="result-flex" style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <div style="font-weight: 600; margin-bottom: 0.5rem;">
                                     ✅ Results Available
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                                <div style="font-size: 0.9rem; color: var(--color-text-gray);">
                                     Uploaded on <?php echo date('F j, Y', strtotime($result['upload_date'])); ?>
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                                <div style="font-size: 0.9rem; color: var(--color-text-gray);">
                                     Accessed <?php echo $result['accessed_count']; ?> time(s)
                                 </div>
                             </div>
                             <div>
                                 <a href="../api/download-result.php?order_id=<?php echo $orderId; ?>" 
-                                   class="btn" 
+                                   class="btn btn-primary" 
                                    target="_blank">
                                     📄 View PDF
                                 </a>
@@ -326,12 +311,12 @@ $initials  = strtoupper(substr($adminName,0,2));
                         </div>
                     </div>
                 <?php else: ?>
-                    <div style="padding: 2rem; background: var(--glass-hover); border-radius: var(--radius); text-align: center;">
+                    <div style="padding: 2rem; background: var(--color-off-white); border-radius: 12px; border: 1px solid var(--color-border); text-align: center;">
                         <div style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;">📄</div>
-                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        <p style="color: var(--color-text-gray); margin-bottom: 1rem;">
                             No results uploaded yet
                         </p>
-                        <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn">
+                        <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-primary">
                             📤 Upload Results
                         </a>
                     </div>
@@ -343,7 +328,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                 <a href="orders.php" class="btn btn-outline">
                     ← Back to Orders
                 </a>
-                <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn">
+                <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-primary">
                     📤 Upload Results
                 </a>
                 <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>" class="btn btn-outline">

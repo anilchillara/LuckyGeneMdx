@@ -95,25 +95,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
-<body class="auth-body">
+<body class="admin-login-body">
 
-    <div class="auth-bg-video">
-        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-    </div>
+    <div class="admin-login-card">
+        <div class="text-center mb-4">
+            <a href="../index.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Main Site</a>
+        </div>
 
-    <div class="auth-card">
-        <a href="../index.php" class="back-link">← Back to Main Site</a>
-
-        <div class="auth-header">
-            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
-            <h1><?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span></h1>
-            <p>Secure System Access</p>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2"><?php echo htmlspecialchars(SITE_NAME); ?> <span class="pill-badge-teal">Admin</span></h1>
+            <p class="admin-login-title">Secure System Access</p>
         </div>
             
         <?php if ($error): ?>
-            <div class="msg msg-error" role="alert">
+            <div class="glass-card-error p-3 mb-3 text-error" role="alert">
                 ⚠ <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
@@ -129,45 +127,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     autofocus
                     autocomplete="username"
                     value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
+                    class="form-control"
                 >
             </div>
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <div class="relative">
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        required
-                        autocomplete="current-password"
-                        class="pr-40"
-                    >
-                    <button type="button" onclick="togglePassword('password')" class="password-toggle" title="Show Password">👁️</button>
-                </div>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    autocomplete="current-password"
+                    class="form-control"
+                >
             </div>
             
             <div class="form-group mb-1">
-                <input type="checkbox" name="remember" id="remember" class="form-checkbox">
-                <label for="remember" class="form-label-inline">Remember me</label>
+                <div class="form-checkbox">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-full">
+            <button type="submit" class="btn btn-primary w-100">
                 Sign In
             </button>
-            <a href="password-reset.php" class="auth-link">Forgot Password?</a>
+            <div class="mt-3 text-center">
+                <a href="password-reset.php" class="text-medical-teal font-sm">Forgot Password?</a>
+            </div>
         </form>
         
-        <div class="auth-footer">
-            <p class="fs-0-85 text-secondary">Authorized personnel only. All activities are logged.</p>
+        <div class="mt-4 text-center">
+            <p class="font-xs text-dark-gray">Authorized personnel only. All activities are logged.</p>
         </div>
     </div>
 
-    <script>
-        function togglePassword(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-    </script>
 </body>
 </html>

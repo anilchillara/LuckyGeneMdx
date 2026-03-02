@@ -103,7 +103,8 @@ $initials  = strtoupper(substr($adminName,0,2));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management - LuckyGenesMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
     <style>
         .filters-form {
             display: flex;
@@ -116,33 +117,22 @@ $initials  = strtoupper(substr($adminName,0,2));
             .filters-form .btn { width: 100%; margin-top: 0.5rem; }
             .filters-form .form-group { min-width: 100%; margin-bottom: 0.5rem !important; }
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border-top: 1px solid var(--color-border);
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <a href="index.php" class="brand">
-    <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="admin-badge">Admin</span>
-  </a>
-  <div class="nav-items">
-    <a href="index.php" class="nav-link">Dashboard</a>
-    <a href="orders.php" class="nav-link active">Orders</a>
-    <a href="Users.php" class="nav-link">Users</a>
-    <a href="interest-list.php" class="nav-link">Interest List</a>
-    <a href="upload-results.php" class="nav-link">Upload Results</a>
-    <a href="activity-log.php" class="nav-link">Activity Log</a>
-    <a href="settings.php" class="nav-link">Settings</a>
-  </div>
-  <div class="user-menu">
-    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-    <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-    <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-  </div>
-</nav>
+<?php include 'navbar.php'; ?>
 
-<div class="container">
+<div class="admin-container">
 
-    <div class="header-section">
+    <div class="admin-header">
         <div>
             <h1>Order Management</h1>
             <p><?php echo number_format($totalOrders); ?> total orders</p>
@@ -150,7 +140,7 @@ $initials  = strtoupper(substr($adminName,0,2));
     </div>
 
     <!-- Filters -->
-    <div class="card" style="margin-bottom: 2rem;">
+    <div class="admin-card" style="margin-bottom: 2rem;">
         <form method="GET" action="" class="filters-form">
             <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                 <label>Search</label>
@@ -159,12 +149,13 @@ $initials  = strtoupper(substr($adminName,0,2));
                         name="search" 
                         placeholder="Order #, Name, Email..."
                         value="<?php echo htmlspecialchars($searchQuery); ?>"
+                        class="form-control"
                     >
             </div>
             
             <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                 <label>Status</label>
-                <select name="status">
+                <select name="status" class="form-select">
                         <option value="">All Statuses</option>
                         <?php foreach($statuses as $status): ?>
                             <option value="<?php echo $status['status_id']; ?>" <?php echo $statusFilter == $status['status_id'] ? 'selected' : ''; ?>>
@@ -174,7 +165,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     </select>
             </div>
             
-            <button type="submit" class="btn">🔍 Filter</button>
+            <button type="submit" class="btn btn-primary">🔍 Filter</button>
             
             <?php if ($searchQuery || $statusFilter): ?>
                 <a href="orders.php" class="btn btn-outline">✕ Clear</a>
@@ -183,12 +174,12 @@ $initials  = strtoupper(substr($adminName,0,2));
     </div>
 
     <!-- Orders Table -->
-    <div class="card" style="padding:0; overflow:hidden;">
+    <div class="admin-card" style="padding:0; overflow:hidden;">
                 <?php if (empty($orders)): ?>
             <div style="text-align:center; padding:4rem 2rem;">
                 <div style="font-size:4rem; margin-bottom:1rem; opacity:0.3;">📦</div>
                         <h3>No orders found</h3>
-                <p style="color:var(--text-secondary);">
+                <p style="color:var(--color-text-gray);">
                             <?php if ($searchQuery || $statusFilter): ?>
                                 Try adjusting your filters or search terms.
                             <?php else: ?>
@@ -198,7 +189,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     </div>
                 <?php else: ?>
                     <div class="table-responsive">
-                <table class="data-table">
+                <table class="admin-table">
                             <thead>
                                 <tr>
                                     <th>Order Number</th>
@@ -219,10 +210,10 @@ $initials  = strtoupper(substr($adminName,0,2));
                                 ?>
                         <tr onclick="window.location.href='order-detail.php?id=<?php echo $order['order_id']; ?>'" style="cursor:pointer;">
                                         <td>
-                                <span style="font-family:monospace; font-weight:600; color:var(--ms-blue);"><?php echo htmlspecialchars($order['order_number']); ?></span>
+                                <span style="font-family:monospace; font-weight:600; color:var(--color-primary-deep-blue);"><?php echo htmlspecialchars($order['order_number']); ?></span>
                                         </td>
                                         <td><?php echo htmlspecialchars($order['full_name']); ?></td>
-                                <td><span style="color:var(--text-secondary); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span></td>
+                                <td><span style="color:var(--color-text-gray); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span></td>
                                         <td><?php echo date('M j, Y', strtotime($order['order_date'])); ?></td>
                                         <td>
                                     <span class="badge badge-<?php echo $badgeClass; ?>">
@@ -231,7 +222,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                                         </td>
                                         <td>
                                             <?php if ($order['tracking_number']): ?>
-                                        <span style="font-family: monospace; font-size: 0.85rem; color:var(--text-primary);">
+                                        <span style="font-family: monospace; font-size: 0.85rem; color:var(--color-navy);">
                                                     <?php echo htmlspecialchars($order['tracking_number']); ?>
                                                 </span>
                                             <?php else: ?>
