@@ -273,28 +273,28 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     
                                     <div class="form-group">
                                         <label for="full_name" class="form-label required">Full Name</label>
-                                        <input type="text" id="full_name" name="full_name" class="form-input" required value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
+                                        <input type="text" id="full_name" name="full_name" class="form-control" required value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
                                     </div>
                                     
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="email" class="form-label required">Email Address</label>
-                                            <input type="email" id="email" name="email" class="form-input" required data-validate="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                                            <input type="email" id="email" name="email" class="form-control" required data-validate="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="phone" class="form-label required">Phone Number</label>
-                                            <input type="tel" id="phone" name="phone" class="form-input" required data-validate="phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
+                                            <input type="tel" id="phone" name="phone" class="form-control" required data-validate="phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="dob" class="form-label required">Date of Birth</label>
-                                        <input type="date" id="dob" name="dob" class="form-input" required value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>">
+                                        <input type="date" id="dob" name="dob" class="form-control" required value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>">
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="password" class="form-label required">Create Password</label>
-                                        <input type="password" id="password" name="password" class="form-input" required data-validate="password" minlength="8">
+                                        <input type="password" id="password" name="password" class="form-control" required data-validate="password" minlength="8">
                                         <small class="text-dark-gray">Minimum 8 characters for your patient portal account</small>
                                     </div>
                                     
@@ -344,22 +344,22 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                 
                                 <div class="form-group">
                                     <label for="address_line1" class="form-label required">Street Address</label>
-                                    <input type="text" id="address_line1" name="address_line1" class="form-input" required value="<?php echo htmlspecialchars($_POST['address_line1'] ?? ''); ?>">
+                                    <input type="text" id="address_line1" name="address_line1" class="form-control" required value="<?php echo htmlspecialchars($_POST['address_line1'] ?? ''); ?>">
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="address_line2" class="form-label">Apartment, Suite, etc. (Optional)</label>
-                                    <input type="text" id="address_line2" name="address_line2" class="form-input" value="<?php echo htmlspecialchars($_POST['address_line2'] ?? ''); ?>">
+                                    <input type="text" id="address_line2" name="address_line2" class="form-control" value="<?php echo htmlspecialchars($_POST['address_line2'] ?? ''); ?>">
                                 </div>
                                 
                                 <div class="address-grid">
                                     <div class="form-group">
                                         <label for="city" class="form-label required">City</label>
-                                        <input type="text" id="city" name="city" class="form-input" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
+                                        <input type="text" id="city" name="city" class="form-control" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="state" class="form-label required">State</label>
-                                        <select id="state" name="state" class="form-select" required>
+                                        <select id="state" name="state" class="form-control" required>
                                             <option value="">Select State</option>
                                             <?php foreach($usStates as $code => $name): ?>
                                                 <option value="<?php echo $code; ?>" <?php echo (($_POST['state'] ?? '') === $code) ? 'selected' : ''; ?>>
@@ -370,7 +370,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     </div>
                                     <div class="form-group">
                                         <label for="zip" class="form-label required">ZIP Code</label>
-                                        <input type="text" id="zip" name="zip" class="form-input" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
+                                        <input type="text" id="zip" name="zip" class="form-control" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
                                     </div>
                                 </div>
                                 

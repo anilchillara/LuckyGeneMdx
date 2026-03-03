@@ -41,12 +41,29 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patient Dashboard | LuckyGenesMDx</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/portal.css">
-<link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
 
-<?php include 'navbar.php'; ?>
+<!-- TOP NAV -->
+<nav class="navbar">
+  <a href="../index.php" class="brand">
+    <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?>
+  </a>
+  <div class="nav-items">
+    <a href="index.php" class="nav-link active">Dashboard</a>
+    <a href="orders.php" class="nav-link">My Orders</a>
+    <a href="results.php" class="nav-link">Results</a>
+    <a href="settings.php" class="nav-link">Settings</a>
+  </div>
+  <div class="user-menu">
+    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
+    <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
+    <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
+  </div>
+</nav>
 
 <div class="container">
 
@@ -81,59 +98,38 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
         <!-- Left Column: Recent Activity -->
         <div class="col-span-8">
             <div class="card">
-                <div class="section-header">
+                <div class="card-header-flex">
                     <h3>Recent Activity</h3>
-                    <a href="orders.php" class="section-link">View All Orders →</a>
+                    <a href="orders.php" class="text-teal">View All Orders →</a>
                 </div>
 
                 <?php if (empty($orders)): ?>
                     <div class="text-center p-2">
                         <div class="fs-2 mb-1">📦</div>
                         <p>No orders yet. Start your journey today.</p>
-                        <a href="../request-kit.php" class="btn">Order Kit</a>
+                        <a href="../request-kit.php" class="btn btn-primary">Order Kit</a>
                     </div>
                 <?php else: ?>
                     <?php foreach(array_slice($orders, 0, 3) as $o): 
-                        $statusClass = 'pending';
+                        $statusClass = 'orange';
                         $statusText = 'Processing';
-                        if ($o['status_id'] == 2) { $statusClass = 'shipped'; $statusText = 'Shipped'; }
-                        if ($o['status_id'] == 5) { $statusClass = 'complete'; $statusText = 'Complete'; }
+                        if ($o['status_id'] == 2) { $statusClass = 'blue'; $statusText = 'Shipped'; }
+                        if ($o['status_id'] == 5) { $statusClass = 'green'; $statusText = 'Complete'; }
                     ?>
                     <div class="list-item">
                         <div>
                             <h4>Order #<?php echo htmlspecialchars($o['order_number']); ?></h4>
                             <p><?php echo date('M j, Y', strtotime($o['order_date'])); ?></p>
                         </div>
-                        <span class="badge badge-<?php echo $statusClass == 'pending' ? 'orange' : ($statusClass == 'shipped' ? 'blue' : 'green'); ?>"><?php echo $statusText; ?></span>
+                        <span class="badge badge-<?php echo $statusClass; ?>"><?php echo $statusText; ?></span>
                     </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-
-            <!-- Latest Results -->
-            <?php if (!empty($results)): ?>
-            <div class="card">
-                <div class="section-header">
-                    <h3>Latest Results</h3>
-                    <a href="results.php" class="section-link">View All →</a>
-                </div>
-                <?php foreach(array_slice($results, 0, 2) as $r): ?>
-                <div class="list-item">
-                    <div>
-                        <h4>Result for Order #<?php echo htmlspecialchars($r['order_number']); ?></h4>
-                        <p>Uploaded: <?php echo date('M j, Y', strtotime($r['upload_date'])); ?></p>
-                    </div>
-                    <a href="results.php" class="section-link">Download PDF</a>
-                </div>
-                <?php endforeach; ?>
-            </div>
-            <?php endif; ?>
         </div>
 
-        <!-- Right Column: Progress & Actions -->
+        <!-- Right Column: Quick Actions -->
         <div class="col-span-4">
-            
-            <!-- Quick Actions -->
             <div class="card">
                 <h3 class="mb-1">Quick Actions</h3>
                 <div class="action-grid">
@@ -145,73 +141,12 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         <span class="action-icon">📄</span>
                         <span class="action-label">My Results</span>
                     </a>
-                    <a href="settings.php" class="action-btn">
-                        <span class="action-icon">⚙️</span>
-                        <span class="action-label">Settings</span>
-                    </a>
-                    <a href="../support.php" class="action-btn">
-                        <span class="action-icon">💬</span>
-                        <span class="action-label">Support</span>
-                    </a>
                 </div>
             </div>
-
-            <!-- Active Order Progress -->
-            <?php if ($recentOrder && $recentOrder['status_id'] < 5): ?>
-            <div class="card">
-                <h3>Order #<?php echo htmlspecialchars($recentOrder['order_number']); ?></h3>
-                <div class="timeline">
-                    <div class="tl-item">
-                        <div class="tl-dot done"></div>
-                        <div class="tl-content">
-                            <h5>Order Placed</h5>
-                            <p><?php echo date('M j', strtotime($recentOrder['order_date'])); ?></p>
-                        </div>
-                    </div>
-                    <div class="tl-item <?php echo $recentOrder['status_id'] < 2 ? 'dimmed' : ''; ?>">
-                        <div class="tl-dot <?php echo $recentOrder['status_id'] >= 2 ? 'done' : ''; ?>"></div>
-                        <div class="tl-content">
-                            <h5>Shipped</h5>
-                            <p>Kit on the way</p>
-                        </div>
-                    </div>
-                    <div class="tl-item <?php echo $recentOrder['status_id'] < 3 ? 'dimmed' : ''; ?>">
-                        <div class="tl-dot <?php echo $recentOrder['status_id'] >= 3 ? 'done' : ''; ?>"></div>
-                        <div class="tl-content">
-                            <h5>Sample Received</h5>
-                            <p>Arrived at lab</p>
-                        </div>
-                    </div>
-                    <div class="tl-item <?php echo $recentOrder['status_id'] < 4 ? 'dimmed' : ''; ?>">
-                        <div class="tl-dot <?php echo $recentOrder['status_id'] == 4 ? 'active' : ''; ?>"></div>
-                        <div class="tl-content">
-                            <h5>Processing</h5>
-                            <p>Genomic analysis</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-
         </div>
     </div>
 </div>
 <?php include '../includes/footer.php'; ?>
-<script>
-    const toggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    
-    if (localStorage.getItem('portal_theme') === 'dark') {
-        body.classList.add('dark-theme');
-        toggle.textContent = '☀️';
-    }
-
-    toggle.addEventListener('click', () => {
-        body.classList.toggle('dark-theme');
-        const isDark = body.classList.contains('dark-theme');
-        localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
-        toggle.textContent = isDark ? '☀️' : '🌙';
-    });
-</script>
+<script src="../js/main.js"></script>
 </body>
 </html>

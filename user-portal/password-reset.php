@@ -38,63 +38,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Security Credentials - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/portal.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
 
-    <div class="auth-bg-video">
-        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-    </div>
-
     <div class="auth-card">
-        <a href="../index.php" class="back-link">← Back to Main Site</a>
-        <div class="auth-header">
-            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
-            <h1 id="title">Account Recovery</h1>
-            <p id="desc">Verify your identity to reset password</p>
+        <div class="text-center mb-4">
+            <a href="../index.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Main Site</a>
+        </div>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2" id="title">Account Recovery</h1>
+            <p class="auth-title" id="desc">Verify your identity to reset password</p>
         </div>
 
         <?php if ($error): ?>
-            <div class="msg msg-error">⚠️ <?php echo htmlspecialchars($error); ?></div>
+            <div class="glass-card-error p-3 mb-3 text-error">⚠️ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <?php if ($success): ?>
-            <div class="msg msg-success">✓ <?php echo htmlspecialchars($success); ?></div>
+            <div class="glass-card-teal-left p-3 mb-3 text-teal">✓ <?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
 
         <form method="POST" id="resetForm">
             <div id="step-1" class="step-content active d-block">
                 <div class="form-group">
                     <label>Account Email</label>
-                    <input type="email" name="email" id="email" placeholder="name@example.com" required>
+                    <input type="email" name="email" id="email" placeholder="name@example.com" required class="form-control">
                 </div>
-                <button type="button" class="btn btn-full" onclick="showStep(2)">Verify Account →</button>
+                <button type="button" class="btn btn-primary btn-full" onclick="showStep(2)">Verify Account →</button>
             </div>
 
-            <div id="step-2" class="step-content hidden">
+            <div id="step-2" class="step-content" style="display:none;">
                 <div class="form-row mb-1">
                     <div class="form-group">
                         <label>Date of Birth</label>
-                        <input type="date" name="dob" id="dob">
+                        <input type="date" name="dob" id="dob" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" name="phone" id="phone" placeholder="(555) 000-0000">
+                        <input type="tel" name="phone" id="phone" placeholder="(555) 000-0000" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>New Security Password</label>
-                    <div class="relative">
-                        <input type="password" name="new_password" id="new_password" placeholder="••••••••" class="pr-40">
-                        <button type="button" onclick="togglePassword('new_password')" class="password-toggle" title="Show Password">👁️</button>
-                    </div>
+                    <input type="password" name="new_password" id="new_password" placeholder="••••••••" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-full">Reset & Sign In</button>
+                <button type="submit" class="btn btn-primary btn-full">Reset & Sign In</button>
                 <button type="button" onclick="showStep(1)" class="btn btn-outline btn-full mt-10">← Back</button>
             </div>
         </form>
 
-        <div class="auth-footer">
-            <a href="login.php" class="btn btn-outline">Return to Login</a>
+        <div class="mt-4 text-center">
+            <a href="login.php" class="btn btn-outline btn-full">Return to Login</a>
         </div>
     </div>
 
@@ -115,11 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             document.querySelectorAll('.step-content').forEach(s => s.style.display = 'none');
             document.getElementById('step-' + step).style.display = 'block';
-        }
-
-        function togglePassword(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
         }
     </script>
 </body>

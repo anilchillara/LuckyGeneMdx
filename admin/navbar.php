@@ -10,7 +10,8 @@ $initials = strtoupper(substr($adminName, 0, 2));
   <a href="index.php" class="admin-brand">
     <img src="../assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"> <?php echo htmlspecialchars(SITE_NAME); ?> <span class="pill-badge-teal">Admin</span>
   </a>
-  <div class="admin-nav-items">
+  <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
+  <div class="admin-nav-items" id="admin-nav-items">
     <a href="index.php" class="admin-nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>">Dashboard</a>
     <a href="orders.php" class="admin-nav-link <?php echo ($currentPage == 'orders.php' || $currentPage == 'order-detail.php') ? 'active' : ''; ?>">Orders</a>
     <a href="Users.php" class="admin-nav-link <?php echo $currentPage == 'Users.php' ? 'active' : ''; ?>">Users</a>
@@ -21,9 +22,19 @@ $initials = strtoupper(substr($adminName, 0, 2));
     <a href="activity-log.php" class="admin-nav-link <?php echo $currentPage == 'activity-log.php' ? 'active' : ''; ?>">Activity Log</a>
     <a href="settings.php" class="admin-nav-link <?php echo $currentPage == 'settings.php' ? 'active' : ''; ?>">Settings</a>
   </div>
-  <div class="admin-user-menu">
+  <div class="admin-user-menu" id="admin-user-menu">
     <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
     <div class="admin-avatar"><?php echo htmlspecialchars($initials); ?></div>
     <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
   </div>
 </nav>
+<script>
+    const mobileBtnAdmin = document.getElementById('mobile-menu-btn');
+    const navItemsAdmin = document.getElementById('admin-nav-items');
+    const userMenuAdmin = document.getElementById('admin-user-menu');
+    if(mobileBtnAdmin) mobileBtnAdmin.addEventListener('click', () => {
+        navItemsAdmin.classList.toggle('active');
+        userMenuAdmin.classList.toggle('active');
+        mobileBtnAdmin.textContent = navItemsAdmin.classList.contains('active') ? '✕' : '☰';
+    });
+</script>

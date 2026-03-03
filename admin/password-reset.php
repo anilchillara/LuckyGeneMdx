@@ -57,9 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
 </head>
-<body class="admin-login-body">
+<body class="auth-body">
 
-    <div class="admin-login-card">
+    <div class="auth-card">
         <div class="text-center mb-4">
             <a href="login.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Login</a>
         </div>
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-4">
             <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
             <h1 class="font-xl mb-2">Admin Recovery</h1>
-            <p class="admin-login-title">Reset your administrative access</p>
+            <p class="auth-title">Reset your administrative access</p>
         </div>
             
         <?php if ($error): ?>

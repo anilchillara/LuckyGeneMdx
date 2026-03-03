@@ -731,4 +731,44 @@ HTML;
             return ['success' => false, 'message' => 'Error sending email.'];
         }
     }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Notification Preferences
+    // ─────────────────────────────────────────────────────────────
+
+    public function getNotificationPreferences($user_id) {
+        try {
+            $stmt = $this->db->prepare("SELECT notify_email_orders, notify_email_results, notify_email_marketing FROM users WHERE user_id = :user_id");
+            $stmt->execute([':user_id' => $user_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Default values if columns don't exist or are null
+            if (!$result) {
+                return [
+                    'notify_email_orders' => 1,
+                    'notify_email_results' => 1,
+                    'notify_email_marketing' => 0
+                ];
+            }
+            return $result;
+        } catch (PDOException $e) {
+            return ['notify_email_orders' => 1, 'notify_email_results' => 1, 'notify_email_marketing' => 0];
+        }
+    }
+
+    public function updateNotificationPreferences($user_id, $prefs) {
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET notify_email_orders = :orders, notify_email_results = :results, notify_email_marketing = :marketing WHERE user_id = :user_id");
+            $stmt->execute([
+                ':orders' => $prefs['notify_email_orders'],
+                ':results' => $prefs['notify_email_results'],
+                ':marketing' => $prefs['notify_email_marketing'],
+                ':user_id' => $user_id
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            error_log("Update Prefs Error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

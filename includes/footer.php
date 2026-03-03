@@ -146,22 +146,6 @@ $isNavActive = function($url) use ($navStatus) {
     text-decoration: underline;
 }
 
-.footer-cta-btn {
-    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%));
-    color: var(--white) !important;
-    padding: 8px 15px;
-    border-radius: 30px;
-    font-weight: bold;
-    opacity: 1;
-    transition: all 0.3s;
-    border: 1px solid transparent;
-}
-
-.footer-cta-btn:hover {
-    filter: brightness(1.15);
-    transform: translateY(-2px);    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .footer-grid {
@@ -228,16 +212,11 @@ body.dark-theme .footer-legal a {
 }
 
 body.dark-theme .footer-links a:hover {
-    color: #00e5ff;
+    color: #14B8A6;
 }
 
 body.dark-theme .footer-bottom {
     border-top-color: #606060;
-}
-
-body.dark-theme .footer-cta-btn {
-    background: var(--brand-gradient, linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%));
-    color: var(--white) !important;
 }
 </style>
 

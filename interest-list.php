@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       </div>
 
-      <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 12px; border-radius: 14px;">Join our Interest list</button>
+      <button type="submit" class="btn btn-primary btn-large btn-full mt-2">Join our Interest list</button>
 
       <p class="privacy-note">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>

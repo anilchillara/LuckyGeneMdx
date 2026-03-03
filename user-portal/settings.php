@@ -78,26 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/portal.css">
     <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
-    <nav class="navbar">
-      <a href="../index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" class="logo-sm"> <?php echo htmlspecialchars(SITE_NAME); ?>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">My Orders</a>
-        <a href="results.php" class="nav-link">Results</a>
-        <a href="settings.php" class="nav-link active">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm btn-icon">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <div class="container">
         <div class="header-section">

@@ -51,30 +51,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recover Username - LuckyGenesMDx</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/portal.css">
-    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
 
-    <div class="auth-bg-video">
-        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-    </div>
-
     <div class="auth-card">
-        <a href="login.php" class="back-link">← Back to Login</a>
-        <div class="auth-header">
-            <img src="../assets/images/logo_small.png" alt="Logo" class="auth-logo">
-            <h1 id="title">Recover Email</h1>
-            <p id="desc">Find your account email address</p>
+        <div class="text-center mb-4">
+            <a href="login.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Login</a>
+        </div>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2" id="title">Recover Email</h1>
+            <p class="auth-title" id="desc">Find your account email address</p>
         </div>
 
         <?php if ($error): ?>
-            <div class="msg msg-error">⚠️ <?php echo htmlspecialchars($error); ?></div>
+            <div class="glass-card-error p-3 mb-3 text-error">⚠️ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <?php if ($success): ?>
-            <div class="msg msg-success">✓ <?php echo $success; ?></div>
-            <div class="text-center mt-1-5">
-                <a href="login.php" class="btn btn-full">Sign In Now</a>
+            <div class="glass-card-teal-left p-3 mb-3 text-teal">✓ <?php echo $success; ?></div>
+            <div class="mt-4 text-center">
+                <a href="login.php" class="btn btn-primary btn-full">Sign In Now</a>
             </div>
         <?php else: ?>
 
@@ -89,24 +86,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="order-group">
                 <div class="form-group">
                     <label>Order Number</label>
-                    <input type="text" name="order_number" placeholder="LGM-2024-XXXXX">
+                    <input type="text" name="order_number" placeholder="LGM-2024-XXXXX" class="form-control">
                 </div>
             </div>
 
-            <div id="phone-group" class="hidden">
+            <div id="phone-group" style="display:none;">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" name="phone" placeholder="(555) 000-0000">
+                        <input type="tel" name="phone" placeholder="(555) 000-0000" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Date of Birth</label>
-                        <input type="date" name="dob">
+                        <input type="date" name="dob" class="form-control">
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-full">Find Email</button>
+            <button type="submit" class="btn btn-primary btn-full">Find Email</button>
         </form>
         <?php endif; ?>
     </div>

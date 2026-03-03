@@ -90,14 +90,14 @@ $allStatuses = $stmt->fetchAll();
                 <div class="glass-card track-order-details">
                     <div class="track-order-header">
                         <div>
-                            <h2 class="mb-1">Order Details</h2>
-                            <p class="text-dark-gray mb-0">
+                            <h2 class="track-order-header-text">Order Details</h2>
+                            <p class="track-order-header-subtext">
                                 Order placed on <?php echo date('F j, Y', strtotime($order['order_date'])); ?>
                             </p>
                         </div>
                         <div class="text-right">
-                            <div class="font-sm text-dark-gray mb-1">Order Number</div>
-                            <div class="font-lg font-bold text-deep-blue">
+                            <div class="track-order-number-label">Order Number</div>
+                            <div class="track-order-number-value">
                                 <?php echo htmlspecialchars($order['order_number']); ?>
                             </div>
                         </div>
@@ -106,8 +106,8 @@ $allStatuses = $stmt->fetchAll();
                     <div class="row">
                         <div class="col col-2">
                             <div class="track-order-status-box">
-                                <div class="font-sm text-dark-gray mb-1">Current Status</div>
-                                <div class="font-lg font-semibold text-teal">
+                                <div class="track-order-number-label">Current Status</div>
+                                <div class="font-lg font-semibold text-medical-teal">
                                     <?php echo htmlspecialchars($order['status_name']); ?>
                                 </div>
                             </div>
@@ -116,8 +116,8 @@ $allStatuses = $stmt->fetchAll();
                         <?php if ($order['tracking_number']): ?>
                         <div class="col col-2">
                             <div class="track-order-status-box">
-                                <div class="font-sm text-dark-gray mb-1">Tracking Number</div>
-                                <div class="font-lg font-semibold text-deep-blue">
+                                <div class="track-order-number-label">Tracking Number</div>
+                                <div class="font-lg font-semibold text-primary-deep-blue">
                                     <?php echo htmlspecialchars($order['tracking_number']); ?>
                                 </div>
                             </div>

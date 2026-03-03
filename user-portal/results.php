@@ -47,26 +47,11 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/portal.css">
-    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
-    <nav class="navbar">
-      <a href="../index.php" class="brand">
-        <img src="../assets/images/logo_small.png" alt="Logo" class="logo-sm"> <?php echo htmlspecialchars(SITE_NAME); ?>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">My Orders</a>
-        <a href="results.php" class="nav-link active">Results</a>
-        <a href="settings.php" class="nav-link">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm btn-icon">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <div class="container">
         <div class="header-section">
@@ -83,7 +68,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         Standard processing time is 14–21 days from sample receipt.
                     </p>
                     <div class="flex-center-wrap">
-                        <a href="orders.php" class="btn">View Order Status</a>
+                        <a href="orders.php" class="btn btn-primary">View Order Status</a>
                         <a href="../track-order.php" class="btn btn-outline">Track Shipment</a>
                     </div>
                 </div>
@@ -93,7 +78,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         <div class="flex-between-start">
                             <div>
                                 <h3>Results: Order #<?php echo htmlspecialchars($result['order_number']); ?></h3>
-                                <p class="text-primary font-weight-600">
+                                <p class="text-primary font-semibold">
                                     <span class="fs-1-2 align-middle">✨</span> Comprehensive Carrier Screen Ready
                                 </p>
                             </div>
@@ -102,15 +87,15 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         <div class="info-panel">
                             <div>
                                 <div class="stat-lbl">Result Date</div>
-                                <div class="font-weight-600"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
+                                <div class="font-semibold"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
                             </div>
                             <div>
                                 <div class="stat-lbl">Type</div>
-                                <div class="font-weight-600">Full Panel (300+)</div>
+                                <div class="font-semibold">Full Panel (300+)</div>
                             </div>
                             <div>
                                 <div class="stat-lbl">File Size</div>
-                                <div class="font-weight-600"><?php echo number_format($result['file_size'] / 1024, 1); ?> KB</div>
+                                <div class="font-semibold"><?php echo number_format($result['file_size'] / 1024, 1); ?> KB</div>
                             </div>
                         </div>
 
@@ -123,10 +108,10 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         </div>
 
                         <div class="flex-gap-1 flex-wrap">
-                            <a href="view-result.php?id=<?php echo $result['result_id']; ?>" target="_blank" class="btn">
+                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>" target="_blank" class="btn btn-primary">
                                 View PDF Report
                             </a>
-                            <a href="download-result.php?id=<?php echo $result['result_id']; ?>" class="btn btn-outline" download>
+                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&download=1" class="btn btn-outline" download>
                                 Download
                             </a>
                             <a href="mailto:counseling@LuckyGenesMDx.com" class="btn btn-outline">
