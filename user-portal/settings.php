@@ -80,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/portal.css">
-    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -111,12 +110,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="full_name">Full Name</label>
-                                    <input type="text" id="full_name" name="full_name" 
+                                    <input type="text" id="full_name" name="full_name" class="form-control"
                                         value="<?php echo htmlspecialchars($user_data['full_name']); ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone" 
+                                    <input type="tel" id="phone" name="phone" class="form-control"
                                         value="<?php echo htmlspecialchars($user_data['phone'] ?? ''); ?>" required>
                                 </div>
                             </div>
@@ -124,8 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                             <div class="form-group">
                                 <label for="email">Email Address</label>
                                 <input type="email" id="email" 
-                                    value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled 
-                                    class="input-disabled">
+                                    value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled class="form-control">
                                 <small class="form-text">Contact support to change email.</small>
                             </div>
                             
@@ -143,19 +141,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                             
                             <div class="form-group">
                                 <label for="current_password">Current Password</label>
-                                <input type="password" id="current_password" name="current_password" required>
+                                <input type="password" id="current_password" name="current_password" required class="form-control">
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="new_password">New Password</label>
-                                    <input type="password" id="new_password" name="new_password" required minlength="8">
+                                    <input type="password" id="new_password" name="new_password" required minlength="8" class="form-control">
                                     <small class="form-text">Min. 8 characters</small>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="confirm_password">Confirm New Password</label>
-                                    <input type="password" id="confirm_password" name="confirm_password" required>
+                                    <input type="password" id="confirm_password" name="confirm_password" required class="form-control">
                                 </div>
                             </div>
                             
@@ -168,13 +166,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             <div class="col-span-4">
                     <div class="card sticky-top">
                         <h4 class="mb-1">Account Summary</h4>
-                        <ul class="list-unstyled">
-                            <li class="summary-item">
-                                <span class="text-muted">Member Since</span>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                            <li style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                <span class="text-dark-gray">Member Since</span>
                                 <span class="font-weight-600"><?php echo date('Y', strtotime($user_data['created_at'] ?? '')); ?></span>
                             </li>
-                            <li class="summary-item">
-                                <span class="text-muted">Last Login</span>
+                            <li style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                <span class="text-dark-gray">Last Login</span>
                                 <span class="font-weight-600">
                                     <?php echo $user_data['last_login'] ? date('M j', strtotime($user_data['last_login'])) : 'N/A'; ?>
                                 </span>
@@ -182,11 +180,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                         </ul>
 
                         <div class="mt-2">
-                            <h5 class="mb-0-5">Data Privacy</h5>
-                            <p class="privacy-text">
+                            <h5 class="mb-1">Data Privacy</h5>
+                            <p class="font-sm text-dark-gray mb-2">
                                 Your genetic data is encrypted and stored securely. We do not sell your data.
                             </p>
-                            <a href="../privacy-policy.php" class="link-underline">Read Privacy Policy</a>
+                            <a href="../privacy-policy.php" style="font-size: 0.85rem; text-decoration: underline;">Read Privacy Policy</a>
                         </div>
                     </div>
             </div>

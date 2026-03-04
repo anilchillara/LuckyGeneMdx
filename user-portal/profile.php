@@ -91,7 +91,7 @@ if (strpos($user['full_name'], ' ') !== false) {
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control" value="<?php echo htmlspecialchars($user['email']); ?>" disabled style="background-color: var(--color-off-white); cursor: not-allowed;">
+                            <input type="email" id="email" class="form-control" value="<?php echo htmlspecialchars($user['email']); ?>" disabled>
                             <small class="text-dark-gray mt-1">To change your email, please contact support.</small>
                         </div>
 
@@ -102,7 +102,7 @@ if (strpos($user['full_name'], ' ') !== false) {
                             </div>
                             <div class="form-group">
                                 <label for="dob">Date of Birth</label>
-                                <input type="date" id="dob" class="form-control" value="<?php echo htmlspecialchars($user['dob'] ?? ''); ?>" disabled style="background-color: var(--color-off-white); cursor: not-allowed;">
+                                <input type="date" id="dob" class="form-control" value="<?php echo htmlspecialchars($user['dob'] ?? ''); ?>" disabled>
                             </div>
                         </div>
 

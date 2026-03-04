@@ -41,6 +41,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patient Dashboard | LuckyGenesMDx</title>
+<link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/portal.css">
 <link rel="stylesheet" href="../css/custom.css">
 </head>
