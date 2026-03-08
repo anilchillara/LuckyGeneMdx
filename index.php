@@ -268,7 +268,9 @@ setSecurityHeaders();
                 <p>Take the first step toward informed family planning with comprehensive genetic carrier screening. Clear insights, delivered privately.</p>
                 <div class="cta-pricing">
                     <span class="cta-price">$<?php echo number_format(KIT_PRICE, 0); ?></span>
-                    <span class="cta-strike">$249</span>
+                    <?php if (defined('ACTUAL_PRICE') && ACTUAL_PRICE > KIT_PRICE): ?>
+                    <span class="cta-strike">$<?php echo number_format(ACTUAL_PRICE, 0); ?></span>
+                    <?php endif; ?>
                 </div>
                 <a href="request-kit.php" class="btn-cta-main">
                     Get Your Screening Kit

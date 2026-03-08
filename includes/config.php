@@ -169,6 +169,7 @@ define('BASE_URL', $dbSettings['base_url'] ?? (getenv('BASE_URL') ?: SITE_URL));
 
 // Application Settings
 define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 99.00);
+define('ACTUAL_PRICE', isset($dbSettings['actual_price']) ? (float)$dbSettings['actual_price'] : 249.00);
 define('SHOW_CTA', isset($dbSettings['show_cta']) ? (bool)$dbSettings['show_cta'] : true);
 define('CURRENCY', 'USD');
 define('RESULTS_PROCESSING_DAYS', '14-21');

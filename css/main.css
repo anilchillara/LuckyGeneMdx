@@ -962,7 +962,9 @@ ul { list-style: none; }
     .std-num { font-size: 2rem; }
     .test-card { padding:2.5rem 1.5rem; }
     .cta-box { padding:3.5rem 1.5rem; }
-    .cta-price { font-size:4rem; }
+    .cta-pricing { padding: 1rem 1.5rem; gap: 12px; }
+    .cta-price { font-size: 3rem; }
+    .cta-strike { font-size: 1.25rem; }
     .track-order-input-group { flex-direction: column; }
     .track-order-btn { width: 100%; }
     .cta-card-large { padding: 2.5rem 1.5rem; }

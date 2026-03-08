@@ -316,6 +316,10 @@ $initials  = strtoupper(substr($adminName,0,2));
                             <input type="number" name="settings[kit_price]" step="0.01" value="<?php echo htmlspecialchars($settings['kit_price'] ?? '99.00'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
+                            <label>Actual Price (USD) <span class="font-sm text-dark-gray">(Strike-through price)</span></label>
+                            <input type="number" name="settings[actual_price]" step="0.01" value="<?php echo htmlspecialchars($settings['actual_price'] ?? '249.00'); ?>" class="form-control">
+                        </div>
+                        <div class="form-group">
                             <div class="form-checkbox">
                                 <input type="hidden" name="settings[show_cta]" value="0">
                                 <input type="checkbox" id="show_cta" name="settings[show_cta]" value="1" <?php echo ($settings['show_cta'] ?? 1) ? 'checked' : ''; ?>>
