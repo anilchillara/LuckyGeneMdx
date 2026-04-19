@@ -3,7 +3,7 @@
  * Validator Class
  * Input validation and sanitization
  * 
- * @package LuckyGenesMDx
+ * @package LuckyGenes
  * @version 2.0
  */
 

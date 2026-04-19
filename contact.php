@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 session_start();
@@ -67,7 +67,7 @@ $page_title = 'Contact Us';
                     <div>
                         <strong>Email Us</strong>
                         <?php echo htmlspecialchars(SUPPORT_EMAIL); ?><br>
-                        providers@LuckyGenesMDx.com
+                        providers@LuckyGenes.com
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="font-size: 4rem; margin-bottom: 1.5rem;">✅</div>
                     <h1 style="margin-bottom: 1rem;">Unsubscribed</h1>
                     <p style="color: var(--color-dark-gray); margin-bottom: 2rem;">
-                        <strong><?php echo htmlspecialchars($email); ?></strong> has been successfully removed from the LuckyGenesMDx interest list.
+                        <strong><?php echo htmlspecialchars($email); ?></strong> has been successfully removed from the LuckyGenes interest list.
                     </p>
                     <a href="index.php" class="btn btn-primary">Return to Homepage</a>
                     

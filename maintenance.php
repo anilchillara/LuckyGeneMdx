@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 
 // Redirect to home if maintenance mode is disabled

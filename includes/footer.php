@@ -1,9 +1,9 @@
 <?php
 /**
- * Global Footer Template - LuckyGenesMDx
+ * Global Footer Template - LuckyGenes
  * Refactored: No zoom, correct paths, unified styling
  */
-if (!defined('LuckyGenesMDx')) exit;
+if (!defined('LuckyGenes')) exit;
 
 // Determine base URL if not already set (e.g. if header wasn't included)
 if (!isset($baseUrl)) {

@@ -1,4 +1,4 @@
-# 🧹 LuckyGenesMDx Test Data Cleanup Guide
+# 🧹 LuckyGenes Test Data Cleanup Guide
 
 ## 📦 Available Cleanup Scripts
 
@@ -75,7 +75,7 @@ SET @cleanup_enabled = TRUE;
 **Step 3: Execute**
 ```bash
 # Via command line
-mysql -u your_user -p LuckyGenesMDx_db < cleanup_test_data.sql
+mysql -u your_user -p LuckyGenes_db < cleanup_test_data.sql
 
 # Or import via phpMyAdmin
 ```
@@ -117,7 +117,7 @@ The script shows what WILL be deleted vs kept before executing.
 
 **Step 3: Execute**
 ```bash
-mysql -u your_user -p LuckyGenesMDx_db < cleanup_selective.sql
+mysql -u your_user -p LuckyGenes_db < cleanup_selective.sql
 ```
 
 ---
@@ -161,7 +161,7 @@ mysql -u your_user -p LuckyGenesMDx_db < cleanup_selective.sql
 
 1. **Backup First!**
    ```bash
-   mysqldump -u your_user -p LuckyGenesMDx_db > backup_before_cleanup.sql
+   mysqldump -u your_user -p LuckyGenes_db > backup_before_cleanup.sql
    ```
 
 2. **Review What Will Be Deleted**
@@ -308,7 +308,7 @@ SELECT
     ROUND((data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)',
     table_rows AS 'Rows'
 FROM information_schema.TABLES 
-WHERE table_schema = 'LuckyGenesMDx_db'
+WHERE table_schema = 'LuckyGenes_db'
 ORDER BY (data_length + index_length) DESC;
 ```
 
@@ -327,7 +327,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 ### "Access denied"
 **Solution:** Ensure you have DELETE privileges:
 ```sql
-GRANT DELETE ON LuckyGenesMDx_db.* TO 'your_user'@'localhost';
+GRANT DELETE ON LuckyGenes_db.* TO 'your_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
@@ -335,16 +335,16 @@ FLUSH PRIVILEGES;
 **Solution:** Check syntax:
 ```bash
 # Test the script first
-mysql -u your_user -p LuckyGenesMDx_db --execute="SELECT 'Test' as status;"
+mysql -u your_user -p LuckyGenes_db --execute="SELECT 'Test' as status;"
 
 # Then run cleanup
-mysql -u your_user -p LuckyGenesMDx_db < cleanup_test_data.sql
+mysql -u your_user -p LuckyGenes_db < cleanup_test_data.sql
 ```
 
 ### Need to restore
 **Solution:** Use your backup:
 ```bash
-mysql -u your_user -p LuckyGenesMDx_db < backup_before_cleanup.sql
+mysql -u your_user -p LuckyGenes_db < backup_before_cleanup.sql
 ```
 
 ---

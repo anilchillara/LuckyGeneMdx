@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 session_start();
@@ -266,7 +266,7 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                         individuals considering pregnancy or currently pregnant.
                     </p>
                     <p class="font-sm mb-0 opacity-80">
-                        <em>LuckyGenesMDx follows these professional guidelines but is not directly affiliated with these organizations.</em>
+                        <em>LuckyGenes follows these professional guidelines but is not directly affiliated with these organizations.</em>
                     </p>
                 </div>
             </div>

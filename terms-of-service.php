@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -10,7 +10,7 @@ $page_title = 'Terms of Service';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | LuckyGenesMDx</title>
+    <title><?php echo $page_title; ?> | LuckyGenes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -18,19 +18,19 @@ $page_title = 'Terms of Service';
     <?php include 'includes/navbar.php'; ?>
 
     <section class="page-header">
-                <p class="hero-subtitle">Governing the use of LuckyGenesMDx clinical platforms and genetic screening protocols.</p>
+                <p class="hero-subtitle">Governing the use of LuckyGenes clinical platforms and genetic screening protocols.</p>
                 <div class="last-updated">📅 Effective Date: February 16, 2026</div>
         </section>
 
     <main class="legal-content">
         <section class="legal-section">
             <h2>1. Acceptance of Terms</h2>
-            <p>By accessing the <strong>LuckyGenesMDx</strong> portal, requesting a collection kit, or submitting a biological sample, you enter into a legally binding agreement. Our services are strictly for individuals aged 18 or older, or those with explicit parental consent for pediatric screening.</p>
+            <p>By accessing the <strong>LuckyGenes</strong> portal, requesting a collection kit, or submitting a biological sample, you enter into a legally binding agreement. Our services are strictly for individuals aged 18 or older, or those with explicit parental consent for pediatric screening.</p>
         </section>
 
         <section class="legal-section">
             <h2>2. Service Description</h2>
-            <p>LuckyGenesMDx provides comprehensive Molecular Diagnostic (MDx) services specializing in carrier screening for inherited conditions. Our process involves:</p>
+            <p>LuckyGenes provides comprehensive Molecular Diagnostic (MDx) services specializing in carrier screening for inherited conditions. Our process involves:</p>
             
             <div class="service-steps">
                 <div class="step">

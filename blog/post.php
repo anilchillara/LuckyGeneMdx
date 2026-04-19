@@ -56,7 +56,7 @@ try {
     <meta property="og:type" content="article">
     <meta property="article:published_time" content="<?php echo $post['published_date']; ?>">
     <meta property="article:author" content="<?php echo htmlspecialchars($post['author']); ?>">
-    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGenesMDx Blog</title>
+    <title><?php echo htmlspecialchars($page_title); ?> | LuckyGenes Blog</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>

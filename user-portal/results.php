@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -43,7 +43,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Results - LuckyGenesMDx</title>
+    <title>My Results - LuckyGenes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -114,7 +114,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                             <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&download=1" class="btn btn-outline" download>
                                 Download
                             </a>
-                            <a href="mailto:counseling@LuckyGenesMDx.com" class="btn btn-outline">
+                            <a href="mailto:counseling@LuckyGenes.com" class="btn btn-outline">
                                 Request Counselor Call
                             </a>
                         </div>

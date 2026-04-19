@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -256,7 +256,7 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings - LuckyGenesMDx Admin</title>
+    <title>System Settings - LuckyGenes Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
@@ -301,7 +301,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <input type="hidden" name="action" value="update_general">
                         <div class="form-group">
                             <label>Site Name</label>
-                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGenesMDx'); ?>" class="form-control">
+                            <input type="text" name="settings[site_name]" value="<?php echo htmlspecialchars($settings['site_name'] ?? 'LuckyGenes'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Site URL</label>
@@ -351,15 +351,15 @@ $initials  = strtoupper(substr($adminName,0,2));
                         
                         <div class="form-group">
                             <label>From Email</label>
-                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@LuckyGenesMDx.com" class="form-control">
+                            <input type="email" name="email_settings[from_email]" value="<?php echo htmlspecialchars($settings['from_email'] ?? ''); ?>" placeholder="noreply@LuckyGenes.com" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>From Name</label>
-                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGenesMDx'); ?>" class="form-control">
+                            <input type="text" name="email_settings[from_name]" value="<?php echo htmlspecialchars($settings['from_name'] ?? 'LuckyGenes'); ?>" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Support Email</label>
-                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@LuckyGenesMDx.com'); ?>" class="form-control">
+                            <input type="email" name="email_settings[support_email]" value="<?php echo htmlspecialchars($settings['support_email'] ?? 'support@LuckyGenes.com'); ?>" class="form-control">
                         </div>
                         
                         <hr style="border: 0; border-top: 1px solid var(--color-border); margin: 2rem 0;">

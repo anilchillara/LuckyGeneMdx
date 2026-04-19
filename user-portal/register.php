@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -55,7 +55,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join LuckyGenesMDx – Secure Registration</title>
+<title>Join LuckyGenes – Secure Registration</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/main.css">
 </head>
@@ -88,7 +88,7 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
         <div class="mb-4">
             <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
             <h1 class="font-xl mb-2" id="reg-title">Create Account</h1>
-            <p class="auth-title" id="reg-desc">Join the LuckyGenesMDx Patient Portal</p>
+            <p class="auth-title" id="reg-desc">Join the LuckyGenes Patient Portal</p>
         </div>
 
         <?php if ($error): ?>

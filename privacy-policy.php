@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -10,7 +10,7 @@ $page_title = 'Privacy Policy';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | LuckyGenesMDx</title>
+    <title><?php echo $page_title; ?> | LuckyGenes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -32,7 +32,7 @@ $page_title = 'Privacy Policy';
     <main class="legal-content">
         <section class="legal-section">
             <h2>1. Information We Collect</h2>
-            <p>To provide high-fidelity carrier screening, LuckyGenesMDx collects data essential for clinical accuracy and HIPAA compliance:</p>
+            <p>To provide high-fidelity carrier screening, LuckyGenes collects data essential for clinical accuracy and HIPAA compliance:</p>
             
             <div class="info-grid">
                 <div class="info-card">
@@ -103,8 +103,8 @@ $page_title = 'Privacy Policy';
 
         <section class="legal-section" style="margin-top: 50px; text-align: center;">
             <p>Questions about your data? Contact our Compliance Officer.</p>
-            <a href="mailto:privacy@LuckyGenesMDx.com" style="color: #2979ff; font-weight: 600; text-decoration: none;">
-                privacy@LuckyGenesMDx.com
+            <a href="mailto:privacy@LuckyGenes.com" style="color: #2979ff; font-weight: 600; text-decoration: none;">
+                privacy@LuckyGenes.com
             </a>
         </section>
     </main>

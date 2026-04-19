@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 $status = [
     'status' => 'ok',
     'timestamp' => time(),
-    'service' => 'LuckyGenesMDx API',
+    'service' => 'LuckyGenes API',
     'version' => '1.0.0'
 ];
 

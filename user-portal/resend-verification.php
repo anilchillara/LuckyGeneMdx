@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -27,7 +27,7 @@ $prefillEmail = htmlspecialchars($_GET['email'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resend Verification – LuckyGenesMDx</title>
+<title>Resend Verification – LuckyGenes</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/main.css">
 </head>

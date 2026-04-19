@@ -3,7 +3,7 @@
  * RateLimiter Class
  * Prevents brute force attacks and excessive requests
  * 
- * @package LuckyGenesMDx
+ * @package LuckyGenes
  * @version 2.0
  */
 

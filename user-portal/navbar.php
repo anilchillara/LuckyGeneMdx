@@ -1,5 +1,5 @@
 <?php
-if (!defined('LuckyGenesMDx')) {
+if (!defined('LuckyGenes')) {
     exit('Direct access denied');
 }
 

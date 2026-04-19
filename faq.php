@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -10,7 +10,7 @@ $page_title = 'Frequently Asked Questions';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | LuckyGenesMDx</title>
+    <title><?php echo $page_title; ?> | LuckyGenes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -41,7 +41,7 @@ $page_title = 'Frequently Asked Questions';
             <div class="faq-item" data-category="general">
                 <div class="faq-question">How is the sample collected? <span class="plus-icon">+</span></div>
                 <div class="faq-answer">
-                    LuckyGenesMDx uses non-invasive collection methods. You can provide a small saliva sample or a standard blood draw at one of our partner clinics. Our home collection kits use professional-grade stabilizing buffers to ensure DNA integrity during transit.
+                    LuckyGenes uses non-invasive collection methods. You can provide a small saliva sample or a standard blood draw at one of our partner clinics. Our home collection kits use professional-grade stabilizing buffers to ensure DNA integrity during transit.
                 </div>
             </div>
 
@@ -62,7 +62,7 @@ $page_title = 'Frequently Asked Questions';
             <div class="faq-item" data-category="privacy">
                 <div class="faq-question">Who has access to my genetic data? <span class="plus-icon">+</span></div>
                 <div class="faq-answer">
-                    Under HIPAA regulations, your data is only accessible to you, the laboratory clinical team, and your ordering physician. LuckyGenesMDx does not sell your data to pharmaceutical companies or insurance providers.
+                    Under HIPAA regulations, your data is only accessible to you, the laboratory clinical team, and your ordering physician. LuckyGenes does not sell your data to pharmaceutical companies or insurance providers.
                 </div>
             </div>
         </div>

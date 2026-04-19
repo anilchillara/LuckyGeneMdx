@@ -1,5 +1,5 @@
 /**
- * LuckyGenesMDx - Main JavaScript
+ * LuckyGenes - Main JavaScript
  * Handles animations, interactions, and form validation
  */
 
@@ -536,7 +536,7 @@
     // ============================================
     // EXPORT FOR GLOBAL USE
     // ============================================
-    window.LuckyGenesMDx = {
+    window.LuckyGenes = {
         validateForm,
         validateField,
         showLoading,

@@ -4,7 +4,7 @@
  * Use this at the top of ALL admin pages
  */
 
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 // require_once '../includes/config.php';
 require_once '../includes/Database.php';
 

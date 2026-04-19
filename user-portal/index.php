@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -40,7 +40,7 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patient Dashboard | LuckyGenesMDx</title>
+<title>Patient Dashboard | LuckyGenes</title>
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/portal.css">
 <link rel="stylesheet" href="../css/custom.css">

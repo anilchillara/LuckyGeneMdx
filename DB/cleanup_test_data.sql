@@ -1,8 +1,8 @@
--- LuckyGenesMDx Test Data Cleanup Script
+-- LuckyGenes Test Data Cleanup Script
 -- Version 1.0
 -- This script removes all test data while preserving the database schema and default admin account
 
-USE LuckyGenesMDx_db;
+USE LuckyGenes_db;
 
 -- ============================================
 -- SAFETY CHECK
@@ -262,5 +262,5 @@ SELECT
     ROUND(((data_length + index_length) / 1024 / 1024), 2) AS size_mb,
     table_rows
 FROM information_schema.TABLES 
-WHERE table_schema = 'LuckyGenesMDx_db'
+WHERE table_schema = 'LuckyGenes_db'
 ORDER BY (data_length + index_length) DESC;

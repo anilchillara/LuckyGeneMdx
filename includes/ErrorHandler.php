@@ -3,7 +3,7 @@
  * ErrorHandler Class
  * Centralized error handling and logging
  * 
- * @package LuckyGenesMDx
+ * @package LuckyGenes
  * @version 2.0
  */
 
@@ -116,7 +116,7 @@ class ErrorHandler {
         error_log($message, 3, $logFile);
         
         // Also log to PHP error log
-        error_log("[LuckyGenesMDx] {$error['type']}: {$error['message']} in {$error['file']}:{$error['line']}");
+        error_log("[LuckyGenes] {$error['type']}: {$error['message']} in {$error['file']}:{$error['line']}");
     }
     
     /**

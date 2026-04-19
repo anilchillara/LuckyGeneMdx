@@ -13,8 +13,8 @@
  *   define('MAIL_USERNAME',  'yourgmail@gmail.com');
  *   define('MAIL_PASSWORD',  'xxxx xxxx xxxx xxxx');  // Gmail App Password (16 chars, NOT your Gmail password)
  *   define('MAIL_FROM',      'yourgmail@gmail.com');
- *   define('MAIL_FROM_NAME', 'LuckyGenesMDx');
- *   define('BASE_URL',       'http://localhost/LuckyGenesMDx'); // or your live domain
+ *   define('MAIL_FROM_NAME', 'LuckyGenes');
+ *   define('BASE_URL',       'http://localhost/LuckyGenes'); // or your live domain
  *
  * Schema additions required — run schema_changes.sql first:
  *   ALTER TABLE users
@@ -244,11 +244,11 @@ class User {
 
             $mail = $this->createMailer();
             $mail->addAddress($email, $full_name);
-            $mail->Subject = 'Verify your LuckyGenesMDx account';
+            $mail->Subject = 'Verify your LuckyGenes account';
             $mail->Body    = $this->buildVerificationEmailBody($full_name, $verify_url, $base_url);
             $mail->AltBody = "Hi " . explode(' ', $full_name)[0] . ",\n\n"
                            . "Verify your email by visiting:\n$verify_url\n\n"
-                           . "Link expires in 24 hours.\n\n— LuckyGenesMDx";
+                           . "Link expires in 24 hours.\n\n— LuckyGenes";
 
             $mail->send();
             error_log("Verification email sent to: $email (user_id: $user_id)");
@@ -279,14 +279,14 @@ class User {
       <table width="560" cellpadding="0" cellspacing="0"
              style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
         <tr><td align="center" style="padding-bottom:24px">
-          <img src="{$logo_url}" alt="LuckyGenesMDx" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;">
-          <h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenesMDx</h1>
+          <img src="{$logo_url}" alt="LuckyGenes" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;">
+          <h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenes</h1>
           <p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p>
         </td></tr>
         <tr><td style="padding-bottom:24px">
           <p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p>
           <p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">
-            Thanks for registering with LuckyGenesMDx. Please verify your email address to activate your account and access the patient portal.
+            Thanks for registering with LuckyGenes. Please verify your email address to activate your account and access the patient portal.
           </p>
           <p style="color:#475569;font-size:14px;line-height:1.6;margin:12px 0 0;">
             This link will expire in <strong style="color:#0A1F44">24 hours</strong>.
@@ -311,7 +311,7 @@ class User {
         </td></tr>
       </table>
       <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">
-        &copy; LuckyGenesMDx. All rights reserved.
+        &copy; LuckyGenes. All rights reserved.
       </p>
     </td></tr>
   </table>
@@ -601,18 +601,18 @@ HTML;
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-        <tr><td align="center" style="padding-bottom:24px"><img src="{$logo_url}" alt="LuckyGenesMDx" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;"><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenesMDx</h1><p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p></td></tr>
+        <tr><td align="center" style="padding-bottom:24px"><img src="{$logo_url}" alt="LuckyGenes" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;"><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenes</h1><p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p></td></tr>
         <tr><td style="padding-bottom:24px"><p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">Great news! The results for your order <strong style="color:#0A1F44">#{$order_number}</strong> are now available. You can view and download your comprehensive report securely from the patient portal.</p></td></tr>
         <tr><td align="center" style="padding:10px 0 32px"><a href="{$login_url}" style="display:inline-block;padding:14px 32px;background-color:#2979ff;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(41, 121, 255, 0.2);">View My Results</a></td></tr>
         <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px"><p style="color:#94a3b8;font-size:12px;margin:0;">If you have any questions about your results, please contact our support team.</p></td></tr>
       </table>
-      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGenesMDx. All rights reserved.</p>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGenes. All rights reserved.</p>
     </td></tr>
   </table>
 </body>
 </html>
 HTML;
-            $mail->AltBody = "Hi $first,\n\nYour results for order #$order_number are ready.\n\nLog in to view them: $login_url\n\n— LuckyGenesMDx";
+            $mail->AltBody = "Hi $first,\n\nYour results for order #$order_number are ready.\n\nLog in to view them: $login_url\n\n— LuckyGenes";
 
             $mail->send();
             return ['success' => true, 'message' => 'Notification email sent.'];
@@ -697,7 +697,7 @@ HTML;
 
             $mail = $this->createMailer();
             $mail->addAddress($email, $name);
-            $mail->Subject = 'Welcome to the LuckyGenesMDx Interest List';
+            $mail->Subject = 'Welcome to the LuckyGenes Interest List';
             
             $first = htmlspecialchars(explode(' ', trim($name))[0]);
             
@@ -709,18 +709,18 @@ HTML;
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-        <tr><td align="center" style="padding-bottom:24px"><img src="{$logo_url}" alt="LuckyGenesMDx" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;"><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenesMDx</h1></td></tr>
+        <tr><td align="center" style="padding-bottom:24px"><img src="{$logo_url}" alt="LuckyGenes" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;"><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenes</h1></td></tr>
         <tr><td style="padding-bottom:24px"><p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">Thank you for joining our interest list! You've taken the first step toward affordable, comprehensive genetic carrier screening.</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:12px 0 0;">We are working hard to launch our services. You will be among the first to know when we go live, and you'll receive exclusive early-access pricing.</p></td></tr>
         <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px"><p style="color:#94a3b8;font-size:12px;margin:0;">We promise to keep your information secure and never spam you.</p></td></tr>
       </table>
-      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGenesMDx. All rights reserved.</p>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGenes. All rights reserved.</p>
       <p style="color:#94a3b8;font-size:12px;margin:10px 0 0;text-align:center;">To be removed from receiving future emails, <a href="{$unsubscribe_url}" style="color:#94a3b8;text-decoration:underline;">unsubscribe here</a>.</p>
     </td></tr>
   </table>
 </body>
 </html>
 HTML;
-            $mail->AltBody = "Hi $first,\n\nThank you for joining the LuckyGenesMDx interest list! We will notify you as soon as we launch with exclusive early-access pricing.\n\n— LuckyGenesMDx";
+            $mail->AltBody = "Hi $first,\n\nThank you for joining the LuckyGenes interest list! We will notify you as soon as we launch with exclusive early-access pricing.\n\n— LuckyGenes";
 
             $mail->send();
             error_log("Interest list welcome email sent successfully to: $email");

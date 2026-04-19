@@ -1,5 +1,5 @@
 <?php
-define('LuckyGenesMDx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 session_start();
@@ -10,7 +10,7 @@ setSecurityHeaders();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenesMDx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
+    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenes comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title><?php echo htmlspecialchars(SITE_NAME); ?> - Comprehensive Genetic Carrier Screening | $<?php echo number_format(KIT_PRICE, 0); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">

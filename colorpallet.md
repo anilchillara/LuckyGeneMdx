@@ -1,4 +1,4 @@
-# LuckyGenesMDx Color Palette
+# LuckyGenes Color Palette
 
 Based on the CSS files provided (`css/portal.css` and `css/admin.css`), both panels use the **Microsoft Fluent Design System** color palette. They share a core foundation but the Admin panel adds a distinct red accent.
 

@@ -3,7 +3,7 @@
  * SessionManager Class
  * Handles secure session management
  * 
- * @package LuckyGenesMDx
+ * @package LuckyGenes
  * @version 2.0
  */
 

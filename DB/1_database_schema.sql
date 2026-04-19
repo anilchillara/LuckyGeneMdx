@@ -1,8 +1,8 @@
--- LuckyGenesMDx Database Schema
+-- LuckyGenes Database Schema
 -- Version 1.0
 
-CREATE DATABASE IF NOT EXISTS LuckyGenesMDx_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE LuckyGenesMDx_db;
+CREATE DATABASE IF NOT EXISTS LuckyGenes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE LuckyGenes_db;
 
 -- Users Table
 CREATE TABLE users (
@@ -95,7 +95,7 @@ CREATE TABLE admins (
 
 -- Insert default admin (password: Admin@123 - CHANGE THIS IMMEDIATELY)
 INSERT INTO admins (username, password_hash, email, role) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@LuckyGenesMDx.com', 'super_admin');
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@LuckyGenes.com', 'super_admin');
 
 -- Testimonials Table
 CREATE TABLE testimonials (

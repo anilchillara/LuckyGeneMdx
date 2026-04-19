@@ -1,5 +1,5 @@
 -- ============================================================
---  LuckyGenesMDx – Email Verification Schema Changes
+--  LuckyGenes – Email Verification Schema Changes
 --  Run this ONCE against your database before deploying.
 -- ============================================================
 
