@@ -158,7 +158,7 @@
                     <li>Contact support if you continue to experience issues</li>
                 </ul>
                 <div style="margin-top: 2rem;">
-                    <p><strong>Support:</strong> support@luckygenemmdx.com | 1-800-LUCKYGENE</p>
+                    <p><strong>Support:</strong> support@luckygenes.com | 1-800-LUCKYGENE</p>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 -- Version 1.0
 -- This script allows you to selectively clean specific data types
 
-USE LuckyGenes_db;
+USE luckygenes_db;
 
 -- ============================================
 -- CONFIGURATION - SET WHAT TO CLEAN

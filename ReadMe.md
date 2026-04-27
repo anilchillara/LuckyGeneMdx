@@ -132,13 +132,13 @@ mysql -u root -p
 
 ```sql
 -- Create database
-CREATE DATABASE LuckyGenes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE luckygenes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Create dedicated user (recommended)
 CREATE USER 'LuckyGenes'@'localhost' IDENTIFIED BY 'your_secure_password';
 
 -- Grant privileges
-GRANT ALL PRIVILEGES ON LuckyGenes_db.* TO 'LuckyGenes'@'localhost';
+GRANT ALL PRIVILEGES ON luckygenes_db.* TO 'LuckyGenes'@'localhost';
 
 -- Flush privileges
 FLUSH PRIVILEGES;
@@ -153,14 +153,14 @@ EXIT;
 cd /path/to/LuckyGenes
 
 # Import database schema
-mysql -u LuckyGenes -p LuckyGenes_db < database_schema.sql
+mysql -u LuckyGenes -p luckygenes_db < database_schema.sql
 # Enter the password you created above
 ```
 
 ### Step 3: Verify Import
 ```bash
 # Login to MySQL
-mysql -u LuckyGenes -p LuckyGenes_db
+mysql -u LuckyGenes -p luckygenes_db
 
 # Check tables
 SHOW TABLES;
@@ -188,7 +188,7 @@ open -a "TextEdit" includes/config.php
 ```php
 // Database Configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'LuckyGenes_db');
+define('DB_NAME', 'luckygenes_db');
 define('DB_USER', 'LuckyGenes');  // Or your MySQL username
 define('DB_PASS', 'your_secure_password');  // Your MySQL password
 define('DB_CHARSET', 'utf8mb4');
@@ -404,7 +404,7 @@ php -S localhost:8000 -c php.ini
 php -r "echo password_hash('YourNewSecurePassword', PASSWORD_DEFAULT);"
 
 # Copy the output, then update in MySQL:
-mysql -u LuckyGenes -p LuckyGenes_db
+mysql -u LuckyGenes -p luckygenes_db
 
 UPDATE admins 
 SET password_hash = 'paste_your_hash_here' 
@@ -526,14 +526,14 @@ cd ~/Desktop/LuckyGenes  # Adjust path as needed
 
 # Create database and user
 mysql -u root -p << EOF
-CREATE DATABASE LuckyGenes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE luckygenes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER 'LuckyGenes'@'localhost' IDENTIFIED BY 'secure_password_here';
-GRANT ALL PRIVILEGES ON LuckyGenes_db.* TO 'LuckyGenes'@'localhost';
+GRANT ALL PRIVILEGES ON luckygenes_db.* TO 'LuckyGenes'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
 # Import schema
-mysql -u LuckyGenes -p LuckyGenes_db < database_schema.sql
+mysql -u LuckyGenes -p luckygenes_db < database_schema.sql
 
 # Create directories
 mkdir -p uploads/results logs
@@ -608,7 +608,7 @@ touch logs/php-errors.log
 - [ ] Homebrew installed
 - [ ] PHP 7.4+ installed and verified
 - [ ] MySQL 8.0+ installed and running
-- [ ] Database `LuckyGenes_db` created
+- [ ] Database `luckygenes_db` created
 - [ ] Database schema imported successfully
 - [ ] `includes/config.php` updated with DB credentials
 - [ ] Encryption key generated and configured

@@ -435,7 +435,7 @@ class EmailService {
 ENVIRONMENT=production
 SITE_URL=https://LuckyGenes.com
 DB_HOST=localhost
-DB_NAME=LuckyGenes_db
+DB_NAME=luckygenes_db
 DB_USER=app_user
 DB_PASS=strong_password_here
 ENCRYPTION_KEY=64_char_random_key

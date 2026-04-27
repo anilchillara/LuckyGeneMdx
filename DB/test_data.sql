@@ -2,33 +2,33 @@
 -- Version 1.0
 -- This file populates the database with realistic test data
 
-USE LuckyGenes_db;
+USE luckygenes_db;
 
 -- ============================================
 -- TEST USERS (20 users)
 -- ============================================
 -- Password for all test users: Test@123
 INSERT INTO users (email, password_hash, full_name, phone, dob, created_at, last_login) VALUES
-('john.doe@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'John Doe', '555-0101', '1990-05-15', '2024-01-10 10:30:00', '2024-02-10 14:20:00'),
-('sarah.johnson@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Sarah Johnson', '555-0102', '1988-08-22', '2024-01-12 09:15:00', '2024-02-12 16:45:00'),
-('michael.chen@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Michael Chen', '555-0103', '1992-03-30', '2024-01-15 11:20:00', '2024-02-08 10:30:00'),
-('emily.williams@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Emily Williams', '555-0104', '1985-12-08', '2024-01-18 14:45:00', '2024-02-14 09:15:00'),
-('david.martinez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'David Martinez', '555-0105', '1993-07-19', '2024-01-20 08:30:00', '2024-02-13 15:20:00'),
-('jessica.brown@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Jessica Brown', '555-0106', '1991-11-25', '2024-01-22 16:00:00', '2024-02-11 11:40:00'),
-('robert.taylor@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Robert Taylor', '555-0107', '1987-04-12', '2024-01-25 10:15:00', '2024-02-09 13:25:00'),
-('amanda.anderson@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Amanda Anderson', '555-0108', '1994-09-03', '2024-01-28 13:30:00', '2024-02-14 10:50:00'),
-('james.wilson@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'James Wilson', '555-0109', '1989-06-17', '2024-02-01 09:45:00', '2024-02-12 14:15:00'),
-('lisa.moore@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Lisa Moore', '555-0110', '1986-02-28', '2024-02-03 11:20:00', '2024-02-13 16:30:00'),
-('daniel.garcia@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Daniel Garcia', '555-0111', '1995-10-14', '2024-02-05 15:10:00', '2024-02-14 09:45:00'),
-('jennifer.lee@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Jennifer Lee', '555-0112', '1990-01-20', '2024-02-06 10:30:00', '2024-02-13 12:20:00'),
-('christopher.white@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Christopher White', '555-0113', '1988-07-08', '2024-02-07 14:15:00', '2024-02-14 15:10:00'),
-('michelle.harris@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Michelle Harris', '555-0114', '1992-05-26', '2024-02-08 09:00:00', '2024-02-12 10:35:00'),
-('matthew.clark@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Matthew Clark', '555-0115', '1991-12-11', '2024-02-09 16:45:00', '2024-02-14 11:20:00'),
-('laura.rodriguez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Laura Rodriguez', '555-0116', '1987-03-05', '2024-02-10 11:30:00', '2024-02-13 14:40:00'),
-('kevin.lewis@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Kevin Lewis', '555-0117', '1993-08-18', '2024-02-11 13:20:00', '2024-02-14 16:15:00'),
-('stephanie.walker@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Stephanie Walker', '555-0118', '1989-11-02', '2024-02-12 08:45:00', '2024-02-13 09:30:00'),
-('brian.hall@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Brian Hall', '555-0119', '1994-04-22', '2024-02-13 15:30:00', '2024-02-14 13:45:00'),
-('nicole.allen@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Nicole Allen', '555-0120', '1990-09-14', '2024-02-14 10:00:00', '2024-02-14 17:20:00');
+('john.doe@email.com', 'f925916e2754e5e03f75dd58a5733251', 'John Doe', '555-0101', '1990-05-15', '2024-01-10 10:30:00', '2024-02-10 14:20:00'),
+('sarah.johnson@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Sarah Johnson', '555-0102', '1988-08-22', '2024-01-12 09:15:00', '2024-02-12 16:45:00'),
+('michael.chen@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Michael Chen', '555-0103', '1992-03-30', '2024-01-15 11:20:00', '2024-02-08 10:30:00'),
+('emily.williams@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Emily Williams', '555-0104', '1985-12-08', '2024-01-18 14:45:00', '2024-02-14 09:15:00'),
+('david.martinez@email.com', 'f925916e2754e5e03f75dd58a5733251', 'David Martinez', '555-0105', '1993-07-19', '2024-01-20 08:30:00', '2024-02-13 15:20:00'),
+('jessica.brown@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Jessica Brown', '555-0106', '1991-11-25', '2024-01-22 16:00:00', '2024-02-11 11:40:00'),
+('robert.taylor@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Robert Taylor', '555-0107', '1987-04-12', '2024-01-25 10:15:00', '2024-02-09 13:25:00'),
+('amanda.anderson@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Amanda Anderson', '555-0108', '1994-09-03', '2024-01-28 13:30:00', '2024-02-14 10:50:00'),
+('james.wilson@email.com', 'f925916e2754e5e03f75dd58a5733251', 'James Wilson', '555-0109', '1989-06-17', '2024-02-01 09:45:00', '2024-02-12 14:15:00'),
+('lisa.moore@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Lisa Moore', '555-0110', '1986-02-28', '2024-02-03 11:20:00', '2024-02-13 16:30:00'),
+('daniel.garcia@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Daniel Garcia', '555-0111', '1995-10-14', '2024-02-05 15:10:00', '2024-02-14 09:45:00'),
+('jennifer.lee@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Jennifer Lee', '555-0112', '1990-01-20', '2024-02-06 10:30:00', '2024-02-13 12:20:00'),
+('christopher.white@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Christopher White', '555-0113', '1988-07-08', '2024-02-07 14:15:00', '2024-02-14 15:10:00'),
+('michelle.harris@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Michelle Harris', '555-0114', '1992-05-26', '2024-02-08 09:00:00', '2024-02-12 10:35:00'),
+('matthew.clark@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Matthew Clark', '555-0115', '1991-12-11', '2024-02-09 16:45:00', '2024-02-14 11:20:00'),
+('laura.rodriguez@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Laura Rodriguez', '555-0116', '1987-03-05', '2024-02-10 11:30:00', '2024-02-13 14:40:00'),
+('kevin.lewis@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Kevin Lewis', '555-0117', '1993-08-18', '2024-02-11 13:20:00', '2024-02-14 16:15:00'),
+('stephanie.walker@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Stephanie Walker', '555-0118', '1989-11-02', '2024-02-12 08:45:00', '2024-02-13 09:30:00'),
+('brian.hall@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Brian Hall', '555-0119', '1994-04-22', '2024-02-13 15:30:00', '2024-02-14 13:45:00'),
+('nicole.allen@email.com', 'f925916e2754e5e03f75dd58a5733251', 'Nicole Allen', '555-0120', '1990-09-14', '2024-02-14 10:00:00', '2024-02-14 17:20:00');
 
 -- ============================================
 -- TEST ORDERS (30 orders with various statuses)
@@ -86,10 +86,10 @@ INSERT INTO results (order_id, file_path, encrypted_filename, upload_date, uploa
 -- ADDITIONAL ADMINS (lab techs and support)
 -- ============================================
 INSERT INTO admins (username, password_hash, email, role, is_active, created_at, last_login, created_by) VALUES
-('lab_tech1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'labtech1@LuckyGenes.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-14 08:30:00', 1),
-('lab_tech2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'labtech2@LuckyGenes.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-13 14:15:00', 1),
-('support1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'support1@LuckyGenes.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 16:45:00', 1),
-('support2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'support2@LuckyGenes.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 11:20:00', 1);
+('lab_tech1', 'f925916e2754e5e03f75dd58a5733251', 'labtech1@LuckyGenes.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-14 08:30:00', 1),
+('lab_tech2', 'f925916e2754e5e03f75dd58a5733251', 'labtech2@LuckyGenes.com', 'lab_tech', TRUE, '2024-01-05 09:00:00', '2024-02-13 14:15:00', 1),
+('support1', 'f925916e2754e5e03f75dd58a5733251', 'support1@LuckyGenes.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 16:45:00', 1),
+('support2', 'f925916e2754e5e03f75dd58a5733251', 'support2@LuckyGenes.com', 'support', TRUE, '2024-01-05 09:00:00', '2024-02-14 11:20:00', 1);
 
 -- ============================================
 -- BLOG POSTS (10 posts)

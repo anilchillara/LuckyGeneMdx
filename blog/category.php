@@ -180,7 +180,7 @@ try {
                 </div>
                 <div class="footer-col">
                     <h4>Contact</h4>
-                    <p>Email: support@luckygenemmdx.com</p>
+                    <p>Email: support@luckygenes.com</p>
                     <p>Phone: 1-800-LUCKYGENE</p>
                 </div>
             </div>

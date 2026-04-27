@@ -147,7 +147,7 @@ Email: sarah.johnson@email.com | Password: Test@123
 
 🚀 Installation:
 bash# After creating the database with database_schema.sql
-mysql -u your_user -p LuckyGenes_db < test_data.sql
+mysql -u your_user -p luckygenes_db < test_data.sql
 
 # Or via phpMyAdmin - Import the test_data.sql file
 The file includes a summary query at the end that shows counts of all inserted records!Test dataCode · 

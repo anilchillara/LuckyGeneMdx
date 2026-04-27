@@ -91,10 +91,10 @@ chmod 755 uploads logs
 chmod 644 .env
 
 # 5. Import database
-mysql -u your_user -p LuckyGenes_db < database_schema.sql
+mysql -u your_user -p luckygenes_db < database_schema.sql
 
 # 6. Optional: Import test data
-mysql -u your_user -p LuckyGenes_db < DB/test_data.sql
+mysql -u your_user -p luckygenes_db < DB/test_data.sql
 
 # 7. Update Apache/Nginx config to point to project root
 
@@ -122,7 +122,7 @@ ENCRYPTION_KEY=your_generated_key_here
 ENVIRONMENT=production
 SITE_URL=https://your-domain.com
 DB_HOST=localhost
-DB_NAME=LuckyGenes_db
+DB_NAME=luckygenes_db
 DB_USER=your_db_user
 DB_PASS=your_secure_password
 ENCRYPTION_KEY=64_character_hex_string
@@ -425,7 +425,7 @@ session.save_path = "tcp://127.0.0.1:6379"
    ```sql
    -- Create dedicated user with limited privileges
    CREATE USER 'luckygene_app'@'localhost' IDENTIFIED BY 'strong_password';
-   GRANT SELECT, INSERT, UPDATE, DELETE ON LuckyGenes_db.* TO 'luckygene_app'@'localhost';
+   GRANT SELECT, INSERT, UPDATE, DELETE ON luckygenes_db.* TO 'luckygene_app'@'localhost';
    FLUSH PRIVILEGES;
    ```
 

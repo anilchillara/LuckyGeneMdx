@@ -328,7 +328,7 @@ FROM orders WHERE user_id = ?  // Returns only 4 needed columns
 
 1. **Backup Everything**
    ```bash
-   mysqldump LuckyGenes_db > backup.sql
+   mysqldump luckygenes_db > backup.sql
    tar -czf code_backup.tar.gz /var/www/LuckyGenes/
    ```
 

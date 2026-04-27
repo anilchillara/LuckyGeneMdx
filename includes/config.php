@@ -67,7 +67,7 @@ if (!defined('LuckyGenes')) {
 
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'LuckyGenes_db');
+define('DB_NAME', getenv('DB_NAME') ?: 'luckygenes_db');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');

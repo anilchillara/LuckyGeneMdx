@@ -1,7 +1,7 @@
 -- UPDATE: Modify orders table to allow guest checkout
 -- Run this after creating the initial database
 
-USE LuckyGenes_db;
+USE luckygenes_db;
 
 -- Modify orders table to allow NULL user_id (for guest orders)
 ALTER TABLE orders MODIFY user_id INT NULL;

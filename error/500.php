@@ -184,7 +184,7 @@
             <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                 <h3>Need Immediate Assistance?</h3>
                 <p style="margin-top: 1rem;">
-                    <strong>Email:</strong> support@luckygenemmdx.com<br>
+                    <strong>Email:</strong> support@luckygenes.com<br>
                     <strong>Phone:</strong> 1-800-LUCKYGENE<br>
                     <small style="color: rgba(255, 255, 255, 0.6);">Available Monday-Friday, 9AM-5PM EST</small>
                 </p>
