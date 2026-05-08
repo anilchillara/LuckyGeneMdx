@@ -8,8 +8,8 @@
     /* Colors - Consolidated Gemini Palette */
     --color-primary-blue: #4285F4;       /* Primary Blue */
     --color-primary-deep-blue: #1A73E8;  /* Indigo/Blue */
-    --color-medical-teal: #5AB9EA;       /* Light Cerulean */
-    --color-medical-teal: #5AB9EA;       /* Light Cerulean */
+    /* --color-medical-teal: #5AB9EA;       Light Cerulean */
+    --color-medical-teal: #00CED1;       /* Light Cerulean */
     --color-teal-glow: rgba(0, 179, 164, 0.35);
     --color-teal-ice: #80f3ff;
     --color-navy: #202124;               /* Primary Text Color - Gemini Text Primary */
