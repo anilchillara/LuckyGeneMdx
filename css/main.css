@@ -4,13 +4,15 @@
  */
 
 :root {
-    /* Colors */
     /* Colors - Consolidated Gemini Palette */
-    --color-primary-blue: #4285F4;       /* Primary Blue */
-    --color-primary-deep-blue: #1A73E8;  /* Indigo/Blue */
+    /* --color-purple-accent: #9334E6;      Gemini Purple */
+    --color-purple-accent: #6A32C8;      /* Updated to a deeper, more vibrant purple */
+    /* --color-primary-deep-blue: #1A73E8;  Indigo/Blue */
+    --color-primary-deep-blue:#0A66C2; /* Updated to a richer, more vibrant blue */
     /* --color-medical-teal: #5AB9EA;       Light Cerulean */
     --color-medical-teal: #00CED1;       /* Light Cerulean */
     --color-teal-glow: rgba(0, 179, 164, 0.35);
+    --color-primary-blue: #4285F4;       /* Primary Blue */
     --color-teal-ice: #80f3ff;
     --color-navy: #202124;               /* Primary Text Color - Gemini Text Primary */
     --color-navy-2: #0d2554;
@@ -22,12 +24,11 @@
     --color-border: #E0E0E0;             /* Divider lines */
     --color-warning-amber: #FBBC05;      /* Gemini Yellow */
     --color-soft-purple: #84CEEB;        /* Sky Blue - Analogous */
-    --color-purple-accent: #9334E6;      /* Gemini Purple */
     --color-pink-accent: #D81B60;        /* Gemini Pink/Magenta */
     --color-red-accent: #EA4335;         /* Gemini Red */
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--color-primary-blue) 0%, var(--color-primary-deep-blue) 50%, var(--color-purple-accent) 100%);
+    --gradient-primary: linear-gradient(135deg, var(--color-medical-teal) 0%, var(--color-primary-deep-blue) 50%, var(--color-purple-accent) 100%);
 }
 
 /* Reset & Base */
