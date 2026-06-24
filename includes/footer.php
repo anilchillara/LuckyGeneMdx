@@ -282,9 +282,9 @@ body.dark-theme .footer-bottom {
                 <li style="opacity: 0.9; font-size: 0.9rem;">
                     📧 <?php echo htmlspecialchars(SUPPORT_EMAIL); ?>
                 </li>
-                <li style="opacity: 0.9; font-size: 0.9rem;">
+                <!-- <li style="opacity: 0.9; font-size: 0.9rem;">
                     📞 1-800-GENE-TEST
-                </li>
+                </li> -->
                 <?php if ($isNavActive('request-kit.php')): ?>
                 <li style="margin-top: 1.5rem;">
                     <a href="<?php echo $baseUrl; ?>request-kit.php" class="footer-cta-btn">

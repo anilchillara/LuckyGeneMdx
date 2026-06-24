@@ -53,14 +53,14 @@ $page_title = 'Contact Us';
                     </div>
                 </div>
 
-                <div class="info-detail-item">
+                <!-- <div class="info-detail-item">
                     <span>📞</span>
                     <div>
                         <strong>Clinical Support</strong>
                         1-800-GENE-TEST (436-3837)<br>
                         Mon-Fri: 8AM - 8PM EST
                     </div>
-                </div>
+                </div> -->
 
                 <div class="info-detail-item">
                     <span>📧</span>
