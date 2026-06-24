@@ -35,93 +35,93 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
 
         <section class="section">
             <div class="container">
-                <div style="text-align: center; margin-bottom: 3rem;">
+                <div class="text-center mb-5">
                     <h2>Your Journey to Genetic Awareness</h2>
-                    <p style="color: var(--color-dark-gray);">Our streamlined 5-step process makes genetic carrier screening accessible and convenient.</p>
+                    <p class="text-dark-gray">Our streamlined 5-step process makes genetic carrier screening accessible and convenient.</p>
                 </div>
 
                 <div class="row">
                     <div class="col col-2">
-                        <div class="glass-card process-card" style="border-top-color: var(--color-medical-teal);">
+                        <div class="glass-card process-card glass-card-teal-top">
                             <div class="process-header">
-                                <span class="process-number" style="background: var(--color-medical-teal);">1</span>
-                                <h3 class="process-title"><i class="fas fa-shopping-cart" style="color: var(--color-medical-teal); margin-right: 8px;"></i> Order Your Kit</h3>
+                                <span class="process-number bg-teal">1</span>
+                                <h3 class="process-title text-teal"><i class="fas fa-shopping-cart mr-2"></i> Order Your Kit</h3>
                             </div>
                             <p>Complete our secure online form. Your kit ships within 1-2 business days.</p>
-                            <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
+                            <ul class="font-sm pl-3">
                                 <li>Payment information ($<?php echo number_format(KIT_PRICE, 0); ?>)</li>
                                 <li>Informed consent included</li>
                             </ul>
-                            <div class="process-meta" style="color: var(--color-medical-teal);">⏱️ 5 minutes</div>
+                            <div class="process-meta text-teal">⏱️ 5 minutes</div>
                         </div>
                     </div>
                     
                     <div class="col col-2">
-                        <div class="glass-card process-card" style="border-top-color: #2979ff;">
+                        <div class="glass-card process-card glass-card-blue-top">
                             <div class="process-header">
-                                <span class="process-number" style="background: #2979ff;">2</span>
-                                <h3 class="process-title"><i class="fas fa-box-open" style="color: #2979ff; margin-right: 8px;"></i> Receive Your Kit</h3>
+                                <span class="process-number bg-blue">2</span>
+                                <h3 class="process-title text-deep-blue"><i class="fas fa-box-open mr-2"></i> Receive Your Kit</h3>
                             </div>
                             <p>Everything needed for saliva collection—no needles or blood draws required.</p>
-                            <ul style="font-size: 0.9rem; padding-left: 1.2rem;">
+                            <ul class="font-sm pl-3">
                                 <li>Saliva collection tube</li>
                                 <li>Prepaid return label</li>
                             </ul>
-                            <div class="process-meta" style="color: #2979ff;">⏱️ 2-3 days shipping</div>
+                            <div class="process-meta text-deep-blue">⏱️ 2-3 days shipping</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-4">
                     <div class="col col-3">
-                        <div class="glass-card process-card" style="border-top-color: #9177C7;">
+                        <div class="glass-card process-card glass-card-purple-top">
                             <div class="process-header">
-                                <span class="process-number" style="background: #9177C7;">3</span>
-                                <h3 class="process-title" style="color: #9177C7;"><i class="fas fa-vial" style="margin-right: 8px;"></i> Collect Sample</h3>
+                                <span class="process-number bg-purple">3</span>
+                                <h3 class="process-title text-purple"><i class="fas fa-vial mr-2"></i> Collect Sample</h3>
                             </div>
-                            <p style="font-size: 0.9rem;">Simple saliva-based collection. No fasting, just 10 minutes of your time.</p>
+                            <p class="font-sm">Simple saliva-based collection. No fasting, just 10 minutes of your time.</p>
                         </div>
                     </div>
                     
                     <div class="col col-3">
-                        <div class="glass-card process-card" style="border-top-color: var(--color-medical-teal);">
+                        <div class="glass-card process-card glass-card-teal-top">
                             <div class="process-header">
-                                <span class="process-number" style="background: var(--color-medical-teal);">4</span>
-                                <h3 class="process-title" style="color: var(--color-medical-teal);"><i class="fas fa-microscope" style="margin-right: 8px;"></i> Lab Analysis</h3>
+                                <span class="process-number bg-teal">4</span>
+                                <h3 class="process-title text-teal"><i class="fas fa-microscope mr-2"></i> Lab Analysis</h3>
                             </div>
-                            <p style="font-size: 0.9rem;">Samples processed in CLIA-certified, CAP-accredited laboratories.</p>
+                            <p class="font-sm">Samples processed in CLIA-certified, CAP-accredited laboratories.</p>
                         </div>
                     </div>
 
                     <div class="col col-3">
-                        <div class="glass-card process-card" style="border-top-color: #2979ff;">
+                        <div class="glass-card process-card glass-card-blue-top">
                             <div class="process-header">
-                                <span class="process-number" style="background: #2979ff;">5</span>
-                                <h3 class="process-title" style="color: #2979ff;"><i class="fas fa-file-medical-alt" style="margin-right: 8px;"></i> Access Results</h3>
+                                <span class="process-number bg-blue">5</span>
+                                <h3 class="process-title text-deep-blue"><i class="fas fa-file-medical-alt mr-2"></i> Access Results</h3>
                             </div>
-                            <p style="font-size: 0.9rem;">View your comprehensive report through our secure, encrypted portal.</p>
+                            <p class="font-sm">View your comprehensive report through our secure, encrypted portal.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section" style="background: var(--color-light-gray);">
+        <section class="section section-light">
             <div class="container">
-                <h2 class="text-center" style="margin-bottom: 3rem;">Security & Privacy</h2>
+                <h2 class="text-center mb-5">Security & Privacy</h2>
                 <div class="row">
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem;">
-                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔒</div>
+                        <div class="glass-card text-center p-4">
+                            <div class="font-huge mb-2">🔒</div>
                             <h4>HIPAA Compliant</h4>
-                            <p style="font-size: 0.9rem;">Full compliance with healthcare data standards.</p>
+                            <p class="font-sm">Full compliance with healthcare data standards.</p>
                         </div>
                     </div>
                     <div class="col col-4">
-                        <div class="glass-card" style="text-align: center; padding: 2rem;">
-                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+                        <div class="glass-card text-center p-4">
+                            <div class="font-huge mb-2">🛡️</div>
                             <h4>Encrypted</h4>
-                            <p style="font-size: 0.9rem;">Results stored with AES-256 encryption.</p>
+                            <p class="font-sm">Results stored with AES-256 encryption.</p>
                         </div>
                     </div>
                 </div>

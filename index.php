@@ -93,7 +93,7 @@ setSecurityHeaders();
         <div class="stats-band">
             <div class="stats-band-inner">
                 <div class="stat-cell"><div class="stat-num" data-count="300">300+</div><div class="stat-lbl">Conditions Screened</div></div>
-                <div class="stat-cell"><div class="stat-num">$<?php echo number_format(KIT_PRICE, 0); ?></div><div class="stat-lbl">Flat Transparent Price</div></div>
+                <!-- <div class="stat-cell"><div class="stat-num">$<?php echo number_format(KIT_PRICE, 0); ?></div><div class="stat-lbl">Flat Transparent Price</div></div> -->
                 <div class="stat-cell"><div class="stat-num" data-count="21">21</div><div class="stat-lbl">Day Results Maximum</div></div>
                 <div class="stat-cell"><div class="stat-num">ACMG</div><div class="stat-lbl">Aligned Standards</div></div>
             </div>
@@ -122,30 +122,7 @@ setSecurityHeaders();
 
                     <div class="diagram-card reveal reveal-d2">
                         <h4>Recessive Inheritance Pattern</h4>
-                        <svg viewBox="0 0 400 290" style="width:100%;max-width:420px;display:block;margin:0 auto;">
-                            <circle cx="100" cy="48" r="34" fill="#00B3A4" fill-opacity="0.15" stroke="#00B3A4" stroke-width="1.5"/>
-                            <text x="100" y="44" text-anchor="middle" fill="#0A1F44" font-size="12" font-weight="700" font-family="Poppins,sans-serif">Parent 1</text>
-                            <text x="100" y="61" text-anchor="middle" fill="#00B3A4" font-size="11" font-family="Inter,sans-serif">Carrier</text>
-                            <circle cx="300" cy="48" r="34" fill="#00B3A4" fill-opacity="0.15" stroke="#00B3A4" stroke-width="1.5"/>
-                            <text x="300" y="44" text-anchor="middle" fill="#0A1F44" font-size="12" font-weight="700" font-family="Poppins,sans-serif">Parent 2</text>
-                            <text x="300" y="61" text-anchor="middle" fill="#00B3A4" font-size="11" font-family="Inter,sans-serif">Carrier</text>
-                            <line x1="100" y1="82" x2="75"  y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <line x1="100" y1="82" x2="155" y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <line x1="300" y1="82" x2="245" y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <line x1="300" y1="82" x2="325" y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <circle cx="75"  cy="218" r="26" fill="#22c55e" fill-opacity="0.85"/>
-                            <text x="75"  y="214" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter,sans-serif">25%</text>
-                            <text x="75"  y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Not Affected</text>
-                            <circle cx="155" cy="218" r="26" fill="#00B3A4" fill-opacity="0.6"/>
-                            <text x="155" y="214" text-anchor="middle" fill="#0A1F44" font-size="11" font-weight="700" font-family="Inter,sans-serif">50%</text>
-                            <text x="155" y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Carrier</text>
-                            <circle cx="245" cy="218" r="26" fill="#00B3A4" fill-opacity="0.6"/>
-                            <text x="245" y="214" text-anchor="middle" fill="#0A1F44" font-size="11" font-weight="700" font-family="Inter,sans-serif">50%</text>
-                            <text x="245" y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Carrier</text>
-                            <circle cx="325" cy="218" r="26" fill="#ef4444" fill-opacity="0.8"/>
-                            <text x="325" y="214" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter,sans-serif">25%</text>
-                            <text x="325" y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Affected</text>
-                        </svg>
+                        <img src="assets/images/AutosomalRecessive.png" alt="Recessive inheritance pattern diagram showing parent carriers and child outcomes: 25% not affected, 50% carrier, 50% carrier, 25% affected" style="width:100%;max-width:420px;display:block;margin:0 auto;">
                         <p style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--gray);line-height:1.65;">
                             When both parents are carriers, each pregnancy carries a 25% chance of the child being affected.
                         </p>
@@ -155,6 +132,8 @@ setSecurityHeaders();
         </section>
 
         <!-- ══ STANDARDS ════════════════════════════════════ -->
+        <!-- ══ STANDARDS ════════════════════════════════════ -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-standards">
             <div class="standards-inner">
                 <span class="sec-tag">Our Standards</span>
@@ -189,6 +168,7 @@ setSecurityHeaders();
                 <p class="std-disclaimer"><em><?php echo htmlspecialchars(SITE_NAME); ?> is not affiliated with ACMG or CDC. Our testing aligns with standards established by these organizations.</em></p>
             </div>
         </section>
+        <?php endif; ?>
 
         <!-- ══ TIMELINE ══════════════════════════════════════ -->
         <section class="sec-timeline" aria-labelledby="timeline-heading">
@@ -209,6 +189,7 @@ setSecurityHeaders();
         </section>
 
         <!-- ══ TESTIMONIALS ══════════════════════════════════ -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-testimonials" aria-labelledby="testimonials-heading">
             <div class="test-header reveal">
                 <span class="sec-tag">Stories</span>
@@ -258,6 +239,7 @@ setSecurityHeaders();
             } catch(Exception $e){ error_log($e->getMessage()); }
             ?>
         </section>
+        <?php endif; ?>
 
         <!-- ══ CTA ══════════════════════════════════════════ -->
         <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
