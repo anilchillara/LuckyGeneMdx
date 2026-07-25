@@ -54,12 +54,14 @@ setSecurityHeaders();
                     Family's <span class="accent">Genetic</span><br>
                     Future
                 </h1>
-
+                <!-- ══ STANDARDS ════════════════════════════════════ -->
+                <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
                 <p class="hero-desc">
                     Carrier screening for over 300 genetic conditions.
                     Know your status before family planning begins — 
                     clear, private results in 14–21 days.
                 </p>
+                <?php endif; ?>
 
                 <div class="hero-btns">
                     <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
@@ -79,7 +81,7 @@ setSecurityHeaders();
                     <div class="hero-trust-item"><span class="hero-trust-check"></span>ACMG Aligned</div>
                     <div class="hero-trust-item"><span class="hero-trust-check"></span>Secure &amp; Private</div>
                     <div class="hero-trust-item"><span class="hero-trust-check"></span>CDC Reference Standards</div>
-                    <div class="hero-trust-item"><span class="hero-trust-check"></span>Results in 14–21 Days</div>
+                    <?php if (defined('SHOW_CTA') && SHOW_CTA): ?><div class="hero-trust-item"><span class="hero-trust-check"></span>Results in 14–21 Days</div><?php endif; ?>
                 </div>
             </div>
 
@@ -131,7 +133,6 @@ setSecurityHeaders();
             </div>
         </section>
 
-        <!-- ══ STANDARDS ════════════════════════════════════ -->
         <!-- ══ STANDARDS ════════════════════════════════════ -->
         <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-standards">
