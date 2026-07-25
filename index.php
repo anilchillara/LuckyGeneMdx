@@ -12,7 +12,7 @@ setSecurityHeaders();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenes comprehensive carrier screening.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title><?php echo htmlspecialchars(SITE_NAME); ?> - Comprehensive Genetic Carrier Screening | $<?php echo number_format(KIT_PRICE, 0); ?></title>
+    <title><?php echo htmlspecialchars(SITE_NAME); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
