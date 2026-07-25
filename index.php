@@ -10,7 +10,7 @@ setSecurityHeaders();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenes comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
+    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenes comprehensive carrier screening.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
     <title><?php echo htmlspecialchars(SITE_NAME); ?> - Comprehensive Genetic Carrier Screening | $<?php echo number_format(KIT_PRICE, 0); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,7 +122,7 @@ setSecurityHeaders();
 
                     <div class="diagram-card reveal reveal-d2">
                         <h4>Recessive Inheritance Pattern</h4>
-                        <img src="assets/images/AutosomalRecessive.png" alt="Recessive inheritance pattern diagram showing parent carriers and child outcomes: 25% not affected, 50% carrier, 50% carrier, 25% affected" style="width:100%;max-width:420px;display:block;margin:0 auto;">
+                        <img src="assets/images/AutosomalRecessive.pngf" alt="Recessive inheritance pattern diagram showing parent carriers and child outcomes: 25% not affected, 50% carrier, 50% carrier, 25% affected" style="width:100%;max-width:420px;display:block;margin:0 auto;">
                         <p style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--gray);line-height:1.65;">
                             When both parents are carriers, each pregnancy carries a 25% chance of the child being affected.
                         </p>
