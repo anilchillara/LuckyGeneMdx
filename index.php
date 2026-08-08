@@ -124,7 +124,7 @@ setSecurityHeaders();
 
                     <div class="diagram-card reveal reveal-d2">
                         <h4>Recessive Inheritance Pattern</h4>
-                        <img src="assets/images/AutosomalRecessive.pngf" alt="Recessive inheritance pattern diagram showing parent carriers and child outcomes: 25% not affected, 50% carrier, 50% carrier, 25% affected" style="width:100%;max-width:420px;display:block;margin:0 auto;">
+                        <img src="assets/images/AutosomalRecessive.png" alt="Recessive inheritance pattern diagram showing parent carriers and child outcomes: 25% not affected, 50% carrier, 50% carrier, 25% affected" style="width:100%;max-width:420px;display:block;margin:0 auto;">
                         <p style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--gray);line-height:1.65;">
                             When both parents are carriers, each pregnancy carries a 25% chance of the child being affected.
                         </p>
