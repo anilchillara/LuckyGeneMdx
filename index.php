@@ -66,7 +66,7 @@ setSecurityHeaders();
                 <div class="hero-btns">
                     <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
                     <a href="request-kit.php" class="btn-primary-hero">
-                        Order Your Kit — $<?php echo number_format(KIT_PRICE, 0); ?>
+                        Order Your Kit — <?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?>
                         <svg class="btn-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -161,7 +161,7 @@ setSecurityHeaders();
                         <div class="std-icon">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         </div>
-                        <div class="std-num">$<?php echo number_format(KIT_PRICE, 0); ?></div>
+                        <div class="std-num"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?></div>
                         <h3>Transparent Pricing</h3>
                         <p>One flat rate. No hidden fees, insurance battles, or surprise bills.</p>
                     </div>
@@ -250,9 +250,9 @@ setSecurityHeaders();
                 <h2>Invest Today for<br>a Healthier Tomorrow</h2>
                 <p>Take the first step toward informed family planning with comprehensive genetic carrier screening. Clear insights, delivered privately.</p>
                 <div class="cta-pricing">
-                    <span class="cta-price">$<?php echo number_format(KIT_PRICE, 0); ?></span>
+                    <span class="cta-price"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?></span>
                     <?php if (defined('ACTUAL_PRICE') && ACTUAL_PRICE > KIT_PRICE): ?>
-                    <span class="cta-strike">$<?php echo number_format(ACTUAL_PRICE, 0); ?></span>
+                    <span class="cta-strike"><?php echo CURRENCY_SYMBOL . number_format(ACTUAL_PRICE, 0); ?></span>
                     <?php endif; ?>
                 </div>
                 <a href="request-kit.php" class="btn-cta-main">

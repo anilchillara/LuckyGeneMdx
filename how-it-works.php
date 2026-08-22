@@ -49,7 +49,7 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                             </div>
                             <p>Complete our secure online form. Your kit ships within 1-2 business days.</p>
                             <ul class="font-sm pl-3">
-                                <li>Payment information ($<?php echo number_format(KIT_PRICE, 0); ?>)</li>
+                                <li>Payment information (<?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?>)</li>
                                 <li>Informed consent included</li>
                             </ul>
                             <div class="process-meta text-teal">⏱️ 5 minutes</div>
@@ -138,8 +138,10 @@ $page_description = 'Simple 5-step process for genetic carrier screening. From o
                 <p>Join thousands of families who have chosen proactive screening. Order your clinical-grade kit today.</p>
                 
                 <div class="cta-pricing">
-                    <span class="cta-price">$<?php echo number_format(KIT_PRICE, 0); ?></span>
-                    <span class="cta-strike">$249</span>
+                    <span class="cta-price"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?></span>
+                    <?php if (defined('ACTUAL_PRICE') && ACTUAL_PRICE > KIT_PRICE): ?>
+                    <span class="cta-strike"><?php echo CURRENCY_SYMBOL . number_format(ACTUAL_PRICE, 0); ?></span>
+                    <?php endif; ?>
                 </div>
                 
                 <a href="request-kit.php" class="btn-cta-main">

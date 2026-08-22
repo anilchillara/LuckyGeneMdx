@@ -168,11 +168,20 @@ define('MAIL_FROM_NAME', $dbSettings['from_name'] ?? (getenv('EMAIL_FROM_NAME') 
 define('BASE_URL', $dbSettings['base_url'] ?? (getenv('BASE_URL') ?: SITE_URL));
 
 // Application Settings
-define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 99.00);
-define('ACTUAL_PRICE', isset($dbSettings['actual_price']) ? (float)$dbSettings['actual_price'] : 249.00);
+define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 25000.00);
+define('ACTUAL_PRICE', isset($dbSettings['actual_price']) ? (float)$dbSettings['actual_price'] : 35000.00);
 define('SHOW_CTA', isset($dbSettings['show_cta']) ? (bool)$dbSettings['show_cta'] : true);
-define('CURRENCY', 'USD');
+define('CURRENCY', 'INR');
+define('CURRENCY_SYMBOL', '₹');
 define('RESULTS_PROCESSING_DAYS', '14-21');
+
+// Razorpay Payment Gateway
+define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
+define('RAZORPAY_KEY_SECRET', getenv('RAZORPAY_KEY_SECRET') ?: '');
+
+// Google Drive API
+define('GOOGLE_DRIVE_FOLDER_ID', getenv('GOOGLE_DRIVE_FOLDER_ID') ?: '');
+define('GOOGLE_SERVICE_ACCOUNT_JSON', getenv('GOOGLE_SERVICE_ACCOUNT_JSON') ?: '../service-account.json');
 
 // Error Reporting logic
 if (ENVIRONMENT === 'development') {

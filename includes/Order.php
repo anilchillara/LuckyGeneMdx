@@ -15,23 +15,31 @@ class Order extends BaseModel {
         // Generate unique order number
         $order_number = $this->generateOrderNumber();
         
+        // Razorpay payment IDs (if payment was completed)
+        $razorpay_payment_id = $data['razorpay_payment_id'] ?? null;
+        $razorpay_order_id   = $data['razorpay_order_id'] ?? null;
+        $payment_status      = ($razorpay_payment_id) ? 'paid' : 'pending';
+        
         try {
             $sql = "INSERT INTO orders (user_id, order_number, shipping_address_line1, 
                     shipping_address_line2, shipping_city, shipping_state, shipping_zip, 
-                    price, status_id, order_date, payment_status) 
+                    price, status_id, order_date, payment_status, razorpay_payment_id, razorpay_order_id) 
                     VALUES (:user_id, :order_number, :address1, :address2, :city, :state, 
-                    :zip, :price, 1, NOW(), 'pending')";
+                    :zip, :price, 1, NOW(), :payment_status, :razorpay_payment_id, :razorpay_order_id)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
-                ':user_id' => $user_id,
-                ':order_number' => $order_number,
-                ':address1' => $data['address_line1'],
-                ':address2' => $data['address_line2'] ?? '',
-                ':city' => $data['city'],
-                ':state' => $data['state'],
-                ':zip' => $data['zip'],
-                ':price' => KIT_PRICE
+                ':user_id'             => $user_id,
+                ':order_number'        => $order_number,
+                ':address1'            => $data['address_line1'],
+                ':address2'            => $data['address_line2'] ?? '',
+                ':city'                => $data['city'],
+                ':state'               => $data['state'],
+                ':zip'                 => $data['zip'],
+                ':price'               => KIT_PRICE,
+                ':payment_status'      => $payment_status,
+                ':razorpay_payment_id' => $razorpay_payment_id,
+                ':razorpay_order_id'   => $razorpay_order_id,
             ]);
             
             $order_id = $this->db->lastInsertId();
@@ -40,13 +48,40 @@ class Order extends BaseModel {
             $this->sendOrderConfirmation($order_id);
             
             return [
-                'success' => true,
-                'order_id' => $order_id,
+                'success'      => true,
+                'order_id'     => $order_id,
                 'order_number' => $order_number,
-                'message' => 'Order created successfully'
+                'message'      => 'Order created successfully'
             ];
             
         } catch(PDOException $e) {
+            // Check if razorpay columns missing — fall back to insert without them
+            if (strpos($e->getMessage(), 'razorpay') !== false || $e->getCode() == '42S22') {
+                try {
+                    $sql2 = "INSERT INTO orders (user_id, order_number, shipping_address_line1, 
+                            shipping_address_line2, shipping_city, shipping_state, shipping_zip, 
+                            price, status_id, order_date, payment_status) 
+                            VALUES (:user_id, :order_number, :address1, :address2, :city, :state, 
+                            :zip, :price, 1, NOW(), :payment_status)";
+                    $stmt2 = $this->db->prepare($sql2);
+                    $stmt2->execute([
+                        ':user_id'        => $user_id,
+                        ':order_number'   => $order_number,
+                        ':address1'       => $data['address_line1'],
+                        ':address2'       => $data['address_line2'] ?? '',
+                        ':city'           => $data['city'],
+                        ':state'          => $data['state'],
+                        ':zip'            => $data['zip'],
+                        ':price'          => KIT_PRICE,
+                        ':payment_status' => $payment_status,
+                    ]);
+                    $order_id = $this->db->lastInsertId();
+                    $this->sendOrderConfirmation($order_id);
+                    return ['success' => true, 'order_id' => $order_id, 'order_number' => $order_number, 'message' => 'Order created successfully'];
+                } catch(PDOException $e2) {
+                    error_log("Order Creation Fallback Error: " . $e2->getMessage());
+                }
+            }
             error_log("Order Creation Error: " . $e->getMessage());
             return ['success' => false, 'message' => 'Order creation failed. Please try again.'];
         }

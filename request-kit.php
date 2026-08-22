@@ -35,97 +35,47 @@ if ($isLoggedIn) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validate CSRF token
-    if (!isset($_POST['csrf_token']) || !validateCSRFToken($_POST['csrf_token'])) {
-        $error = 'Security validation failed. Please try again.';
-    } else {
-        if ($isLoggedIn) {
-            // LOGGED IN USER - Only shipping address required
-            // Fallback chain: DB row -> session -> empty string (never null)
-            $data = [
-                'full_name'     => $user['full_name']  ?? $_SESSION['user_name']  ?? '',
-                'email'         => $user['email']       ?? $_SESSION['user_email'] ?? '',
-                'phone'         => $user['phone']       ?? $_SESSION['user_phone'] ?? '',
-                'dob'           => $user['dob']         ?? $_SESSION['user_dob'] ?? '',
-                'address_line1' => trim($_POST['address_line1'] ?? ''),
-                'address_line2' => trim($_POST['address_line2'] ?? ''),
-                'city'          => trim($_POST['city']  ?? ''),
-                'state'         => trim($_POST['state'] ?? ''),
-                'zip'           => trim($_POST['zip']   ?? ''),
-                'consent'       => isset($_POST['consent'])
-            ];
-            
-            // Validation
-            if (!$data['consent']) {
-                $error = 'You must agree to the consent statement.';
-            } else {
-                // Create order for logged in user
-                $orderModel = new Order();
-                $orderResult = $orderModel->createOrder($_SESSION['user_id'], $data);
-                
-                if ($orderResult['success']) {
-                    $success = true;
-                    $orderNumber = $orderResult['order_number'];
-                } else {
-                    $error = $orderResult['message'];
-                }
-            }
-            
-        } else {
-            // GUEST USER - Full registration required
-            $data = [
-                'full_name' => trim($_POST['full_name'] ?? ''),
-                'email' => trim($_POST['email'] ?? ''),
-                'phone' => trim($_POST['phone'] ?? ''),
-                'dob' => $_POST['dob'] ?? '',
-                'address_line1' => trim($_POST['address_line1'] ?? ''),
-                'address_line2' => trim($_POST['address_line2'] ?? ''),
-                'city' => trim($_POST['city'] ?? ''),
-                'state' => trim($_POST['state'] ?? ''),
-                'zip' => trim($_POST['zip'] ?? ''),
-                'password' => $_POST['password'] ?? '',
-                'consent' => isset($_POST['consent'])
-            ];
-            
-            // Validation
-            if (!$data['consent']) {
-                $error = 'You must agree to the consent statement.';
-            } elseif (strlen($data['password']) < 8) {
-                $error = 'Password must be at least 8 characters.';
-            } else {
-                // Create user account first
-                $userModel = new User();
-                $userResult = $userModel->register($data);
-                
-                if ($userResult['success']) {
-                    $userId = $userResult['user_id'];
-                    
-                    // Create order
-                    $orderModel = new Order();
-                    $orderResult = $orderModel->createOrder($userId, $data);
-                    
-                    if ($orderResult['success']) {
-                        $success = true;
-                        $orderNumber = $orderResult['order_number'];
-                        
-                        // Auto-login the user
-                        $_SESSION['user_id'] = $userId;
-                        $_SESSION['user_email'] = $data['email'];
-                        $_SESSION['user_name'] = $data['full_name'];
-                        $_SESSION['last_activity'] = time();
-                    } else {
-                        $error = $orderResult['message'];
-                    }
-                } else {
-                    $error = $userResult['message'];
-                }
-            }
-        }
-    }
-}
+// NOTE: Order creation now happens in api/razorpay-verify-payment.php
+// after Razorpay signature verification. This page only renders the form.
 
-$usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA'=>'California','CO'=>'Colorado','CT'=>'Connecticut','DE'=>'Delaware','FL'=>'Florida','GA'=>'Georgia','HI'=>'Hawaii','ID'=>'Idaho','IL'=>'Illinois','IN'=>'Indiana','IA'=>'Iowa','KS'=>'Kansas','KY'=>'Kentucky','LA'=>'Louisiana','ME'=>'Maine','MD'=>'Maryland','MA'=>'Massachusetts','MI'=>'Michigan','MN'=>'Minnesota','MS'=>'Mississippi','MO'=>'Missouri','MT'=>'Montana','NE'=>'Nebraska','NV'=>'Nevada','NH'=>'New Hampshire','NJ'=>'New Jersey','NM'=>'New Mexico','NY'=>'New York','NC'=>'North Carolina','ND'=>'North Dakota','OH'=>'Ohio','OK'=>'Oklahoma','OR'=>'Oregon','PA'=>'Pennsylvania','RI'=>'Rhode Island','SC'=>'South Carolina','SD'=>'South Dakota','TN'=>'Tennessee','TX'=>'Texas','UT'=>'Utah','VT'=>'Vermont','VA'=>'Virginia','WA'=>'Washington','WV'=>'West Virginia','WI'=>'Wisconsin','WY'=>'Wyoming'];
+$indianStates = [
+    'AN' => 'Andaman & Nicobar Islands',
+    'AP' => 'Andhra Pradesh',
+    'AR' => 'Arunachal Pradesh',
+    'AS' => 'Assam',
+    'BR' => 'Bihar',
+    'CH' => 'Chandigarh',
+    'CG' => 'Chhattisgarh',
+    'DN' => 'Dadra & Nagar Haveli and Daman & Diu',
+    'DL' => 'Delhi',
+    'GA' => 'Goa',
+    'GJ' => 'Gujarat',
+    'HR' => 'Haryana',
+    'HP' => 'Himachal Pradesh',
+    'JK' => 'Jammu & Kashmir',
+    'JH' => 'Jharkhand',
+    'KA' => 'Karnataka',
+    'KL' => 'Kerala',
+    'LA' => 'Ladakh',
+    'LD' => 'Lakshadweep',
+    'MP' => 'Madhya Pradesh',
+    'MH' => 'Maharashtra',
+    'MN' => 'Manipur',
+    'ML' => 'Meghalaya',
+    'MZ' => 'Mizoram',
+    'NL' => 'Nagaland',
+    'OD' => 'Odisha',
+    'PY' => 'Puducherry',
+    'PB' => 'Punjab',
+    'RJ' => 'Rajasthan',
+    'SK' => 'Sikkim',
+    'TN' => 'Tamil Nadu',
+    'TS' => 'Telangana',
+    'TR' => 'Tripura',
+    'UP' => 'Uttar Pradesh',
+    'UK' => 'Uttarakhand',
+    'WB' => 'West Bengal',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -220,7 +170,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                             <div class="summary-row">
                                 <div class="summary-flex">
                                     <span>Subtotal</span>
-                                    <span>$<?php echo number_format(KIT_PRICE, 2); ?></span>
+                                    <span><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 2); ?></span>
                                 </div>
                                 <div class="summary-flex">
                                     <span>Shipping</span>
@@ -231,7 +181,7 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                             <div class="summary-row">
                                 <div class="summary-flex font-lg font-bold">
                                     <span>Total</span>
-                                    <span class="text-teal">$<?php echo number_format(KIT_PRICE, 2); ?></span>
+                                    <span class="text-teal"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 2); ?></span>
                                 </div>
                             </div>
                             
@@ -264,8 +214,8 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                     <!-- Checkout Form -->
                     <div class="col col-2">
                         <div class="glass-card">
-                            <form method="POST" action="" data-validate>
-                                <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+                            <form id="checkout-form" data-validate>
+                                <input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                                 
                                 <?php if (!$isLoggedIn): ?>
                                     <!-- Personal Information - ONLY for guest users -->
@@ -358,10 +308,10 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                         <input type="text" id="city" name="city" class="form-control" required value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
                                     </div>
                                     <div class="form-group">
-                                        <label for="state" class="form-label required">State</label>
+                                        <label for="state" class="form-label required">State / UT</label>
                                         <select id="state" name="state" class="form-control" required>
-                                            <option value="">Select State</option>
-                                            <?php foreach($usStates as $code => $name): ?>
+                                            <option value="">Select State / UT</option>
+                                            <?php foreach($indianStates as $code => $name): ?>
                                                 <option value="<?php echo $code; ?>" <?php echo (($_POST['state'] ?? '') === $code) ? 'selected' : ''; ?>>
                                                     <?php echo $name; ?>
                                                 </option>
@@ -369,8 +319,8 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="zip" class="form-label required">ZIP Code</label>
-                                        <input type="text" id="zip" name="zip" class="form-control" required pattern="[0-9]{5}" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
+                                        <label for="zip" class="form-label required">PIN Code</label>
+                                        <input type="text" id="zip" name="zip" class="form-control" required pattern="[0-9]{6}" maxlength="6" placeholder="6-digit PIN" value="<?php echo htmlspecialchars($_POST['zip'] ?? ''); ?>">
                                     </div>
                                 </div>
                                 
@@ -383,12 +333,17 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
                                     </label>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-primary btn-full btn-large mt-4">
-                                    Complete Order - $<?php echo number_format(KIT_PRICE, 2); ?>
+                                <!-- Error display area for JS errors -->
+                                <div id="payment-error" class="glass-card glass-card-error p-3 mb-4" style="display:none;">
+                                    <strong class="text-error">Error:</strong> <span id="payment-error-msg"></span>
+                                </div>
+
+                                <button type="submit" id="pay-btn" class="btn btn-primary btn-full btn-large mt-4">
+                                    🔒 Pay <?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?> Securely
                                 </button>
                                 
                                 <p class="text-center mt-2 font-sm text-dark-gray">
-                                    🔒 Your information is encrypted and secure
+                                    Powered by <strong>Razorpay</strong> · 100% secure · UPI, Cards, Net Banking accepted
                                 </p>
                             </form>
                         </div>
@@ -402,5 +357,142 @@ $usStates = ['AL'=>'Alabama','AK'=>'Alaska','AZ'=>'Arizona','AR'=>'Arkansas','CA
     <?php require_once 'includes/footer.php'; ?>
     
     <script src="js/main.js"></script>
+    <?php if (!$success): ?>
+    <!-- Razorpay Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const form        = document.getElementById('checkout-form');
+        const payBtn      = document.getElementById('pay-btn');
+        const errorBox    = document.getElementById('payment-error');
+        const errorMsg    = document.getElementById('payment-error-msg');
+        const isLoggedIn  = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
+
+        // Pre-fill user info for Razorpay modal (logged-in)
+        const prefillName  = <?php echo json_encode($isLoggedIn ? ($user['full_name'] ?? '') : ''); ?>;
+        const prefillEmail = <?php echo json_encode($isLoggedIn ? ($user['email'] ?? '') : ''); ?>;
+        const prefillPhone = <?php echo json_encode($isLoggedIn ? ($user['phone'] ?? '') : ''); ?>;
+
+        function showError(msg) {
+            errorBox.style.display = 'block';
+            errorMsg.textContent   = msg;
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function hideError() {
+            errorBox.style.display = 'none';
+            errorMsg.textContent   = '';
+        }
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            hideError();
+
+            // Run existing form validation
+            if (window.LuckyGenes && !window.LuckyGenes.validateForm(form)) {
+                return;
+            }
+
+            // Show loading state
+            if (window.showLoading) window.showLoading(payBtn);
+
+            const csrfToken = document.getElementById('csrf_token').value;
+
+            // ── STEP 1: Create Razorpay Order on backend ──
+            let createResult;
+            try {
+                const res = await fetch('api/razorpay-create-order.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ csrf_token: csrfToken })
+                });
+                createResult = await res.json();
+            } catch (err) {
+                if (window.hideLoading) window.hideLoading(payBtn);
+                showError('Could not connect to payment gateway. Please check your internet connection and try again.');
+                return;
+            }
+
+            if (!createResult.success) {
+                if (window.hideLoading) window.hideLoading(payBtn);
+                showError(createResult.message || 'Failed to initiate payment. Please try again.');
+                return;
+            }
+
+            // Collect form data to send after payment verification
+            const formData = {};
+            new FormData(form).forEach((val, key) => { formData[key] = val; });
+
+            // ── STEP 2: Open Razorpay Modal ──
+            const rzpOptions = {
+                key:          createResult.key_id,
+                amount:       createResult.amount,
+                currency:     'INR',
+                name:         '<?php echo addslashes(SITE_NAME); ?>',
+                description:  'Comprehensive Carrier Screening Kit',
+                order_id:     createResult.razorpay_order_id,
+                prefill: {
+                    name:    prefillName  || (formData['full_name'] || ''),
+                    email:   prefillEmail || (formData['email'] || ''),
+                    contact: prefillPhone || (formData['phone'] || '')
+                },
+                theme: { color: '#00B3A4' },
+                modal: {
+                    ondismiss: function () {
+                        if (window.hideLoading) window.hideLoading(payBtn);
+                        showError('Payment was cancelled. You can try again whenever you are ready.');
+                    }
+                },
+                handler: async function (response) {
+                    // ── STEP 3: Verify payment + create DB order ──
+                    let verifyResult;
+                    try {
+                        const vRes = await fetch('api/razorpay-verify-payment.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                csrf_token:           csrfToken,
+                                razorpay_payment_id:  response.razorpay_payment_id,
+                                razorpay_order_id:    response.razorpay_order_id,
+                                razorpay_signature:   response.razorpay_signature,
+                                form_data:            formData
+                            })
+                        });
+                        verifyResult = await vRes.json();
+                    } catch (err) {
+                        showError('Payment was received but order confirmation failed. Please contact support with your payment ID: ' + response.razorpay_payment_id);
+                        if (window.hideLoading) window.hideLoading(payBtn);
+                        return;
+                    }
+
+                    if (verifyResult.success) {
+                        // Redirect to success page with order number
+                        window.location.href = 'track-order.php?order=' + encodeURIComponent(verifyResult.order_number) + '&paid=1';
+                    } else {
+                        if (window.hideLoading) window.hideLoading(payBtn);
+                        showError(verifyResult.message || 'Payment verification failed. Please contact support.');
+                    }
+                }
+            };
+
+            try {
+                const rzp = new Razorpay(rzpOptions);
+                rzp.on('payment.failed', function (resp) {
+                    if (window.hideLoading) window.hideLoading(payBtn);
+                    const reason = resp.error.description || 'Payment failed';
+                    showError('Payment failed: ' + reason + '. Please try again or use a different payment method.');
+                });
+                rzp.open();
+                // Note: button loading state is managed by modal callbacks
+            } catch (err) {
+                if (window.hideLoading) window.hideLoading(payBtn);
+                showError('Could not open payment window. Please refresh the page and try again.');
+            }
+        });
+    })();
+    </script>
+    <?php endif; ?>
 </body>
 </html>

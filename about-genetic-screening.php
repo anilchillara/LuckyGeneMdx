@@ -334,8 +334,10 @@ $page_description = 'Learn about genetic carrier screening, why it matters, and 
                 <p>Join thousands of proactive families. Get clinical-grade insights delivered privately to your door in just 14-21 days.</p>
                 
                 <div class="cta-pricing">
-                    <span class="cta-price">$<?php echo number_format(KIT_PRICE, 0); ?></span>
-                    <span class="cta-strike">$249</span>
+                    <span class="cta-price"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?></span>
+                    <?php if (defined('ACTUAL_PRICE') && ACTUAL_PRICE > KIT_PRICE): ?>
+                    <span class="cta-strike"><?php echo CURRENCY_SYMBOL . number_format(ACTUAL_PRICE, 0); ?></span>
+                    <?php endif; ?>
                 </div>
                 
                 <a href="request-kit.php" class="btn-cta-main">

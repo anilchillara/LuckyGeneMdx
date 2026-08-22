@@ -288,7 +288,7 @@ body.dark-theme .footer-bottom {
                 <?php if ($isNavActive('request-kit.php')): ?>
                 <li style="margin-top: 1.5rem;">
                     <a href="<?php echo $baseUrl; ?>request-kit.php" class="footer-cta-btn">
-                        Order Kit - $<?php echo number_format(KIT_PRICE, 0); ?>
+                        Order Kit - <?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?>
                     </a>
                 </li>
                 <?php endif; ?>
