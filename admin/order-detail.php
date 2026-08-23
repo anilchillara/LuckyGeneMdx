@@ -99,10 +99,10 @@ try {
     // Get all statuses
     $statuses = $orderModel->getOrderStatuses();
     
-    // Check if results exist
+    // Get all results for this order
     $stmt = $db->prepare("SELECT * FROM results WHERE order_id = :order_id");
     $stmt->execute([':order_id' => $orderId]);
-    $result = $stmt->fetch();
+    $results = $stmt->fetchAll();
     
 } catch(PDOException $e) {
     error_log("Order Detail Error: " . $e->getMessage());
@@ -283,43 +283,61 @@ $initials  = strtoupper(substr($adminName,0,2));
                 </form>
             </div>
             
-            <!-- Results Section -->
+            <!-- Kits & Results Section -->
             <div class="admin-card" style="margin-bottom: 2rem;">
-                <h2 style="margin-bottom: 1.5rem;">Test Results</h2>
+                <h2 style="margin-bottom: 1.5rem;">Kits & Test Results</h2>
                 
-                <?php if ($result): ?>
+                <?php if (empty($order['kits'])): ?>
+                    <p style="color:var(--color-text-gray);">No kits found for this order.</p>
+                <?php else: ?>
+                    <?php foreach ($order['kits'] as $kitIndex => $kit): 
+                        // Find result for this kit
+                        $kitResult = null;
+                        foreach ($results as $r) {
+                            if ($r['kit_id'] == $kit['kit_id'] || ($r['order_id'] == $orderId && empty($r['kit_id']))) {
+                                $kitResult = $r;
+                                break;
+                            }
+                        }
+                        $label = !empty($kit['assigned_to']) ? $kit['assigned_to'] : 'Kit ' . ($kitIndex + 1);
+                        $isGiftPending = $kit['is_gift'] && empty($kit['gift_redeemed_at']);
+                    ?>
                     <div style="padding: 1.5rem; background: var(--color-off-white); border-radius: 12px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
-                        <div class="result-flex" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="result-flex" style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
-                                <div style="font-weight: 600; margin-bottom: 0.5rem;">
-                                    ✅ Results Available
+                                <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.25rem;">
+                                    🧬 <?php echo htmlspecialchars($label); ?>
+                                    <?php if ($isGiftPending): ?>
+                                        <span class="badge badge-blue" style="margin-left:0.5rem; font-size:0.75rem;">🎁 Pending Claim</span>
+                                    <?php endif; ?>
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--color-text-gray);">
-                                    Uploaded on <?php echo date('F j, Y', strtotime($result['upload_date'])); ?>
+                                <div style="font-size: 0.9rem; font-family: monospace; color: var(--color-navy); margin-bottom: 0.75rem;">
+                                    Barcode: <?php echo htmlspecialchars($kit['kit_barcode']); ?>
                                 </div>
-                                <div style="font-size: 0.9rem; color: var(--color-text-gray);">
-                                    Accessed <?php echo $result['accessed_count']; ?> time(s)
-                                </div>
+                                
+                                <?php if ($kitResult): ?>
+                                    <div style="font-weight: 600; color: var(--color-medical-teal); margin-bottom: 0.25rem;">✅ Results Available</div>
+                                    <div style="font-size: 0.85rem; color: var(--color-text-gray);">Uploaded on <?php echo date('F j, Y', strtotime($kitResult['upload_date'])); ?></div>
+                                <?php else: ?>
+                                    <div style="font-size: 0.9rem; color: var(--color-text-gray);">No results uploaded yet.</div>
+                                <?php endif; ?>
                             </div>
-                            <div>
-                                <a href="../api/download-result.php?order_id=<?php echo $orderId; ?>" 
-                                   class="btn btn-primary" 
-                                   target="_blank">
-                                    📄 View PDF
-                                </a>
+                            
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
+                                <div style="margin-right: 1rem; text-align: right;">
+                                    <div style="font-size:0.8rem; color:var(--color-text-gray);">Kit Status</div>
+                                    <div style="font-weight:600;"><?php echo htmlspecialchars($kit['status_name']); ?></div>
+                                </div>
+                                <?php if ($kitResult): ?>
+                                    <a href="../api/download-result.php?order_id=<?php echo $orderId; ?>&kit_id=<?php echo $kit['kit_id']; ?>" class="btn btn-primary btn-sm" target="_blank">📄 View PDF</a>
+                                <?php else: ?>
+                                    <a href="upload-results.php?barcode=<?php echo urlencode($kit['kit_barcode']); ?>" class="btn btn-outline btn-sm">📤 Upload Results</a>
+                                <?php endif; ?>
+                                <a href="print-barcode.php?kit_id=<?php echo $kit['kit_id']; ?>" class="btn btn-outline btn-sm" target="_blank">🖨️ Print Label</a>
                             </div>
                         </div>
                     </div>
-                <?php else: ?>
-                    <div style="padding: 2rem; background: var(--color-off-white); border-radius: 12px; border: 1px solid var(--color-border); text-align: center;">
-                        <div style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;">📄</div>
-                        <p style="color: var(--color-text-gray); margin-bottom: 1rem;">
-                            No results uploaded yet
-                        </p>
-                        <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-primary">
-                            📤 Upload Results
-                        </a>
-                    </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
             </div>
             
@@ -328,7 +346,10 @@ $initials  = strtoupper(substr($adminName,0,2));
                 <a href="orders.php" class="btn btn-outline">
                     ← Back to Orders
                 </a>
-                <a href="upload-results.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-primary">
+                <a href="print-barcode.php?order_id=<?php echo $orderId; ?>" class="btn btn-primary" target="_blank">
+                    🖨️ Print All Labels
+                </a>
+                <a href="upload-results.php" class="btn btn-primary">
                     📤 Upload Results
                 </a>
                 <a href="mailto:<?php echo htmlspecialchars($order['email']); ?>" class="btn btn-outline">

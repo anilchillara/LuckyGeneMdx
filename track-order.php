@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['order'])) {
     
     if ($orderNumber) {
         $orderModel = new Order();
-        $order = $orderModel->getOrderByNumber($orderNumber);
+        $order = $orderModel->getOrderByNumber($orderNumber); // now includes $order['kits']
         
         if (!$order) {
             $error = 'Order not found. Please check your order number and try again.';
@@ -102,75 +102,107 @@ $allStatuses = $stmt->fetchAll();
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col col-2">
-                            <div class="track-order-status-box">
-                                <div class="track-order-number-label">Current Status</div>
-                                <div class="font-lg font-semibold text-medical-teal">
-                                    <?php echo htmlspecialchars($order['status_name']); ?>
-                                </div>
-                            </div>
+                </div>
+
+                <?php
+                $kits = $order['kits'] ?? [];
+                $kitCount = count($kits);
+                foreach ($kits as $kitIndex => $kit):
+                    $label = !empty($kit['assigned_to'])
+                        ? htmlspecialchars($kit['assigned_to'])
+                        : ($kitCount > 1 ? 'Kit ' . ($kitIndex + 1) : 'Your Kit');
+                    $isGiftPending = $kit['is_gift'] && empty($kit['gift_redeemed_at']);
+                ?>
+
+                <!-- Per-Kit Progress Block -->
+                <div class="glass-card track-order-details" style="margin-top:1.5rem;">
+                    <div class="track-order-header">
+                        <div>
+                            <h3 class="track-order-header-text" style="font-size:1.1rem;">
+                                <?php echo $kitCount > 1 ? '🧬 ' . $label : '🧬 Screening Kit'; ?>
+                            </h3>
+                            <span style="font-size:0.8rem; font-family:monospace; color:var(--color-text-gray); letter-spacing:1px;">
+                                Barcode: <?php echo htmlspecialchars($kit['kit_barcode']); ?>
+                            </span>
                         </div>
-                        
-                        <?php if ($order['tracking_number']): ?>
+                        <div class="text-right">
+                            <?php if ($isGiftPending): ?>
+                                <span class="badge badge-blue">🎁 Awaiting Claim</span>
+                            <?php else: ?>
+                                <div class="track-order-number-label">Current Status</div>
+                                <div class="font-semibold text-medical-teal"><?php echo htmlspecialchars($kit['status_name']); ?></div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <?php if ($kit['kit_barcode'] && !empty($order['tracking_number'])): ?>
+                    <div class="row" style="margin-top:0.5rem;">
                         <div class="col col-2">
                             <div class="track-order-status-box">
-                                <div class="track-order-number-label">Tracking Number</div>
+                                <div class="track-order-number-label">Courier Tracking</div>
                                 <div class="font-lg font-semibold text-primary-deep-blue">
                                     <?php echo htmlspecialchars($order['tracking_number']); ?>
                                 </div>
                             </div>
                         </div>
-                        <?php endif; ?>
                     </div>
-                </div>
-                
-                <!-- Progress Tracker -->
-                <div class="progress-tracker">
-                    <div class="progress-line">
-                        <div class="progress-line-fill" style="width: <?php echo (($order['display_order'] - 1) / (count($allStatuses) - 1)) * 100; ?>%;"></div>
-                    </div>
-                    
-                    <div class="progress-steps">
-                        <?php 
-                        $statusIcons = ['📦', '🚚', '🧪', '🔬', '✅'];
-                        foreach($allStatuses as $index => $status): 
-                            $isCompleted = $order['display_order'] > $status['display_order'];
-                            $isActive = $order['display_order'] == $status['display_order'];
-                            $class = $isCompleted ? 'completed' : ($isActive ? 'active' : '');
-                        ?>
-                        <div class="progress-step <?php echo $class; ?>">
-                            <div class="progress-step-circle">
-                                <?php echo $isCompleted ? '✓' : $statusIcons[$index]; ?>
+                    <?php endif; ?>
+
+                    <?php if ($isGiftPending): ?>
+                        <div style="text-align:center; padding: 2rem 1rem; color:var(--color-text-gray);">
+                            <p>⏳ This kit is a gift that hasn't been claimed yet. Once the recipient clicks the link in their email and creates an account, tracking will begin here.</p>
+                        </div>
+                    <?php else: ?>
+                        <!-- Progress Tracker per kit -->
+                        <div class="progress-tracker" style="margin-top:1.5rem;">
+                            <div class="progress-line">
+                                <div class="progress-line-fill" style="width: <?php echo (($kit['display_order'] - 1) / (count($allStatuses) - 1)) * 100; ?>%;"></div>
                             </div>
-                            <div class="progress-step-title">
-                                <?php echo htmlspecialchars($status['status_name']); ?>
-                            </div>
-                            <div class="progress-step-desc">
-                                <?php echo htmlspecialchars($status['description'] ?? ''); ?>
+                            <div class="progress-steps">
+                                <?php
+                                $statusIcons = ['📦', '🚚', '🧪', '🔬', '✅'];
+                                foreach ($allStatuses as $index => $status):
+                                    $isCompleted = $kit['display_order'] > $status['display_order'];
+                                    $isActive    = $kit['display_order'] == $status['display_order'];
+                                    $class       = $isCompleted ? 'completed' : ($isActive ? 'active' : '');
+                                ?>
+                                <div class="progress-step <?php echo $class; ?>">
+                                    <div class="progress-step-circle">
+                                        <?php echo $isCompleted ? '✓' : $statusIcons[$index]; ?>
+                                    </div>
+                                    <div class="progress-step-title"><?php echo htmlspecialchars($status['status_name']); ?></div>
+                                    <div class="progress-step-desc"><?php echo htmlspecialchars($status['description'] ?? ''); ?></div>
+                                </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
-                        <?php endforeach; ?>
-                    </div>
+
+                        <!-- Next Steps per kit -->
+                        <div class="glass-card track-order-next-steps" style="margin-top:1.5rem;">
+                            <h3 class="mb-2">What's Next?</h3>
+                            <?php if ($kit['display_order'] == 1): ?>
+                                <p>Your kit has been ordered and is being prepared for shipment. Expect it within 3-5 business days.</p>
+                            <?php elseif ($kit['display_order'] == 2): ?>
+                                <p>Your screening kit has been shipped! Follow the included instructions to collect and return your sample.</p>
+                            <?php elseif ($kit['display_order'] == 3): ?>
+                                <p>We've received your sample at our lab! Processing typically takes 14-21 days.</p>
+                            <?php elseif ($kit['display_order'] == 4): ?>
+                                <p>Your sample is currently being processed. Results expected within <?php echo RESULTS_PROCESSING_DAYS; ?> business days.</p>
+                            <?php else: ?>
+                                <p>Your results are ready!</p>
+                                <a href="user-portal/" class="btn btn-primary mt-2">View Results in Portal</a>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; // gift pending ?>
                 </div>
-                
-                <!-- Next Steps -->
-                <div class="glass-card track-order-next-steps">
-                    <h3 class="mb-2">What's Next?</h3>
-                    <?php if ($order['display_order'] == 1): ?>
-                        <p>Your order has been received and is being prepared for shipment. You should receive your kit within 3-5 business days.</p>
-                    <?php elseif ($order['display_order'] == 2): ?>
-                        <p>Your screening kit has been shipped! Once you receive it, follow the included instructions to collect your sample and return it to our lab using the prepaid shipping label.</p>
-                    <?php elseif ($order['display_order'] == 3): ?>
-                        <p>We've received your sample at our lab! Our team is beginning the screening process, which typically takes 14-21 days. We'll notify you when your results are ready.</p>
-                    <?php elseif ($order['display_order'] == 4): ?>
-                        <p>Your sample is currently being processed. Results are expected within <?php echo RESULTS_PROCESSING_DAYS; ?> business days. We'll email you as soon as they're ready.</p>
-                    <?php else: ?>
-                        <p>Your results are ready! You can now view them in your user portal.</p>
-                        <a href="user-portal/" class="btn btn-primary mt-2">View Results</a>
-                    <?php endif; ?>
+
+                <?php endforeach; // kits ?>
+
+                <?php if (empty($kits)): ?>
+                <div class="glass-card" style="text-align:center; padding:2rem; color:var(--color-text-gray);">
+                    <p>No kits found for this order. If you placed this order recently, please check back in a few minutes.</p>
                 </div>
+                <?php endif; ?>
                 
             <?php endif; ?>
             

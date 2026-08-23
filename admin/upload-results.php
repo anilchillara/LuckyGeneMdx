@@ -27,19 +27,19 @@ $orderModel = new Order();
 
 $success = '';
 $error = '';
-$order = null;
-$searchQuery = isset($_GET['order']) ? trim($_GET['order']) : '';
+$kit = null;
+$searchQuery = isset($_GET['barcode']) ? trim($_GET['barcode']) : '';
 
 // Handle file upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['result_file'])) {
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $error = 'Security validation failed.';
     } else {
-        $orderNumber = trim($_POST['order_number']);
-        $order = $orderModel->getOrderByNumber($orderNumber);
+        $kitBarcode = trim($_POST['kit_barcode']);
+        $kit = $orderModel->getKitByBarcode($kitBarcode);
         
-        if (!$order) {
-            $error = 'Order not found.';
+        if (!$kit) {
+            $error = 'Kit barcode not found. Please verify the barcode and try again.';
         } else {
             $file = $_FILES['result_file'];
             
@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['result_file'])) {
                     mkdir($uploadsDir, 0700, true);
                 }
                 
-                // Generate encrypted filename
-                $encryptedName = 'result_' . $order['order_id'] . '_' . bin2hex(random_bytes(16)) . '.pdf';
+                // Generate encrypted filename — keyed to kit_id, not order_id
+                $encryptedName = 'result_kit_' . $kit['kit_id'] . '_' . bin2hex(random_bytes(16)) . '.pdf';
                 $destination = $uploadsDir . '/' . $encryptedName;
                 
                 // Move uploaded file
@@ -70,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['result_file'])) {
                     $fileHash = hash_file('sha256', $destination);
                     
                     try {
-                        // Check if result already exists
-                        $stmt = $db->prepare("SELECT result_id FROM results WHERE order_id = :order_id");
-                        $stmt->execute([':order_id' => $order['order_id']]);
+                        // Check if result already exists for this kit
+                        $stmt = $db->prepare("SELECT result_id FROM results WHERE kit_id = :kit_id");
+                        $stmt->execute([':kit_id' => $kit['kit_id']]);
                         $existingResult = $stmt->fetch();
                         
                         if ($existingResult) {
@@ -84,44 +84,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['result_file'])) {
                                         uploaded_by = :admin_id,
                                         file_size = :file_size,
                                         file_hash = :file_hash
-                                    WHERE order_id = :order_id";
+                                    WHERE kit_id = :kit_id";
                         } else {
-                            // Insert new result
+                            // Insert new result — keyed to kit_id
                             $sql = "INSERT INTO results 
-                                    (order_id, file_path, encrypted_filename, uploaded_by, file_size, file_hash, upload_date) 
+                                    (order_id, kit_id, file_path, encrypted_filename, uploaded_by, file_size, file_hash, upload_date) 
                                     VALUES 
-                                    (:order_id, :file_path, :encrypted_filename, :admin_id, :file_size, :file_hash, NOW())";
+                                    (:order_id, :kit_id, :file_path, :encrypted_filename, :admin_id, :file_size, :file_hash, NOW())";
                         }
                         
                         $stmt = $db->prepare($sql);
                         $stmt->execute([
-                            ':order_id' => $order['order_id'],
-                            ':file_path' => '/uploads/results/' . $encryptedName,
+                            ':order_id'           => $kit['order_id'],
+                            ':kit_id'             => $kit['kit_id'],
+                            ':file_path'          => '/uploads/results/' . $encryptedName,
                             ':encrypted_filename' => $encryptedName,
-                            ':admin_id' => $_SESSION['admin_id'],
-                            ':file_size' => $file['size'],
-                            ':file_hash' => $fileHash
+                            ':admin_id'           => $_SESSION['admin_id'],
+                            ':file_size'          => $file['size'],
+                            ':file_hash'          => $fileHash
                         ]);
                         
-                        // Update order status to "Results Ready" (status_id = 5)
-                        $orderModel->updateOrderStatus($order['order_id'], 5);
+                        // Update kit status to "Results Ready" (status_id = 5)
+                        $orderModel->updateKitStatus($kit['kit_id'], 5);
                         
-                        // Log activity
+                        // Log activity — barcode only, no PII
                         $sql = "INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) 
-                                VALUES (:admin_id, 'upload_result', 'order', :order_id, :details, :ip)";
+                                VALUES (:admin_id, 'upload_result', 'kit', :kit_id, :details, :ip)";
                         $stmt = $db->prepare($sql);
                         $stmt->execute([
                             ':admin_id' => $_SESSION['admin_id'],
-                            ':order_id' => $order['order_id'],
-                            ':details' => "Uploaded result file: $encryptedName",
-                            ':ip' => $_SERVER['REMOTE_ADDR']
+                            ':kit_id'   => $kit['kit_id'],
+                            ':details'  => "Uploaded result file for barcode: {$kit['kit_barcode']}",
+                            ':ip'       => $_SERVER['REMOTE_ADDR']
                         ]);
                         
-                        $success = "Results uploaded successfully for order #{$orderNumber}!";
+                        $success = "Results uploaded successfully for kit barcode {$kit['kit_barcode']}!";
                         
-                        // Send email notification
-                        $userModel = new User();
-                        $userModel->sendResultsNotification($order['email'], $order['full_name'], $order['order_number']);
+                        // Note: email notification to the patient is handled separately
+                        // via the user portal — the lab never knows the patient email.
                         
                     } catch(PDOException $e) {
                         error_log("Results Upload Error: " . $e->getMessage());
@@ -137,9 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['result_file'])) {
     }
 }
 
-// Search for order if query provided
-if ($searchQuery && !$order) {
-    $order = $orderModel->getOrderByNumber($searchQuery);
+// Search for kit if query provided
+if ($searchQuery && !$kit) {
+    $kit = $orderModel->getKitByBarcode($searchQuery);
 }
 
 $adminName = $_SESSION['admin_username'];
@@ -223,59 +223,70 @@ $initials  = strtoupper(substr($adminName,0,2));
                 </div>
             <?php endif; ?>
             
-            <!-- Search for Order -->
+            <!-- Search for Kit by Barcode -->
             <div class="admin-card" style="margin-bottom: 2rem;">
-                <h2 class="mb-3">Find Order</h2>
+                <h2 class="mb-3">🔍 Find Kit by Barcode</h2>
+                <p style="color:var(--color-text-gray); margin-bottom: 1rem; font-size: 0.9rem;">
+                    Enter the barcode printed on the kit. <strong>No patient name or order number is required.</strong>
+                </p>
                 
                 <form method="GET" action="">
                     <div class="search-form" style="display: flex; gap: 1rem; align-items: end;">
                         <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                            <label for="order">Order Number</label>
+                            <label for="barcode">Kit Barcode</label>
                             <input 
                                 type="text" 
-                                id="order" 
-                                name="order" 
-                                placeholder="LGM240214ABC123"
+                                id="barcode" 
+                                name="barcode" 
+                                placeholder="e.g. A3XK92PLM7QZ"
                                 value="<?php echo htmlspecialchars($searchQuery); ?>"
                                 required
                                 class="form-control"
+                                style="font-family: monospace; letter-spacing: 2px;"
                             >
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            🔍 Search
+                            🔍 Find Kit
                         </button>
                     </div>
                 </form>
             </div>
             
-            <?php if ($order): ?>
-                <!-- Order Information -->
+            <?php if ($kit): ?>
+                <!-- Kit Information — NO PII shown here -->
                 <div class="order-info">
-                    <h3 class="mb-3">Order Information</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <h3 class="mb-3">🔒 Kit Details</h3>
+                    <p style="font-size:0.85rem;color:var(--color-text-gray);margin-bottom:1rem;">
+                        Patient identity is not shown on this page. Only the barcode is used for lab operations.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
                         <div>
-                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Order Number</div>
-                            <div style="font-weight: 600;"><?php echo htmlspecialchars($order['order_number']); ?></div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Customer</div>
-                            <div style="font-weight: 600;"><?php echo htmlspecialchars($order['full_name']); ?></div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Email</div>
-                            <div style="font-weight: 600;"><?php echo htmlspecialchars($order['email']); ?></div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Kit Barcode</div>
+                            <div style="font-weight: 700; font-family: monospace; font-size: 1.1rem; letter-spacing: 2px; color: var(--color-primary-deep-blue);">
+                                <?php echo htmlspecialchars($kit['kit_barcode']); ?>
+                            </div>
                         </div>
                         <div>
                             <div style="font-size: 0.85rem; color: var(--color-text-gray);">Current Status</div>
-                            <div style="font-weight: 600;"><?php echo htmlspecialchars($order['status_name']); ?></div>
+                            <div style="font-weight: 600;"><?php echo htmlspecialchars($kit['status_name']); ?></div>
                         </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Kit Created</div>
+                            <div style="font-weight: 600;"><?php echo date('F j, Y', strtotime($kit['created_at'])); ?></div>
+                        </div>
+                        <?php if ($kit['is_gift']): ?>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-gray);">Type</div>
+                            <div style="font-weight: 600;">🎁 Gift Kit <?php echo $kit['gift_redeemed_at'] ? '(Claimed)' : '(Pending claim)'; ?></div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 
                 <!-- Check if results already uploaded -->
                 <?php
-                $stmt = $db->prepare("SELECT * FROM results WHERE order_id = :order_id");
-                $stmt->execute([':order_id' => $order['order_id']]);
+                $stmt = $db->prepare("SELECT * FROM results WHERE kit_id = :kit_id");
+                $stmt->execute([':kit_id' => $kit['kit_id']]);
                 $existingResult = $stmt->fetch();
                 
                 if ($existingResult):
@@ -293,7 +304,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     
                     <form method="POST" action="" enctype="multipart/form-data" id="uploadForm">
                         <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
-                        <input type="hidden" name="order_number" value="<?php echo htmlspecialchars($order['order_number']); ?>">
+                        <input type="hidden" name="kit_barcode" value="<?php echo htmlspecialchars($kit['kit_barcode']); ?>">
                         
                         <div class="file-upload-area" id="fileUploadArea">
                             <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
@@ -334,21 +345,21 @@ $initials  = strtoupper(substr($adminName,0,2));
             <div class="admin-card" style="background: var(--color-off-white);">
                 <h3 class="mb-3">📋 Upload Instructions</h3>
                 <ol style="line-height: 1.8;">
-                    <li>Search for the order using the order number</li>
-                    <li>Verify the customer information is correct</li>
+                    <li>Enter the <strong>kit barcode</strong> — the random code printed on the physical kit</li>
+                    <li>The barcode has <strong>no link to any patient name, email, or order number</strong></li>
                     <li>Upload the PDF file containing the test results</li>
                     <li>The system will automatically:
                         <ul style="margin-top: 0.5rem;">
                             <li>Encrypt the filename for security</li>
                             <li>Store the file in a secure location</li>
-                            <li>Update the order status to "Results Ready"</li>
-                            <li>Send an email notification to the customer (when configured)</li>
+                            <li>Update the kit status to "Results Ready"</li>
+                            <li>Notify the patient through their portal (email is never shared with this page)</li>
                         </ul>
                     </li>
                 </ol>
                 
                 <div style="margin-top: 1.5rem; padding: 1rem; background: var(--color-white); border-radius: 12px; border-left: 4px solid var(--color-medical-teal);">
-                    <strong>Security Note:</strong> All uploaded files are encrypted and stored outside the web root for maximum security.
+                    <strong>🔒 Privacy Note:</strong> This page intentionally shows <em>no patient PII</em>. The barcode is the only identifier shared with the lab.
                 </div>
             </div>
     </div>

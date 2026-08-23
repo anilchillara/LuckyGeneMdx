@@ -84,6 +84,11 @@ try {
     
     $orders = $stmt->fetchAll();
     
+    // Attach kits to each order
+    foreach ($orders as &$o) {
+        $o['kits'] = $orderModel->getKitsByOrderId($o['order_id']);
+    }
+    
     // Get all statuses for filter
     $statuses = $orderModel->getOrderStatuses();
     
@@ -194,8 +199,8 @@ $initials  = strtoupper(substr($adminName,0,2));
                                 <tr>
                                     <th>Order Number</th>
                                     <th>Customer</th>
-                                    <th>Email</th>
                                     <th>Date</th>
+                                    <th>Kits</th>
                                     <th>Status</th>
                                     <th>Tracking</th>
                                     <th>Action</th>
@@ -212,11 +217,25 @@ $initials  = strtoupper(substr($adminName,0,2));
                                         <td>
                                 <span style="font-family:monospace; font-weight:600; color:var(--color-primary-deep-blue);"><?php echo htmlspecialchars($order['order_number']); ?></span>
                                         </td>
-                                        <td><?php echo htmlspecialchars($order['full_name']); ?></td>
-                                <td><span style="color:var(--color-text-gray); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span></td>
+                                        <td>
+                                            <?php echo htmlspecialchars($order['full_name']); ?><br>
+                                            <span style="color:var(--color-text-gray); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span>
+                                        </td>
                                         <td><?php echo date('M j, Y', strtotime($order['order_date'])); ?></td>
                                         <td>
-                                    <span class="badge badge-<?php echo $badgeClass; ?>">
+                                            <?php
+                                            if (!empty($order['kits'])) {
+                                                echo '<div style="font-size:0.85rem; margin-bottom:0.2rem;"><strong>' . count($order['kits']) . ' Kit(s)</strong></div>';
+                                                foreach ($order['kits'] as $k) {
+                                                    echo '<div style="font-family:monospace; font-size:0.8rem; color:var(--color-navy);">' . htmlspecialchars($k['kit_barcode']) . '</div>';
+                                                }
+                                            } else {
+                                                echo '<span style="color:var(--color-text-gray); font-size:0.85rem;">No kits</span>';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-<?php echo $badgeClass; ?>">
                                                 <?php echo htmlspecialchars($order['status_name']); ?>
                                             </span>
                                         </td>

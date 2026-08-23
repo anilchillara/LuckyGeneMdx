@@ -30,9 +30,11 @@ try {
     $stmt->execute([':user_id' => $userId]);
     $user = $stmt->fetch();
     $orders = $orderModel->getUserOrders($userId);
+    $receivedGifts = $orderModel->getReceivedGiftKits($userId);
 } catch(PDOException $e) {
     error_log("Patient Orders Error: " . $e->getMessage());
     $orders = [];
+    $receivedGifts = [];
 }
 
 $firstName = explode(' ', $user['full_name'])[0];
@@ -77,7 +79,51 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
             </div>
             <?php endif; ?>
 
-            <?php if (empty($orders)): ?>
+        <?php
+        // Gift claimed banner
+        if (isset($_GET['gift_claimed']) && $_GET['gift_claimed'] === '1'):
+            $claimedBarcode = htmlspecialchars(trim($_GET['barcode'] ?? ''));
+        ?>
+        <div class="card" style="background:rgba(0,179,164,0.1); border:1px solid var(--color-medical-teal); margin-bottom:1.5rem;">
+            <p style="margin:0; font-weight:600; color:var(--color-medical-teal);">
+                🎁 Gift kit claimed! Your kit (<code><?php echo $claimedBarcode; ?></code>) is now active and appears below.
+            </p>
+        </div>
+        <?php endif; ?>
+
+        <?php if (!empty($receivedGifts)): ?>
+        <!-- Received Gift Kits Section -->
+        <div style="margin-bottom:2rem;">
+            <h3 style="margin-bottom:1rem;">🎁 Received Gift Kits</h3>
+            <?php foreach ($receivedGifts as $giftKit):
+                $gBadgeClass = 'orange';
+                switch ($giftKit['status_id'] ?? $giftKit['kit_status_id']) {
+                    case 2: $gBadgeClass = 'blue';   break;
+                    case 5: $gBadgeClass = 'green';  break;
+                }
+                $gifterFirst = explode(' ', $giftKit['gifted_by_name'] ?? 'Someone')[0];
+            ?>
+            <div class="card">
+                <div class="card-header-flex">
+                    <div>
+                        <h4 style="margin:0;">🎁 Gift from <?php echo htmlspecialchars($gifterFirst); ?></h4>
+                        <span style="font-size:0.85rem; font-family:monospace; color:var(--color-text-gray); letter-spacing:1px;">
+                            Barcode: <?php echo htmlspecialchars($giftKit['kit_barcode']); ?>
+                        </span>
+                    </div>
+                    <span class="badge badge-<?php echo $gBadgeClass; ?>"><?php echo htmlspecialchars($giftKit['status_name']); ?></span>
+                </div>
+                <div style="display:flex; gap:1rem; margin-top:1rem;" class="flex-wrap">
+                    <?php if (($giftKit['kit_status_id'] ?? 0) == 5): ?>
+                        <a href="results.php" class="btn">View Results</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if (empty($orders) && empty($receivedGifts)): ?>
                 <div class="card" style="text-align:center; padding: 4rem;">
                     <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.2;">📦</div>
                     <h2 style="margin-bottom: 1rem;">No Orders Yet</h2>
@@ -94,15 +140,20 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                     <a href="../request-kit.php" class="btn">+ New Order</a>
                 </div>
 
-                <?php foreach($orders as $order): 
-                    $badgeClass = 'orange';
+                <?php foreach($orders as $order):
+                    $kitStatusMap = [1 => 'orange', 2 => 'blue', 3 => 'orange', 4 => 'orange', 5 => 'green'];
+                    $kits = $order['kits'] ?? [];
+
+                    // Overall order badge based on most advanced kit status
+                    $maxKitStatus = 1;
+                    foreach ($kits as $k) { $maxKitStatus = max($maxKitStatus, (int)($k['kit_status_id'] ?? 1)); }
+                    $badgeClass = $kitStatusMap[$maxKitStatus] ?? 'orange';
                     $statusText = 'Received';
-                    
-                    switch($order['status_id']) {
-                        case 2: $badgeClass = 'blue'; $statusText = 'Shipped'; break;
-                        case 3: $badgeClass = 'orange'; $statusText = 'Sample Received'; break;
-                        case 4: $badgeClass = 'orange'; $statusText = 'Processing'; break;
-                        case 5: $badgeClass = 'green'; $statusText = 'Results Ready'; break;
+                    switch($maxKitStatus) {
+                        case 2: $statusText = 'Shipped';         break;
+                        case 3: $statusText = 'Sample Received'; break;
+                        case 4: $statusText = 'Processing';      break;
+                        case 5: $statusText = 'Results Ready';   break;
                     }
                 ?>
                 <div class="card">
@@ -118,28 +169,46 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         <span class="badge badge-<?php echo $badgeClass; ?>"><?php echo $statusText; ?></span>
                     </div>
 
-                    <div class="info-grid">
-                        <div>
-                            <div class="stat-lbl">Total Amount</div>
-                            <div style="font-weight:600;">$<?php echo number_format($order['price'], 2); ?></div>
+                    <!-- Per-Kit rows -->
+                    <?php if (!empty($kits)): ?>
+                    <div style="margin-top:1rem; border-top:1px solid var(--color-border); padding-top:1rem;">
+                        <?php foreach ($kits as $ki => $kit):
+                            $kLabel = !empty($kit['assigned_to']) ? $kit['assigned_to'] : ('Kit ' . ($ki + 1));
+                            $kBadge = $kitStatusMap[$kit['kit_status_id'] ?? 1] ?? 'orange';
+                            $kStatus = 'Received';
+                            switch ($kit['kit_status_id'] ?? 1) {
+                                case 2: $kStatus = 'Shipped';         break;
+                                case 3: $kStatus = 'Sample Received'; break;
+                                case 4: $kStatus = 'Processing';      break;
+                                case 5: $kStatus = 'Results Ready';   break;
+                            }
+                            $isGiftPending = $kit['is_gift'] && empty($kit['gift_redeemed_at']);
+                        ?>
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding: 0.6rem 0; <?php echo $ki > 0 ? 'border-top:1px solid var(--color-border);' : ''; ?>">
+                            <div>
+                                <strong style="font-size:0.9rem;">🧬 <?php echo htmlspecialchars($kLabel); ?></strong><br>
+                                <span style="font-size:0.78rem; font-family:monospace; color:var(--color-text-gray); letter-spacing:1px;"><?php echo htmlspecialchars($kit['kit_barcode']); ?></span>
+                            </div>
+                            <div style="text-align:right;">
+                                <?php if ($isGiftPending): ?>
+                                    <span class="badge badge-blue">🎁 Awaiting Claim</span>
+                                <?php else: ?>
+                                    <span class="badge badge-<?php echo $kBadge; ?>"><?php echo $kStatus; ?></span>
+                                <?php endif; ?>
+                                <?php if (($kit['kit_status_id'] ?? 0) == 5): ?>
+                                    <a href="results.php" class="btn btn-outline btn-sm" style="margin-left:0.5rem;">Results</a>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                        <div>
-                            <div class="stat-lbl">Shipping To</div>
-                            <div style="font-weight:600;"><?php echo htmlspecialchars($user['full_name']); ?></div>
-                        </div>
-                        <div>
-                            <div class="stat-lbl">Last Update</div>
-                            <div style="font-weight:600;"><?php echo date('M j', strtotime($order['order_date'])); ?></div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
+                    <?php endif; ?>
 
-                    <div style="display:flex; gap:1rem;" class="flex-wrap">
+                    <!-- Order-level actions -->
+                    <div style="display:flex; gap:1rem; margin-top:1rem;" class="flex-wrap">
                         <a href="../track-order.php?order=<?php echo urlencode($order['order_number']); ?>" class="btn btn-outline">
                             Track Status
                         </a>
-                        <?php if ($order['status_id'] == 5): ?>
-                            <a href="results.php" class="btn">View Results</a>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <?php endforeach; ?>

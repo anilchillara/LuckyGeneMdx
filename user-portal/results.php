@@ -22,11 +22,14 @@ $db = Database::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
 $stmt = $db->prepare("
-    SELECT r.*, o.order_number, o.order_date, os.status_name
+    SELECT r.*, o.order_number, o.order_date, 
+           COALESCE(os.status_name, 'Unknown') as status_name,
+           k.kit_barcode, k.assigned_to, k.is_gift
     FROM results r
-    JOIN orders o ON r.order_id = o.order_id
-    JOIN order_status os ON o.status_id = os.status_id
-    WHERE o.user_id = :user_id
+    LEFT JOIN kits k ON r.kit_id = k.kit_id
+    LEFT JOIN orders o ON COALESCE(r.order_id, k.order_id) = o.order_id
+    LEFT JOIN order_status os ON k.kit_status_id = os.status_id
+    WHERE o.user_id = :user_id OR k.gift_redeemed_by = :user_id
     ORDER BY r.upload_date DESC
 ");
 $stmt->execute([':user_id' => $userId]);
@@ -73,12 +76,17 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                     </div>
                 </div>
             <?php else: ?>
-                <?php foreach ($results as $result): ?>
+                <?php foreach ($results as $result): 
+                    $label = !empty($result['assigned_to']) ? $result['assigned_to'] : ($result['is_gift'] ? 'Gift Kit' : 'My Kit');
+                ?>
                     <div class="card result-card">
                         <div class="flex-between-start">
                             <div>
-                                <h3>Results: Order #<?php echo htmlspecialchars($result['order_number']); ?></h3>
-                                <p class="text-primary font-semibold">
+                                <h3>🧬 <?php echo htmlspecialchars($label); ?> Results</h3>
+                                <p style="font-family:monospace; color:var(--color-navy); font-size:0.9rem; margin-top:0.25rem;">
+                                    Barcode: <?php echo htmlspecialchars($result['kit_barcode'] ?? 'N/A'); ?> (Order #<?php echo htmlspecialchars($result['order_number']); ?>)
+                                </p>
+                                <p class="text-primary font-semibold" style="margin-top:0.5rem;">
                                     <span class="fs-1-2 align-middle">✨</span> Comprehensive Carrier Screen Ready
                                 </p>
                             </div>
@@ -108,10 +116,10 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
                         </div>
 
                         <div class="flex-gap-1 flex-wrap">
-                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>" target="_blank" class="btn btn-primary">
+                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&kit_id=<?php echo $result['kit_id']; ?>" target="_blank" class="btn btn-primary">
                                 View PDF Report
                             </a>
-                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&download=1" class="btn btn-outline" download>
+                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&kit_id=<?php echo $result['kit_id']; ?>&download=1" class="btn btn-outline" download>
                                 Download
                             </a>
                             <a href="mailto:counseling@LuckyGenes.com" class="btn btn-outline">

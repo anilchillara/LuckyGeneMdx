@@ -7,11 +7,14 @@ require_once 'includes/Order.php';
 session_start();
 setSecurityHeaders();
 
-$success = false;
-$error = '';
+$success     = false;
+$error       = '';
 $orderNumber = '';
-$isLoggedIn = isset($_SESSION['user_id']);
-$user = null;
+$kitBarcode  = '';
+$isGiftOrder = false;
+$giftSentTo  = '';
+$isLoggedIn  = isset($_SESSION['user_id']);
+$user        = null;
 
 // If logged in, get user data
 if ($isLoggedIn) {
@@ -36,7 +39,17 @@ if ($isLoggedIn) {
 }
 
 // NOTE: Order creation now happens in api/razorpay-verify-payment.php
-// after Razorpay signature verification. This page only renders the form.
+// after Razorpay signature verification. This page only renders the form
+// OR displays the success screen when redirected back with ?success=1.
+
+if (isset($_GET['success']) && $_GET['success'] === '1') {
+    $success     = true;
+    $orderNumber = trim($_GET['order'] ?? '');
+    $kitBarcode  = trim($_GET['barcode'] ?? '');
+    $isGiftOrder = !empty($_GET['gift']) && $_GET['gift'] === '1';
+    $giftSentTo  = trim($_GET['sent_to'] ?? '');
+}
+
 
 $indianStates = [
     'AN' => 'Andaman & Nicobar Islands',
@@ -96,24 +109,46 @@ $indianStates = [
             <div class="container">
                 <!-- Success Message -->
                 <div class="glass-card success-container">
-                    <div class="icon-box-lg mb-2">✅</div>
-                    <h1 class="text-teal mb-2">Order Confirmed!</h1>
-                    <p class="font-lg mb-4">
-                        Thank you for your order. Your screening kit will be shipped within 3-5 business days.
-                    </p>
-                    
-                    <div class="glass-card order-number-box">
-                        <div class="font-sm text-dark-gray mb-1">Your Order Number</div>
-                        <div class="font-xl font-bold text-deep-blue ls-2">
-                            <?php echo htmlspecialchars($orderNumber); ?>
+                    <div class="icon-box-lg mb-2"><?php echo $isGiftOrder ? '🎁' : '✅'; ?></div>
+                    <h1 class="text-teal mb-2"><?php echo $isGiftOrder ? 'Gift Kit Sent!' : 'Order Confirmed!'; ?></h1>
+
+                    <?php if ($isGiftOrder): ?>
+                        <p class="font-lg mb-4">
+                            Your gift kit is on its way to <strong><?php echo htmlspecialchars($giftSentTo); ?></strong>! They'll receive an email with a link to claim and activate their kit.
+                        </p>
+                        <div class="glass-card order-number-box">
+                            <div class="font-sm text-dark-gray mb-1">Your Order Number</div>
+                            <div class="font-xl font-bold text-deep-blue ls-2"><?php echo htmlspecialchars($orderNumber); ?></div>
+                            <div class="font-sm text-dark-gray mt-1">Keep this for your records</div>
                         </div>
-                        <div class="font-sm text-dark-gray mt-1">
-                            Please save this number for tracking
+                    <?php else: ?>
+                        <p class="font-lg mb-4">
+                            Thank you for your order. Your screening kit will be shipped within 3-5 business days.
+                        </p>
+                        <div class="glass-card order-number-box">
+                            <div class="font-sm text-dark-gray mb-1">Your Order Number</div>
+                            <div class="font-xl font-bold text-deep-blue ls-2"><?php echo htmlspecialchars($orderNumber); ?></div>
+                            <div class="font-sm text-dark-gray mt-1">Please save this number for tracking</div>
                         </div>
-                    </div>
-                    
+                        <?php if (!empty($kitBarcode)): ?>
+                        <div class="glass-card order-number-box" style="margin-top:1rem;">
+                            <div class="font-sm text-dark-gray mb-1">Your Kit Barcode</div>
+                            <div class="font-xl font-bold text-medical-teal ls-2" style="font-family:monospace;letter-spacing:3px;"><?php echo htmlspecialchars($kitBarcode); ?></div>
+                            <div class="font-sm text-dark-gray mt-1">This code is printed on your kit — use it if the lab contacts you</div>
+                        </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
                     <h3 class="mt-4 mb-2">What's Next?</h3>
                     <div class="next-steps-list">
+                        <?php if ($isGiftOrder): ?>
+                        <ol class="lh-1-8">
+                            <li><strong>Recipient gets an email</strong> with a link to create their account and claim the kit</li>
+                            <li><strong>Kit ships</strong> within 3-5 business days</li>
+                            <li><strong>They collect their sample</strong> following the included instructions</li>
+                            <li><strong>Results in 14-21 days</strong> — delivered to their patient portal</li>
+                        </ol>
+                        <?php else: ?>
                         <ol class="lh-1-8">
                             <li><strong>Check your email</strong> for order confirmation and instructions</li>
                             <li><strong>Receive your kit</strong> within 3-5 business days</li>
@@ -121,10 +156,13 @@ $indianStates = [
                             <li><strong>Return to lab</strong> using the prepaid shipping label</li>
                             <li><strong>Get results</strong> in 14-21 days via your patient portal</li>
                         </ol>
+                        <?php endif; ?>
                     </div>
-                    
+
                     <div class="mt-5">
+                        <?php if (!$isGiftOrder): ?>
                         <a href="track-order.php?order=<?php echo urlencode($orderNumber); ?>" class="btn btn-primary btn-large">Track Your Order</a>
+                        <?php endif; ?>
                         <a href="user-portal/" class="btn btn-outline btn-large ml-2">Go to Patient Portal</a>
                     </div>
                 </div>
@@ -332,6 +370,32 @@ $indianStates = [
                                         I understand that this is a carrier screening test, not a diagnostic test. This test does not replace genetic counseling or physician consultation. I consent to genetic testing and agree to the <a href="terms-of-service.php" target="_blank">Terms of Service</a> and <a href="privacy-policy.php" target="_blank">Privacy Policy</a>.
                                     </label>
                                 </div>
+
+                                <!-- Gift Option -->
+                                <div class="form-checkbox" style="margin-top:1.25rem;">
+                                    <input type="checkbox" id="is_gift_toggle" name="is_gift_toggle">
+                                    <label for="is_gift_toggle" class="font-sm font-semibold" style="display:flex;align-items:center;gap:0.5rem;">
+                                        🎁 <span>This kit is a gift for someone else</span>
+                                    </label>
+                                </div>
+
+                                <div id="gift-fields" style="display:none; margin-top:1rem; padding:1.25rem; border:2px dashed var(--color-medical-teal); border-radius:12px; background:rgba(0,179,164,0.04);">
+                                    <h4 style="margin-bottom:1rem; color:var(--color-medical-teal);">🎁 Gift Details</h4>
+                                    <div class="form-group">
+                                        <label for="gift_recipient_name" class="form-label required">Recipient's Name</label>
+                                        <input type="text" id="gift_recipient_name" name="gift_recipient_name" class="form-control" placeholder="e.g. Sarah Johnson">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gift_recipient_email" class="form-label required">Recipient's Email</label>
+                                        <input type="email" id="gift_recipient_email" name="gift_recipient_email" class="form-control" placeholder="recipient@email.com">
+                                        <small class="text-dark-gray">They'll receive a link to claim and activate their kit</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gift_message" class="form-label">Personal Message <span class="text-dark-gray">(optional)</span></label>
+                                        <textarea id="gift_message" name="gift_message" class="form-control" rows="3" maxlength="500" placeholder="Write a short personal note..."></textarea>
+                                        <small class="text-dark-gray"><span id="gift_msg_count">0</span>/500 characters</small>
+                                    </div>
+                                </div>
                                 
                                 <!-- Error display area for JS errors -->
                                 <div id="payment-error" class="glass-card glass-card-error p-3 mb-4" style="display:none;">
@@ -468,8 +532,21 @@ $indianStates = [
                     }
 
                     if (verifyResult.success) {
-                        // Redirect to success page with order number
-                        window.location.href = 'track-order.php?order=' + encodeURIComponent(verifyResult.order_number) + '&paid=1';
+                        // Build redirect with barcode + gift info
+                        let redirectUrl = 'track-order.php?order='
+                            + encodeURIComponent(verifyResult.order_number)
+                            + '&paid=1';
+                        if (verifyResult.is_gift) {
+                            redirectUrl = 'request-kit.php?success=1'
+                                + '&order=' + encodeURIComponent(verifyResult.order_number)
+                                + '&gift=1'
+                                + '&sent_to=' + encodeURIComponent(verifyResult.gift_sent_to || '');
+                        } else if (verifyResult.kit_barcode) {
+                            redirectUrl = 'request-kit.php?success=1'
+                                + '&order=' + encodeURIComponent(verifyResult.order_number)
+                                + '&barcode=' + encodeURIComponent(verifyResult.kit_barcode);
+                        }
+                        window.location.href = redirectUrl;
                     } else {
                         if (window.hideLoading) window.hideLoading(payBtn);
                         showError(verifyResult.message || 'Payment verification failed. Please contact support.');
@@ -491,6 +568,32 @@ $indianStates = [
                 showError('Could not open payment window. Please refresh the page and try again.');
             }
         });
+    })();
+    </script>
+    <!-- Gift toggle JS -->
+    <script>
+    (function () {
+        const toggle     = document.getElementById('is_gift_toggle');
+        const giftFields = document.getElementById('gift-fields');
+        const recEmail   = document.getElementById('gift_recipient_email');
+        const recName    = document.getElementById('gift_recipient_name');
+        const msgArea    = document.getElementById('gift_message');
+        const msgCount   = document.getElementById('gift_msg_count');
+
+        if (!toggle) return;
+
+        toggle.addEventListener('change', function () {
+            const on = this.checked;
+            giftFields.style.display = on ? 'block' : 'none';
+            if (recEmail) recEmail.required = on;
+            if (recName)  recName.required  = on;
+        });
+
+        if (msgArea && msgCount) {
+            msgArea.addEventListener('input', function () {
+                msgCount.textContent = this.value.length;
+            });
+        }
     })();
     </script>
     <?php endif; ?>
