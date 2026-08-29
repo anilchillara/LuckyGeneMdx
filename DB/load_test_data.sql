@@ -94,9 +94,9 @@ INSERT INTO educational_resources (title, slug, content, excerpt, category, read
 -- ============================================
 -- 8. INTEREST LIST
 -- ============================================
-INSERT INTO interest_list (email, name, created_at) VALUES
-('waitlist1@email.com', 'Wait List1', '2024-02-14 10:00:00'),
-('waitlist2@email.com', 'Wait List2', '2024-02-14 11:00:00');
+INSERT INTO interest_list (email, name, created_at, role) VALUES
+('waitlist1@email.com', 'Wait List1', '2024-02-14 10:00:00', ''),
+('waitlist2@email.com', 'Wait List2', '2024-02-14 11:00:00', '');
 
 -- ============================================
 -- 9. LOGS (Login & Emails)
