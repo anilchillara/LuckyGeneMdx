@@ -1,6 +1,6 @@
 <?php
 
-if(!defined('LuckyGenes_CONFIG_LOADED')) {
+if(defined('LuckyGenes_CONFIG_LOADED')) {
     return;
 }
 define('LuckyGenes_CONFIG_LOADED', true);
