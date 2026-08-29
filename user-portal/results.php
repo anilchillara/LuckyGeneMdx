@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -22,11 +22,14 @@ $db = Database::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
 $stmt = $db->prepare("
-    SELECT r.*, o.order_number, o.order_date, os.status_name
+    SELECT r.*, o.order_number, o.order_date, 
+           COALESCE(os.status_name, 'Unknown') as status_name,
+           k.kit_barcode, k.assigned_to, k.is_gift
     FROM results r
-    JOIN orders o ON r.order_id = o.order_id
-    JOIN order_status os ON o.status_id = os.status_id
-    WHERE o.user_id = :user_id
+    LEFT JOIN kits k ON r.kit_id = k.kit_id
+    LEFT JOIN orders o ON COALESCE(r.order_id, k.order_id) = o.order_id
+    LEFT JOIN order_status os ON k.kit_status_id = os.status_id
+    WHERE o.user_id = :user_id OR k.gift_redeemed_by = :user_id
     ORDER BY r.upload_date DESC
 ");
 $stmt->execute([':user_id' => $userId]);
@@ -43,27 +46,15 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Results - LuckyGeneMDx</title>
+    <title>My Results - LuckyGenes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/portal.css">
 </head>
 <body>
-    <nav class="navbar">
-      <a href="../index.php" class="brand"><span>🧬</span> LuckyGeneMDx</a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">My Orders</a>
-        <a href="results.php" class="nav-link active">Results</a>
-        <a href="settings.php" class="nav-link">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <div class="container">
         <div class="header-section">
@@ -72,71 +63,76 @@ if (strpos($user['full_name'],' ')!==false) $initials .= strtoupper(substr(explo
         </div>
 
             <?php if (empty($results)): ?>
-                <div class="card" style="text-align:center; padding: 4rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
-                    <h3 style="margin-bottom: 1rem;">No Results Available</h3>
-                    <p style="margin-bottom: 2rem;">
+                <div class="card text-center p-4">
+                    <div class="fs-3 mb-1">📄</div>
+                    <h3 class="mb-1">No Results Available</h3>
+                    <p class="mb-2">
                         Your results will appear here once your sample has been processed.<br>
                         Standard processing time is 14–21 days from sample receipt.
                     </p>
-                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="orders.php" class="btn">View Order Status</a>
+                    <div class="flex-center-wrap">
+                        <a href="orders.php" class="btn btn-primary">View Order Status</a>
                         <a href="../track-order.php" class="btn btn-outline">Track Shipment</a>
                     </div>
                 </div>
             <?php else: ?>
-                <?php foreach ($results as $result): ?>
-                    <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--ms-blue);">
-                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                <?php foreach ($results as $result): 
+                    $label = !empty($result['assigned_to']) ? $result['assigned_to'] : ($result['is_gift'] ? 'Gift Kit' : 'My Kit');
+                ?>
+                    <div class="card result-card">
+                        <div class="flex-between-start">
                             <div>
-                                <h3>Results: Order #<?php echo htmlspecialchars($result['order_number']); ?></h3>
-                                <p style="color: var(--ms-blue); font-weight: 600;">
-                                    <span style="font-size:1.2rem; vertical-align:middle;">✨</span> Comprehensive Carrier Screen Ready
+                                <h3>🧬 <?php echo htmlspecialchars($label); ?> Results</h3>
+                                <p style="font-family:monospace; color:var(--color-navy); font-size:0.9rem; margin-top:0.25rem;">
+                                    Barcode: <?php echo htmlspecialchars($result['kit_barcode'] ?? 'N/A'); ?> (Order #<?php echo htmlspecialchars($result['order_number']); ?>)
+                                </p>
+                                <p class="text-primary font-semibold" style="margin-top:0.5rem;">
+                                    <span class="fs-1-2 align-middle">✨</span> Comprehensive Carrier Screen Ready
                                 </p>
                             </div>
                         </div>
 
-                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; background: #f8f9fa; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
+                        <div class="info-panel">
                             <div>
                                 <div class="stat-lbl">Result Date</div>
-                                <div style="font-weight:600;"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
+                                <div class="font-semibold"><?php echo date('M j, Y', strtotime($result['upload_date'])); ?></div>
                             </div>
                             <div>
                                 <div class="stat-lbl">Type</div>
-                                <div style="font-weight:600;">Full Panel (300+)</div>
+                                <div class="font-semibold">Full Panel (300+)</div>
                             </div>
                             <div>
                                 <div class="stat-lbl">File Size</div>
-                                <div style="font-weight:600;"><?php echo number_format($result['file_size'] / 1024, 1); ?> KB</div>
+                                <div class="font-semibold"><?php echo number_format($result['file_size'] / 1024, 1); ?> KB</div>
                             </div>
                         </div>
 
-                        <div style="background: #fff8f0; border: 1px solid #ffeeba; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                        <div class="alert-warning">
                             <strong>Important Medical Context:</strong>
-                            <ul style="margin: 0.5rem 0 0 1.5rem;">
+                            <ul class="ml-1-5 mt-0-5">
                                 <li>These are screening results, not a medical diagnosis.</li>
                                 <li>We recommend reviewing this report with a genetic counselor or your healthcare provider.</li>
                             </ul>
                         </div>
 
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <a href="view-result.php?id=<?php echo $result['result_id']; ?>" target="_blank" class="btn">
+                        <div class="flex-gap-1 flex-wrap">
+                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&kit_id=<?php echo $result['kit_id']; ?>" target="_blank" class="btn btn-primary">
                                 View PDF Report
                             </a>
-                            <a href="download-result.php?id=<?php echo $result['result_id']; ?>" class="btn btn-outline" download>
+                            <a href="../api/download-result.php?order_id=<?php echo $result['order_id']; ?>&kit_id=<?php echo $result['kit_id']; ?>&download=1" class="btn btn-outline" download>
                                 Download
                             </a>
-                            <a href="mailto:counseling@luckygenemdx.com" class="btn btn-outline">
+                            <a href="mailto:counseling@LuckyGenes.com" class="btn btn-outline">
                                 Request Counselor Call
                             </a>
                         </div>
                     </div>
                 <?php endforeach; ?>
 
-                <div class="card" style="margin-top: 3rem; text-align: center;">
+                <div class="card mt-3 text-center">
                     <h3>Need help interpreting your results?</h3>
                     <p>Our team of board-certified genetic counselors is here to walk you through your report.</p>
-                    <a href="../support.php" class="btn btn-outline" style="margin-top: 1rem;">Visit Support Center</a>
+                    <a href="../support.php" class="btn btn-outline mt-1">Visit Support Center</a>
                 </div>
             <?php endif; ?>
     </div>

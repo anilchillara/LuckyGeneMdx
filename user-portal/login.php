@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -58,27 +58,25 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patient Portal Login – LuckyGeneMDx</title>
+<title>Patient Portal Login – LuckyGenes</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/portal.css">
+<link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
 
-<div class="auth-bg-video">
-    <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-</div>
-
 <div class="auth-card">
-    <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+    <div class="text-center mb-4">
+        <a href="../index.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Main Site</a>
+    </div>
 
-    <div style="text-align:center; margin-bottom: 2rem;">
-        <div style="font-size: 3rem;">🧬</div>
-        <h1 id="header-title">Patient Portal</h1>
-        <p id="header-desc">Welcome back to LuckyGeneMDx</p>
+    <div class="mb-4">
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+        <h1 class="font-xl mb-2" id="header-title">Patient Portal</h1>
+        <p class="auth-title" id="header-desc">Welcome back to <?php echo htmlspecialchars(SITE_NAME); ?></p>
     </div>
 
     <?php if ($error): ?>
-    <div class="msg msg-error">⚠ <?php echo $error; ?></div>
+    <div class="glass-card-error p-3 mb-3 text-error">⚠ <?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
     <form method="POST" id="auth-form">
@@ -86,50 +84,52 @@ $postedOrder = htmlspecialchars($_POST['order_number'] ?? '');
 
         <!-- STEP 1: Identifier -->
         <div class="step <?php echo $error ? '' : 'active'; ?>" id="step-1" style="<?php echo $error ? 'display:none' : 'display:block'; ?>">
-            <div style="display:flex; gap:10px; margin-bottom: 1.5rem;">
+            <div class="auth-toggle-group">
                 <button type="button" class="btn btn-outline btn-full <?php echo $loginType !== 'order' ? 'active' : ''; ?>" onclick="switchTab('email', this)">Email Login</button>
                 <button type="button" class="btn btn-outline btn-full <?php echo $loginType === 'order' ? 'active' : ''; ?>" onclick="switchTab('order', this)">Order Login</button>
             </div>
 
             <div id="email-group" class="form-group" <?php echo $loginType === 'order' ? 'style="display:none"' : ''; ?>>
                 <label>Email Address</label>
-                <input type="email" name="email" id="email-input" placeholder="name@example.com" autocomplete="email" value="<?php echo $postedEmail; ?>">
+                <input type="email" name="email" id="email-input" placeholder="name@example.com" autocomplete="email" value="<?php echo $postedEmail; ?>" class="form-control">
             </div>
 
             <div id="order-group" class="form-group" <?php echo $loginType !== 'order' ? 'style="display:none"' : ''; ?>>
                 <label>Order Number</label>
-                <input type="text" name="order_number" id="order-input" placeholder="LGM-2024-XXXXX" value="<?php echo $postedOrder; ?>">
+                <input type="text" name="order_number" id="order-input" placeholder="LGM-2024-XXXXX" value="<?php echo $postedOrder; ?>" class="form-control">
             </div>
 
-            <button type="button" class="btn btn-full" onclick="goToStep2()">Continue →</button>
+            <button type="button" class="btn btn-primary btn-full" onclick="goToStep2()">Continue →</button>
         </div>
 
         <!-- STEP 2: Password -->
         <div class="step <?php echo $error ? 'active' : ''; ?>" id="step-2" style="<?php echo $error ? 'display:block' : 'display:none'; ?>">
-            <div style="background:#f3f2f1; padding:10px; border-radius:4px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
-                <span id="display-identifier" style="font-weight:600;"><?php echo $postedEmail ?: $postedOrder; ?></span>
-                <button type="button" onclick="goToStep1()" style="background:none; border:none; color:var(--ms-blue); cursor:pointer;">Edit</button>
+            <div class="identifier-display">
+                <span id="display-identifier" class="font-semibold"><?php echo $postedEmail ?: $postedOrder; ?></span>
+                <button type="button" onclick="goToStep1()" class="text-teal" style="background:none; border:none; cursor:pointer;">Edit</button>
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <div style="position: relative;">
-                    <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="current-password" style="padding-right: 40px;">
-                    <button type="button" onclick="togglePassword('password-input')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
+                <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="current-password" class="form-control">
+            </div>
+            <div class="form-group mb-1">
+                <div class="form-checkbox">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
                 </div>
             </div>
-            <div class="form-group" style="margin-bottom: 1rem;">
-                <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
-                <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
+            <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+            <div class="mt-3 text-center">
+                <a href="password-reset.php" class="text-teal font-sm">Forgot Password?</a>
+                <span class="mx-2 text-dark-gray">|</span>
+                <a href="forgot-username.php" class="text-teal font-sm">Forgot Email?</a>
             </div>
-            <button type="submit" class="btn btn-full">Sign In</button>
-            <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
-            <a href="forgot-username.php" style="display:block; text-align:center; margin-top:0.5rem; font-size:0.85rem; color:var(--text-secondary);">Forgot Email?</a>
         </div>
     </form>
 
-    <div style="text-align:center; margin-top: 2rem;">
-        <p>Don't have an account?</p>
-        <a href="register.php" class="btn btn-outline">Create Account</a>
+    <div class="mt-4 text-center">
+        <p class="text-dark-gray mb-2">Don't have an account?</p>
+        <a href="register.php" class="btn btn-outline btn-full">Create Account</a>
     </div>
 </div>
 
@@ -160,12 +160,7 @@ function goToStep1() {
     document.getElementById('step-2').style.display = 'none';
     document.getElementById('step-1').style.display = 'block';
     document.getElementById('header-title').textContent = 'Patient Portal';
-    document.getElementById('header-desc').textContent  = 'Welcome back to LuckyGeneMDx';
-}
-
-function togglePassword(id) {
-    const input = document.getElementById(id);
-    input.type = input.type === 'password' ? 'text' : 'password';
+    document.getElementById('header-desc').textContent  = 'Welcome back to <?php echo htmlspecialchars(SITE_NAME); ?>';
 }
 </script>
 </body>

@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -34,9 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['display_order'] ?? 0
                     ]);
                     $success = "Testimonial added successfully!";
+                    // Log Activity
+                    $id = $db->lastInsertId();
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'add_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $id, "Added testimonial from " . $_POST['name'], $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'update':
+                    $stmt = $db->prepare("SELECT name, quote, is_active FROM testimonials WHERE testimonial_id = ?");
+                    $stmt->execute([$_POST['testimonial_id']]);
+                    $oldTestimonial = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE testimonials SET name = ?, age = ?, location = ?, quote = ?, is_active = ?, display_order = ? WHERE testimonial_id = ?");
                     $stmt->execute([
                         $_POST['name'],
@@ -48,18 +56,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['testimonial_id']
                     ]);
                     $success = "Testimonial updated successfully!";
+                    // Log Activity
+                    $changes = [];
+                    if ($oldTestimonial['name'] != $_POST['name']) $changes[] = "Name changed";
+                    if ($oldTestimonial['quote'] != $_POST['quote']) $changes[] = "Quote updated";
+                    if ($oldTestimonial['is_active'] != $_POST['is_active']) $changes[] = "Status changed";
+
+                    $details = "Updated testimonial ID " . $_POST['testimonial_id'] . ". " . implode(', ', $changes);
+
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'update_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['testimonial_id'], $details, $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'delete':
+                    $stmt = $db->prepare("SELECT name FROM testimonials WHERE testimonial_id = ?");
+                    $stmt->execute([$_POST['testimonial_id']]);
+                    $name = $stmt->fetchColumn();
+
                     $stmt = $db->prepare("DELETE FROM testimonials WHERE testimonial_id = ?");
                     $stmt->execute([$_POST['testimonial_id']]);
                     $success = "Testimonial deleted successfully!";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'delete_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['testimonial_id'], "Deleted testimonial from: " . ($name ?: 'Unknown'), $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'toggle_status':
+                    $stmt = $db->prepare("SELECT is_active, name FROM testimonials WHERE testimonial_id = ?");
+                    $stmt->execute([$_POST['testimonial_id']]);
+                    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE testimonials SET is_active = NOT is_active WHERE testimonial_id = ?");
                     $stmt->execute([$_POST['testimonial_id']]);
                     $success = "Testimonial status updated successfully!";
+                    // Log Activity
+                    $newStatus = $current['is_active'] ? 'Inactive' : 'Active';
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'toggle_testimonial', 'testimonial', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['testimonial_id'], "Toggled status to $newStatus for " . $current['name'], $_SERVER['REMOTE_ADDR']]);
                     break;
             }
         } catch (Exception $e) {
@@ -119,267 +152,70 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimonial Management - LuckyGeneMDx Admin</title>
+    <title>Testimonial Management - LuckyGenes Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            background: var(--color-light-gray);
-        }
-        .admin-header {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-        }
-        .alert {
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-        }
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border-left: 4px solid var(--color-medical-teal);
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-medical-teal);
-            margin-bottom: 0.25rem;
-        }
-        .stat-label {
-            color: var(--color-dark-gray);
-            font-size: 0.9rem;
-        }
-        .filters-bar {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: end;
-        }
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        .table-container {
-            background: white;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--color-medium-gray); }
-        .table th { font-weight: 600; color: var(--color-primary-deep-blue); background: var(--color-light-gray); white-space: nowrap; }
-        .table tbody tr:hover { background: var(--color-light-gray); }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        .badge-success { background: #d4edda; color: #155724; }
-        .badge-secondary { background: #e2e3e5; color: #383d41; }
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-sm { padding: 0.25rem 0.75rem; font-size: 0.85rem; }
-        .btn-primary { background: var(--color-medical-teal); color: white; }
-        .btn-primary:hover { background: #009688; }
-        .btn-secondary { background: var(--color-dark-gray); color: white; }
-        .btn-secondary:hover { background: #555; }
-        .btn-info { background: #17a2b8; color: white; }
-        .btn-info:hover { background: #138496; }
-        .btn-danger { background: #dc3545; color: white; }
-        .btn-danger:hover { background: #c82333; }
-        .btn-outline { background: white; color: var(--color-primary-deep-blue); border: 1px solid var(--color-medium-gray); }
-        .btn-outline:hover { background: var(--color-light-gray); }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background: white;
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-close {
-            float: right;
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1;
-            color: #999;
-            cursor: pointer;
-        }
-        .modal-close:hover { color: #000; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--color-medium-gray);
-            border-radius: var(--radius-sm);
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--color-dark-gray);
-        }
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
         .pagination {
             display: flex;
             justify-content: center;
             gap: 0.5rem;
             padding: 1.5rem;
+            border-top: 1px solid var(--color-border);
         }
-        .pagination a, .pagination span {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--color-medium-gray);
-            border-radius: var(--radius-sm);
-            color: var(--color-primary-deep-blue);
-            text-decoration: none;
-            transition: all var(--transition-fast);
+        .filters-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
         }
-        .pagination a:hover {
-            background: var(--color-medical-teal);
-            color: white;
-            border-color: var(--color-medical-teal);
-        }
-        .pagination .active {
-            background: var(--color-medical-teal);
-            color: white;
-            border-color: var(--color-medical-teal);
-        }
-        .pagination .disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        @media (max-width: 768px) {
+            .filters-form { flex-direction: column; align-items: stretch; }
+            .filters-form .btn { width: 100%; margin-top: 0.5rem; }
+            .filters-form .form-group { min-width: 100%; margin-bottom: 0.5rem !important; }
         }
     </style>
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <?php include 'sidenav.php'; ?>
-        
-        <main class="admin-main">
-            <div class="admin-header">
-                <h1 style="margin-bottom: 0.25rem;">Testimonial Management</h1>
-                <p style="color: var(--color-dark-gray); margin: 0;">
-                    <?php echo number_format($totalTestimonials); ?> total testimonials
-                </p>
+    <?php include 'navbar.php'; ?>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <div>
+                <h1>Testimonial Management</h1>
+                <p><?php echo number_format($totalTestimonials); ?> total testimonials</p>
             </div>
+        </div>
 
             <?php if (isset($success)): ?>
-                <div class="alert alert-success"><?php echo $success; ?></div>
+            <div class="glass-card-teal-left p-3 mb-3 text-teal"><?php echo $success; ?></div>
             <?php endif; ?>
             
             <?php if (isset($error)): ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
+            <div class="glass-card-error p-3 mb-3 text-error"><?php echo $error; ?></div>
             <?php endif; ?>
 
             <!-- Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value"><?php echo number_format($stats['total']); ?></div>
-                    <div class="stat-label">Total Testimonials</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value"><?php echo number_format($stats['active']); ?></div>
-                    <div class="stat-label">Active</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value"><?php echo number_format($stats['inactive']); ?></div>
-                    <div class="stat-label">Inactive</div>
-                </div>
+        <div class="admin-grid" style="margin-bottom: 2rem;">
+            <div class="admin-card admin-stat-card col-span-4 blue">
+                <div class="stat-lbl">Total Testimonials</div>
+                <div class="stat-val"><?php echo number_format($stats['total']); ?></div>
             </div>
+            <div class="admin-card admin-stat-card col-span-4 green">
+                <div class="stat-lbl">Active</div>
+                <div class="stat-val"><?php echo number_format($stats['active']); ?></div>
+            </div>
+            <div class="admin-card admin-stat-card col-span-4 orange">
+                <div class="stat-lbl">Inactive</div>
+                <div class="stat-val"><?php echo number_format($stats['inactive']); ?></div>
+                </div>
+        </div>
 
             <!-- Filters -->
-            <form method="GET" action="" class="filters-bar">
-                <div class="filter-group">
-                    <label class="form-label">Status</label>
+        <div class="admin-card" style="margin-bottom: 2rem;">
+            <form method="GET" action="" class="filters-form">
+                <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
+                    <label>Status</label>
                     <select name="status" class="form-select">
                         <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All Status</option>
                         <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active Only</option>
@@ -387,34 +223,27 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                     </select>
                 </div>
                 
-                <div class="filter-group" style="flex: 0;">
-                    <button type="submit" class="btn btn-primary">
-                        🔍 Filter
-                    </button>
-                </div>
+                <button type="submit" class="btn btn-primary">
+                    🔍 Filter
+                </button>
                 
-                <div class="filter-group" style="flex: 0;">
-                    <button type="button" onclick="showAddModal()" class="btn btn-primary">
-                        + Add Testimonial
-                    </button>
-                </div>
+                <button type="button" onclick="showAddModal()" class="btn btn-success">
+                    + Add Testimonial
+                </button>
                 
                 <?php if ($status_filter !== 'all'): ?>
-                <div class="filter-group" style="flex: 0;">
-                    <a href="testimonials.php" class="btn btn-outline">
-                        ✕ Clear
-                    </a>
-                </div>
+                    <a href="testimonials.php" class="btn btn-outline">✕ Clear</a>
                 <?php endif; ?>
             </form>
+        </div>
 
             <!-- Testimonials Table -->
-            <div class="table-container">
+        <div class="admin-card" style="padding:0; overflow:hidden;">
                 <?php if (empty($testimonials)): ?>
-                    <div class="empty-state">
-                        <div class="empty-state-icon">💬</div>
+                <div style="text-align:center; padding:4rem 2rem;">
+                    <div style="font-size:4rem; margin-bottom:1rem; opacity:0.3;">💬</div>
                         <h3>No testimonials found</h3>
-                        <p>
+                    <p style="color:var(--color-text-gray);">
                             <?php if ($status_filter !== 'all'): ?>
                                 Try adjusting your filters.
                             <?php else: ?>
@@ -423,8 +252,8 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                         </p>
                     </div>
                 <?php else: ?>
-                    <div style="overflow-x: auto;">
-                        <table class="table">
+                <div class="table-responsive">
+                    <table class="admin-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -450,19 +279,19 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                                             <?php echo htmlspecialchars(substr($testimonial['quote'], 0, 100)); ?>...
                                         </td>
                                         <td>
-                                            <span class="badge badge-<?php echo $testimonial['is_active'] ? 'success' : 'secondary'; ?>">
+                                        <span class="badge badge-<?php echo $testimonial['is_active'] ? 'green' : 'orange'; ?>">
                                                 <?php echo $testimonial['is_active'] ? 'Active' : 'Inactive'; ?>
                                             </span>
                                         </td>
                                         <td><?php echo date('M j, Y', strtotime($testimonial['created_at'])); ?></td>
                                         <td style="white-space: nowrap;">
                                             <button onclick='editTestimonial(<?php echo json_encode($testimonial, JSON_HEX_APOS | JSON_HEX_QUOT); ?>)' 
-                                                    class="btn btn-sm btn-secondary">Edit</button>
+                                                class="btn btn-outline btn-sm">Edit</button>
                                             
                                             <form method="POST" style="display: inline;">
                                                 <input type="hidden" name="action" value="toggle_status">
                                                 <input type="hidden" name="testimonial_id" value="<?php echo $testimonial['testimonial_id']; ?>">
-                                                <button type="submit" class="btn btn-sm btn-info">
+                                            <button type="submit" class="btn btn-sm <?php echo $testimonial['is_active'] ? 'btn-warning' : 'btn-success'; ?>">
                                                     <?php echo $testimonial['is_active'] ? 'Deactivate' : 'Activate'; ?>
                                                 </button>
                                             </form>
@@ -488,9 +317,9 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                         if ($page > 1):
                             $queryParams['page'] = $page - 1;
                         ?>
-                            <a href="?<?php echo http_build_query($queryParams); ?>">← Previous</a>
+                        <a href="?<?php echo http_build_query($queryParams); ?>" class="btn btn-outline btn-sm">← Previous</a>
                         <?php else: ?>
-                            <span class="disabled">← Previous</span>
+                        <button class="btn btn-outline btn-sm" disabled style="opacity:0.5; cursor:not-allowed;">← Previous</button>
                         <?php endif; ?>
                         
                         <?php
@@ -501,9 +330,9 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                             $queryParams['page'] = $i;
                             if ($i == $page):
                         ?>
-                                <span class="active"><?php echo $i; ?></span>
+                            <button class="btn btn-sm" style="cursor:default;"><?php echo $i; ?></button>
                         <?php else: ?>
-                                <a href="?<?php echo http_build_query($queryParams); ?>"><?php echo $i; ?></a>
+                            <a href="?<?php echo http_build_query($queryParams); ?>" class="btn btn-outline btn-sm"><?php echo $i; ?></a>
                         <?php
                             endif;
                         endfor;
@@ -512,69 +341,73 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                         <?php if ($page < $totalPages):
                             $queryParams['page'] = $page + 1;
                         ?>
-                            <a href="?<?php echo http_build_query($queryParams); ?>">Next →</a>
+                        <a href="?<?php echo http_build_query($queryParams); ?>" class="btn btn-outline btn-sm">Next →</a>
                         <?php else: ?>
-                            <span class="disabled">Next →</span>
+                        <button class="btn btn-outline btn-sm" disabled style="opacity:0.5; cursor:not-allowed;">Next →</button>
                         <?php endif; ?>
                     </div>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-        </main>
     </div>
 
     <!-- Add/Edit Modal -->
-    <div id="testimonialModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">Add New Testimonial</h2>
-            <form method="POST">
-                <input type="hidden" name="action" id="form_action" value="add">
-                <input type="hidden" name="testimonial_id" id="form_testimonial_id">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Name *</label>
-                        <input type="text" name="name" id="form_name" required placeholder="Sarah M.">
+    <div id="testimonialModal" class="admin-modal">
+        <div class="admin-modal-dialog">
+            <div class="admin-modal-content">
+                <form method="POST">
+                    <div class="admin-modal-header">
+                        <h3 id="modalTitle" class="admin-modal-title">Add New Testimonial</h3>
+                        <button type="button" class="admin-modal-close" onclick="closeModal()">&times;</button>
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Age</label>
-                        <input type="number" name="age" id="form_age" placeholder="29">
+                    <div class="admin-modal-body">
+                        <input type="hidden" name="action" id="form_action" value="add">
+                        <input type="hidden" name="testimonial_id" id="form_testimonial_id">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Name *</label>
+                                <input type="text" name="name" id="form_name" required placeholder="Sarah M." class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" name="age" id="form_age" placeholder="29" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" name="location" id="form_location" placeholder="Boston, MA" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Testimonial Quote *</label>
+                            <textarea name="quote" id="form_quote" rows="4" required placeholder="Getting screened before starting our family gave us peace of mind..." class="form-control"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Display Order</label>
+                                <input type="number" name="display_order" id="form_display_order" value="0" min="0" class="form-control">
+                                <small style="color: var(--color-text-gray);">Lower numbers appear first</small>
+                            </div>
+                            
+                            <div class="form-group" id="status_group" style="display: none;">
+                                <label>Status</label>
+                                <select name="is_active" id="form_is_active" class="form-select">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" name="location" id="form_location" placeholder="Boston, MA">
+                    <div class="admin-modal-footer">
+                        <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Testimonial</button>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Testimonial Quote *</label>
-                    <textarea name="quote" id="form_quote" rows="4" required placeholder="Getting screened before starting our family gave us peace of mind..."></textarea>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Display Order</label>
-                        <input type="number" name="display_order" id="form_display_order" value="0" min="0">
-                        <small style="color: #666;">Lower numbers appear first</small>
-                    </div>
-                    
-                    <div class="form-group" id="status_group" style="display: none;">
-                        <label>Status</label>
-                        <select name="is_active" id="form_is_active">
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 1.5rem;">
-                    <button type="submit" class="btn btn-primary">Save Testimonial</button>
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -612,6 +445,22 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role']));
                 modal.style.display = 'none';
             }
         }
+    </script>
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        if (localStorage.getItem('portal_theme') === 'dark') {
+            body.classList.add('dark-theme');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('portal_theme', isDark ? 'dark' : 'light');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
     </script>
 </body>
 </html>

@@ -61,20 +61,85 @@ if (ENVIRONMENT === 'development') {
 // -----------------------------------
 
 // Prevent direct access
-if (!defined('luckygenemdx')) {
+if (!defined('LuckyGenes')) {
     die('Direct access not permitted');
 }
 
-// Application Constants
-define('SITE_URL', getenv('SITE_URL') ?: 'https://luckygenemdx.com');
-define('SITE_NAME', getenv('SITE_NAME') ?: 'LuckyGeneMDx');
-
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'luckygenemdx_db');
+define('DB_NAME', getenv('DB_NAME') ?: 'luckygenes_db');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
+
+// Load Dynamic Settings from Database
+require_once __DIR__ . '/Database.php';
+$dbSettings = [];
+try {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->query("SELECT setting_key, value FROM site_settings");
+    $dbSettings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+} catch (Exception $e) {
+    // Fallback if DB connection fails or table missing
+}
+
+// Application Constants
+// Auto-detect URL for development if not set in DB
+$detectedUrl = 'https://LuckyGenes.com';
+if (isset($_SERVER['HTTP_HOST'])) {
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false) {
+        // If running on a port (e.g. :8000), use root. Otherwise assume folder structure.
+        $isPort = strpos($_SERVER['HTTP_HOST'], ':') !== false;
+        $detectedUrl = $isPort ? "$protocol://{$_SERVER['HTTP_HOST']}" : "$protocol://{$_SERVER['HTTP_HOST']}/LuckyGenes";
+    }
+}
+
+define('SITE_URL', $dbSettings['site_url'] ?? (getenv('SITE_URL') ?: $detectedUrl));
+define('SITE_NAME', $dbSettings['site_name'] ?? (getenv('SITE_NAME') ?: 'LuckyGenes'));
+define('SUPPORT_EMAIL', $dbSettings['support_email'] ?? 'support@LuckyGenes.com');
+
+// --- ACCESS CONTROL SYSTEM ---
+$currentScript = $_SERVER['PHP_SELF'];
+$isAdminArea = strpos($currentScript, '/admin/') !== false;
+$isMaintenancePage = basename($currentScript) === 'maintenance.php';
+
+// 1. Global Maintenance Mode Check
+// Redirects all non-admin traffic to maintenance.php if enabled in settings
+if (isset($dbSettings['maintenance_mode']) && $dbSettings['maintenance_mode'] && !$isAdminArea && !$isMaintenancePage) {
+    header("Location: " . (defined('BASE_URL') ? BASE_URL : '') . "/maintenance.php");
+    exit;
+}
+
+// 2. Disabled Navbar Pages Check
+// Blocks access to specific pages disabled via Navbar Settings
+if (isset($db) && !$isAdminArea && !$isMaintenancePage) {
+    try {
+        $stmt = $db->prepare("SELECT url FROM navbar_items WHERE is_active = 0");
+        $stmt->execute();
+        $disabledPages = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        if (!empty($disabledPages)) {
+            $currentScript = trim($_SERVER['PHP_SELF']);
+            foreach ($disabledPages as $pageUrl) {
+                // Check if current script ends with the disabled URL
+                if (substr($currentScript, -strlen($pageUrl)) === $pageUrl) {
+                    $boundary = substr($currentScript, -(strlen($pageUrl) + 1), 1);
+                    if ($boundary === '/' || $boundary === false) {
+                        if ($pageUrl === 'index.php') {
+                            header("Location: maintenance.php");
+                            exit;
+                        } else {
+                            $redirect = (strpos($currentScript, '/user-portal/') !== false) ? '../index.php' : 'index.php';
+                            header("Location: " . $redirect);
+                            exit;
+                        }
+                    }
+                }
+            }
+        }
+    } catch (Exception $e) { /* Ignore access control errors */ }
+}
 
 // Security Settings
 define('SESSION_TIMEOUT', 1800);
@@ -92,19 +157,31 @@ define('ENCRYPTION_METHOD', 'AES-256-CBC');
 define('ENCRYPTION_KEY', getenv('ENCRYPTION_KEY'));
 
 // Email Configuration
-define('MAIL_HOST', getenv('SMTP_HOST'));
-define('MAIL_PORT', getenv('SMTP_PORT') ?: 587);
-define('MAIL_USERNAME', getenv('SMTP_USER'));
-define('MAIL_PASSWORD', getenv('SMTP_PASS'));
-define('MAIL_FROM', getenv('EMAIL_FROM'));
-define('MAIL_FROM_NAME', getenv('EMAIL_FROM_NAME'));
+define('MAIL_HOST', $dbSettings['smtp_host'] ?? (getenv('SMTP_HOST') ?: 'smtp.gmail.com'));
+define('MAIL_PORT', $dbSettings['smtp_port'] ?? (getenv('SMTP_PORT') ?: 587));
+define('MAIL_ENCRYPTION', $dbSettings['smtp_security'] ?? (getenv('SMTP_SECURITY') ?: 'tls'));
+define('MAIL_USERNAME', $dbSettings['smtp_username'] ?? (getenv('SMTP_USER') ?: ''));
+define('MAIL_PASSWORD', $dbSettings['smtp_password'] ?? (getenv('SMTP_PASS') ?: ''));
+define('MAIL_FROM', $dbSettings['from_email'] ?? (getenv('EMAIL_FROM') ?: ''));
+define('MAIL_FROM_NAME', $dbSettings['from_name'] ?? (getenv('EMAIL_FROM_NAME') ?: 'LuckyGenes'));
 
-define('BASE_URL', getenv('BASE_URL'));
+define('BASE_URL', $dbSettings['base_url'] ?? (getenv('BASE_URL') ?: SITE_URL));
 
 // Application Settings
-define('KIT_PRICE', 99.00);
-define('CURRENCY', 'USD');
+define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 25000.00);
+define('ACTUAL_PRICE', isset($dbSettings['actual_price']) ? (float)$dbSettings['actual_price'] : 35000.00);
+define('SHOW_CTA', isset($dbSettings['show_cta']) ? (bool)$dbSettings['show_cta'] : true);
+define('CURRENCY', 'INR');
+define('CURRENCY_SYMBOL', '₹');
 define('RESULTS_PROCESSING_DAYS', '14-21');
+
+// Razorpay Payment Gateway
+define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
+define('RAZORPAY_KEY_SECRET', getenv('RAZORPAY_KEY_SECRET') ?: '');
+
+// Google Drive API
+define('GOOGLE_DRIVE_FOLDER_ID', getenv('GOOGLE_DRIVE_FOLDER_ID') ?: '');
+define('GOOGLE_SERVICE_ACCOUNT_JSON', getenv('GOOGLE_SERVICE_ACCOUNT_JSON') ?: '../service-account.json');
 
 // Error Reporting logic
 if (ENVIRONMENT === 'development') {

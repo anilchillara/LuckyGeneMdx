@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -49,37 +49,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recover Username - LuckyGeneMDx</title>
+    <title>Recover Username - LuckyGenes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/portal.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
 
-    <div class="auth-bg-video">
-        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-    </div>
-
     <div class="auth-card">
-        <div style="margin-bottom: 20px;">
-            <a href="login.php" style="color: var(--text-secondary); text-decoration: none; font-size: 0.8rem;">← Back to Login</a>
+        <div class="text-center mb-4">
+            <a href="login.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Login</a>
         </div>
-        <div style="text-align:center; margin-bottom:2rem;">
-            <div style="font-size:3rem;">📧</div>
-            <h1 id="title">Recover Email</h1>
-            <p id="desc">Find your account email address</p>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2" id="title">Recover Email</h1>
+            <p class="auth-title" id="desc">Find your account email address</p>
         </div>
 
         <?php if ($error): ?>
-            <div class="msg msg-error">⚠️ <?php echo htmlspecialchars($error); ?></div>
+            <div class="glass-card-error p-3 mb-3 text-error">⚠️ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <?php if ($success): ?>
-            <div class="msg msg-success">✓ <?php echo $success; ?></div>
-            <div style="text-align:center; margin-top:1.5rem;">
-                <a href="login.php" class="btn btn-full">Sign In Now</a>
+            <div class="glass-card-teal-left p-3 mb-3 text-teal">✓ <?php echo $success; ?></div>
+            <div class="mt-4 text-center">
+                <a href="login.php" class="btn btn-primary btn-full">Sign In Now</a>
             </div>
         <?php else: ?>
 
-        <div style="display:flex; gap:10px; margin-bottom: 1.5rem;">
+        <div class="auth-toggle-group">
             <button type="button" class="btn btn-outline btn-full active" id="btn-order" onclick="switchMethod('order')">By Order #</button>
             <button type="button" class="btn btn-outline btn-full" id="btn-phone" onclick="switchMethod('phone')">By Phone</button>
         </div>
@@ -90,22 +86,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="order-group">
                 <div class="form-group">
                     <label>Order Number</label>
-                    <input type="text" name="order_number" placeholder="LGM-2024-XXXXX">
+                    <input type="text" name="order_number" placeholder="LGM-2024-XXXXX" class="form-control">
                 </div>
             </div>
 
             <div id="phone-group" style="display:none;">
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" name="phone" placeholder="(555) 000-0000">
-                </div>
-                <div class="form-group">
-                    <label>Date of Birth</label>
-                    <input type="date" name="dob">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="(555) 000-0000" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" name="dob" class="form-control">
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-full">Find Email</button>
+            <button type="submit" class="btn btn-primary btn-full">Find Email</button>
         </form>
         <?php endif; ?>
     </div>

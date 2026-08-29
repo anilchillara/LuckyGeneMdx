@@ -1,5 +1,5 @@
 /**
- * LuckyGeneMDx - Main JavaScript
+ * LuckyGenes - Main JavaScript
  * Handles animations, interactions, and form validation
  */
 
@@ -9,14 +9,20 @@
     // ============================================
     // INITIALIZATION
     // ============================================
-    document.addEventListener('DOMContentLoaded', function() {
+    function init() {
         initNavigation();
         initScrollAnimations();
         initParticles();
         initFormValidation();
         initCarousel();
         initSmoothScroll();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
     // ============================================
     // NAVIGATION
@@ -86,6 +92,18 @@
                 observer.observe(child);
             });
         });
+
+        // Observe .reveal and .tl-row elements (CSS-based animations)
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { 
+                    e.target.classList.add('in-view'); 
+                    revealObserver.unobserve(e.target); 
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal, .tl-row').forEach(el => revealObserver.observe(el));
     }
 
     // ============================================
@@ -518,7 +536,7 @@
     // ============================================
     // EXPORT FOR GLOBAL USE
     // ============================================
-    window.LuckyGeneMDx = {
+    window.LuckyGenes = {
         validateForm,
         validateField,
         showLoading,

@@ -2,3 +2,6 @@ idea/
 .DS_Store
 .env.local
 /vendor/
+
+# Ignore all directories named logs/ (and their contents) anywhere in the repo
+*.log

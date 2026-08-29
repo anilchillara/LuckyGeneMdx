@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
@@ -55,28 +55,26 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join LuckyGeneMDx – Secure Registration</title>
+<title>Join LuckyGenes – Secure Registration</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/portal.css">
+<link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
 
-<div class="auth-bg-video">
-    <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-</div>
-
 <div class="auth-card">
-    <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+    <div class="text-center mb-4">
+        <a href="../index.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Main Site</a>
+    </div>
 
     <?php if ($showPending): ?>
         <!-- ── CHECK YOUR EMAIL SCREEN ── -->
-        <div style="text-align:center;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">📬</div>
-            <h2>Check Your Inbox</h2>
-            <p>We've sent a verification link to<br>
-                <span style="font-weight:600; color:var(--ms-blue);"><?php echo $pendingEmail; ?></span>
+        <div class="text-center mb-4">
+            <div class="font-huge mb-2">📬</div>
+            <h2 class="mb-2">Check Your Inbox</h2>
+            <p class="text-dark-gray mb-3">We've sent a verification link to<br>
+                <span class="font-semibold text-deep-blue"><?php echo $pendingEmail; ?></span>
             </p>
-            <ul style="text-align:left; background:#f3f2f1; padding:1rem 1.5rem; border-radius:4px; margin:1.5rem 0; font-size:0.85rem;">
+            <ul class="info-box">
                 <li>Click the link in the email to activate your account</li>
                 <li>Link expires in 24 hours</li>
                 <li>Check spam/junk if you don't see it</li>
@@ -87,47 +85,44 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
     <?php else: ?>
         <!-- ── REGISTRATION FORM ── -->
 
-        <div style="text-align:center; margin-bottom: 1.5rem;">
-            <div style="font-size: 3rem;">🧬</div>
-            <h1 id="reg-title">Create Account</h1>
-            <p id="reg-desc">Join the LuckyGeneMDx Patient Portal</p>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2" id="reg-title">Create Account</h1>
+            <p class="auth-title" id="reg-desc">Join the LuckyGenes Patient Portal</p>
         </div>
 
         <?php if ($error): ?>
-        <div class="msg msg-error">⚠ <?php echo $error; ?></div>
+        <div class="glass-card-error p-3 mb-3 text-error">⚠ <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 
         <form method="POST" id="regForm">
             <input type="hidden" name="registration_type" id="registration_type" value="new">
 
             <!-- ── STEP 1: Email ── -->
-            <div class="reg-step active" id="step-1" style="display:block;">
-                <div style="display:flex; gap:10px; margin-bottom: 1.5rem;">
+            <div class="reg-step active d-block" id="step-1">
+                <div class="auth-toggle-group">
                     <button type="button" class="btn btn-outline btn-full active" onclick="setRegType('new', this)">New Patient</button>
                     <button type="button" class="btn btn-outline btn-full" onclick="setRegType('with_order', this)">Have Order #</button>
                 </div>
 
-                <div id="order-field" class="form-group" style="display:none">
+                <div id="order-field" class="form-group hidden">
                     <label>Order Number</label>
-                    <input type="text" name="order_number" placeholder="LGM-2024-XXXXX">
+                    <input type="text" name="order_number" placeholder="LGM-2024-XXXXX" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" name="email" id="reg-email" placeholder="name@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                    <input type="email" name="email" id="reg-email" placeholder="name@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" class="form-control">
                 </div>
 
-                <button type="button" class="btn btn-full" onclick="regNext(2)">Continue →</button>
+                <button type="button" class="btn btn-primary btn-full" onclick="regNext(2)">Continue →</button>
             </div>
 
             <!-- ── STEP 2: Password ── -->
-            <div class="reg-step" id="step-2" style="display:none;">
+            <div class="reg-step" id="step-2" class="hidden">
                 <div class="form-group">
                     <label>Create Password</label>
-                    <div style="position: relative;">
-                        <input type="password" name="password" id="reg-pw" placeholder="••••••••" autocomplete="new-password" style="padding-right: 40px;" oninput="checkStrength(this.value)">
-                        <button type="button" onclick="togglePw('reg-pw')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
-                    </div>
+                    <input type="password" name="password" id="reg-pw" placeholder="••••••••" autocomplete="new-password" class="form-control" oninput="checkStrength(this.value)">
                     <div class="pw-strength">
                         <div class="pw-seg" id="seg1"></div>
                         <div class="pw-seg" id="seg2"></div>
@@ -138,44 +133,42 @@ $pendingEmail = htmlspecialchars($_GET['email'] ?? '');
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <div style="position: relative;">
-                        <input type="password" name="confirm_password" id="reg-pw2" placeholder="••••••••" autocomplete="new-password" style="padding-right: 40px;">
-                        <button type="button" onclick="togglePw('reg-pw2')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
-                    </div>
+                    <input type="password" name="confirm_password" id="reg-pw2" placeholder="••••••••" autocomplete="new-password" class="form-control">
                 </div>
-                <button type="button" class="btn btn-full" onclick="regNext(3)">Continue →</button>
-                <button type="button" class="btn btn-outline btn-full" style="margin-top:10px;" onclick="regNext(1)">← Back</button>
+                <button type="button" class="btn btn-primary btn-full" onclick="regNext(3)">Continue →</button>
+                <button type="button" class="btn btn-outline btn-full mt-10" onclick="regNext(1)">← Back</button>
             </div>
 
             <!-- ── STEP 3: Personal details ── -->
-            <div class="reg-step" id="step-3" style="display:none;">
+            <div class="reg-step" id="step-3" class="hidden">
                 <div class="form-group">
                     <label>Full Legal Name</label>
-                    <input type="text" name="full_name" id="reg-name" placeholder="John Doe" autocomplete="name" value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>" required>
+                    <input type="text" name="full_name" id="reg-name" placeholder="John Doe" autocomplete="name" value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>" required class="form-control">
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Phone <span style="font-weight:400;text-transform:none">(optional)</span></label>
-                        <input type="tel" name="phone" placeholder="(555) 000-0000" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
+                        <label>Phone <span class="font-normal text-transform-none">(optional)</span></label>
+                        <input type="tel" name="phone" placeholder="(555) 000-0000" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Date of Birth</label>
-                        <input type="date" name="dob" id="reg-dob" value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>" required>
+                        <input type="date" name="dob" id="reg-dob" value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>" required class="form-control">
                     </div>
                 </div>
 
-                <label style="display:flex; gap:10px; align-items:start; font-size:0.8rem; margin: 1rem 0;">
+                <div class="form-checkbox mb-3">
                     <input type="checkbox" id="terms-chk" required>
-                    <span>I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></span>
-                </label>
+                    <label for="terms-chk">I agree to the <a href="/terms" target="_blank" class="text-teal">Terms of Service</a> and <a href="/privacy" target="_blank" class="text-teal">Privacy Policy</a></label>
+                </div>
 
-                <button type="submit" class="btn btn-full">Create Account & Verify Email →</button>
-                <button type="button" class="btn btn-outline btn-full" style="margin-top:10px;" onclick="regNext(2)">← Back</button>
+                <button type="submit" class="btn btn-primary btn-full">Create Account & Verify Email →</button>
+                <button type="button" class="btn btn-outline btn-full mt-10" onclick="regNext(2)">← Back</button>
             </div>
         </form>
 
-        <div style="text-align:center; margin-top: 2rem;">
-            <a href="login.php" class="btn btn-outline">Already have an account? Sign In</a>
+        <div class="mt-4 text-center">
+            <p class="text-dark-gray mb-2">Already have an account?</p>
+            <a href="login.php" class="btn btn-outline btn-full">Sign In</a>
         </div>
 
     <?php endif; ?>
@@ -220,11 +213,6 @@ function clear(id) {}
 function setRegType(type, el) {
     document.getElementById('registration_type').value = type;
     document.getElementById('order-field').style.display = type === 'with_order' ? 'block' : 'none';
-}
-
-function togglePw(id) {
-    const input = document.getElementById(id);
-    input.type = input.type === 'password' ? 'text' : 'password';
 }
 
 function checkStrength(pw) {

@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 session_start();
@@ -51,72 +51,56 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard | LuckyGeneMDx</title>
-<link rel="stylesheet" href="../css/admin.css">
+<title>Admin Dashboard | LuckyGenes</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 
-<nav class="navbar">
-  <a href="index.php" class="brand">
-    <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
-  </a>
-  <div class="nav-items">
-    <a href="index.php" class="nav-link active">Dashboard</a>
-    <a href="orders.php" class="nav-link">Orders</a>
-    <a href="users.php" class="nav-link">Users</a>
-    <a href="upload-results.php" class="nav-link">Upload Results</a>
-    <a href="activity-log.php" class="nav-link">Activity Log</a>
-    <a href="settings.php" class="nav-link">Settings</a>
-  </div>
-  <div class="user-menu">
-    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-    <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-    <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-  </div>
-</nav>
+<?php include 'navbar.php'; ?>
 
-<div class="container">
+<div class="admin-container">
 
-    <div class="header-section">
+    <div class="admin-header">
         <div>
             <h1>Dashboard</h1>
             <p>Welcome back, <?php echo htmlspecialchars($adminName); ?> • <?php echo htmlspecialchars($adminRole); ?></p>
         </div>
-        <a href="orders.php" class="btn">View All Orders</a>
+        <a href="orders.php" class="btn btn-primary">View All Orders</a>
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid">
-        <div class="card stat-card col-span-3 blue">
+    <div class="admin-grid">
+        <div class="admin-card admin-stat-card col-span-3 blue">
             <div class="stat-lbl">Total Orders</div>
             <div class="stat-val"><?php echo number_format($totalOrders); ?></div>
             <div class="stat-desc">All time</div>
         </div>
-        <div class="card stat-card col-span-3 orange">
+        <div class="admin-card admin-stat-card col-span-3 orange">
             <div class="stat-lbl">Pending</div>
             <div class="stat-val"><?php echo number_format($pendingOrders); ?></div>
             <div class="stat-desc">Awaiting processing</div>
         </div>
-        <div class="card stat-card col-span-3 green">
+        <div class="admin-card admin-stat-card col-span-3 green">
             <div class="stat-lbl">Results Ready</div>
             <div class="stat-val"><?php echo number_format($resultsReady); ?></div>
             <div class="stat-desc">Published</div>
         </div>
-        <div class="card stat-card col-span-3 red">
+        <div class="admin-card admin-stat-card col-span-3 red">
             <div class="stat-lbl">Total Users</div>
             <div class="stat-val"><?php echo number_format($totalUsers); ?></div>
             <div class="stat-desc">Registered accounts</div>
         </div>
     </div>
 
-    <div class="grid" style="margin-top: 2rem;">
+    <div class="admin-grid" style="margin-top: 2rem;">
         <!-- Order Trends Chart -->
         <div class="col-span-12">
-            <div class="card">
-                <div class="header-section">
+            <div class="admin-card">
+                <div class="admin-header">
                     <h3>Order Trends (Last 30 Days)</h3>
                 </div>
-                <div style="position: relative; height: 250px; width: 100%;">
+                <div class="chart-container">
                     <canvas id="orderTrendsChart"></canvas>
                 </div>
             </div>
@@ -124,12 +108,12 @@ $initials  = strtoupper(substr($adminName,0,2));
 
         <!-- Recent Orders -->
         <div class="col-span-12">
-            <div class="card">
-                <div class="header-section">
+            <div class="admin-card">
+                <div class="admin-header">
                     <h3>Recent Orders</h3>
                 </div>
-                <div style="overflow-x:auto">
-                    <table class="data-table">
+                <div class="table-responsive">
+                    <table class="admin-table">
                         <thead>
                             <tr>
                                 <th>Order #</th>
@@ -223,8 +207,8 @@ $initials  = strtoupper(substr($adminName,0,2));
             datasets: [{
                 label: 'Orders',
                 data: dataPoints,
-                borderColor: '#0078D4',
-                backgroundColor: 'rgba(0, 120, 212, 0.1)',
+                borderColor: '#2979ff',
+                backgroundColor: 'rgba(41, 121, 255, 0.1)',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.4

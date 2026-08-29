@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
@@ -54,48 +54,41 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Log - LuckyGeneMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <title>Activity Log - LuckyGenes Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border-top: 1px solid var(--color-border);
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-      <a href="index.php" class="brand">
-        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">Orders</a>
-        <a href="users.php" class="nav-link">Users</a>
-        <a href="upload-results.php" class="nav-link">Upload Results</a>
-        <a href="activity-log.php" class="nav-link active">Activity Log</a>
-        <a href="settings.php" class="nav-link">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
-    <div class="container">
-        <div class="header-section">
+    <div class="admin-container">
+        <div class="admin-header">
             <div>
                 <h1>Activity Log</h1>
                 <p>System events and administrative actions</p>
             </div>
-            <a href="export-activity-log.php" class="btn btn-outline">Export CSV</a>
+            <a href="export-activity-log.php" class="btn btn-primary">Export CSV</a>
         </div>
 
-        <div class="card" style="padding:0; overflow:hidden;">
+        <div class="admin-card" style="padding:0; overflow:hidden;">
             <?php if (empty($logs)): ?>
                 <div style="text-align:center; padding:4rem 2rem;">
                     <div style="font-size:4rem; margin-bottom:1rem; opacity:0.3;">📋</div>
                     <h3>No activity recorded</h3>
-                    <p style="color:var(--text-secondary);">System events will appear here.</p>
+                    <p style="color:var(--color-text-gray);">System events will appear here.</p>
                 </div>
             <?php else: ?>
-                <div style="overflow-x: auto;">
-                    <table class="data-table">
+                <div class="table-responsive">
+                    <table class="admin-table">
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -108,14 +101,14 @@ $initials  = strtoupper(substr($adminName,0,2));
                         <tbody>
                             <?php foreach ($logs as $log): ?>
                                 <tr>
-                                    <td style="white-space:nowrap; color:var(--text-secondary); font-size:0.85rem;">
+                                    <td style="white-space:nowrap; color:var(--color-text-gray); font-size:0.85rem;">
                                         <?php echo date('M j, Y H:i', strtotime($log['created_at'])); ?>
                                     </td>
                                     <td>
                                         <?php if ($log['username']): ?>
                                             <strong><?php echo htmlspecialchars($log['username']); ?></strong>
                                         <?php else: ?>
-                                            <span style="color:var(--text-secondary);">System/Unknown</span>
+                                            <span style="color:var(--color-text-gray);">System/Unknown</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -125,7 +118,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                                         <?php 
                                             echo htmlspecialchars($log['details'] ?? ''); 
                                             if ($log['entity_type'] && $log['entity_id']) {
-                                                echo ' <span style="color:var(--text-secondary); font-size:0.85rem;">(' . htmlspecialchars($log['entity_type']) . ' #' . htmlspecialchars($log['entity_id']) . ')</span>';
+                                                echo ' <span style="color:var(--color-text-gray); font-size:0.85rem;">(' . htmlspecialchars($log['entity_type']) . ' #' . htmlspecialchars($log['entity_id']) . ')</span>';
                                             }
                                         ?>
                                     </td>

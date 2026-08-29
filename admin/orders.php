@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/Order.php';
@@ -41,8 +41,10 @@ if ($statusFilter) {
 }
 
 if ($searchQuery) {
-    $where[] = "(o.order_number LIKE :search OR u.full_name LIKE :search OR u.email LIKE :search)";
-    $params[':search'] = '%' . $searchQuery . '%';
+    $where[] = "(o.order_number LIKE :s1 OR u.full_name LIKE :s2 OR u.email LIKE :s3)";
+    $params[':s1'] = '%' . $searchQuery . '%';
+    $params[':s2'] = '%' . $searchQuery . '%';
+    $params[':s3'] = '%' . $searchQuery . '%';
 }
 
 $whereClause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
@@ -82,6 +84,11 @@ try {
     
     $orders = $stmt->fetchAll();
     
+    // Attach kits to each order
+    foreach ($orders as &$o) {
+        $o['kits'] = $orderModel->getKitsByOrderId($o['order_id']);
+    }
+    
     // Get all statuses for filter
     $statuses = $orderModel->getOrderStatuses();
     
@@ -100,33 +107,37 @@ $initials  = strtoupper(substr($adminName,0,2));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Management - LuckyGeneMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <title>Order Management - LuckyGenes Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .filters-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .filters-form { flex-direction: column; align-items: stretch; }
+            .filters-form .btn { width: 100%; margin-top: 0.5rem; }
+            .filters-form .form-group { min-width: 100%; margin-bottom: 0.5rem !important; }
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border-top: 1px solid var(--color-border);
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <a href="index.php" class="brand">
-    <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
-  </a>
-  <div class="nav-items">
-    <a href="index.php" class="nav-link">Dashboard</a>
-    <a href="orders.php" class="nav-link active">Orders</a>
-    <a href="users.php" class="nav-link">Users</a>
-    <a href="upload-results.php" class="nav-link">Upload Results</a>
-    <a href="activity-log.php" class="nav-link">Activity Log</a>
-    <a href="settings.php" class="nav-link">Settings</a>
-  </div>
-  <div class="user-menu">
-    <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-    <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-    <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-  </div>
-</nav>
+<?php include 'navbar.php'; ?>
 
-<div class="container">
+<div class="admin-container">
 
-    <div class="header-section">
+    <div class="admin-header">
         <div>
             <h1>Order Management</h1>
             <p><?php echo number_format($totalOrders); ?> total orders</p>
@@ -134,8 +145,8 @@ $initials  = strtoupper(substr($adminName,0,2));
     </div>
 
     <!-- Filters -->
-    <div class="card" style="margin-bottom: 2rem;">
-        <form method="GET" action="" style="display:flex; gap:1rem; align-items:end; flex-wrap:wrap;">
+    <div class="admin-card" style="margin-bottom: 2rem;">
+        <form method="GET" action="" class="filters-form">
             <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                 <label>Search</label>
                     <input 
@@ -143,12 +154,13 @@ $initials  = strtoupper(substr($adminName,0,2));
                         name="search" 
                         placeholder="Order #, Name, Email..."
                         value="<?php echo htmlspecialchars($searchQuery); ?>"
+                        class="form-control"
                     >
             </div>
             
             <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                 <label>Status</label>
-                <select name="status">
+                <select name="status" class="form-select">
                         <option value="">All Statuses</option>
                         <?php foreach($statuses as $status): ?>
                             <option value="<?php echo $status['status_id']; ?>" <?php echo $statusFilter == $status['status_id'] ? 'selected' : ''; ?>>
@@ -158,7 +170,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     </select>
             </div>
             
-            <button type="submit" class="btn">🔍 Filter</button>
+            <button type="submit" class="btn btn-primary">🔍 Filter</button>
             
             <?php if ($searchQuery || $statusFilter): ?>
                 <a href="orders.php" class="btn btn-outline">✕ Clear</a>
@@ -167,12 +179,12 @@ $initials  = strtoupper(substr($adminName,0,2));
     </div>
 
     <!-- Orders Table -->
-    <div class="card" style="padding:0; overflow:hidden;">
+    <div class="admin-card" style="padding:0; overflow:hidden;">
                 <?php if (empty($orders)): ?>
             <div style="text-align:center; padding:4rem 2rem;">
                 <div style="font-size:4rem; margin-bottom:1rem; opacity:0.3;">📦</div>
                         <h3>No orders found</h3>
-                <p style="color:var(--text-secondary);">
+                <p style="color:var(--color-text-gray);">
                             <?php if ($searchQuery || $statusFilter): ?>
                                 Try adjusting your filters or search terms.
                             <?php else: ?>
@@ -181,14 +193,14 @@ $initials  = strtoupper(substr($adminName,0,2));
                         </p>
                     </div>
                 <?php else: ?>
-                    <div style="overflow-x: auto;">
-                <table class="data-table">
+                    <div class="table-responsive">
+                <table class="admin-table">
                             <thead>
                                 <tr>
                                     <th>Order Number</th>
                                     <th>Customer</th>
-                                    <th>Email</th>
                                     <th>Date</th>
+                                    <th>Kits</th>
                                     <th>Status</th>
                                     <th>Tracking</th>
                                     <th>Action</th>
@@ -203,19 +215,33 @@ $initials  = strtoupper(substr($adminName,0,2));
                                 ?>
                         <tr onclick="window.location.href='order-detail.php?id=<?php echo $order['order_id']; ?>'" style="cursor:pointer;">
                                         <td>
-                                <span style="font-family:monospace; font-weight:600; color:var(--ms-blue);"><?php echo htmlspecialchars($order['order_number']); ?></span>
+                                <span style="font-family:monospace; font-weight:600; color:var(--color-primary-deep-blue);"><?php echo htmlspecialchars($order['order_number']); ?></span>
                                         </td>
-                                        <td><?php echo htmlspecialchars($order['full_name']); ?></td>
-                                <td><span style="color:var(--text-secondary); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span></td>
+                                        <td>
+                                            <?php echo htmlspecialchars($order['full_name']); ?><br>
+                                            <span style="color:var(--color-text-gray); font-size:0.85rem;"><?php echo htmlspecialchars($order['email']); ?></span>
+                                        </td>
                                         <td><?php echo date('M j, Y', strtotime($order['order_date'])); ?></td>
                                         <td>
-                                    <span class="badge badge-<?php echo $badgeClass; ?>">
+                                            <?php
+                                            if (!empty($order['kits'])) {
+                                                echo '<div style="font-size:0.85rem; margin-bottom:0.2rem;"><strong>' . count($order['kits']) . ' Kit(s)</strong></div>';
+                                                foreach ($order['kits'] as $k) {
+                                                    echo '<div style="font-family:monospace; font-size:0.8rem; color:var(--color-navy);">' . htmlspecialchars($k['kit_barcode']) . '</div>';
+                                                }
+                                            } else {
+                                                echo '<span style="color:var(--color-text-gray); font-size:0.85rem;">No kits</span>';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-<?php echo $badgeClass; ?>">
                                                 <?php echo htmlspecialchars($order['status_name']); ?>
                                             </span>
                                         </td>
                                         <td>
                                             <?php if ($order['tracking_number']): ?>
-                                        <span style="font-family: monospace; font-size: 0.85rem; color:var(--text-primary);">
+                                        <span style="font-family: monospace; font-size: 0.85rem; color:var(--color-navy);">
                                                     <?php echo htmlspecialchars($order['tracking_number']); ?>
                                                 </span>
                                             <?php else: ?>
@@ -235,7 +261,7 @@ $initials  = strtoupper(substr($adminName,0,2));
                     
                     <!-- Pagination -->
                     <?php if ($totalPages > 1): ?>
-            <div style="padding:1rem; display:flex; justify-content:center; gap:0.5rem; border-top:1px solid var(--glass-border);">
+            <div class="pagination">
                         <?php
                         $queryParams = [];
                         if ($searchQuery) $queryParams['search'] = $searchQuery;

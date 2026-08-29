@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 session_start();
 setSecurityHeaders();
@@ -15,7 +15,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once '../includes/Database.php';
     
-    $username = htmlspecialchars(trim($_POST['username'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     
     if ($username && $password) {
@@ -93,28 +93,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - LuckyGeneMDx</title>
+    <title>Admin Login - LuckyGenes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
 
-    <div class="auth-bg-video">
-        <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-    </div>
-
     <div class="auth-card">
-        <a href="../index.php" style="display:block; margin-bottom: 1rem; font-size: 0.9rem;">← Back to Main Site</a>
+        <div class="text-center mb-4">
+            <a href="../index.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Main Site</a>
+        </div>
 
-        <div style="text-align:center; margin-bottom: 2rem;">
-            <div style="font-size: 3rem;">🧬</div>
-            <h1>LuckyGeneMDx <span class="admin-badge">Admin</span></h1>
-            <p>Secure System Access</p>
+        <div class="mb-4">
+            <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+            <h1 class="font-xl mb-2"><?php echo htmlspecialchars(SITE_NAME); ?> <span class="pill-badge-teal">Admin</span></h1>
+            <p class="auth-title">Secure System Access</p>
         </div>
             
         <?php if ($error): ?>
-            <div class="msg msg-error" role="alert">
-                <?php echo htmlspecialchars($error); ?>
+            <div class="glass-card-error p-3 mb-3 text-error" role="alert">
+                ⚠ <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
         
@@ -129,45 +127,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     autofocus
                     autocomplete="username"
                     value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
+                    class="form-control"
                 >
             </div>
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <div style="position: relative;">
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        required
-                        autocomplete="current-password"
-                        style="padding-right: 40px;"
-                    >
-                    <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary);" title="Show Password">👁️</button>
-                </div>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    autocomplete="current-password"
+                    class="form-control"
+                >
             </div>
             
-            <div class="form-group" style="margin-bottom: 1rem;">
-                <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
-                <label for="remember" style="display: inline; font-weight: normal;">Remember me</label>
+            <div class="form-group mb-1">
+                <div class="form-checkbox">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-full" style="margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary w-100">
                 Sign In
             </button>
-            <a href="password-reset.php" style="display:block; text-align:center; margin-top:1rem; font-size:0.85rem;">Forgot Password?</a>
+            <div class="mt-3 text-center">
+                <a href="password-reset.php" class="text-medical-teal font-sm">Forgot Password?</a>
+            </div>
         </form>
         
-        <div style="text-align: center; margin-top: 2rem;">
-            <p style="font-size: 0.85rem; color: var(--text-secondary);">Authorized personnel only. All activities are logged.</p>
+        <div class="mt-4 text-center">
+            <p class="font-xs text-dark-gray">Authorized personnel only. All activities are logged.</p>
         </div>
     </div>
 
-    <script>
-        function togglePassword(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-    </script>
 </body>
 </html>

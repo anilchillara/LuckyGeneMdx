@@ -1,39 +1,39 @@
 /*
- * LuckyGeneMDx — Admin Panel Theme
+ * LuckyGenes — Admin Panel Theme
  * Microsoft Fluent Design System
  */
 
 :root {
     /* Brand Palette */
-    --color-primary-deep-blue: #0A1F44;
-    --color-medical-teal: #00B3A4;
-    --teal-ice: #4ef0e6;
+    --color-primary-deep-blue: #1A73E8; /* Indigo/Blue */
+    --color-medical-teal: #4285F4;     /* Primary Blue */
+    --teal-ice: #80f3ff;
     --color-white: #FFFFFF;
-    --color-light-gray: #F8F9FA;
-    --color-medium-gray: #E9ECEF;
-    --color-dark-gray: #6C757D;
-    --color-black: #212529;
+    --color-light-gray: #F8F9FA;        /* Subtle gray surfaces */
+    --color-medium-gray: #E0E0E0;        /* Divider lines */
+    --color-dark-gray: #5F6368;         /* Text secondary */
+    --color-black: #202124;             /* Text primary */
 
-    /* Theme Mapping */
+    /* Theme Mapping to Gemini Colors */
     --ms-blue:      var(--color-medical-teal);
-    --ms-blue-dark: #008c7a;
-    --ms-blue-light: rgba(0, 179, 164, 0.1);
-    --ms-red:       #d13438; /* Admin Accent - Keeping distinct red */
+    --ms-blue-dark: #1A73E8; /* Indigo/Blue */
+    --ms-blue-light: rgba(0, 229, 255, 0.1);
+    --ms-red:       #EA4335; /* Admin Accent - Red */
     --bg-body:      var(--color-light-gray);
     --glass-panel:  var(--color-white);
     --glass-border: var(--color-medium-gray);
-    --glass-hover:  #f1f3f5;
-    --text-primary: var(--color-primary-deep-blue);
+    --glass-hover:  #F1F3F4;
+    --text-primary: var(--color-black);
     --text-secondary: var(--color-dark-gray);
     --success:      #107C10;
-    --warning:      #d83b01;
-    --error:        #a80000;
+    --warning:      #FBBC05; /* Yellow */
+    --error:        #EA4335; /* Red */
     --font-family:  system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     --font-body:    var(--font-family);
     --shadow-card:  0 2px 8px rgba(10, 31, 68, 0.06);
     --shadow-hover: 0 8px 24px rgba(10, 31, 68, 0.12);
     --radius:       4px;
-    --brand-gradient: linear-gradient(135deg, #0A1F44 0%, #00B3A4 100%);
+    --brand-gradient: linear-gradient(135deg, #4285F4 0%, #1A73E8 50%, #9334E6 100%);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -47,22 +47,35 @@ body {
 }
 
 body.dark-theme {
-    --ms-blue:      var(--color-medical-teal);
-    --ms-blue-dark: #008c7a;
-    --ms-blue-light: rgba(0, 179, 164, 0.2);
-    --ms-red:       #e05d5d; /* Lighter red for dark mode */
-    --bg-body:      #1a1d21;
-    --glass-panel:  var(--color-black);
-    --glass-border: #343a40;
-    --glass-hover:  #2c3035;
-    --text-primary: var(--color-white);
-    --text-secondary: #adb5bd;
+    --ms-blue:      #FFD700; /* Gold Shiny */
+    --ms-blue-dark: #E6C200;
+    --ms-blue-light: rgba(255, 215, 0, 0.15);
+    --ms-red:       #EA4335;
+    --bg-body:      #131314;
+    --glass-panel:  #1E1F20;
+    --glass-border: #3C4043;
+    --glass-hover:  #303134;
+    --text-primary: #E8EAED;
+    --text-secondary: #9AA0A6;
     --shadow-card:  0 4px 8px rgba(0,0,0,0.4);
-    --brand-gradient: linear-gradient(135deg, #4ef0e6 0%, #00B3A4 100%);
+    --brand-gradient: linear-gradient(135deg, #4285F4 0%, #1A73E8 50%, #9334E6 100%);
+}	
+body.dark-theme .btn-outline:hover { background: #3C4043; }
+body.dark-theme input[type="text"],
+body.dark-theme input[type="email"],
+body.dark-theme input[type="password"],
+body.dark-theme input[type="date"],
+body.dark-theme input[type="tel"],
+body.dark-theme input[type="url"],
+body.dark-theme input[type="number"],
+body.dark-theme select,
+body.dark-theme textarea {
+    background-color: #1E1F20;
+    border-color: #3C4043;
+    color: #E8EAED;
 }
-body.dark-theme .btn-outline:hover { background: #3a3a3a; }
-body.dark-theme .data-table th { background: #2f2f2f; }
-body.dark-theme .data-table tr:hover td { background: #2f2f2f; }
+body.dark-theme .data-table th { background: #131314; }
+body.dark-theme .data-table tr:hover td { background: #131314; }
 
 a { text-decoration: none; color: var(--ms-blue); transition: .2s; }
 a:hover { color: var(--ms-blue-dark); text-decoration: underline; }
@@ -78,17 +91,18 @@ a:hover { color: var(--ms-blue-dark); text-decoration: underline; }
 .col-span-3 { grid-column: span 3; }
 
 /* Auth Layout */
-.auth-body { display: flex; align-items: center; justify-content: center; background: #f0f2f5; }
+.auth-body { display: flex; flex-direction: column; background: #f0f2f5; padding: 1rem; min-height: 100vh; }
 .auth-card {
     background: var(--glass-panel);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
     padding: 2.5rem;
     width: 100%; max-width: 440px;
+    margin: auto;
     box-shadow: 0 16px 32px rgba(0,0,0,0.08);
     position: relative; z-index: 10;
 }
-.auth-bg-video { position: fixed; inset: 0; z-index: 0; opacity: 0.1; pointer-events: none; }
+.auth-bg-video { position: fixed; inset: 0; z-index: 0; opacity: 0.15; pointer-events: none; }
 .auth-bg-video video { width: 100%; height: 100%; object-fit: cover; }
 
 /* Navigation */
@@ -139,7 +153,9 @@ a:hover { color: var(--ms-blue-dark); text-decoration: underline; }
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     padding: 1.5rem;
-    box-shadow: var(--shadow-card);
+    box-shadow:  6px 6px 12px #b8c2cc,-6px -6px 12px #ffffff;
+
+box-shadow: var(--shadow-card);
     transition: box-shadow 0.2s, border-color 0.2s;
 }
 .card:hover { border-color: var(--ms-blue); box-shadow: var(--shadow-hover); }
@@ -186,7 +202,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--m
 .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
 .btn-danger { background: var(--ms-red); color: white; }
 .btn-danger:hover { background: #a80000; }
-
+.btn-primary:hover { background: var(--ms-blue-dark); }
 /* Status Badges */
 .badge {
     display: inline-block; padding: 4px 8px;
@@ -235,9 +251,95 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--m
 .msg-error { background: #fde7e9; color: var(--error); border: 1px solid #f6b2b5; }
 .msg-success { background: #dff6dd; color: var(--success); border: 1px solid #9fd89f; }
 
+/* Sidebar Layout */
+.admin-wrapper { display: flex; min-height: 100vh; }
+
+.admin-sidebar {
+    width: 260px;
+    background: var(--color-primary-deep-blue);
+    color: white;
+    padding: 2rem 0;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.admin-sidebar-header {
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; }
+.admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
+
+.admin-nav { margin-top: 2rem; }
+
+.admin-nav-item {
+    display: block;
+    padding: 0.875rem 1.5rem;
+    color: rgba(255,255,255,0.8);
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+
+.admin-nav-item:hover, .admin-nav-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border-left-color: var(--color-medical-teal);
+}
+
+.admin-main {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+    background: var(--bg-body);
+    width: calc(100% - 260px);
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .grid { display: flex; flex-direction: column; }
     .navbar { flex-direction: column; gap: 1rem; }
     .nav-items { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    /* Sidebar Mobile */
+    .admin-wrapper { flex-direction: column; }
+    .admin-sidebar { width: 100%; height: auto; position: relative; padding: 1rem 0; overflow-y: visible; }
+    .admin-main { margin-left: 0; width: 100%; padding: 1rem; }
+    .admin-nav { margin-top: 1rem; display: flex; overflow-x: auto; padding-bottom: 5px; }
+    .admin-nav-item { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 0.75rem 1rem; }
+    .admin-nav-item:hover, .admin-nav-item.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--color-medical-teal);
+    }
+    .chart-container { height: 250px; }
+    .header-section { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .header-section .btn { width: 100%; text-align: center; }
+    .auth-card { padding: 1.5rem; }
 }

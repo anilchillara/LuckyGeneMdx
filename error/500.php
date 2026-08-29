@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Server Error (500) | LuckyGeneMDx</title>
+    <title>Server Error (500) | LuckyGenes</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -184,7 +184,7 @@
             <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                 <h3>Need Immediate Assistance?</h3>
                 <p style="margin-top: 1rem;">
-                    <strong>Email:</strong> support@luckygenemmdx.com<br>
+                    <strong>Email:</strong> support@luckygenes.com<br>
                     <strong>Phone:</strong> 1-800-LUCKYGENE<br>
                     <small style="color: rgba(255, 255, 255, 0.6);">Available Monday-Friday, 9AM-5PM EST</small>
                 </p>

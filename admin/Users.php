@@ -1,5 +1,5 @@
 <?php
-    define('luckygenemdx', true);
+    define('LuckyGenes', true);
     require_once '../includes/config.php';
     require_once '../includes/Database.php';
 
@@ -142,8 +142,10 @@
     }
 
     if (! empty($search)) {
-    $where_clauses[]   = "(full_name LIKE :search OR email LIKE :search OR phone LIKE :search)";
-    $params[':search'] = "%$search%";
+    $where_clauses[]   = "(full_name LIKE :s1 OR email LIKE :s2 OR phone LIKE :s3)";
+    $params[':s1'] = "%$search%";
+    $params[':s2'] = "%$search%";
+    $params[':s3'] = "%$search%";
     }
 
     $where_sql = ! empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
@@ -192,76 +194,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - LuckyGeneMDx Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
-    <style>
-        /* Page specific styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background: var(--glass-panel);
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--glass-border);
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            color: var(--text-primary);
-        }
-        .modal-close {
-            float: right;
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-        .modal-close:hover { color: var(--text-primary); }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 1.5rem;
-            border-top: 1px solid var(--glass-border);
-        }
-    </style>
+    <title>User Management - LuckyGenes Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
-    <nav class="navbar">
-      <a href="index.php" class="brand">
-        <span>🧬</span> LuckyGeneMDx <span class="admin-badge">Admin</span>
-      </a>
-      <div class="nav-items">
-        <a href="index.php" class="nav-link">Dashboard</a>
-        <a href="orders.php" class="nav-link">Orders</a>
-        <a href="users.php" class="nav-link active">Users</a>
-        <a href="upload-results.php" class="nav-link">Upload Results</a>
-        <a href="activity-log.php" class="nav-link">Activity Log</a>
-        <a href="settings.php" class="nav-link">Settings</a>
-      </div>
-      <div class="user-menu">
-        <button id="theme-toggle" class="btn btn-outline btn-sm" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <div class="avatar"><?php echo htmlspecialchars($initials); ?></div>
-        <a href="logout.php" class="btn btn-outline btn-sm">Sign Out</a>
-      </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
-    <div class="container">
-        <div class="header-section">
+    <div class="admin-container">
+        <div class="admin-header">
             <div>
                 <h1>User Management</h1>
                 <p><?php echo number_format($totalUsers); ?> total users</p>
@@ -269,36 +210,36 @@
         </div>
 
         <?php if (isset($success)): ?>
-            <div class="msg msg-success"><?php echo $success; ?></div>
+            <div class="glass-card-teal-left p-3 mb-3 text-teal"><?php echo $success; ?></div>
         <?php endif; ?>
 
         <?php if (isset($error)): ?>
-            <div class="msg msg-error"><?php echo $error; ?></div>
+            <div class="glass-card-error p-3 mb-3 text-error"><?php echo $error; ?></div>
         <?php endif; ?>
 
         <!-- Statistics -->
-        <div class="grid" style="margin-bottom: 2rem;">
-            <div class="card stat-card col-span-3 blue">
+        <div class="admin-grid mb-4">
+            <div class="admin-card admin-stat-card col-span-3 blue">
                 <div class="stat-lbl">Total Users</div>
                 <div class="stat-val"><?php echo number_format($stats['total']); ?></div>
             </div>
-            <div class="card stat-card col-span-3 green">
+            <div class="admin-card admin-stat-card col-span-3 green">
                 <div class="stat-lbl">Active</div>
                 <div class="stat-val"><?php echo number_format($stats['active']); ?></div>
             </div>
-            <div class="card stat-card col-span-3 orange">
+            <div class="admin-card admin-stat-card col-span-3 orange">
                 <div class="stat-lbl">Inactive</div>
                 <div class="stat-val"><?php echo number_format($stats['inactive']); ?></div>
             </div>
-            <div class="card stat-card col-span-3 red">
+            <div class="admin-card admin-stat-card col-span-3 red">
                 <div class="stat-lbl">With Orders</div>
                 <div class="stat-val"><?php echo number_format($stats['with_orders']); ?></div>
             </div>
         </div>
 
         <!-- Filters -->
-        <div class="card" style="margin-bottom: 2rem;">
-            <form method="GET" action="" style="display:flex; gap:1rem; align-items:end; flex-wrap:wrap;">
+        <div class="admin-card mb-4">
+            <form method="GET" action="" class="filters-form">
                 <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                     <label>Search</label>
                     <input
@@ -306,34 +247,35 @@
                         name="search"
                         placeholder="Name, Email, Phone..."
                         value="<?php echo htmlspecialchars($search); ?>"
+                        class="form-control"
                     >
                 </div>
 
                 <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
                     <label>Status</label>
-                    <select name="status">
+                    <select name="status" class="form-select">
                         <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All Users</option>
                         <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active Only</option>
                         <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive Only</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn">🔍 Filter</button>
-                <button type="button" onclick="showAddModal()" class="btn btn-outline">+ Add User</button>
+                <button type="submit" class="btn btn-primary">🔍 Filter</button>
+                <button type="button" onclick="showAddModal()" class="btn btn-success">+ Add User</button>
 
                 <?php if ($search || $status_filter !== 'all'): ?>
-                    <a href="users.php" class="btn btn-outline">✕ Clear</a>
+                    <a href="Users.php" class="btn btn-outline">✕ Clear</a>
                 <?php endif; ?>
             </form>
         </div>
 
         <!-- Users Table -->
-        <div class="card" style="padding:0; overflow:hidden;">
+        <div class="admin-card" style="padding:0; overflow:hidden;">
                 <?php if (empty($users)): ?>
                 <div style="text-align:center; padding:4rem 2rem;">
                     <div style="font-size:4rem; margin-bottom:1rem; opacity:0.3;">👥</div>
                         <h3>No users found</h3>
-                    <p style="color:var(--text-secondary);">
+                    <p style="color:var(--color-text-gray);">
                             <?php if ($search || $status_filter !== 'all'): ?>
                                 Try adjusting your filters or search terms.
                             <?php else: ?>
@@ -342,8 +284,8 @@
                         </p>
                     </div>
                 <?php else: ?>
-                    <div style="overflow-x: auto;">
-                    <table class="data-table">
+                    <div class="table-responsive">
+                    <table class="admin-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -362,14 +304,14 @@
                                         <td><?php echo $user['user_id']; ?></td>
                                         <td><strong><?php echo htmlspecialchars($user['full_name']); ?></strong></td>
                                         <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                    <td><span style="color:var(--text-secondary);"><?php echo htmlspecialchars($user['phone'] ?? '-'); ?></span></td>
+                                    <td><span style="color:var(--color-text-gray);"><?php echo htmlspecialchars($user['phone'] ?? '-'); ?></span></td>
                                         <td>
                                             <?php if ($user['order_count'] > 0): ?>
                                             <a href="orders.php?user_id=<?php echo $user['user_id']; ?>" style="font-weight: 500;">
                                                     <?php echo $user['order_count']; ?> order<?php echo $user['order_count'] > 1 ? 's' : ''; ?>
                                                 </a>
                                             <?php else: ?>
-                                            <span style="color: var(--text-secondary);">No orders</span>
+                                            <span style="color: var(--color-text-gray);">No orders</span>
                                             <?php endif; ?>
                                         </td>
                                         <td>
@@ -385,7 +327,7 @@
                                             <form method="POST" style="display: inline;">
                                                 <input type="hidden" name="action" value="toggle_status">
                                                 <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                            <button type="submit" class="btn btn-sm btn-outline">
+                                            <button type="submit" class="btn btn-sm <?php echo $user['is_active'] ? 'btn-warning' : 'btn-success'; ?>">
                                                     <?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>
                                                 </button>
                                             </form>
@@ -458,79 +400,84 @@
     </div>
 
     <!-- Add/Edit User Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content" style="max-width: 700px;">
-            <span class="modal-close" onclick="closeUserModal()">&times;</span>
-            <h2 id="modalTitle">Add New User</h2>
-            <form method="POST" id="userForm">
-                <input type="hidden" name="action" id="form_action" value="add">
-                <input type="hidden" name="user_id" id="form_user_id">
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Full Name *</label>
-                        <input type="text" name="full_name" id="form_full_name" required>
+    <div id="userModal" class="admin-modal">
+        <div class="admin-modal-dialog">
+            <div class="admin-modal-content">
+                <form method="POST" id="userForm">
+                    <div class="admin-modal-header">
+                        <h3 id="modalTitle" class="admin-modal-title">Add New User</h3>
+                        <button type="button" class="admin-modal-close" onclick="closeUserModal()">&times;</button>
                     </div>
+                    <div class="admin-modal-body">
+                        <input type="hidden" name="action" id="form_action" value="add">
+                        <input type="hidden" name="user_id" id="form_user_id">
 
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input type="email" name="email" id="form_email" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name *</label>
+                                <input type="text" name="full_name" id="form_full_name" required class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" name="email" id="form_email" required class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" name="phone" id="form_phone" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Date of Birth *</label>
+                                <input type="date" name="date_of_birth" id="form_dob" required class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="password_group">
+                            <label>Password *</label>
+                            <input type="password" name="password" id="form_password" minlength="8" class="form-control">
+                            <small style="color: var(--color-text-gray);">Minimum 8 characters</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" name="address" id="form_address" class="form-control">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" name="city" id="form_city" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" name="state" id="form_state" maxlength="2" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>ZIP Code</label>
+                                <input type="text" name="zip_code" id="form_zip" maxlength="10" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="status_group" style="display: none;">
+                            <label>Status</label>
+                            <select name="is_active" id="form_is_active" class="form-select">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input type="tel" name="phone" id="form_phone">
+                    <div class="admin-modal-footer">
+                        <button type="button" class="btn btn-outline" onclick="closeUserModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save User</button>
                     </div>
-
-                    <div class="form-group">
-                        <label>Date of Birth *</label>
-                        <input type="date" name="date_of_birth" id="form_dob" required>
-                    </div>
-                </div>
-
-                <div class="form-group" id="password_group">
-                    <label>Password *</label>
-                    <input type="password" name="password" id="form_password" minlength="8">
-                    <small style="color: var(--text-secondary);">Minimum 8 characters</small>
-                </div>
-
-                <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" name="address" id="form_address">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>City</label>
-                        <input type="text" name="city" id="form_city">
-                    </div>
-
-                    <div class="form-group">
-                        <label>State</label>
-                        <input type="text" name="state" id="form_state" maxlength="2">
-                    </div>
-
-                    <div class="form-group">
-                        <label>ZIP Code</label>
-                        <input type="text" name="zip_code" id="form_zip" maxlength="10">
-                    </div>
-                </div>
-
-                <div class="form-group" id="status_group" style="display: none;">
-                    <label>Status</label>
-                    <select name="is_active" id="form_is_active">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                </div>
-
-                <div style="margin-top: 1.5rem;">
-                    <button type="submit" class="btn">Save User</button>
-                    <button type="button" class="btn btn-outline" onclick="closeUserModal()">Cancel</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 

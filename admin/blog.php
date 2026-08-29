@@ -1,6 +1,6 @@
 <?php
-define('luckygenemdx', true);
-// require_once '../includes/config.php';
+define('LuckyGenes', true);
+require_once '../includes/config.php';
 require_once '../includes/Database.php';
 
 session_start();
@@ -52,9 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $is_published
                     ]);
                     $success = "Blog post added successfully!";
+                    // Log Activity
+                    $postId = $db->lastInsertId();
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'add_post', 'blog_post', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $postId, "Added blog post: " . $_POST['title'], $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'update':
+                    $stmt = $db->prepare("SELECT title, category, is_published FROM blog_posts WHERE post_id = ?");
+                    $stmt->execute([$_POST['post_id']]);
+                    $oldPost = $stmt->fetch(PDO::FETCH_ASSOC);
+
                     $stmt = $db->prepare("UPDATE blog_posts SET title = ?, slug = ?, excerpt = ?, content = ?, category = ?, published_at = ?, is_published = ?, updated_at = NOW() WHERE post_id = ?");
                     $stmt->execute([
                         $_POST['title'],
@@ -67,12 +75,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_POST['post_id']
                     ]);
                     $success = "Blog post updated successfully!";
+                    // Log Activity
+                    $changes = [];
+                    if ($oldPost['title'] != $_POST['title']) $changes[] = "Title changed";
+                    if ($oldPost['category'] != $_POST['category']) $changes[] = "Category changed";
+                    if ($oldPost['is_published'] != $is_published) $changes[] = "Status changed to " . ($is_published ? 'Published' : 'Draft');
+                    
+                    $details = "Updated post '" . $_POST['title'] . "'. " . implode(', ', $changes);
+                    
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'update_post', 'blog_post', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['post_id'], $details, $_SERVER['REMOTE_ADDR']]);
                     break;
                     
                 case 'delete':
+                    $stmt = $db->prepare("SELECT title FROM blog_posts WHERE post_id = ?");
+                    $stmt->execute([$_POST['post_id']]);
+                    $title = $stmt->fetchColumn();
+
                     $stmt = $db->prepare("DELETE FROM blog_posts WHERE post_id = ?");
                     $stmt->execute([$_POST['post_id']]);
                     $success = "Blog post deleted successfully!";
+                    // Log Activity
+                    $stmt = $db->prepare("INSERT INTO activity_log (admin_id, action, entity_type, entity_id, details, ip_address) VALUES (?, 'delete_post', 'blog_post', ?, ?, ?)");
+                    $stmt->execute([$_SESSION['admin_id'], $_POST['post_id'], "Deleted blog post: " . ($title ?: 'Unknown'), $_SERVER['REMOTE_ADDR']]);
                     break;
             }
         } catch (Exception $e) {
@@ -129,42 +154,10 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Management | LuckyGeneMDx Admin</title>
+    <title>Blog Management | LuckyGenes Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <style>
-        /* Shared Styles from Testimonials */
-        .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar {
-            width: 260px;
-            background: var(--color-primary-deep-blue);
-            color: white;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .admin-sidebar-header {
-            padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-sidebar-header h2 { color: white; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .admin-sidebar-user { font-size: 0.85rem; opacity: 0.8; }
-        .admin-nav { margin-top: 2rem; }
-        .admin-nav-item {
-            display: block;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            transition: all var(--transition-fast);
-            border-left: 3px solid transparent;
-            text-decoration: none;
-        }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-left-color: var(--color-medical-teal);
-        }
-        .admin-main { flex: 1; margin-left: 260px; padding: 2rem; background: var(--color-light-gray); }
         .admin-header {
             background: white;
             padding: 1.5rem 2rem;
@@ -191,7 +184,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
             display: flex; gap: 1rem; flex-wrap: wrap; align-items: end;
         }
         .filter-group { flex: 1; min-width: 200px; }
-        .table-container { background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+        .table-container { background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; overflow-x: auto; }
         .table { width: 100%; border-collapse: collapse; }
         .table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--color-medium-gray); }
         .table th { font-weight: 600; color: var(--color-primary-deep-blue); background: var(--color-light-gray); }
@@ -200,6 +193,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
         .badge-warning { background: #fff3cd; color: #856404; }
         .btn { padding: 0.5rem 1rem; border: none; border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-primary { background: var(--color-medical-teal); color: white; }
+        .btn-primary:hover { background: #00b8cc; }
         .btn-secondary { background: var(--color-dark-gray); color: white; }
         .btn-danger { background: #dc3545; color: white; }
         .btn-info { background: #17a2b8; color: white; }
@@ -211,14 +205,22 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
         .alert { padding: 1rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem; }
         .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+                width: auto;
+                max-height: 85vh;
+            }
+            .form-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <?php include 'sidenav.php'; ?>
+    <?php include 'navbar.php'; ?>
 
-        <main class="admin-main">
+    <div class="admin-container">
             <div class="admin-header">
                 <h1 style="margin-bottom: 0.25rem;">Blog Management</h1>
                 <p style="color: var(--color-dark-gray); margin: 0;">Manage your articles and announcements</p>
@@ -307,7 +309,7 @@ $adminRole = ucwords(str_replace('_', ' ', $_SESSION['admin_role'] ?? 'staff'));
                     </tbody>
                 </table>
             </div>
-        </main>
+        </div>
     </div>
 
     <div id="postModal" class="modal">

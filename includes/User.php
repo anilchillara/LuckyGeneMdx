@@ -13,8 +13,8 @@
  *   define('MAIL_USERNAME',  'yourgmail@gmail.com');
  *   define('MAIL_PASSWORD',  'xxxx xxxx xxxx xxxx');  // Gmail App Password (16 chars, NOT your Gmail password)
  *   define('MAIL_FROM',      'yourgmail@gmail.com');
- *   define('MAIL_FROM_NAME', 'LuckyGeneMDx');
- *   define('BASE_URL',       'http://localhost/luckygenemdx'); // or your live domain
+ *   define('MAIL_FROM_NAME', 'LuckyGenes');
+ *   define('BASE_URL',       'http://localhost/LuckyGenes'); // or your live domain
  *
  * Schema additions required — run schema_changes.sql first:
  *   ALTER TABLE users
@@ -29,10 +29,13 @@ use PHPMailer\PHPMailer\Exception as MailException;
 // PHPMailer — Composer (preferred) or manual install fallback
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . '/../vendor/autoload.php';
-} else {
-    require_once __DIR__ . '/../includes/phpmailer/src/Exception.php';
-    require_once __DIR__ . '/../includes/phpmailer/src/PHPMailer.php';
-    require_once __DIR__ . '/../includes/phpmailer/src/SMTP.php';
+} elseif (file_exists(__DIR__ . '/phpmailer/src/PHPMailer.php')) {
+    require_once __DIR__ . '/phpmailer/src/Exception.php';
+    require_once __DIR__ . '/phpmailer/src/PHPMailer.php';
+    require_once __DIR__ . '/phpmailer/src/SMTP.php';
+}  else {
+    // Prevent fatal error if PHPMailer is missing
+    error_log("PHPMailer not found. Please install via Composer or place files in includes/phpmailer/src/");
 }
 
 class User {
@@ -53,8 +56,16 @@ class User {
         return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
     }
 
-    private function validateEmail($email) {
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    public function validateEmail($email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        // Check for valid MX or A records to ensure domain can receive mail
+        $domain = substr(strrchr($email, "@"), 1);
+        if (function_exists('checkdnsrr')) {
+            return checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A');
+        }
+        return true;
     }
 
     private function validatePhone($phone) {
@@ -110,19 +121,34 @@ class User {
      * Returns a configured PHPMailer instance pointed at Gmail SMTP.
      * Settings are read from constants defined in config.php.
      */
-    private function createMailer(): PHPMailer {
+    private function createMailer() {
+        if (!class_exists(PHPMailer::class)) {
+            throw new Exception("PHPMailer library not found. Please install via Composer or download to includes/phpmailer/.");
+        }
+
         $mail = new PHPMailer(true); // true = throw MailException on error
 
         $mail->isSMTP();
-        $mail->Host       = defined('MAIL_HOST')     ? MAIL_HOST     : 'smtp.gmail.com';
+        $mail->Host       = MAIL_HOST;
         $mail->SMTPAuth   = true;
-        $mail->Username   = defined('MAIL_USERNAME') ? MAIL_USERNAME : '';
-        $mail->Password   = defined('MAIL_PASSWORD') ? MAIL_PASSWORD : ''; // App Password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = defined('MAIL_PORT')     ? MAIL_PORT     : 587;
+        $mail->Username   = MAIL_USERNAME;
+        $mail->Password   = MAIL_PASSWORD;
+        
+        // Dynamic Security Setting
+        $encryption = defined('MAIL_ENCRYPTION') ? MAIL_ENCRYPTION : 'tls';
+        if ($encryption === 'ssl') {
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        } elseif ($encryption === 'tls') {
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        } else {
+            $mail->SMTPAutoTLS = false;
+            $mail->SMTPSecure = '';
+        }
+        
+        $mail->Port       = MAIL_PORT;
 
-        $fromEmail = defined('MAIL_FROM')      ? MAIL_FROM      : (defined('MAIL_USERNAME') ? MAIL_USERNAME : '');
-        $fromName  = defined('MAIL_FROM_NAME') ? MAIL_FROM_NAME : 'LuckyGeneMDx';
+        $fromEmail = MAIL_FROM ?: MAIL_USERNAME;
+        $fromName  = MAIL_FROM_NAME;
         $mail->setFrom($fromEmail, $fromName);
         $mail->addReplyTo($fromEmail, $fromName);
 
@@ -213,16 +239,16 @@ class User {
             );
             $stmt->execute([':token' => $token, ':expires' => $expires, ':user_id' => $user_id]);
 
-            $base_url   = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:9999';
+            $base_url   = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:8888';
             $verify_url = $base_url . '/user-portal/verify-email.php?token=' . urlencode($token);
 
             $mail = $this->createMailer();
             $mail->addAddress($email, $full_name);
-            $mail->Subject = 'Verify your LuckyGeneMDx account';
-            $mail->Body    = $this->buildVerificationEmailBody($full_name, $verify_url);
+            $mail->Subject = 'Verify your LuckyGenes account';
+            $mail->Body    = $this->buildVerificationEmailBody($full_name, $verify_url, $base_url);
             $mail->AltBody = "Hi " . explode(' ', $full_name)[0] . ",\n\n"
                            . "Verify your email by visiting:\n$verify_url\n\n"
-                           . "Link expires in 24 hours.\n\n— LuckyGeneMDx";
+                           . "Link expires in 24 hours.\n\n— LuckyGenes";
 
             $mail->send();
             error_log("Verification email sent to: $email (user_id: $user_id)");
@@ -240,8 +266,9 @@ class User {
     /**
      * HTML body for the verification email.
      */
-    private function buildVerificationEmailBody($full_name, $verify_url) {
+    private function buildVerificationEmailBody($full_name, $verify_url, $base_url) {
         $first = htmlspecialchars(explode(' ', $full_name)[0]);
+        $logo_url = $base_url . '/assets/images/logo_small.png';
         return <<<HTML
 <!DOCTYPE html>
 <html>
@@ -252,14 +279,14 @@ class User {
       <table width="560" cellpadding="0" cellspacing="0"
              style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
         <tr><td align="center" style="padding-bottom:24px">
-          <div style="font-size:48px;margin-bottom:10px;">🧬</div>
-          <h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGeneMDx</h1>
+          <img src="{$logo_url}" alt="LuckyGenes" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;">
+          <h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenes</h1>
           <p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p>
         </td></tr>
         <tr><td style="padding-bottom:24px">
           <p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p>
           <p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">
-            Thanks for registering with LuckyGeneMDx. Please verify your email address to activate your account and access the patient portal.
+            Thanks for registering with LuckyGenes. Please verify your email address to activate your account and access the patient portal.
           </p>
           <p style="color:#475569;font-size:14px;line-height:1.6;margin:12px 0 0;">
             This link will expire in <strong style="color:#0A1F44">24 hours</strong>.
@@ -267,7 +294,7 @@ class User {
         </td></tr>
         <tr><td align="center" style="padding:10px 0 32px">
           <a href="{$verify_url}"
-             style="display:inline-block;padding:14px 32px;background-color:#00B3A4;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(0, 179, 164, 0.2);">
+             style="display:inline-block;padding:14px 32px;background-color:#2979ff;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(41, 121, 255, 0.2);">
             Verify My Email
           </a>
         </td></tr>
@@ -284,7 +311,7 @@ class User {
         </td></tr>
       </table>
       <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">
-        &copy; LuckyGeneMDx. All rights reserved.
+        &copy; LuckyGenes. All rights reserved.
       </p>
     </td></tr>
   </table>
@@ -555,8 +582,9 @@ HTML;
      */
     public function sendResultsNotification($email, $full_name, $order_number) {
         try {
-            $base_url = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost/luckygenemdx';
+            $base_url = defined('BASE_URL') ? rtrim(SITE_URL, '/') : 'http://localhost:8888';
             $login_url = $base_url . '/user-portal/login.php';
+            $logo_url = $base_url . '/assets/images/logo_small.png';
 
             $mail = $this->createMailer();
             $mail->addAddress($email, $full_name);
@@ -573,18 +601,18 @@ HTML;
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-        <tr><td align="center" style="padding-bottom:24px"><div style="font-size:48px;margin-bottom:10px;">🧬</div><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGeneMDx</h1><p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p></td></tr>
+        <tr><td align="center" style="padding-bottom:24px"><img src="{$logo_url}" alt="LuckyGenes" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;"><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenes</h1><p style="color:#64748b;font-size:14px;margin:0;font-weight:500;">Patient Portal</p></td></tr>
         <tr><td style="padding-bottom:24px"><p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">Great news! The results for your order <strong style="color:#0A1F44">#{$order_number}</strong> are now available. You can view and download your comprehensive report securely from the patient portal.</p></td></tr>
-        <tr><td align="center" style="padding:10px 0 32px"><a href="{$login_url}" style="display:inline-block;padding:14px 32px;background-color:#00B3A4;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(0, 179, 164, 0.2);">View My Results</a></td></tr>
+        <tr><td align="center" style="padding:10px 0 32px"><a href="{$login_url}" style="display:inline-block;padding:14px 32px;background-color:#2979ff;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;box-shadow:0 2px 4px rgba(41, 121, 255, 0.2);">View My Results</a></td></tr>
         <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px"><p style="color:#94a3b8;font-size:12px;margin:0;">If you have any questions about your results, please contact our support team.</p></td></tr>
       </table>
-      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGeneMDx. All rights reserved.</p>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGenes. All rights reserved.</p>
     </td></tr>
   </table>
 </body>
 </html>
 HTML;
-            $mail->AltBody = "Hi $first,\n\nYour results for order #$order_number are ready.\n\nLog in to view them: $login_url\n\n— LuckyGeneMDx";
+            $mail->AltBody = "Hi $first,\n\nYour results for order #$order_number are ready.\n\nLog in to view them: $login_url\n\n— LuckyGenes";
 
             $mail->send();
             return ['success' => true, 'message' => 'Notification email sent.'];
@@ -632,6 +660,115 @@ HTML;
         } catch (PDOException $e) {
             error_log("Recover Email Error: " . $e->getMessage());
             return ['success' => false, 'message' => 'System error. Please try again.'];
+        }
+    }
+
+    /**
+     * Send a test email to verify SMTP settings.
+     */
+    public function sendTestEmail($to) {
+        try {
+            $mail = $this->createMailer();
+            $mail->addAddress($to);
+            $mail->Subject = 'SMTP Configuration Test - ' . SITE_NAME;
+            $mail->Body    = '<h1>SMTP Test Successful</h1><p>Your email configuration is working correctly.</p><p>Sent from: ' . SITE_NAME . '</p>';
+            $mail->AltBody = "SMTP Test Successful.\nYour email configuration is working correctly.\nSent from: " . SITE_NAME;
+
+            $mail->send();
+            return ['success' => true, 'message' => 'Test email sent successfully to ' . $to];
+
+        } catch (MailException $e) {
+            error_log("Test Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Mailer Error: ' . $e->getMessage()];
+        } catch (Exception $e) {
+            error_log("Test Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'System Error: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Send welcome email to interest list subscriber.
+     */
+    public function sendInterestWelcomeEmail($email, $name) {
+        try {
+            $base_url = defined('BASE_URL') ? rtrim(BASE_URL, '/') : 'http://localhost:8888';
+            $unsubscribe_url = $base_url . '/unsubscribe.php?email=' . urlencode($email);
+            $logo_url = $base_url . '/assets/images/logo_small.png';
+
+            $mail = $this->createMailer();
+            $mail->addAddress($email, $name);
+            $mail->Subject = 'Welcome to the LuckyGenes Interest List';
+            
+            $first = htmlspecialchars(explode(' ', trim($name))[0]);
+            
+            $mail->Body = <<<HTML
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background-color:#f4f6fa;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6fa;padding:40px 20px">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;max-width:100%;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+        <tr><td align="center" style="padding-bottom:24px"><img src="{$logo_url}" alt="LuckyGenes" style="height:48px;width:auto;margin-bottom:10px;border:0;outline:none;text-decoration:none;display:block;"><h1 style="color:#0A1F44;font-size:24px;margin:0 0 4px;font-weight:700;">LuckyGenes</h1></td></tr>
+        <tr><td style="padding-bottom:24px"><p style="color:#334155;font-size:16px;margin:0 0 16px;">Hi {$first},</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:0;">Thank you for joining our interest list! You've taken the first step toward affordable, comprehensive genetic carrier screening.</p><p style="color:#475569;font-size:15px;line-height:1.6;margin:12px 0 0;">We are working hard to launch our services. You will be among the first to know when we go live, and you'll receive exclusive early-access pricing.</p></td></tr>
+        <tr><td style="border-top:1px solid #f1f5f9;padding-top:24px"><p style="color:#94a3b8;font-size:12px;margin:0;">We promise to keep your information secure and never spam you.</p></td></tr>
+      </table>
+      <p style="color:#94a3b8;font-size:12px;margin:20px 0 0;text-align:center;">&copy; LuckyGenes. All rights reserved.</p>
+      <p style="color:#94a3b8;font-size:12px;margin:10px 0 0;text-align:center;">To be removed from receiving future emails, <a href="{$unsubscribe_url}" style="color:#94a3b8;text-decoration:underline;">unsubscribe here</a>.</p>
+    </td></tr>
+  </table>
+</body>
+</html>
+HTML;
+            $mail->AltBody = "Hi $first,\n\nThank you for joining the LuckyGenes interest list! We will notify you as soon as we launch with exclusive early-access pricing.\n\n— LuckyGenes";
+
+            $mail->send();
+            error_log("Interest list welcome email sent successfully to: $email");
+            return ['success' => true];
+
+        } catch (Exception $e) {
+            error_log("Interest Email Error: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error sending email.'];
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Notification Preferences
+    // ─────────────────────────────────────────────────────────────
+
+    public function getNotificationPreferences($user_id) {
+        try {
+            $stmt = $this->db->prepare("SELECT notify_email_orders, notify_email_results, notify_email_marketing FROM users WHERE user_id = :user_id");
+            $stmt->execute([':user_id' => $user_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Default values if columns don't exist or are null
+            if (!$result) {
+                return [
+                    'notify_email_orders' => 1,
+                    'notify_email_results' => 1,
+                    'notify_email_marketing' => 0
+                ];
+            }
+            return $result;
+        } catch (PDOException $e) {
+            return ['notify_email_orders' => 1, 'notify_email_results' => 1, 'notify_email_marketing' => 0];
+        }
+    }
+
+    public function updateNotificationPreferences($user_id, $prefs) {
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET notify_email_orders = :orders, notify_email_results = :results, notify_email_marketing = :marketing WHERE user_id = :user_id");
+            $stmt->execute([
+                ':orders' => $prefs['notify_email_orders'],
+                ':results' => $prefs['notify_email_results'],
+                ':marketing' => $prefs['notify_email_marketing'],
+                ':user_id' => $user_id
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            error_log("Update Prefs Error: " . $e->getMessage());
+            return false;
         }
     }
 }

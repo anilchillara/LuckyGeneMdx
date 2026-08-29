@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Access Denied (403) | LuckyGeneMDx</title>
+    <title>Access Denied (403) | LuckyGenes</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -158,7 +158,7 @@
                     <li>Contact support if you continue to experience issues</li>
                 </ul>
                 <div style="margin-top: 2rem;">
-                    <p><strong>Support:</strong> support@luckygenemmdx.com | 1-800-LUCKYGENE</p>
+                    <p><strong>Support:</strong> support@luckygenes.com | 1-800-LUCKYGENE</p>
                 </div>
             </div>
         </div>

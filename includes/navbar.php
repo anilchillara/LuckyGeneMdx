@@ -4,18 +4,61 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $currentPage = basename($_SERVER['PHP_SELF']);
 $isLoggedIn = isset($_SESSION['user_id']);
+
+// Ensure Database class is loaded
+require_once __DIR__ . '/Database.php';
+
+// Fetch Navbar Items from Database
+$navItems = [];
+$mainItems = [];
+$actionItems = [];
+$useDbNav = false;
+try {
+    $db = Database::getInstance()->getConnection();
+    // Check if table exists to prevent errors before migration
+    $stmt = $db->query("SHOW TABLES LIKE 'navbar_items'");
+    if ($stmt->rowCount() > 0) {
+        $useDbNav = true;
+        $stmt = $db->query("SELECT * FROM navbar_items WHERE is_active = 1 ORDER BY display_order ASC");
+        $navItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($navItems as $item) {
+            if (!isset($item['section']) || $item['section'] === 'main') {
+                $mainItems[] = $item;
+            } else {
+                $actionItems[] = $item;
+            }
+        }
+    }
+} catch (Exception $e) {
+    // Fallback to defaults if DB error
+    $useDbNav = false;
+}
+
+// Default items if DB is empty or table missing
+if (!$useDbNav) {
+    $mainItems = [
+        ['label' => 'Home', 'url' => 'index.php'],
+        ['label' => 'About Screening', 'url' => 'about-genetic-screening.php'],
+        ['label' => 'How It Works', 'url' => 'how-it-works.php'],
+        ['label' => 'Resources', 'url' => 'resources.php'],
+        ['label' => 'Contact', 'url' => 'contact.php'],
+        ['label' => 'Track Order', 'url' => 'track-order.php'],
+        ['label' => 'Interest List', 'url' => 'interest-list.php']
+    ];
+}
 ?>
 <style>
     :root {
         /* Brand Palette */
         --nav-deep-blue: #0A1F44;
-        --nav-teal: #00B3A4;
-        --nav-teal-dark: #008c7a;
+        --nav-teal: #00e5ff;
+        --nav-teal-dark: #00b8cc;
         --nav-white: #FFFFFF;
         --nav-gray: #6C757D;
         --nav-light-gray: #F8F9FA;
         --nav-border: #E9ECEF;
-        --nav-brand-gradient: linear-gradient(135deg, #0A1F44 0%, #00B3A4 100%);
+        --nav-brand-gradient: linear-gradient(135deg, #00e5ff 0%, #2979ff 45%, #9177C7 100%);
     }
 
     /* Navigation Container */
@@ -69,7 +112,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
     }
 
     .nav-link:hover, .nav-link.active {
-        color: var(--nav-teal);
+        color: var(--nav-teal-dark);
     }
 
     .nav-link.active::after {
@@ -93,11 +136,11 @@ $isLoggedIn = isset($_SESSION['user_id']);
     .btn-nav {
         display: inline-block;
         padding: 8px 18px;
-        border-radius: 4px;
+        border-radius: 30px;
         font-weight: 600;
         font-size: 0.9rem;
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
     }
 
     .btn-nav-outline {
@@ -107,17 +150,23 @@ $isLoggedIn = isset($_SESSION['user_id']);
     }
     .btn-nav-outline:hover {
         border-color: var(--nav-teal);
-        color: var(--nav-teal);
+        background: var(--nav-teal);
+        color: var(--nav-deep-blue);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        transform: translateY(-2px);
     }
 
     .btn-nav-primary {
-        background: var(--nav-teal);
+        background: var(--nav-brand-gradient);
         color: white;
-        border: 1px solid var(--nav-teal);
+        border: 1px solid transparent;
+        box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+        transition: all 0.3s ease;
     }
     .btn-nav-primary:hover {
-        background: var(--nav-teal-dark);
-        border-color: var(--nav-teal-dark);
+        filter: brightness(1.15);
+        box-shadow: 0 6px 25px  #9177C7;
+        transform: translateY(-2px);
     }
 
     /* Mobile Toggle */
@@ -129,6 +178,9 @@ $isLoggedIn = isset($_SESSION['user_id']);
         cursor: pointer;
         color: var(--nav-deep-blue);
         padding: 0.5rem;
+    }
+    .mobile-toggle:hover {
+        color: var(--nav-teal-dark);
     }
 
     @media (max-width: 960px) {
@@ -145,9 +197,11 @@ $isLoggedIn = isset($_SESSION['user_id']);
             display: none;
             width: 100%;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
             gap: 0;
             margin-top: 1rem;
+            background: var(--nav-white);
+            border-radius: 8px;
         }
         
         .nav-items.active, .nav-actions.active {
@@ -163,51 +217,71 @@ $isLoggedIn = isset($_SESSION['user_id']);
         .nav-actions {
             border-top: 1px solid var(--nav-border);
             padding-top: 1rem;
-            gap: 1rem;
+            gap: 0.75rem;
+        }
+
+        .btn-nav {
+            width: 100%;
+            text-align: center;
         }
     }
 
     /* Dark Mode Overrides for Navbar */
     body.dark-theme .navbar {
-        background: rgba(26, 29, 33, 0.95);
-        border-bottom-color: #343a40;
+        background: rgba(59, 59, 59, 0.95);
+        border-bottom-color: #606060;
     }
     body.dark-theme .nav-link {
-        color: #adb5bd;
-    }
-    body.dark-theme .nav-link:hover, body.dark-theme .nav-link.active {
-        color: var(--nav-teal);
+        color: #B2B2B2;
     }
     body.dark-theme .btn-nav-outline {
-        color: #ffffff;
-        border-color: #495057;
+        color: var(--nav-teal);
+        border-color: #606060;
+    }
+    body.dark-theme .brand {
+        background: var(--nav-brand-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     body.dark-theme .mobile-toggle {
-        color: #ffffff;
+        color: var(--nav-white);
     }
 </style>
 
 <nav class="navbar">
     <a href="index.php" class="brand">
-        <span>🧬</span> LuckyGeneMDx
+        <img src="assets/images/logo_small.png" alt="Logo" style="height: 32px; width: auto;"><?php echo htmlspecialchars(SITE_NAME); ?>
     </a>
     <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
     <div class="nav-items" id="nav-items">
-        <a href="index.php" class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>">Home</a>
-        <a href="about-genetic-screening.php" class="nav-link <?php echo $currentPage == 'about-genetic-screening.php' ? 'active' : ''; ?>">About Screening</a>
-        <a href="how-it-works.php" class="nav-link <?php echo $currentPage == 'how-it-works.php' ? 'active' : ''; ?>">How It Works</a>
-        <a href="resources.php" class="nav-link <?php echo $currentPage == 'resources.php' ? 'active' : ''; ?>">Resources</a>
-        <a href="contact.php" class="nav-link <?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>">Contact</a>
-        <a href="track-order.php" class="nav-link <?php echo $currentPage == 'track-order.php' ? 'active' : ''; ?>">Track Order</a>
+        <?php foreach ($mainItems as $item): ?>
+            <a href="<?php echo htmlspecialchars($item['url']); ?>" class="nav-link <?php echo $currentPage == basename($item['url']) ? 'active' : ''; ?>">
+                <?php echo htmlspecialchars($item['label']); ?>
+            </a>
+        <?php endforeach; ?>
     </div>
     <div class="nav-actions" id="nav-actions">
         <button id="theme-toggle" class="btn-nav btn-nav-outline" style="border:none; font-size:1.2rem; padding:4px 8px; margin-right:5px; background:transparent;">🌙</button>
-        <?php if ($isLoggedIn): ?>
-            <a href="user-portal/index.php" class="btn-nav btn-nav-outline">Dashboard</a>
-            <a href="user-portal/logout.php" class="btn-nav btn-nav-primary">Sign Out</a>
+        
+        <?php if ($useDbNav): ?>
+            <?php foreach ($actionItems as $item): 
+                // Auth Status: 0=All, 1=LoggedIn, 2=LoggedOut
+                if ($item['auth_status'] == 1 && !$isLoggedIn) continue;
+                if ($item['auth_status'] == 2 && $isLoggedIn) continue;
+            ?>
+                <a href="<?php echo htmlspecialchars($item['url']); ?>" class="<?php echo htmlspecialchars($item['css_class'] ?? 'btn-nav btn-nav-outline'); ?>">
+                    <?php echo htmlspecialchars($item['label']); ?>
+                </a>
+            <?php endforeach; ?>
         <?php else: ?>
-            <a href="user-portal/login.php" class="btn-nav btn-nav-outline">Patient Login</a>
-            <a href="request-kit.php" class="btn-nav btn-nav-primary">Order Kit</a>
+            <?php if ($isLoggedIn): ?>
+            <!-- Fallback if DB empty -->
+            <a href="user-portal/index.php" class="btn-nav btn-nav-primary">Dashboard</a>
+            <a href="user-portal/logout.php" class="btn-nav btn-nav-outline">Sign Out</a>
+            <?php else: ?>
+            <a href="user-portal/login.php" class="btn-nav btn-nav-primary">Patient Login</a>
+            <a href="request-kit.php" class="btn-nav btn-nav-outline">Order Kit</a>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </nav>

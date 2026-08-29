@@ -3,7 +3,7 @@
  * Validator Class
  * Input validation and sanitization
  * 
- * @package LuckyGeneMdx
+ * @package LuckyGenes
  * @version 2.0
  */
 
@@ -16,7 +16,15 @@ class Validator {
      * @return bool
      */
     public static function email(string $email): bool {
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        // Check DNS records
+        $domain = substr(strrchr($email, "@"), 1);
+        if (function_exists('checkdnsrr')) {
+            return checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A');
+        }
+        return true;
     }
     
     /**

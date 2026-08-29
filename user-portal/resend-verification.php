@@ -1,9 +1,10 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once '../includes/config.php';
 require_once '../includes/Database.php';
 require_once '../includes/User.php';
 session_start();
+setSecurityHeaders();
 
 $message = '';
 $isError = false;
@@ -26,37 +27,36 @@ $prefillEmail = htmlspecialchars($_GET['email'] ?? '');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resend Verification – LuckyGeneMDx</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/portal.css">
+<title>Resend Verification – LuckyGenes</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="auth-body">
-<div class="auth-bg-video">
-    <video autoplay muted loop playsinline><source src="../assets/video/My580.mp4" type="video/mp4"></video>
-</div>
+
 <div class="auth-card">
-    <div style="text-align:center; margin-bottom:1.5rem;">
-        <div style="font-size:3rem;">📧</div>
-        <h1>Resend Verification</h1>
-        <p>Enter your email to receive a new verification link</p>
+    <div class="text-center mb-4">
+        <a href="login.php" class="text-dark-gray" style="font-size: 0.9rem;">← Back to Login</a>
+    </div>
+
+    <div class="mb-4">
+        <img src="../assets/images/logo_small.png" alt="Logo" style="height: 48px; margin-bottom: 1rem;">
+        <h1 class="font-xl mb-2">Resend Verification</h1>
+        <p class="auth-title">Enter your email to receive a new verification link</p>
     </div>
 
     <?php if ($message): ?>
-    <div class="msg <?php echo $isError ? 'msg-error' : 'msg-success'; ?>"><?php echo $message; ?></div>
+    <div class="<?php echo $isError ? 'glass-card-error text-error' : 'glass-card-teal-left text-teal'; ?> p-3 mb-3"><?php echo htmlspecialchars($message); ?></div>
     <?php endif; ?>
 
     <?php if (!$done): ?>
     <form method="POST">
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" name="email" placeholder="name@example.com"
-                   value="<?php echo $prefillEmail; ?>" required>
+            <input type="email" name="email" class="form-control" placeholder="name@example.com" value="<?php echo $prefillEmail; ?>" required>
         </div>
-        <button type="submit" class="btn btn-full">Send Verification Email</button>
+        <button type="submit" class="btn btn-primary btn-full">Send Verification Email</button>
     </form>
     <?php endif; ?>
-
-    <a href="login.php" class="btn btn-outline btn-full" style="margin-top:1rem;">← Back to Login</a>
 </div>
 </body>
 </html>

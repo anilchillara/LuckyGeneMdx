@@ -1,5 +1,5 @@
 <?php
-define('luckygenemdx', true);
+define('LuckyGenes', true);
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 session_start();
@@ -10,9 +10,9 @@ setSecurityHeaders();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGeneMDx comprehensive carrier screening. $99 genetic testing kit with results in 14-21 days.">
+    <meta name="description" content="Secure Your Family's Genetic Future with LuckyGenes comprehensive carrier screening.">
     <meta name="csrf-token" content="<?php echo generateCSRFToken(); ?>">
-    <title>LuckyGeneMDx - Comprehensive Genetic Carrier Screening | $99</title>
+    <title><?php echo htmlspecialchars(SITE_NAME); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -41,7 +41,6 @@ setSecurityHeaders();
             </div>
             <div class="hero-overlay" aria-hidden="true"></div>
             <div class="hero-scan"    aria-hidden="true"></div>
-            <div class="hero-orb"     aria-hidden="true"></div>
             <div class="hero-fade-bottom" aria-hidden="true"></div>
 
             <div class="hero-content">
@@ -55,20 +54,24 @@ setSecurityHeaders();
                     Family's <span class="accent">Genetic</span><br>
                     Future
                 </h1>
-
+                <!-- ══ STANDARDS ════════════════════════════════════ -->
+                <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
                 <p class="hero-desc">
                     Carrier screening for over 300 genetic conditions.
                     Know your status before family planning begins — 
                     clear, private results in 14–21 days.
                 </p>
+                <?php endif; ?>
 
                 <div class="hero-btns">
+                    <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
                     <a href="request-kit.php" class="btn-primary-hero">
-                        Request Screening Kit — $99
+                        Order Your Kit — <?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?>
                         <svg class="btn-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </a>
+                    <?php endif; ?>
                     <a href="about-genetic-screening.php" class="btn-ghost-hero">
                         Learn More
                     </a>
@@ -78,7 +81,7 @@ setSecurityHeaders();
                     <div class="hero-trust-item"><span class="hero-trust-check"></span>ACMG Aligned</div>
                     <div class="hero-trust-item"><span class="hero-trust-check"></span>Secure &amp; Private</div>
                     <div class="hero-trust-item"><span class="hero-trust-check"></span>CDC Reference Standards</div>
-                    <div class="hero-trust-item"><span class="hero-trust-check"></span>Results in 14–21 Days</div>
+                    <?php if (defined('SHOW_CTA') && SHOW_CTA): ?><div class="hero-trust-item"><span class="hero-trust-check"></span>Results in 14–21 Days</div><?php endif; ?>
                 </div>
             </div>
 
@@ -92,7 +95,7 @@ setSecurityHeaders();
         <div class="stats-band">
             <div class="stats-band-inner">
                 <div class="stat-cell"><div class="stat-num" data-count="300">300+</div><div class="stat-lbl">Conditions Screened</div></div>
-                <div class="stat-cell"><div class="stat-num">$99</div><div class="stat-lbl">Flat Transparent Price</div></div>
+                <!-- <div class="stat-cell"><div class="stat-num">$<?php echo number_format(KIT_PRICE, 0); ?></div><div class="stat-lbl">Flat Transparent Price</div></div> -->
                 <div class="stat-cell"><div class="stat-num" data-count="21">21</div><div class="stat-lbl">Day Results Maximum</div></div>
                 <div class="stat-cell"><div class="stat-num">ACMG</div><div class="stat-lbl">Aligned Standards</div></div>
             </div>
@@ -121,30 +124,7 @@ setSecurityHeaders();
 
                     <div class="diagram-card reveal reveal-d2">
                         <h4>Recessive Inheritance Pattern</h4>
-                        <svg viewBox="0 0 400 290" style="width:100%;max-width:420px;display:block;margin:0 auto;">
-                            <circle cx="100" cy="48" r="34" fill="#00B3A4" fill-opacity="0.15" stroke="#00B3A4" stroke-width="1.5"/>
-                            <text x="100" y="44" text-anchor="middle" fill="#0A1F44" font-size="12" font-weight="700" font-family="Poppins,sans-serif">Parent 1</text>
-                            <text x="100" y="61" text-anchor="middle" fill="#00B3A4" font-size="11" font-family="Inter,sans-serif">Carrier</text>
-                            <circle cx="300" cy="48" r="34" fill="#00B3A4" fill-opacity="0.15" stroke="#00B3A4" stroke-width="1.5"/>
-                            <text x="300" y="44" text-anchor="middle" fill="#0A1F44" font-size="12" font-weight="700" font-family="Poppins,sans-serif">Parent 2</text>
-                            <text x="300" y="61" text-anchor="middle" fill="#00B3A4" font-size="11" font-family="Inter,sans-serif">Carrier</text>
-                            <line x1="100" y1="82" x2="75"  y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <line x1="100" y1="82" x2="155" y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <line x1="300" y1="82" x2="245" y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <line x1="300" y1="82" x2="325" y2="192" stroke="#c8d4e8" stroke-width="1.5"/>
-                            <circle cx="75"  cy="218" r="26" fill="#22c55e" fill-opacity="0.85"/>
-                            <text x="75"  y="214" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter,sans-serif">25%</text>
-                            <text x="75"  y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Not Affected</text>
-                            <circle cx="155" cy="218" r="26" fill="#00B3A4" fill-opacity="0.6"/>
-                            <text x="155" y="214" text-anchor="middle" fill="#0A1F44" font-size="11" font-weight="700" font-family="Inter,sans-serif">50%</text>
-                            <text x="155" y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Carrier</text>
-                            <circle cx="245" cy="218" r="26" fill="#00B3A4" fill-opacity="0.6"/>
-                            <text x="245" y="214" text-anchor="middle" fill="#0A1F44" font-size="11" font-weight="700" font-family="Inter,sans-serif">50%</text>
-                            <text x="245" y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Carrier</text>
-                            <circle cx="325" cy="218" r="26" fill="#ef4444" fill-opacity="0.8"/>
-                            <text x="325" y="214" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter,sans-serif">25%</text>
-                            <text x="325" y="258" text-anchor="middle" fill="#6b7a99" font-size="10" font-family="Inter,sans-serif">Affected</text>
-                        </svg>
+                        <img src="assets/images/AutosomalRecessive.png" alt="Recessive inheritance pattern diagram showing parent carriers and child outcomes: 25% not affected, 50% carrier, 50% carrier, 25% affected" style="width:100%;max-width:420px;display:block;margin:0 auto;">
                         <p style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--gray);line-height:1.65;">
                             When both parents are carriers, each pregnancy carries a 25% chance of the child being affected.
                         </p>
@@ -154,19 +134,42 @@ setSecurityHeaders();
         </section>
 
         <!-- ══ STANDARDS ════════════════════════════════════ -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-standards">
             <div class="standards-inner">
-                <span class="sec-tag" style="color:var(--ice);">Our Standards</span>
+                <span class="sec-tag">Our Standards</span>
                 <h2>Aligned with Medical Genetics Standards</h2>
                 <p>Our comprehensive carrier screening follows guidelines from leading medical organizations, ensuring you receive accurate, reliable genetic information.</p>
                 <div class="standards-grid">
-                    <div class="std-card reveal reveal-d1"><div class="std-num">300+</div><p>Genetic Conditions Screened</p></div>
-                    <div class="std-card reveal reveal-d2"><div class="std-num">ACMG</div><p>Standards Alignment</p></div>
-                    <div class="std-card reveal reveal-d3"><div class="std-num">$99</div><p>Affordable, Transparent Pricing</p></div>
+                    <div class="std-card reveal reveal-d1">
+                        <div class="std-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                        </div>
+                        <div class="std-num">300+</div>
+                        <h3>Conditions Screened</h3>
+                        <p>Comprehensive panel covering Cystic Fibrosis, SMA, Sickle Cell, and hundreds more.</p>
+                    </div>
+                    <div class="std-card reveal reveal-d2">
+                        <div class="std-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-2 5l9-9l-9 1l2-5l-9 9l9-1z"/></svg>
+                        </div>
+                        <div class="std-num">ACMG</div>
+                        <h3>Standards Alignment</h3>
+                        <p>Testing protocols aligned with American College of Medical Genetics guidelines.</p>
+                    </div>
+                    <div class="std-card reveal reveal-d3">
+                        <div class="std-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <div class="std-num"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?></div>
+                        <h3>Transparent Pricing</h3>
+                        <p>One flat rate. No hidden fees, insurance battles, or surprise bills.</p>
+                    </div>
                 </div>
-                <p class="std-disclaimer"><em>LuckyGeneMDx is not affiliated with ACMG or CDC. Our testing aligns with standards established by these organizations.</em></p>
+                <p class="std-disclaimer"><em><?php echo htmlspecialchars(SITE_NAME); ?> is not affiliated with ACMG or CDC. Our testing aligns with standards established by these organizations.</em></p>
             </div>
         </section>
+        <?php endif; ?>
 
         <!-- ══ TIMELINE ══════════════════════════════════════ -->
         <section class="sec-timeline" aria-labelledby="timeline-heading">
@@ -187,6 +190,7 @@ setSecurityHeaders();
         </section>
 
         <!-- ══ TESTIMONIALS ══════════════════════════════════ -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-testimonials" aria-labelledby="testimonials-heading">
             <div class="test-header reveal">
                 <span class="sec-tag">Stories</span>
@@ -236,16 +240,20 @@ setSecurityHeaders();
             } catch(Exception $e){ error_log($e->getMessage()); }
             ?>
         </section>
+        <?php endif; ?>
 
         <!-- ══ CTA ══════════════════════════════════════════ -->
+        <?php if (defined('SHOW_CTA') && SHOW_CTA): ?>
         <section class="sec-cta">
             <div class="cta-box reveal">
                 <div class="cta-pill">Limited Time Pricing</div>
                 <h2>Invest Today for<br>a Healthier Tomorrow</h2>
                 <p>Take the first step toward informed family planning with comprehensive genetic carrier screening. Clear insights, delivered privately.</p>
                 <div class="cta-pricing">
-                    <span class="cta-price">$99</span>
-                    <span class="cta-strike">$249</span>
+                    <span class="cta-price"><?php echo CURRENCY_SYMBOL . number_format(KIT_PRICE, 0); ?></span>
+                    <?php if (defined('ACTUAL_PRICE') && ACTUAL_PRICE > KIT_PRICE): ?>
+                    <span class="cta-strike"><?php echo CURRENCY_SYMBOL . number_format(ACTUAL_PRICE, 0); ?></span>
+                    <?php endif; ?>
                 </div>
                 <a href="request-kit.php" class="btn-cta-main">
                     Get Your Screening Kit
@@ -267,21 +275,13 @@ setSecurityHeaders();
                 </div>
             </div>
         </section>
+        <?php endif; ?>
 
     </main>
 
     <?php include 'includes/footer.php'; ?>
     <script src="js/main.js"></script>
     <script>
-    // ── Universal Intersection Observer ─────────────────
-    const io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
-        });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal, .tl-row').forEach(el => io.observe(el));
-
     // ── Stats counter animation ──────────────────────────
     const counterIO = new IntersectionObserver(entries => {
         entries.forEach(e => {
