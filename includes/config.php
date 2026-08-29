@@ -175,9 +175,10 @@ define('BASE_URL', $dbSettings['base_url'] ?? (getenv('BASE_URL') ?: SITE_URL));
 define('KIT_PRICE', isset($dbSettings['kit_price']) ? (float)$dbSettings['kit_price'] : 25000.00);
 define('ACTUAL_PRICE', isset($dbSettings['actual_price']) ? (float)$dbSettings['actual_price'] : 35000.00);
 define('SHOW_CTA', isset($dbSettings['show_cta']) ? (bool)$dbSettings['show_cta'] : true);
-define('CURRENCY', 'INR');
-define('CURRENCY_SYMBOL', '₹');
-define('RESULTS_PROCESSING_DAYS', '14-21');
+if (!defined('CURRENCY_SYMBOL')) { define('CURRENCY_SYMBOL', '$'); }
+if (!defined('CURRENCY')) { define('CURRENCY', 'INR'); }
+if (!defined('CURRENCY_SYMBOL')) { define('CURRENCY_SYMBOL', '₹'); }
+if (!defined('RESULTS_PROCESSING_DAYS')) { define('RESULTS_PROCESSING_DAYS', '14-21'); }
 
 // Razorpay Payment Gateway
 define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
