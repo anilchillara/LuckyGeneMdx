@@ -3,7 +3,6 @@
 if(defined('LuckyGenes_CONFIG_LOADED')) {
     return;
 }
-define('LuckyGenes_CONFIG_LOADED', true);
 
 /**
  * .env Loader for Hostinger & Local Dev
@@ -223,3 +222,5 @@ function generateCSRFToken() {
 function validateCSRFToken($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
+
+define('LuckyGenes_CONFIG_LOADED', true);
